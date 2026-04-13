@@ -1,0 +1,9 @@
+region,atm_n_deposition,baseline_water_deficit,bnf_potential,bnf_ramp_years,cn_bulk,cre_regional,cropland_mha,mitscherlich_c_regional,name,pop_supported,residue_retention,root_shoot_c_ratio,soc_initial,synth_n_current,texture_class,water_stress_coeff,whc_sensitivity,yield_max_regional,yield_min_regional
+north_america,10.0,0.0,25.0,8.0,10.0,0.28,170.0,0.0,North America,900.0,0.9,0.8,50.0,76.0,1,0.003,8.4,5.926,1.1
+europe,12.0,0.0,25.0,8.0,10.5,0.259,130.0,0.0,Europe,900.0,0.9,0.8,42.0,85.0,1,0.003,8.4,5.448,1.0
+east_asia,20.0,5.0,20.0,10.0,10.0,0.226,120.0,0.0,East Asia,1875.0,0.75,0.6,35.0,250.0,1,0.004,8.4,6.09,0.9
+south_asia,12.0,10.0,20.0,12.0,9.5,0.341,200.0,0.0,South Asia,1350.0,0.5,0.7,25.0,110.0,1,0.005,8.4,3.584,0.5
+southeast_asia,8.0,5.0,25.0,10.0,10.0,0.307,90.0,0.0,Southeast Asia,750.0,0.7,0.6,32.0,89.0,1,0.004,8.4,4.737,1.2
+latin_america,5.0,0.0,35.0,8.0,11.0,0.308,160.0,0.0,Latin America,900.0,0.8,0.9,45.0,50.0,1,0.003,8.4,5.112,0.9
+sub_saharan_africa,5.0,15.0,15.0,15.0,11.0,0.2,230.0,0.0,Sub-Saharan Africa,600.0,0.55,1.0,9.0,7.0,0,0.005,8.4,3.931,0.4
+fsu_central_asia,5.0,10.0,20.0,10.0,10.0,0.35,130.0,0.0,Former Soviet Union & Central Asia,375.0,0.85,1.0,35.0,38.0,1,0.004,8.4,3.453,0.9
