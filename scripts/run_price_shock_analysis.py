@@ -101,6 +101,13 @@ def run_farm_sweep_single(region, rn, ym, soc_pct, price_shock_frac):
     C_p_eq = engine_eq.C_passive
     base_fert = region.synth_n_current
 
+    # Regional-baseline yield (SOC=100%) used to calibrate a SOC-invariant
+    # fertilizer per-unit price. Fertilizer is a regional market price and must
+    # not change with farm SOC level.
+    eng_regional = MonthlyBiophysicalEngine(region, region_key=rn, yield_max_override=ym)
+    state_regional = eng_regional.step(base_fert)
+    y_regional_baseline = state_regional['yield_tha']
+
     scale = soc_pct / 100.0
 
     # Baseline yield at this SOC (no shock)
@@ -148,7 +155,10 @@ def run_farm_sweep_single(region, rn, ym, soc_pct, price_shock_frac):
     fert_red = (1 - F_shocked / base_fert) * 100 if base_fert > 0 else 0.0
 
     # Profit via gross-margin-over-fertilizer
-    pf_per_unit = fcf * y_base_soc / base_fert if base_fert > 0 else 0
+    # Fertilizer per-unit price is a regional market price — calibrate to
+    # regional-baseline yield (SOC=100%), NOT the SOC-specific yield, so
+    # that degraded farms still pay the full market fertilizer price.
+    pf_per_unit = fcf * y_regional_baseline / base_fert if base_fert > 0 else 0
     profit_b = y_base_soc - base_fert * pf_per_unit
     profit_s = y_shock * np.exp(PY_hat) - F_shocked * pf_per_unit * (1 + price_shock_frac)
     profit_chg = (profit_s / profit_b - 1) * 100 if abs(profit_b) > 1e-10 else 0.0

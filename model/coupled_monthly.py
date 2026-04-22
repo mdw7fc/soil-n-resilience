@@ -31,7 +31,7 @@ from typing import Dict, Tuple
 
 from soil_n_model import (
     SOMPoolParams, CropParams, RegionParams, FeedbackParams,
-    get_default_regions,
+    get_default_regions, som_params_for_region,
 )
 
 # Import monthly N model components
@@ -71,7 +71,12 @@ class MonthlyBiophysicalEngine:
                  yield_max_override: float = None):
         self.region = region
         self.region_key = region_key
-        self.som = som_params or SOMPoolParams()
+        # Regional SOM parameterization: tropical regions use Laub et al.
+        # 2024 (Biogeosciences 21:3691–3716) Kenya-calibrated DayCent
+        # posterior ratios applied to k_slow and k_passive. Temperate
+        # regions retain Century/RothC defaults.
+        # See tropical-reparam-2026-04-14/PARAMETERS.md for full mapping.
+        self.som = som_params or som_params_for_region(region_key)
         self.crop = crop_params or CropParams()
         self.fb = feedback_params or FeedbackParams()
         self.mp = monthly_params or MonthlyNParams()

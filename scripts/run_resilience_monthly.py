@@ -6,7 +6,7 @@ Replaces run_resilience_analysis.py and run_resilience_v2.py.
 Uses the coupled monthly model (annual SOM + monthly N availability).
 
 Six analysis sets:
-  1. Baseline disruption (S1-S3 + SC1-SC4), 30-year horizon
+  1. Baseline disruption (S1-S3 + SC1-SC2), 30-year horizon
   2. Soil N buffer metrics (cross-regional correlation)
   3. Degradation scenarios (pre-disruption SOC loss)
   4. No-shock baselines for degradation levels
@@ -96,7 +96,7 @@ def run_scenarios(regions, scenarios, t_max=T_MAX):
 
 
 # ================================================================
-# ANALYSIS 1: Baseline S1-S3 + SC1-SC4
+# ANALYSIS 1: Baseline S1-S3 + SC1-SC2
 # ================================================================
 def run_baseline(regions):
     print('[1/7] Baseline S1-S3 + SC scenarios (30 years)...')

@@ -20,8 +20,9 @@ Scenarios (following Manning's framework):
     S1: No behavioral response (land fixed, fert fixed at shocked level)
     S2: Land expansion response (endogenous land market)
     S3: Full behavioral (land + fert response to food prices)
-    SC1-SC4: Supply-constrained variants with S3 elasticities + soil-N
-             feedback (eps_F_N = -0.50). The S4 behavioral channel is
+    SC1-SC2: Supply-constrained variants with S3 elasticities + soil-N
+             feedback (eps_F_N = -0.50). SC1 = permanent 20% supply loss;
+             SC2 = 20% loss with 20-year recovery. The S4 behavioral channel is
              reserved for supply-constrained scenarios where SOC decline
              is large enough for the feedback to matter.
 
@@ -545,26 +546,20 @@ def get_supply_constrained_scenarios() -> Dict[str, EconParams]:
     )
 
     # SC1: 20% supply reduction, no recovery (permanent capacity loss)
+    # Anchored to plausible disruption: loss of a major exporter (~Russia+Belarus
+    # share of global N trade) with no alternative capacity built.
     sc1 = EconParams(**base_kwargs, fert_supply_ceiling=0.80,
                      fert_capacity_recovery_years=0.0)
 
-    # SC2: 40% supply reduction, no recovery (severe disruption)
-    sc2 = EconParams(**base_kwargs, fert_supply_ceiling=0.60,
-                     fert_capacity_recovery_years=0.0)
-
-    # SC3: 40% supply reduction with 20-year capacity recovery
-    # (disruption followed by slow rebuilding of alternative capacity;
-    #  price relaxes proportionally as supply recovers)
-    sc3 = EconParams(**base_kwargs, fert_supply_ceiling=0.60,
+    # SC2: 20% supply reduction with 20-year capacity recovery
+    # Same initial disruption as SC1, but alternative production capacity
+    # is gradually built (green ammonia, regional plants, etc.);
+    # price relaxes proportionally as supply recovers.
+    sc2 = EconParams(**base_kwargs, fert_supply_ceiling=0.80,
                      fert_capacity_recovery_years=20.0,
                      price_relaxes_with_recovery=True)
 
-    # SC4: 60% supply reduction, no recovery (catastrophic disruption)
-    sc4 = EconParams(**base_kwargs, fert_supply_ceiling=0.40,
-                     fert_capacity_recovery_years=0.0)
-
-    return {'SC1_20pct': sc1, 'SC2_40pct': sc2,
-            'SC3_40pct_recovery': sc3, 'SC4_60pct': sc4}
+    return {'SC1_20pct': sc1, 'SC2_20pct_recovery': sc2}
 
 
 # ============================================================
@@ -1052,7 +1047,7 @@ if __name__ == '__main__':
 
     sc_results = run_supply_constrained(regions, t_max=100)
 
-    for s_name in ['SC1_20pct', 'SC2_40pct', 'SC3_40pct_recovery', 'SC4_60pct']:
+    for s_name in ['SC1_20pct', 'SC2_20pct_recovery']:
         agg = aggregate_global(sc_results[s_name], regions)
         print(f"\n--- {s_name} ---")
         for yr in [0, 5, 10, 25, 50, 100]:

@@ -124,6 +124,25 @@ def add_panel_label(ax, label, x=-0.08, y=1.08):
             fontsize=10, fontweight='bold', va='top', ha='right')
 
 
+def dodge_labels(labels, min_gap):
+    """Given list of (y, text_obj) tuples, adjust y values to maintain min_gap.
+    Returns adjusted y values in original order."""
+    if not labels:
+        return []
+    # Sort by y ascending, keeping original index
+    idx = sorted(range(len(labels)), key=lambda i: labels[i][0])
+    adj_sorted = [labels[i][0] for i in idx]
+    # Adjust upward to maintain min_gap
+    for k in range(1, len(adj_sorted)):
+        if adj_sorted[k] - adj_sorted[k-1] < min_gap:
+            adj_sorted[k] = adj_sorted[k-1] + min_gap
+    # Map back
+    out = [0.0] * len(labels)
+    for k, orig_i in enumerate(idx):
+        out[orig_i] = adj_sorted[k]
+    return out
+
+
 def save_figure(fig, name, dpi=300):
     """Save figure as PNG, PDF, and white-background TIFF."""
     fig.savefig(FIG_DIR / f'{name}.png', dpi=dpi, bbox_inches='tight',
@@ -213,7 +232,7 @@ def disruption_penalty(rn, soc_label):
 # ═══════════════════════════════════════════════════════════════════════
 # FIGURE 1: Farm-level price shock resilience (2-panel)
 # Panel a: Year-1 yield loss vs farm SOC under 100% price spike
-# Panel b: Profit impact under same scenario
+# Panel b: Gross margin impact under same scenario
 # ═══════════════════════════════════════════════════════════════════════
 print('Generating Figure 1 (price shock farm)...')
 fig, (ax_a, ax_b) = plt.subplots(1, 2, figsize=(10, 4.2),
@@ -226,6 +245,9 @@ _key4_colors = {
     'north_america': PAL['na'],
 }
 
+# Collect line endpoints first, then dodge labels to avoid overlap
+_a_ends = []  # (rn, soc_pct[-1], yield_chg[-1])
+_b_ends = []
 for rn in KEY4:
     fs = fine_shock_results[rn]
     soc_pct = np.array(fs['soc_pct'])
@@ -235,12 +257,23 @@ for rn in KEY4:
     # Flip sign: plot yield change as negative (down = worse) for consistency
     yield_chg = -yield_pen
     ax_a.plot(soc_pct, yield_chg, color=_key4_colors[rn], linewidth=2.0, zorder=3)
-    # End-of-curve label
-    ax_a.text(soc_pct[-1] + 1.5, yield_chg[-1], KEY4_LABELS[rn],
+    ax_b.plot(soc_pct, profit_chg, color=_key4_colors[rn], linewidth=2.0, zorder=3)
+
+    _a_ends.append((rn, soc_pct[-1], yield_chg[-1]))
+    _b_ends.append((rn, soc_pct[-1], profit_chg[-1]))
+
+# Dodge labels on panel a (yield change, range ~0 to -3)
+_a_y_raw = [e[2] for e in _a_ends]
+_a_y_adj = dodge_labels([(y, None) for y in _a_y_raw], min_gap=0.55)
+for (rn, xend, _), y_adj in zip(_a_ends, _a_y_adj):
+    ax_a.text(xend + 1.5, y_adj, KEY4_LABELS[rn],
               fontsize=7, color=_key4_colors[rn], fontweight='bold', va='center')
 
-    ax_b.plot(soc_pct, profit_chg, color=_key4_colors[rn], linewidth=2.0, zorder=3)
-    ax_b.text(soc_pct[-1] + 1.5, profit_chg[-1], KEY4_LABELS[rn],
+# Dodge labels on panel b (gross margin change, larger range)
+_b_y_raw = [e[2] for e in _b_ends]
+_b_y_adj = dodge_labels([(y, None) for y in _b_y_raw], min_gap=1.4)
+for (rn, xend, _), y_adj in zip(_b_ends, _b_y_adj):
+    ax_b.text(xend + 1.5, y_adj, KEY4_LABELS[rn],
               fontsize=7, color=_key4_colors[rn], fontweight='bold', va='center')
 
 ax_a.axhline(0, color='black', linewidth=0.6, linestyle='-', alpha=0.3, zorder=0)
@@ -250,11 +283,11 @@ ax_a.set_xlabel('Farm SOC (% of regional mean)')
 ax_a.set_ylabel('Yield change (%)')
 ax_a.set_xlim(15, 130)
 
-# Panel b: profit impact with zero-line reference (FIX #2)
+# Panel b: gross margin impact with zero-line reference
 ax_b.axhline(0, color='black', linewidth=0.6, linestyle='-', alpha=0.3, zorder=0)
 ax_b.axvline(100, color='gray', linewidth=0.7, linestyle=':', alpha=0.4, zorder=0)
 ax_b.set_xlabel('Farm SOC (% of regional mean)')
-ax_b.set_ylabel('Profit change (%)')
+ax_b.set_ylabel('Gross margin change (%)')
 ax_b.set_xlim(15, 130)
 
 add_panel_label(ax_a, 'a')
@@ -340,30 +373,35 @@ _curve_colors = {
     'north_america': PAL['na'],
 }
 
+_fig3a_legend = []
 for rn in KEY4:
     fr = fine_data[rn]
     xv = np.array(fr['soc_pct'])
     y_total = np.array(fr['total_penalty'])
     y_ctrl = np.array(fr['ctrl_penalty'])
 
-    ax_a.plot(xv, y_total, color=_curve_colors[rn], linewidth=2.0, zorder=3)
+    label_text = REGION_LABELS_INLINE.get(rn, KEY4_LABELS[rn].replace('\n',' '))
+    ax_a.plot(xv, y_total, color=_curve_colors[rn], linewidth=2.0, zorder=3,
+              label=label_text)
     ax_a.fill_between(xv, y_ctrl, y_total, color=_curve_colors[rn], alpha=0.10, zorder=1)
     ax_a.plot(xv, y_ctrl, color=_curve_colors[rn], linewidth=0.9, linestyle='--',
               alpha=0.5, zorder=2)
 
-    ax_a.text(xv[-1] + 1, y_total[-1], KEY4_LABELS[rn], fontsize=7,
-              color=_curve_colors[rn], fontweight='bold', va='center')
+# Legend replaces inline end-of-line labels (prevents overlap at convergence)
+ax_a.legend(loc='upper right', fontsize=7, framealpha=0.9,
+            title='Region', title_fontsize=7, handlelength=1.4)
 
 ax_a.axvline(100, color='gray', linewidth=0.7, linestyle=':', alpha=0.4, zorder=0)
 ax_a.text(101, 19, 'Regional\nmean', fontsize=7, color='gray', va='top')
 
-# Legend for line types
-ax_a.text(0.03, 0.97,
-          'Solid: total penalty\n(vs healthy farm, no shock)\n'
-          'Dashed: shock penalty only\nShaded: structural SOC effect',
-          transform=ax_a.transAxes, fontsize=7, va='top',
-          bbox=dict(boxstyle='round,pad=0.3', facecolor='#f8f8f8',
-                    edgecolor='#cccccc', alpha=0.85))
+# Legend for line types — placed in lower-left where curves are empty at high SOC
+ax_a.text(0.03, 0.32,
+          'Solid: total penalty (vs healthy farm, no shock)\n'
+          'Dashed: shock penalty only\n'
+          'Shaded: structural SOC effect',
+          transform=ax_a.transAxes, fontsize=6.5, va='top',
+          bbox=dict(boxstyle='round,pad=0.25', facecolor='#f8f8f8',
+                    edgecolor='#cccccc', alpha=0.9))
 
 # FIX #11: Structural SOC effect annotation
 # Add an annotation arrow pointing to the shaded area
@@ -396,14 +434,24 @@ for rn in REGION_ORDER:
     offset_x, offset_y = 0.015, 0.0
     ha = 'left'
     if rn == 'south_asia':
-        offset_y = 0.3
+        offset_y = 0.4
     elif rn == 'sub_saharan_africa':
+        # Place below-right of its dot
+        offset_y = -0.65
+        offset_x = 0.015
+        ha = 'left'
+    elif rn == 'fsu_central_asia':
+        # Place above-left of its dot
+        offset_y = 0.75
         offset_x = -0.015
         ha = 'right'
-    elif rn == 'fsu_central_asia':
-        offset_y = -0.4
     elif rn == 'north_america':
-        offset_y = -0.3
+        offset_y = -0.45
+    elif rn == 'southeast_asia':
+        # SE Asia sits between FSU and SSA in the data; push right+down
+        offset_x = 0.020
+        offset_y = 0.55
+        ha = 'left'
     ax_b.text(m['soil_buffer_ratio'] + offset_x, pen + offset_y,
               REGION_LABELS_INLINE[rn], fontsize=7, ha=ha, va='center')
 
@@ -461,21 +509,23 @@ plt.close()
 print('Generating Figure 4 (NUE sensitivity)...')
 fig, (ax_a, ax_b) = plt.subplots(1, 2, figsize=(10, 4.2))
 
-nue_labels = sorted(nue_sensitivity.keys())
+nue_labels = sorted(nue_sensitivity.keys(), reverse=True)  # high NUE first so legend matches line stacking
 nue_values = [float(l.split('_')[1]) for l in nue_labels]
-nue_colors = plt.cm.viridis(np.linspace(0.15, 0.95, len(nue_labels)))
+nue_colors = plt.cm.viridis(np.linspace(0.95, 0.15, len(nue_labels)))
 
 # Panel a: global trajectories
+# Positive yield loss convention (up = worse) matching Fig 4b
 for i, (label, nue_val) in enumerate(zip(nue_labels, nue_values)):
     gw = compute_global_weighted(nue_sensitivity[label], 'yield_fraction')
-    loss_pct = (1 - gw) * 100
+    loss_pct = (1 - gw) * 100  # positive = loss, up = worse
     ax_a.plot(gw.index, loss_pct, color=nue_colors[i], linewidth=2,
               label=f'NUE = {nue_val:.0%}')
 
+ax_a.axhline(0, color='black', linewidth=0.6, linestyle='-', alpha=0.3, zorder=0)
 ax_a.set_xlabel('Years after disruption onset')
 ax_a.set_ylabel('Global yield loss (%)')
 ax_a.legend(fontsize=7.5, loc='upper left', framealpha=0.9)
-ax_a.set_ylim(0, 14)  # FIX #10: cropped from 22 to 14
+ax_a.set_ylim(-1, 14)  # positive = loss, up = worse (matches Fig 4b convention)
 ax_a.set_xlim(0, 30)
 
 add_panel_label(ax_a, 'a')
@@ -516,19 +566,12 @@ ax_b.scatter(losses_65, y_pos, color=PAL['sea'], s=50, zorder=3, label='NUE = 0.
 ax_b.scatter(losses_95, y_pos, color=PAL['sa'], s=70, zorder=3, label='NUE = 0.95')
 
 for i in range(len(dumbbell_order)):
-    # Only show endpoint labels if there's enough spread to avoid overlap
-    spread = losses_45[i] - losses_95[i]
-    if spread > 3:
-        ax_b.text(losses_45[i] + 0.4, y_pos[i], f'{losses_45[i]:.1f}%',
-                  va='center', ha='left', fontsize=7, color=PAL['ssa'])
-        ax_b.text(losses_95[i] - 0.4, y_pos[i], f'{losses_95[i]:.1f}%',
-                  va='center', ha='right', fontsize=7, color=PAL['sa'])
-    else:
-        # Stagger vertically when too close
-        ax_b.text(losses_45[i] + 0.4, y_pos[i] - 0.15, f'{losses_45[i]:.1f}%',
-                  va='center', ha='left', fontsize=7, color=PAL['ssa'])
-        ax_b.text(losses_95[i] - 0.4, y_pos[i] + 0.15, f'{losses_95[i]:.1f}%',
-                  va='center', ha='right', fontsize=7, color=PAL['sa'])
+    # NUE=0.45 label: always to the RIGHT of the dot (outward)
+    ax_b.text(losses_45[i] + 0.4, y_pos[i], f'{losses_45[i]:.1f}%',
+              va='center', ha='left', fontsize=7, color=PAL['ssa'])
+    # NUE=0.95 label: placed ABOVE the dot to avoid y-axis label overlap at low values
+    ax_b.text(losses_95[i], y_pos[i] - 0.28, f'{losses_95[i]:.1f}%',
+              va='bottom', ha='center', fontsize=7, color=PAL['sa'])
 
 ax_b.set_yticks(y_pos)
 ax_b.set_yticklabels(db_labels, fontsize=7.5)

@@ -27,7 +27,7 @@ from typing import List, Dict, Optional
 from scipy.optimize import brentq
 import sys, os, csv
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from soil_n_model import SOMPoolParams, CropParams, get_default_regions
+from soil_n_model import SOMPoolParams, CropParams, get_default_regions, som_params_for_region
 
 
 # ============================================================================
@@ -338,7 +338,10 @@ def century_dynamic_spinup(
 
     regions = get_default_regions()
     region = regions[region_key]
-    som = SOMPoolParams()
+    # Regional SOM regime: tropical regions use Laub et al. 2024 Kenya-
+    # calibrated DayCent posterior ratios applied to k_slow and k_passive.
+    # Temperate regions retain Century/RothC defaults.
+    som = som_params_for_region(region_key)
     crop = CropParams()
     climate = REGIONAL_CLIMATES[region_key]
 

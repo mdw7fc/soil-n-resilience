@@ -21,14 +21,14 @@ model/
 
 scripts/
   run_price_shock_analysis.py      # Farm-level SOC gradient x price shock (Figs 1-2)
-  run_resilience_monthly.py        # Regional scenarios S1-S3, SC1-SC4, NUE sweeps (Figs 3-5)
+  run_resilience_monthly.py        # Regional scenarios S1-S3, SC1-SC2, NUE sweeps (Figs 3-5)
   generate_publication_figures.py  # Generates all 6 manuscript figures
   generate_sensitivity_fig_s1.py   # Supplementary Figure S1
 
 data/
   buffer_metrics.csv           # Regional soil N buffer ratios and dependencies
   scenario_trajectories.csv    # 30-year S1/S2/S3 yield and SOC trajectories
-  supply_constrained.csv       # SC1-SC4 supply-constrained scenarios
+  supply_constrained.csv       # SC1 (20% permanent) + SC2 (20% with recovery) scenarios
   degradation_scenarios.csv    # SOC degradation gradient results
   nue_sensitivity.csv          # NUE sensitivity sweep (0.45-0.95)
   duration_comparison.csv      # 1/5/10/30-year disruption duration comparison

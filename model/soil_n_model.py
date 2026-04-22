@@ -26,7 +26,15 @@ import json
 
 @dataclass
 class SOMPoolParams:
-    """Three-pool SOM structure (Century/RothC-informed)."""
+    """Three-pool SOM structure (Century/RothC-informed).
+
+    Defaults are Century/RothC temperate-biome parameters. For tropical
+    regions, use ``SOMPoolParams.tropical()`` which applies Laub et al.
+    (2024, *Biogeosciences* 21:3691–3716) Kenya-calibrated DayCent posterior
+    ratios to k_slow and k_passive. See
+    paper2-soil-resilience/tropical-reparam-2026-04-14/PARAMETERS.md
+    for full documentation of the mapping.
+    """
     # Pool fractions of total SOC (must sum to 1.0)
     f_active: float = 0.04      # 2-5% of total SOM
     f_slow: float = 0.38        # 25-50% of total SOM
@@ -45,6 +53,69 @@ class SOMPoolParams:
     # Fraction of decomposed C transferred to next pool (humification)
     h_active_to_slow: float = 0.40
     h_slow_to_passive: float = 0.03
+
+    # Tag identifying the parameterization regime (for traceability in
+    # saved outputs and figures)
+    regime: str = "temperate_century"
+
+    @classmethod
+    def tropical(cls) -> "SOMPoolParams":
+        """Tropical-biome calibration applying Laub et al. 2024 ratios.
+
+        Laub et al. 2024 Biogeosciences 21:3691–3716, Table 1.
+        Bayesian posterior (best single parameter set, all 4 Kenya sites):
+        - dec5(2): DayCent default 0.10 → Kenya posterior 0.13 (ratio 1.30)
+        - dec4:   DayCent default 0.0035 → Kenya posterior 0.0060 (ratio 1.71)
+
+        We apply the Kenya/DayCent-default ratio to our framework's
+        calibrated baselines rather than substituting Laub's absolute
+        values, because our baselines are calibrated to our model's
+        specific SOC equilibrium framework. Applying the ratios preserves
+        the framework while incorporating the empirically grounded
+        tropical adjustment.
+
+        Scope: Sub-Saharan Africa, South Asia, Southeast Asia, Latin America.
+        Not applied to: North America, Europe, East Asia, FSU/Central Asia.
+        """
+        LAUB_K_SLOW_RATIO = 1.30     # 0.13 / 0.10
+        LAUB_K_PASSIVE_RATIO = 1.71  # 0.0060 / 0.0035
+
+        base = cls()  # pull temperate defaults
+        return cls(
+            f_active=base.f_active,
+            f_slow=base.f_slow,
+            f_passive=base.f_passive,
+            k_active=base.k_active,
+            k_slow=base.k_slow * LAUB_K_SLOW_RATIO,
+            k_passive=base.k_passive * LAUB_K_PASSIVE_RATIO,
+            cn_active=base.cn_active,
+            cn_slow=base.cn_slow,
+            cn_passive=base.cn_passive,
+            h_active_to_slow=base.h_active_to_slow,
+            h_slow_to_passive=base.h_slow_to_passive,
+            regime="tropical_laub2024",
+        )
+
+
+# Region → regime mapping (used wherever SOMPoolParams is instantiated
+# per-region). Temperate default; tropical regions listed explicitly.
+TROPICAL_REGIONS = frozenset({
+    "sub_saharan_africa",
+    "south_asia",
+    "southeast_asia",
+    "latin_america",
+})
+
+
+def som_params_for_region(region_key: str) -> SOMPoolParams:
+    """Return regime-appropriate SOMPoolParams for a given region.
+
+    See tropical-reparam-2026-04-14/PARAMETERS.md for regional assignment
+    rationale and limitations.
+    """
+    if region_key in TROPICAL_REGIONS:
+        return SOMPoolParams.tropical()
+    return SOMPoolParams()
 
 
 @dataclass
