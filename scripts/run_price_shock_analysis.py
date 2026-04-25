@@ -64,7 +64,7 @@ ALL_REGIONS = [
 ]
 
 # Farm-level price shock analysis (Figs 1, 2)
-FINE_SOC_PCTS = list(range(20, 130, 10))        # 20% to 120%, step 10
+FINE_SOC_PCTS = list(range(10, 205, 5))          # 10% to 200%, step 5
 COARSE_SOC_LEVELS = [25, 50, 75, 100]           # For multi-shock sweep
 PRICE_MULTS = [0.0, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0]
 PRICE_SHOCK_FINE = 1.0                           # 100% for fine SOC gradient
@@ -78,7 +78,7 @@ FERT_COST_FRAC = {
 }
 
 # SOC gradient for Fig 3a (sustained disruption)
-GRADIENT_SOC_PCTS = list(range(10, 130, 10))     # 10% to 120%, step 10
+GRADIENT_SOC_PCTS = list(range(10, 205, 10))     # 10% to 200%, step 10
 T_MAX_GRADIENT = 10                               # Year 10 values
 
 
