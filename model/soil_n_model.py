@@ -669,21 +669,37 @@ class SoilNCarryingCapacityModel:
         return max(y_floor, y)
 
     def _water_stress(self, soc_current: float) -> float:
-        """Water stress factor (0-1) based on SOC-driven water holding capacity loss."""
+        """Water-stress factor (0-1) from a smooth, two-sided SOC-WHC response.
+
+        See coupled_monthly.MonthlyBiophysicalEngine._water_stress for the
+        empirical anchor (Minasny & McBratney 2018; Hudson 1994). Loss
+        side is linear; gain side is an exponential saturation that is
+        C¹-continuous with the loss side at SOC = baseline. The
+        non-negative total-deficit constraint is imposed by a soft-abs
+        function rather than a hard clamp.
+        """
         if not self.fb.physical_feedback:
             return 1.0
 
         soc_pct = self._soc_to_percent(soc_current)
         soc_pct_init = self._soc_to_percent(self.soc_initial)
 
-        # WHC loss relative to initial
-        delta_soc_pct = soc_pct_init - soc_pct  # positive when SOC has declined
-        whc_loss_mm = delta_soc_pct * self.region.whc_sensitivity * self.fb.physical_strength
+        delta_soc_pct = soc_pct_init - soc_pct  # +degraded, -accumulated
+        whc_sens = self.region.whc_sensitivity * self.fb.physical_strength
+        whc_gain_sat_pct = 1.0
+        if delta_soc_pct >= 0.0:
+            whc_change_mm = delta_soc_pct * whc_sens
+        else:
+            whc_gain_max_mm = whc_gain_sat_pct * whc_sens
+            whc_change_mm = -whc_gain_max_mm * (
+                1.0 - np.exp(delta_soc_pct / whc_gain_sat_pct)
+            )
 
-        # Total water deficit
-        total_deficit = self.region.baseline_water_deficit + max(0, whc_loss_mm)
-
-        # Yield multiplier (1.0 = no stress)
+        # Soft-abs floor on total water deficit (ε = 3 mm); see
+        # coupled_monthly.py for rationale.
+        raw = self.region.baseline_water_deficit + whc_change_mm
+        eps_mm = 3.0
+        total_deficit = 0.5 * (raw + np.sqrt(raw * raw + eps_mm * eps_mm))
         stress = 1.0 - self.region.water_stress_coeff * total_deficit
         return max(0.3, min(1.0, stress))  # Floor at 30% of potential
 

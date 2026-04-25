@@ -122,16 +122,58 @@ class MonthlyBiophysicalEngine:
         self.n_min_baseline = eq['n_min_eq']
 
     def _water_stress(self) -> float:
-        """Water stress factor (0-1) based on SOC-driven water holding capacity loss."""
+        """Water-stress factor (0-1) from a smooth, two-sided SOC-WHC response.
+
+        Empirical anchor: Minasny & McBratney (2018), EJSS 69:39-47 — meta-
+        analysis (~50 studies) finds an approximately linear WHC vs. SOC
+        slope at low-to-moderate SOC, with diminishing returns at high SOC
+        as porosity approaches its texture-determined ceiling. Hudson
+        (1994), J Soil Water Conserv 49:189-194, reports a log-linear
+        SOM-WHC relationship with the same qualitative saturation. We
+        therefore use:
+
+            • Loss side (SOC < baseline): linear with full whc_sensitivity
+              (matches the meta-analytic slope; identical to the previous
+              formulation, so calibration at SOC = baseline is preserved).
+            • Gain side (SOC > baseline): exponential saturation toward a
+              ceiling whc_gain_max_mm = whc_gain_sat_pct · whc_sensitivity,
+              with the same initial slope at baseline. This gives C¹
+              continuity at SOC = baseline (no kink) and a physically-
+              motivated diminishing return.
+
+        Replaces the previous one-sided ``max(0, soc_init - soc)`` clamp,
+        which produced a hard slope discontinuity at SOC = baseline (see
+        docs/water_stress_feedback_fix.md).
+        """
         if not self.fb.physical_feedback:
             return 1.0
 
         soc_current = self.C_active + self.C_slow + self.C_passive
         soc_pct = soc_current / (300 * 0.01)  # 30cm depth, bulk density ~1.0
         soc_pct_init = self.soc_initial / (300 * 0.01)
-        delta = max(0, soc_pct_init - soc_pct)
-        whc_loss_mm = delta * self.region.whc_sensitivity * self.fb.physical_strength
-        total_deficit = self.region.baseline_water_deficit + max(0, whc_loss_mm)
+        delta = soc_pct_init - soc_pct  # >0 when degraded, <0 when accumulated
+        whc_sens = self.region.whc_sensitivity * self.fb.physical_strength
+
+        # Saturation scale for the gain side: characteristic SOC% at which
+        # ~63% of the maximum WHC gain is realised.
+        whc_gain_sat_pct = 1.0
+        if delta >= 0.0:
+            whc_change_mm = delta * whc_sens
+        else:
+            whc_gain_max_mm = whc_gain_sat_pct * whc_sens
+            whc_change_mm = -whc_gain_max_mm * (
+                1.0 - np.exp(delta / whc_gain_sat_pct)
+            )
+
+        # Soft-abs floor on total water deficit. Physical interpretation:
+        # even regions with ~0 mean annual deficit experience seasonal /
+        # within-region distributional deficit, so the hard ``max(0, …)``
+        # clamp over-sharpens the transition. soft_pos(x, ε) =
+        # 0.5·(x + √(x² + ε²)) is C¹-smooth, monotonically ≥ 0. ε = 3 mm
+        # is small relative to realistic deficits (≥10 mm), perturbed <5%.
+        raw = self.region.baseline_water_deficit + whc_change_mm
+        eps_mm = 3.0
+        total_deficit = 0.5 * (raw + np.sqrt(raw * raw + eps_mm * eps_mm))
         stress = 1.0 - self.region.water_stress_coeff * total_deficit
         return max(0.3, min(1.0, stress))
 

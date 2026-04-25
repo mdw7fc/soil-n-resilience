@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.pyo
+
+# Regenerated model outputs (CSV snapshots in data/ are canonical)
+data/*.pkl
+data/*.pkl.bak
