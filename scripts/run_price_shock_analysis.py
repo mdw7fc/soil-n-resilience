@@ -101,16 +101,21 @@ def run_farm_sweep_single(region, rn, ym, soc_pct, price_shock_frac):
     C_p_eq = engine_eq.C_passive
     base_fert = region.synth_n_current
 
-    # Regional-baseline yield (SOC=100%) used to calibrate a SOC-invariant
-    # fertilizer per-unit price. Fertilizer is a regional market price and must
-    # not change with farm SOC level.
+    # Regional-baseline yield and supply elasticity (SOC=100%) used as
+    # market-level references. The output-price recovery PY_hat under a
+    # fertilizer-price shock is a market property that depends on the
+    # *aggregate regional* supply response (gamma evaluated at the
+    # regional-mean SOC), not on any individual farm's SOC. A single
+    # high-SOC farm does not depress regional supply contraction and so
+    # gets the same price cushion as everyone else in its region.
     eng_regional = MonthlyBiophysicalEngine(region, region_key=rn, yield_max_override=ym)
     state_regional = eng_regional.step(base_fert)
     y_regional_baseline = state_regional['yield_tha']
+    gamma_regional = state_regional['gamma']
 
     scale = soc_pct / 100.0
 
-    # Baseline yield at this SOC (no shock)
+    # Baseline yield at this farm's SOC (no shock)
     eng_base = MonthlyBiophysicalEngine(region, region_key=rn, yield_max_override=ym)
     eng_base.C_active = C_a_eq * scale
     eng_base.C_slow = C_s_eq * scale
@@ -118,7 +123,6 @@ def run_farm_sweep_single(region, rn, ym, soc_pct, price_shock_frac):
     state_base = eng_base.step(base_fert)
     y_base_soc = state_base['yield_tha']
     n_min_base = state_base['n_mineralized']
-    gamma = state_base['gamma']
 
     if price_shock_frac <= 0:
         return {
@@ -132,7 +136,11 @@ def run_farm_sweep_single(region, rn, ym, soc_pct, price_shock_frac):
             'y_shock': y_base_soc,
         }
 
-    # Economic equilibrium under shock
+    # Economic equilibrium under shock — PY_hat and F_hat use the regional
+    # supply elasticity (gamma_regional). All farms in the region face the
+    # same market-clearing output-price recovery and the same shocked
+    # fertilizer demand response; only their own production response
+    # (y_shock at farm SOC, given that F_shocked) varies with SOC.
     eng_shock = MonthlyBiophysicalEngine(region, region_key=rn, yield_max_override=ym)
     eng_shock.C_active = C_a_eq * scale
     eng_shock.C_slow = C_s_eq * scale
@@ -143,8 +151,9 @@ def run_farm_sweep_single(region, rn, ym, soc_pct, price_shock_frac):
     eta = rp.get('eta', -0.30)
     PF_hat = np.log(1 + price_shock_frac)
 
-    denom = eta - gamma * eps_F_PY
-    PY_hat = gamma * eps_F_PF * PF_hat / denom if abs(denom) > 1e-10 else 0.0
+    denom = eta - gamma_regional * eps_F_PY
+    PY_hat = (gamma_regional * eps_F_PF * PF_hat / denom
+              if abs(denom) > 1e-10 else 0.0)
     F_hat = eps_F_PF * PF_hat + eps_F_PY * PY_hat
     F_shocked = max(0.0, base_fert * np.exp(F_hat))
 
