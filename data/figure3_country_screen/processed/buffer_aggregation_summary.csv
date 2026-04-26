@@ -1,0 +1,3 @@
+rule,low_buffer_high_exposure,high_buffer_high_exposure,low_buffer_low_exposure,high_buffer_low_exposure,intermediate,data_missing
+CWM (Phase 2 LOCKED),17.4,3.9,5.2,11.9,60.5,1.0
+median all-land (Phase 1),10.0,3.4,5.2,10.0,70.3,1.0

@@ -1,0 +1,19 @@
+region,scenario,yp_50,yp_100,gap_50_100,gap_100_150
+sub_saharan_africa,f_active=0.02,4.195,3.471,0.724,0.543
+sub_saharan_africa,baseline,4.195,3.471,0.724,0.543
+sub_saharan_africa,f_active=0.08,4.195,3.471,0.724,0.543
+sub_saharan_africa,k_slow x0.75,3.944,3.203,0.740,0.542
+sub_saharan_africa,baseline,4.195,3.471,0.724,0.543
+sub_saharan_africa,k_slow x1.25,4.349,3.638,0.711,0.540
+sub_saharan_africa,cn_bulk x0.8,3.994,3.183,0.811,0.578
+sub_saharan_africa,baseline,4.195,3.471,0.724,0.543
+sub_saharan_africa,cn_bulk x1.2,4.338,3.687,0.651,0.507
+north_america,f_active=0.02,2.363,1.675,0.688,0.472
+north_america,baseline,2.364,1.675,0.688,0.472
+north_america,f_active=0.08,2.364,1.676,0.688,0.472
+north_america,k_slow x0.75,2.219,1.514,0.705,0.465
+north_america,baseline,2.364,1.675,0.688,0.472
+north_america,k_slow x1.25,2.455,1.781,0.674,0.473
+north_america,cn_bulk x0.8,2.179,1.427,0.752,0.476
+north_america,baseline,2.364,1.675,0.688,0.472
+north_america,cn_bulk x1.2,2.495,1.866,0.628,0.455

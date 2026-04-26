@@ -1,0 +1,34 @@
+panel_c_class,region,cropland_Mha,n_countries
+data_missing,East & Southeast Asia,0.20596000000000003,5
+data_missing,Europe,2.0705471333333336,14
+data_missing,Latin America & Caribbean,0.32024366666666665,22
+data_missing,North Africa & West Asia,8.882303466666668,8
+data_missing,Northern America,0.0023,3
+data_missing,Oceania,0.27992666666666666,20
+data_missing,South Asia,0.0054,1
+data_missing,Sub-Saharan Africa,3.8391896666666665,10
+high_buffer_high_exposure,Europe,37.8270165,13
+high_buffer_high_exposure,Latin America & Caribbean,20.133149066666668,10
+high_buffer_high_exposure,North Africa & West Asia,0.5045666666666667,1
+high_buffer_high_exposure,Oceania,0.6033333333333334,1
+high_buffer_high_exposure,South Asia,2.3717242666666665,1
+high_buffer_low_exposure,Central Asia,29.69183333333333,1
+high_buffer_low_exposure,Europe,157.21066666666667,2
+intermediate,Central Asia,2.4046333333333334,2
+intermediate,East & Southeast Asia,103.05518103333333,12
+intermediate,Europe,90.86807963333334,18
+intermediate,Latin America & Caribbean,80.7727135,10
+intermediate,North Africa & West Asia,47.08193523333333,11
+intermediate,Northern America,196.84773,2
+intermediate,Oceania,1.4996333333333334,3
+intermediate,South Asia,219.03887956666665,6
+intermediate,Sub-Saharan Africa,206.74983043333333,37
+low_buffer_high_exposure,Central Asia,6.084906066666667,2
+low_buffer_high_exposure,East & Southeast Asia,150.2697077333333,2
+low_buffer_high_exposure,Latin America & Caribbean,67.8825203,2
+low_buffer_high_exposure,North Africa & West Asia,0.12667123333333333,1
+low_buffer_high_exposure,Oceania,31.074,1
+low_buffer_high_exposure,Sub-Saharan Africa,16.708866666666665,4
+low_buffer_low_exposure,Latin America & Caribbean,5.410978433333334,1
+low_buffer_low_exposure,North Africa & West Asia,33.5168245,4
+low_buffer_low_exposure,Sub-Saharan Africa,43.305171733333324,1

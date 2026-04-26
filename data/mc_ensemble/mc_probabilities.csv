@@ -1,0 +1,23 @@
+statement,value,n
+P(low-SOC yield loss > high-SOC yield loss | north_america),1.0,1000
+P(low-SOC yield loss > high-SOC yield loss | europe),1.0,1000
+P(low-SOC yield loss > high-SOC yield loss | east_asia),1.0,1000
+P(low-SOC yield loss > high-SOC yield loss | south_asia),1.0,1000
+P(low-SOC yield loss > high-SOC yield loss | southeast_asia),1.0,1000
+P(low-SOC yield loss > high-SOC yield loss | latin_america),1.0,1000
+P(low-SOC yield loss > high-SOC yield loss | sub_saharan_africa),1.0,1000
+P(low-SOC yield loss > high-SOC yield loss | fsu_central_asia),1.0,1000
+P(high-SOC gross margin > low-SOC gross margin | north_america),1.0,1000
+P(high-SOC gross margin > low-SOC gross margin | europe),1.0,1000
+P(high-SOC gross margin > low-SOC gross margin | east_asia),1.0,1000
+P(high-SOC gross margin > low-SOC gross margin | south_asia),1.0,1000
+P(high-SOC gross margin > low-SOC gross margin | southeast_asia),1.0,1000
+P(high-SOC gross margin > low-SOC gross margin | latin_america),1.0,1000
+P(high-SOC gross margin > low-SOC gross margin | sub_saharan_africa),1.0,1000
+P(high-SOC gross margin > low-SOC gross margin | fsu_central_asia),1.0,1000
+"P(SSA = highest year-1 yield loss across all 8 regions, SOC=100%)",0.0,1000
+"P(SSA = worst year-1 gross margin across all 8 regions, SOC=100%)",0.892,1000
+P(soil-N buffer ratio > 1 ppt in EVERY region simultaneously),0.0,1000
+"Median across-region buffer (ppt yield, low - high SOC), median across draws",0.9107425194906786,1000
+Global area-weighted year-1 yield loss at SOC=100% (median % loss),2.3170735717680313,1000
+"Global area-weighted year-1 yield loss at SOC=100% (5%-95%, ppt)",3.194949615885044,1000

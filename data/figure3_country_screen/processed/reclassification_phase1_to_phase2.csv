@@ -1,0 +1,232 @@
+iso3,fao_name,region,cropland_Mha,buffer_proxy_t_ha,n_stock_median_allland_t_ha,n_intensity_raw,import_reliance,class_phase1,class_phase2,buffer_class_phase1,buffer_class_phase2,changed
+DZA,Algeria,North Africa & West Asia,8.495832866666667,5.848420465503982,3.6759,8.262874411692954,,data_missing,data_missing,low,low,False
+SSD,South Sudan,Sub-Saharan Africa,2.4777,,,0.0384765441067656,1.0,data_missing,data_missing,data_missing,data_missing,False
+SOM,Somalia,Sub-Saharan Africa,1.1275333333333333,4.231972701963488,4.2760496,,,data_missing,data_missing,low,low,False
+NLD,Netherlands (Kingdom of the),Europe,1.0499466666666668,13.500428611517815,12.285299,199.9184085540853,,data_missing,data_missing,high,high,False
+NOR,Norway,Europe,0.806364,13.815620387130622,15.778801,130.21662673432843,,data_missing,data_missing,high,high,False
+TLS,Timor-Leste,East & Southeast Asia,0.1916333333333333,7.008039105443645,6.57535,,,data_missing,data_missing,moderate,moderate,False
+PSE,Palestine,North Africa & West Asia,0.1436606,,,55.02552543982136,1.0,data_missing,data_missing,data_missing,data_missing,False
+ISL,Iceland,Europe,0.121,,12.501801,92.37465564738292,1.0,high_buffer_high_exposure,data_missing,high,data_missing,True
+OMN,Oman,North Africa & West Asia,0.1093933333333333,3.3830375803702477,2.954325,87.40325431165824,,data_missing,data_missing,low,low,False
+SLB,Solomon Islands,Oceania,0.0961333333333333,11.291149988143538,11.237551,6.16504854368932,1.0,data_missing,data_missing,data_missing,data_missing,False
+ARE,United Arab Emirates,North Africa & West Asia,0.0873166666666666,2.77101540704464,2.284,120.96965069669784,0.0174782790428792,data_missing,data_missing,data_missing,data_missing,False
+MUS,Mauritius,Sub-Saharan Africa,0.079,7.470469600410743,7.183875,87.96624472573839,1.0,data_missing,data_missing,data_missing,data_missing,False
+SUR,Suriname,Latin America & Caribbean,0.0666666666666666,13.059587959487628,6.3398,134.945,1.0,data_missing,data_missing,data_missing,data_missing,False
+PRI,Puerto Rico,Latin America & Caribbean,0.0662,10.95742722706048,10.607475,27.940584088620344,,data_missing,data_missing,data_missing,data_missing,False
+LUX,Luxembourg,Europe,0.0636253333333333,10.255040965254228,10.3386,192.50717743456485,1.0,data_missing,data_missing,data_missing,data_missing,False
+CPV,Cabo Verde,Sub-Saharan Africa,0.054,8.617806730659595,8.436,3.246913580246914,1.0,data_missing,data_missing,data_missing,data_missing,False
+TTO,Trinidad and Tobago,Latin America & Caribbean,0.047,11.913185859226346,12.547649,28.475177304964536,0.0,data_missing,data_missing,data_missing,data_missing,False
+WSM,Samoa,Oceania,0.04445,,11.8356,0.4349456317960254,1.0,data_missing,data_missing,data_missing,data_missing,False
+STP,Sao Tome and Principe,Sub-Saharan Africa,0.041,13.61327733884748,12.24525,2.772357723577236,1.0,data_missing,data_missing,data_missing,data_missing,False
+REU,RÃ©union,Sub-Saharan Africa,0.034689,,,13.299124602419594,,data_missing,data_missing,data_missing,data_missing,False
+KIR,Kiribati,Oceania,0.034,,16.671349,0.0,1.0,data_missing,data_missing,data_missing,data_missing,False
+TON,Tonga,Oceania,0.031,,15.761749,2.5053763440860215,1.0,data_missing,data_missing,data_missing,data_missing,False
+PYF,French Polynesia,Oceania,0.0278333333333333,,12.197299,11.10179640718563,1.0,data_missing,data_missing,data_missing,data_missing,False
+GLP,Guadeloupe,Latin America & Caribbean,0.024188,,,0.0,,data_missing,data_missing,data_missing,data_missing,False
+QAT,Qatar,North Africa & West Asia,0.024,2.217695176637695,1.97385,58.84722222222222,0.0,data_missing,data_missing,data_missing,data_missing,False
+DMA,Dominica,Latin America & Caribbean,0.023,13.29893000858359,13.566774,5.913043478260869,1.0,data_missing,data_missing,data_missing,data_missing,False
+GUF,French Guiana,Latin America & Caribbean,0.018008,,,55.271731082481864,,data_missing,data_missing,data_missing,data_missing,False
+MYT,Mayotte,Sub-Saharan Africa,0.016584,,,,,data_missing,data_missing,data_missing,data_missing,False
+MTQ,Martinique,Latin America & Caribbean,0.015711,,,27.9209895402372,,data_missing,data_missing,data_missing,data_missing,False
+MNE,Montenegro,Europe,0.01475,13.353764736371843,13.159025,93.98870056497177,1.0,data_missing,data_missing,data_missing,data_missing,False
+KWT,Kuwait,North Africa & West Asia,0.014,2.6307625359864253,2.1893501,179.5,0.0,data_missing,data_missing,data_missing,data_missing,False
+BHS,Bahamas,Latin America & Caribbean,0.011,26.094263479688536,24.419674,93.15151515151516,1.0,data_missing,data_missing,data_missing,data_missing,False
+BRN,Brunei Darussalam,East & Southeast Asia,0.01,9.823562341635755,9.337275,24.3,1.0,data_missing,data_missing,data_missing,data_missing,False
+MLT,Malta,Europe,0.0099566666666666,6.985601543277972,6.9817996,58.85503850016739,1.0,data_missing,data_missing,data_missing,data_missing,False
+NCL,New Caledonia,Oceania,0.0097,7.311163993713358,7.12945,57.93814432989691,1.0,data_missing,data_missing,data_missing,data_missing,False
+LCA,Saint Lucia,Latin America & Caribbean,0.00957,14.91061824304842,14.890399,27.063740856844305,1.0,data_missing,data_missing,data_missing,data_missing,False
+BRB,Barbados,Latin America & Caribbean,0.008,13.93068091277448,13.71895,23.041666666666668,1.0,data_missing,data_missing,data_missing,data_missing,False
+GUM,Guam,Oceania,0.008,10.321130196835094,10.114201,,,data_missing,data_missing,data_missing,data_missing,False
+GRD,Grenada,Latin America & Caribbean,0.007,12.03415886924734,12.26195,27.952380952380953,,data_missing,data_missing,data_missing,data_missing,False
+MHL,Marshall Islands,Oceania,0.007,,,,1.0,data_missing,data_missing,data_missing,data_missing,False
+WLF,Wallis and Futuna Islands,Oceania,0.006,,,,,data_missing,data_missing,data_missing,data_missing,False
+MDV,Maldives,South Asia,0.0054,,,54.50617283950617,1.0,data_missing,data_missing,data_missing,data_missing,False
+KNA,Saint Kitts and Nevis,Latin America & Caribbean,0.0051,19.05251797365611,18.894798,2.549019607843137,1.0,data_missing,data_missing,data_missing,data_missing,False
+ATG,Antigua and Barbuda,Latin America & Caribbean,0.005,16.4160414604766,18.07275,2.533333333333333,1.0,data_missing,data_missing,data_missing,data_missing,False
+VCT,Saint Vincent and the Grenadines,Latin America & Caribbean,0.005,11.616147022661483,10.821699,28.0,1.0,data_missing,data_missing,data_missing,data_missing,False
+BHR,Bahrain,North Africa & West Asia,0.0041,3.6423440840326538,3.2156496,34.959349593495936,0.0,data_missing,data_missing,data_missing,data_missing,False
+ESH,Western Sahara,North Africa & West Asia,0.004,,,,,data_missing,data_missing,data_missing,data_missing,False
+SHN,Ascension; Saint Helena and Tristan da Cunha,Sub-Saharan Africa,0.004,,9.701849,,,data_missing,data_missing,data_missing,data_missing,False
+NIU,Niue,Oceania,0.0038,,15.229725,,,data_missing,data_missing,data_missing,data_missing,False
+HKG,China; Hong Kong SAR,East & Southeast Asia,0.0036666666666666,7.0516865759798595,6.5629997,200.0909090909091,1.0,data_missing,data_missing,data_missing,data_missing,False
+DJI,Djibouti,Sub-Saharan Africa,0.0031333333333333,7.286796550023426,6.2493997,14.148936170212766,1.0,data_missing,data_missing,data_missing,data_missing,False
+ASM,American Samoa,Oceania,0.00284,,11.149876,,,data_missing,data_missing,data_missing,data_missing,False
+SMR,San Marino,Europe,0.0023,10.011449541539168,10.01145,,,data_missing,data_missing,data_missing,data_missing,False
+PLW,Palau,Oceania,0.0023,,9.626301,3.4782608695652173,1.0,data_missing,data_missing,data_missing,data_missing,False
+ABW,Aruba,Latin America & Caribbean,0.002,,7.4701996,0.8333333333333334,1.0,data_missing,data_missing,data_missing,data_missing,False
+MSR,Montserrat,Latin America & Caribbean,0.002,15.328199397802118,15.328199,,,data_missing,data_missing,data_missing,data_missing,False
+VGB,British Virgin Islands,Latin America & Caribbean,0.002,,,,,data_missing,data_missing,data_missing,data_missing,False
+SPM,Saint Pierre and Miquelon,Northern America,0.002,,10.4535,,,data_missing,data_missing,data_missing,data_missing,False
+FSM,Micronesia (Federated States of),Oceania,0.002,,11.7387,1.0,1.0,data_missing,data_missing,data_missing,data_missing,False
+COK,Cook Islands,Oceania,0.0019,,,5.964912280701754,1.0,data_missing,data_missing,data_missing,data_missing,False
+TUV,Tuvalu,Oceania,0.0018,,,3.888888888888889,1.0,data_missing,data_missing,data_missing,data_missing,False
+LIE,Liechtenstein,Europe,0.0017333333333333,14.777224696193384,16.525051,,,data_missing,data_missing,data_missing,data_missing,False
+SYC,Seychelles,Sub-Saharan Africa,0.00155,15.11981837270795,15.474299,33.763440860215056,1.0,data_missing,data_missing,data_missing,data_missing,False
+VIR,United States Virgin Islands,Latin America & Caribbean,0.0011,12.163799650369368,12.163799,,,data_missing,data_missing,data_missing,data_missing,False
+TCA,Turks and Caicos Islands,Latin America & Caribbean,0.001,,23.458199,,,data_missing,data_missing,data_missing,data_missing,False
+AND,Andorra,Europe,0.0008038,16.401885341026635,15.791999,,,data_missing,data_missing,data_missing,data_missing,False
+CYM,Cayman Islands,Latin America & Caribbean,0.0007,15.22180011247987,15.2218,,,data_missing,data_missing,data_missing,data_missing,False
+SGP,Singapore,East & Southeast Asia,0.00066,6.820054126991158,6.8234005,66.66666666666667,,data_missing,data_missing,data_missing,data_missing,False
+TKL,Tokelau,Oceania,0.0006,,,,,data_missing,data_missing,data_missing,data_missing,False
+NRU,Nauru,Oceania,0.0004,,,0.0,,data_missing,data_missing,data_missing,data_missing,False
+BMU,Bermuda,Northern America,0.0003,,,196.66666666666663,1.0,data_missing,data_missing,data_missing,data_missing,False
+MNP,Northern Mariana Islands,Oceania,0.00017,10.873237938031757,12.303551,,,data_missing,data_missing,data_missing,data_missing,False
+FRO,Faroe Islands,Europe,6.733333333333333e-05,34.981746983205404,34.007027,4019.801980198021,1.0,data_missing,data_missing,data_missing,data_missing,False
+MAC,China; Macao SAR,East & Southeast Asia,,,,,,data_missing,data_missing,data_missing,data_missing,False
+GIB,Gibraltar,Europe,,,,,,data_missing,data_missing,data_missing,data_missing,False
+MCO,Monaco,Europe,,12.94499928599171,12.945,,,data_missing,data_missing,data_missing,data_missing,False
+SJM,Svalbard and Jan Mayen Islands,Europe,,,,,,data_missing,data_missing,data_missing,data_missing,False
+VAT,Holy See,Europe,,,,,,data_missing,data_missing,data_missing,data_missing,False
+AIA,Anguilla,Latin America & Caribbean,,,25.951897,,,data_missing,data_missing,data_missing,data_missing,False
+FLK,Falkland Islands (Malvinas),Latin America & Caribbean,,,10.865749,,,data_missing,data_missing,data_missing,data_missing,False
+GRL,Greenland,Northern America,,,16.893675,,1.0,data_missing,data_missing,data_missing,data_missing,False
+NFK,Norfolk Island,Oceania,,,,,,data_missing,data_missing,data_missing,data_missing,False
+PCN,Pitcairn,Oceania,,,,,,data_missing,data_missing,data_missing,data_missing,False
+FRA,France,Europe,18.7089597,10.286872989992755,10.30945,111.97319538830372,0.8428242727958287,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+GBR,United Kingdom of Great Britain and Northern Ireland,Europe,6.079697133333333,14.236197924284008,15.14045,166.5653147612386,0.7539652946016934,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+PER,Peru,Latin America & Caribbean,5.924622833333333,9.424950224196868,7.3006496,49.950971562549825,1.0,intermediate,high_buffer_high_exposure,moderate,high,True
+COL,Colombia,Latin America & Caribbean,4.590222233333334,9.816283152792186,7.2978,107.5041631789694,0.8142399506329496,intermediate,high_buffer_high_exposure,moderate,high,True
+SWE,Sweden,Europe,2.5437466666666664,13.565081136264965,12.55925,76.26833909037065,1.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+ECU,Ecuador,Latin America & Caribbean,2.4213333333333336,9.724819999655482,9.05895,87.60311123348018,1.0,intermediate,high_buffer_high_exposure,moderate,high,True
+DNK,Denmark,Europe,2.41222,10.66774790242579,10.288025,94.39465167632582,1.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+LKA,Sri Lanka,South Asia,2.3717242666666665,10.826665160186405,10.9145,63.499371371556855,1.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+MDA,Republic of Moldova,Europe,1.9892333333333332,10.590542523785912,10.415199,27.84104428841933,1.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+CHL,Chile,Latin America & Caribbean,1.9441547,10.624709915611843,10.702825,126.22795226463543,0.8175187530092974,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+NIC,Nicaragua,Latin America & Caribbean,1.799,9.816266373294042,11.107949,31.394107837687603,1.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+HND,Honduras,Latin America & Caribbean,1.594,9.297619307635276,9.839951,70.45294855708909,1.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+DOM,Dominican Republic,Latin America & Caribbean,1.4214826333333337,10.47813222900407,10.2672,86.82812140816634,1.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+AUT,Austria,Europe,1.3930351333333335,11.062783263658332,13.516799,78.25741844175549,1.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+LVA,Latvia,Europe,1.3246666666666669,16.91785667772727,15.687975,60.29290387518872,1.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+BEL,Belgium,Europe,0.8811496,10.591898528847349,10.8647995,172.3513616000431,0.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+EST,Estonia,Europe,0.6953333333333334,13.491980169713443,13.968474,58.3849472674976,0.996070469169428,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+ALB,Albania,Europe,0.693185,10.429773957655645,10.495049,46.008881707865385,1.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+NZL,New Zealand,Oceania,0.6033333333333334,9.419118650276388,10.004299,762.4309392265193,0.814777333660049,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+ARM,Armenia,North Africa & West Asia,0.5045666666666667,9.442043518706388,10.1804,53.23511924423598,1.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+IRL,Ireland,Europe,0.447,15.026442152087595,17.09375,861.579418344519,1.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+CHE,Switzerland,Europe,0.4240699333333333,14.734328226155217,15.176325,98.90428449772986,1.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+SVN,Slovenia,Europe,0.23472,12.502505319079768,12.65455,118.342422176778,1.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+JAM,Jamaica,Latin America & Caribbean,0.188,11.064590299167268,10.784425,26.347517730496453,1.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+BLZ,Belize,Latin America & Caribbean,0.1253333333333333,10.256321327079592,10.6648245,131.16489361702128,1.0,high_buffer_high_exposure,high_buffer_high_exposure,high,high,False
+GUY,Guyana,Latin America & Caribbean,0.125,11.448688192072694,6.14835,156.336,1.0,intermediate,high_buffer_high_exposure,moderate,high,True
+RUS,Russian Federation,Europe,123.442,12.454127031988364,13.0047,14.00357792863585,0.0,high_buffer_low_exposure,high_buffer_low_exposure,high,high,False
+UKR,Ukraine,Europe,33.76866666666666,13.478282071599628,13.13805,45.293881902355245,0.1907650786249022,high_buffer_low_exposure,high_buffer_low_exposure,high,high,False
+KAZ,Kazakhstan,Central Asia,29.69183333333333,11.539891742025665,8.977875,2.3569668427345345,0.2711489341663035,intermediate,high_buffer_low_exposure,moderate,high,True
+IND,India,South Asia,168.4983333333333,5.216460043479594,4.9881997,112.55521815250398,0.2926905652343007,intermediate,intermediate,low,low,False
+USA,United States of America,Northern America,158.15573,9.364585678135484,7.6849995,74.98400258192774,0.1368989519633473,intermediate,intermediate,moderate,high,False
+IDN,Indonesia,East & Southeast Asia,42.9017896,7.993584352896216,8.022551,75.41531554198848,0.0,intermediate,intermediate,moderate,moderate,False
+ARG,Argentina,Latin America & Caribbean,42.055,6.439895032800729,5.12415,30.43157769587445,0.6397735089460315,intermediate,intermediate,low,low,False
+CAN,Canada,Northern America,38.692,11.135856483285371,12.0751,72.21130983148971,0.0,intermediate,intermediate,high,high,False
+PAK,Pakistan,South Asia,31.633333333333333,4.082065441260263,3.2573998,110.4959114857745,0.0900964472328591,intermediate,intermediate,low,low,False
+MEX,Mexico,Latin America & Caribbean,23.5458262,7.568356195120401,6.4248247,57.38418301923931,0.6678547697291973,intermediate,intermediate,moderate,moderate,False
+TUR,TÃ¼rkiye,North Africa & West Asia,23.141333333333332,7.5544271125826175,7.7566996,75.80695436736576,0.4985820669014879,intermediate,intermediate,moderate,moderate,False
+SDN,Sudan,Sub-Saharan Africa,21.211,3.712341033941667,3.3381,7.7104804111074445,1.0,intermediate,intermediate,low,low,False
+ETH,Ethiopia,Sub-Saharan Africa,18.1897,7.069246338951768,6.12955,19.41186495654134,1.0,intermediate,intermediate,moderate,moderate,False
+NER,Niger,Sub-Saharan Africa,17.8139,2.039975638318538,2.5310998,0.5538745960551404,1.0,intermediate,intermediate,low,low,False
+ESP,Spain,Europe,16.725521866666668,6.661439100963047,7.0786495,61.86242447809142,0.4135393690071637,intermediate,intermediate,moderate,moderate,False
+COD,Democratic Republic of the Congo,Sub-Saharan Africa,15.5764,5.34822957028757,5.23075,1.5145776088612688,1.0,intermediate,intermediate,low,low,False
+TZA,United Republic of Tanzania,Sub-Saharan Africa,15.309433333333336,4.420992528917475,3.9537497,8.514815484135054,1.0,intermediate,intermediate,low,low,False
+CIV,CÃ´te d'Ivoire,Sub-Saharan Africa,12.631492333333334,6.062492704585846,5.7415,3.597173276728426,1.0,intermediate,intermediate,low,low,False
+MMR,Myanmar,East & Southeast Asia,12.530233333333332,7.798250768866862,7.379275,29.187751225702097,0.842411587377391,intermediate,intermediate,moderate,moderate,False
+DEU,Germany,Europe,11.901666666666666,11.617316676488048,11.2046995,111.46464080660972,0.0,intermediate,intermediate,high,high,False
+VNM,Viet Nam,East & Southeast Asia,11.654166666666669,8.393479991429416,7.80575,134.95834107972829,0.2421586708356221,intermediate,intermediate,moderate,moderate,False
+POL,Poland,Europe,11.429,11.319778602422064,10.783901,85.73511826639835,0.0,intermediate,intermediate,high,high,False
+PHL,Philippines,East & Southeast Asia,11.136,8.73319625192385,8.701399,63.1494851532567,0.9175412867915848,intermediate,intermediate,moderate,moderate,False
+ITA,Italy,Europe,9.291213333333332,9.167369767354222,9.2203,63.423399312038185,0.4554888176462134,intermediate,intermediate,moderate,moderate,False
+ROU,Romania,Europe,9.13,9.108759646932004,9.626824,50.87601314348302,0.2651553024778256,intermediate,intermediate,high,moderate,False
+UGA,Uganda,Sub-Saharan Africa,9.1,7.458064049564926,7.363625,1.131391941391941,1.0,intermediate,intermediate,moderate,moderate,False
+BGD,Bangladesh,South Asia,8.7431,7.291343115997189,5.9852495,153.27134159127388,0.5309811132022929,low_buffer_high_exposure,intermediate,low,moderate,True
+MYS,Malaysia,East & Southeast Asia,8.285309999999999,8.566397905075181,8.676225,40.16220676514619,0.0,intermediate,intermediate,moderate,moderate,False
+MLI,Mali,Sub-Saharan Africa,8.167579866666667,2.6994161573387796,2.35095,14.810956077744056,1.0,intermediate,intermediate,low,low,False
+BFA,Burkina Faso,Sub-Saharan Africa,8.138963866666668,2.6719333075903102,2.7505,5.617955071725837,1.0,intermediate,intermediate,low,low,False
+AFG,Afghanistan,South Asia,8.023666666666667,6.847862926930708,6.063425,9.282705330065223,0.9057417522344108,intermediate,intermediate,moderate,moderate,False
+CMR,Cameroon,Sub-Saharan Africa,7.812957133333333,7.547573775161924,6.7725,5.680179635270323,1.0,intermediate,intermediate,moderate,moderate,False
+KEN,Kenya,Sub-Saharan Africa,7.348507733333334,5.545021389751564,4.3429,20.55859576968443,1.0,intermediate,intermediate,low,low,False
+GHA,Ghana,Sub-Saharan Africa,7.3254348,16.44605149959735,6.661975,10.125542309106349,1.0,intermediate,intermediate,moderate,high,False
+GIN,Guinea,Sub-Saharan Africa,6.089837533333334,7.000491248689842,6.4994497,1.1584873917216596,1.0,intermediate,intermediate,moderate,moderate,False
+MOZ,Mozambique,Sub-Saharan Africa,6.044566666666667,4.272785403577114,4.084925,6.6522551933692515,1.0,intermediate,intermediate,low,low,False
+BLR,Belarus,Europe,5.801,16.631191045165043,15.98255,73.20444750905017,0.0,intermediate,intermediate,high,high,False
+SYR,Syrian Arab Republic,North Africa & West Asia,5.726364333333333,5.47861250605344,3.46955,4.030713379338478,1.0,intermediate,intermediate,low,low,False
+AGO,Angola,Sub-Saharan Africa,5.658666666666667,3.1968293764437172,2.91055,3.673067860508954,1.0,intermediate,intermediate,low,low,False
+IRQ,Iraq,North Africa & West Asia,5.427733333333333,4.120521461946601,2.6913,33.6263756509777,0.5794424723596091,intermediate,intermediate,low,low,False
+TCD,Chad,Sub-Saharan Africa,5.338,4.511480309089065,3.6257,2.7699512926189582,1.0,intermediate,intermediate,low,low,False
+KHM,Cambodia,East & Southeast Asia,4.4549481,7.595520955112737,6.45065,26.194319375647343,1.0,intermediate,intermediate,moderate,moderate,False
+JPN,Japan,East & Southeast Asia,4.396333333333333,12.14428649779087,12.526325,82.01531579346427,0.2715454277404311,intermediate,intermediate,high,high,False
+HUN,Hungary,Europe,4.389711899999999,9.888769078953608,9.793325,97.6016975814138,0.2820356113131603,intermediate,intermediate,high,high,False
+MWI,Malawi,Sub-Saharan Africa,4.078333333333333,4.445323555915984,4.1345005,24.491050265631387,1.0,intermediate,intermediate,low,low,False
+ZWE,Zimbabwe,Sub-Saharan Africa,4.077213166666667,3.651288876396944,3.357375,14.71446243980621,0.9102385586169648,intermediate,intermediate,low,low,False
+BEN,Benin,Sub-Saharan Africa,3.958355533333333,4.455186503936873,3.8249,15.134062490226372,1.0,intermediate,intermediate,low,low,False
+EGY,Egypt,North Africa & West Asia,3.9186666666666663,6.7033099792695685,4.0874248,334.7652262674379,0.0,low_buffer_high_exposure,intermediate,low,moderate,True
+SEN,Senegal,Sub-Saharan Africa,3.794333333333334,3.045167293576875,2.620275,10.057454098216638,0.4183854988254253,intermediate,intermediate,low,low,False
+BGR,Bulgaria,Europe,3.6346666666666665,8.604988121400005,8.64575,96.85895084372709,0.0620582206226291,intermediate,intermediate,moderate,moderate,False
+SAU,Saudi Arabia,North Africa & West Asia,3.6199492333333327,3.755846804779376,2.9823,57.2191265628891,0.0,intermediate,intermediate,low,low,False
+MDG,Madagascar,Sub-Saharan Africa,3.6,6.582870054511001,6.1711497,6.66537037037037,1.0,intermediate,intermediate,moderate,moderate,False
+CUB,Cuba,Latin America & Caribbean,3.5616,11.255514853918676,10.595099,11.23624213836478,0.7505688139624704,intermediate,intermediate,high,high,False
+VEN,Venezuela (Bolivarian Republic of),Latin America & Caribbean,3.3,7.04038510071847,6.45135,37.070202020202025,0.0,intermediate,intermediate,moderate,moderate,False
+GRC,Greece,Europe,3.084713633333333,7.620635611788597,7.683,61.824107303142526,0.5751854735932813,intermediate,intermediate,moderate,moderate,False
+TGO,Togo,Sub-Saharan Africa,2.82,7.793302377416523,5.007675,3.275413711583924,1.0,intermediate,intermediate,low,moderate,False
+SRB,Serbia,Europe,2.794666666666666,9.752719518818058,9.6748,58.601145038167935,0.6303715785544954,intermediate,intermediate,high,high,False
+GTM,Guatemala,Latin America & Caribbean,2.7206666666666663,9.194351299271034,9.9325,69.9509924038226,1.0,high_buffer_high_exposure,intermediate,high,moderate,True
+PRK,Democratic People's Republic of Korea,East & Southeast Asia,2.5465,8.945235987203903,10.5768,36.33300608678579,0.6568870590229156,intermediate,intermediate,high,moderate,False
+CZE,Czechia,Europe,2.5330276666666665,10.096843520482013,10.23305,127.54802125466982,0.6498098561997564,intermediate,intermediate,high,high,False
+CAF,Central African Republic,Sub-Saharan Africa,2.4277666666666664,6.215972922916432,5.89555,0.0888333585050732,1.0,intermediate,intermediate,low,low,False
+AZE,Azerbaijan,North Africa & West Asia,2.3554,8.60710045089719,8.9954,39.08621324049702,0.6381549162373562,intermediate,intermediate,moderate,moderate,False
+FIN,Finland,Europe,2.2486666666666664,12.899026923558797,12.41085,62.9260302401423,0.136800961093008,intermediate,intermediate,high,high,False
+LTU,Lithuania,Europe,2.2276,15.503117487457724,14.4615,78.38256419464895,0.0,intermediate,intermediate,high,high,False
+URY,Uruguay,Latin America & Caribbean,2.1271666666666667,9.156132531995876,9.0394,84.07129985113218,1.0,intermediate,intermediate,moderate,moderate,False
+NPL,Nepal,South Asia,2.039279566666667,8.705330433875277,9.157,62.26921281857267,1.0,intermediate,intermediate,moderate,moderate,False
+PRT,Portugal,Europe,1.8149579,8.166798868885744,8.41,57.28874849750876,0.461617351154489,intermediate,intermediate,moderate,moderate,False
+SLE,Sierra Leone,Sub-Saharan Africa,1.749,9.226188061373568,8.876625,1.4168096054888508,1.0,intermediate,intermediate,moderate,moderate,False
+LAO,Lao People's Democratic Republic,East & Southeast Asia,1.5865333333333334,7.685400751740469,7.68335,23.323388520043704,1.0,intermediate,intermediate,moderate,moderate,False
+KOR,Republic of Korea,East & Southeast Asia,1.5806666666666669,7.96561600492296,8.9269,138.5636862083509,0.2658200834755521,intermediate,intermediate,moderate,moderate,False
+BDI,Burundi,Sub-Saharan Africa,1.566,7.806123715554425,7.6243997,5.796722009365687,1.0,intermediate,intermediate,moderate,moderate,False
+RWA,Rwanda,Sub-Saharan Africa,1.5358666666666667,8.343052258621977,8.2836,6.667028387880892,1.0,intermediate,intermediate,moderate,moderate,False
+YEM,Yemen,North Africa & West Asia,1.452,7.211843714547771,3.852075,4.088613406795226,1.0,intermediate,intermediate,low,moderate,False
+HTI,Haiti,Latin America & Caribbean,1.3683333333333332,9.066056665868311,9.0733,8.774908647990257,1.0,intermediate,intermediate,moderate,moderate,False
+SVK,Slovakia,Europe,1.3653333333333333,10.21203308040702,10.8631,94.039794921875,0.0,intermediate,intermediate,high,high,False
+KGZ,Kyrgyzstan,Central Asia,1.3643666666666667,7.99257315886893,9.466475,18.48403410617869,1.0,intermediate,intermediate,high,moderate,False
+PNG,Papua New Guinea,Oceania,1.215,9.222486169033202,9.70035,22.971742112482858,1.0,intermediate,intermediate,high,moderate,False
+MNG,Mongolia,East & Southeast Asia,1.1923666666666668,11.423562343643358,7.9236994,23.38849906348718,1.0,intermediate,intermediate,moderate,high,False
+BIH,Bosnia and Herzegovina,Europe,1.124,12.314969409180351,12.22435,51.3226571767497,0.5604169240864239,intermediate,intermediate,high,high,False
+TJK,Tajikistan,Central Asia,1.040266666666667,7.151999359126016,9.53455,47.81338118431171,1.0,high_buffer_high_exposure,intermediate,high,moderate,True
+HRV,Croatia,Europe,0.9136666666666666,10.833799360036556,11.495474,107.80080262677856,0.0,intermediate,intermediate,high,high,False
+SLV,El Salvador,Latin America & Caribbean,0.881,8.45861698728551,8.131201,45.356413166855845,1.0,intermediate,intermediate,moderate,moderate,False
+NAM,Namibia,Sub-Saharan Africa,0.811,2.7131150221401863,2.6806498,21.40484997944924,1.0,intermediate,intermediate,low,low,False
+TWN,China; Taiwan Province of,East & Southeast Asia,0.7903333333333333,8.205760135159784,9.42535,177.7760438633488,0.2227114564889422,intermediate,intermediate,moderate,moderate,False
+LBR,Liberia,Sub-Saharan Africa,0.7,8.88961256901573,8.88945,7.68,1.0,intermediate,intermediate,moderate,moderate,False
+ERI,Eritrea,Sub-Saharan Africa,0.692,6.528433240025061,5.5892496,5.910886319845858,1.0,intermediate,intermediate,low,moderate,False
+PAN,Panama,Latin America & Caribbean,0.6743666666666667,8.497695935264185,9.99,32.65730809154268,1.0,high_buffer_high_exposure,intermediate,high,moderate,True
+COG,Congo,Sub-Saharan Africa,0.643999,6.24896377375443,6.1876497,2.282612240081118,1.0,intermediate,intermediate,moderate,low,False
+GNB,Guinea-Bissau,Sub-Saharan Africa,0.6071561333333333,5.524785976043019,5.432825,7.67512628821889,1.0,intermediate,intermediate,low,low,False
+CRI,Costa Rica,Latin America & Caribbean,0.5387539666666666,8.929220510160453,10.6768,175.84835724952745,1.0,high_buffer_high_exposure,intermediate,high,moderate,True
+GAB,Gabon,Sub-Saharan Africa,0.495,6.991436591170673,6.9546504,9.962962962962964,1.0,intermediate,intermediate,moderate,moderate,False
+MRT,Mauritania,Sub-Saharan Africa,0.46,1.8403869313567476,2.1855001,7.679710144927536,1.0,intermediate,intermediate,low,low,False
+MKD,North Macedonia,Europe,0.4586666666666666,8.005018112305965,7.6734996,42.85537790697674,1.0,intermediate,intermediate,moderate,moderate,False
+GMB,Gambia,Sub-Saharan Africa,0.447,3.967789592522982,3.4981499,2.011185682326622,1.0,intermediate,intermediate,low,low,False
+ISR,Israel,North Africa & West Asia,0.4461666666666667,6.39019586220676,3.2779498,93.19686215913336,0.5105530647639082,intermediate,intermediate,low,low,False
+GEO,Georgia,North Africa & West Asia,0.4349,10.716121960808463,12.132199,55.13834597991876,0.0,intermediate,intermediate,high,high,False
+LSO,Lesotho,Sub-Saharan Africa,0.3123666666666667,6.484909231635613,6.8844,9.418418525237437,1.0,intermediate,intermediate,moderate,low,False
+JOR,Jordan,North Africa & West Asia,0.2871,4.332540307112823,2.1977,63.45872518286311,0.0,intermediate,intermediate,low,low,False
+LBN,Lebanon,North Africa & West Asia,0.2723216666666667,6.9394668575087834,7.3412743,63.373583935664314,1.0,intermediate,intermediate,moderate,moderate,False
+VUT,Vanuatu,Oceania,0.145,9.326636252536508,8.7237,0.032183908045977,1.0,intermediate,intermediate,moderate,high,False
+FJI,Fiji,Oceania,0.1396333333333333,8.715713802945803,8.849501,30.65648126044402,1.0,intermediate,intermediate,moderate,moderate,False
+COM,Comoros,Sub-Saharan Africa,0.118,10.25060971818104,10.3243,0.5621468926553672,1.0,intermediate,intermediate,high,high,False
+BTN,Bhutan,South Asia,0.1011666666666666,19.26127442088177,13.19105,11.304777594728172,1.0,intermediate,intermediate,high,high,False
+GNQ,Equatorial Guinea,Sub-Saharan Africa,0.1,8.488219231227227,7.91105,2.77,1.0,intermediate,intermediate,moderate,moderate,False
+CHN,China; mainland,East & Southeast Asia,128.0813333333333,6.116925972251791,6.7381,209.8173660486566,0.0,intermediate,low_buffer_high_exposure,moderate,low,True
+BRA,Brazil,Latin America & Caribbean,63.47,6.299217935175629,5.3009,80.9650228454388,0.9234322655009096,low_buffer_high_exposure,low_buffer_high_exposure,low,low,False
+AUS,Australia,Oceania,31.074,4.099865020651884,2.1977,48.85479822359529,0.7796030431509823,low_buffer_high_exposure,low_buffer_high_exposure,low,low,False
+THA,Thailand,East & Southeast Asia,22.188374399999997,5.1135015487911515,5.438025,62.11423942801325,0.909533251650843,low_buffer_high_exposure,low_buffer_high_exposure,low,low,False
+ZAF,South Africa,Sub-Saharan Africa,12.413,4.515909441324311,3.661675,43.81248153817235,0.7250438057438287,low_buffer_high_exposure,low_buffer_high_exposure,low,low,False
+UZB,Uzbekistan,Central Asia,4.4311,5.857398212969289,5.49435,173.2788698065943,0.0,low_buffer_high_exposure,low_buffer_high_exposure,low,low,False
+PRY,Paraguay,Latin America & Caribbean,4.4125203,6.415029150485236,5.5195,30.017992211843197,1.0,low_buffer_high_exposure,low_buffer_high_exposure,low,low,False
+ZMB,Zambia,Sub-Saharan Africa,3.839,3.659796464556352,3.5144,44.05392029174264,1.0,low_buffer_high_exposure,low_buffer_high_exposure,low,low,False
+TKM,Turkmenistan,Central Asia,1.653806066666667,5.306456260295281,4.9256496,254.2271078862088,0.0,low_buffer_high_exposure,low_buffer_high_exposure,low,low,False
+BWA,Botswana,Sub-Saharan Africa,0.2618666666666666,2.648024892814998,2.6255999,46.18508146639512,1.0,low_buffer_high_exposure,low_buffer_high_exposure,low,low,False
+SWZ,Eswatini,Sub-Saharan Africa,0.195,5.248397085394351,5.20045,37.463247863247865,1.0,low_buffer_high_exposure,low_buffer_high_exposure,low,low,False
+CYP,Cyprus,North Africa & West Asia,0.1266712333333333,6.33752245112612,6.7026496,63.19245858767724,1.0,intermediate,low_buffer_high_exposure,moderate,low,True
+NGA,Nigeria,Sub-Saharan Africa,43.30517173333333,4.185050908552492,3.3724248,11.272156352884942,0.0,low_buffer_low_exposure,low_buffer_low_exposure,low,low,False
+IRN,Iran (Islamic Republic of),North Africa & West Asia,17.5,6.184099708074236,4.172225,46.62148571428571,0.0,low_buffer_low_exposure,low_buffer_low_exposure,low,low,False
+MAR,Morocco,North Africa & West Asia,9.0163245,5.869281684986649,5.1221247,23.128419272546516,0.0,low_buffer_low_exposure,low_buffer_low_exposure,low,low,False
+BOL,Bolivia (Plurinational State of),Latin America & Caribbean,5.410978433333334,5.916986355058792,5.54665,3.4239032542684993,0.0,low_buffer_low_exposure,low_buffer_low_exposure,low,low,False
+TUN,Tunisia,North Africa & West Asia,4.9505,6.156405808336225,3.2652001,15.76844089822577,0.0,low_buffer_low_exposure,low_buffer_low_exposure,low,low,False
+LBY,Libya,North Africa & West Asia,2.05,5.320804082347216,3.5823002,7.040650406504065,0.0,low_buffer_low_exposure,low_buffer_low_exposure,low,low,False

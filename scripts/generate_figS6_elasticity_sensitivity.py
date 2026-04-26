@@ -22,7 +22,8 @@ from pathlib import Path
 
 # Path setup
 SCRIPT_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
-REPO_DIR = SCRIPT_DIR.parent
+REPO_ROOT = SCRIPT_DIR.parent
+REPO_DIR = REPO_ROOT  # alias
 MODEL_DIR = REPO_DIR / 'model'
 sys.path.insert(0, str(MODEL_DIR))
 

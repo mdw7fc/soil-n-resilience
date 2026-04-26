@@ -1,0 +1,66 @@
+{
+  "max_uptake_frac": {
+    "kind": "truncnorm",
+    "mean": 0.75,
+    "sd": 0.075,
+    "lo": 0.6,
+    "hi": 0.9,
+    "mode": "absolute"
+  },
+  "mitscherlich_c_mult": {
+    "kind": "truncnorm",
+    "mean": 1.0,
+    "sd": 0.15,
+    "lo": 0.7,
+    "hi": 1.3,
+    "mode": "multiplier"
+  },
+  "k_slow_mult": {
+    "kind": "truncnorm",
+    "mean": 1.0,
+    "sd": 0.2,
+    "lo": 0.6,
+    "hi": 1.4,
+    "mode": "multiplier"
+  },
+  "cre_regional_mult": {
+    "kind": "truncnorm",
+    "mean": 1.0,
+    "sd": 0.3,
+    "lo": 0.4,
+    "hi": 1.8,
+    "mode": "multiplier"
+  },
+  "residue_retention_mult": {
+    "kind": "truncnorm",
+    "mean": 1.0,
+    "sd": 0.1,
+    "lo": 0.8,
+    "hi": 1.15,
+    "mode": "multiplier"
+  },
+  "eps_F_PF_mult": {
+    "kind": "truncnorm",
+    "mean": 1.0,
+    "sd": 0.3,
+    "lo": 0.5,
+    "hi": 1.5,
+    "mode": "multiplier"
+  },
+  "eta_mult": {
+    "kind": "truncnorm",
+    "mean": 1.0,
+    "sd": 0.25,
+    "lo": 0.6,
+    "hi": 1.4,
+    "mode": "multiplier"
+  },
+  "fert_price_shock_mult": {
+    "kind": "truncnorm",
+    "mean": 1.0,
+    "sd": 0.25,
+    "lo": 0.5,
+    "hi": 1.5,
+    "mode": "multiplier"
+  }
+}

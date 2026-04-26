@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite the paper and the archive."
+title: "soil-n-resilience: code and data for Wallenstein & Manning (2026), Nature Food"
+abstract: >-
+  Coupled biophysical-economic framework that links monthly soil nitrogen
+  cycling, crop nitrogen response, and partial-equilibrium economics across
+  eight global agricultural regions. Quantifies how soil organic carbon and
+  monthly N capture efficiency determine yield and gross-margin sensitivity
+  to fertilizer price disruptions, and how persistent disruptions feed back
+  on soil organic matter stocks and future nitrogen supply.
+authors:
+  - family-names: Wallenstein
+    given-names: Matthew D.
+    orcid: "https://orcid.org/0000-0002-6219-1442"
+    affiliation: "Syngenta Group, Basel, Switzerland; Department of Soil and Crop Sciences, Colorado State University, Fort Collins, CO, USA"
+  - family-names: Manning
+    given-names: Dale T.
+    affiliation: "Department of Agricultural and Resource Economics and Baker School of Public Policy, University of Tennessee, Knoxville, TN, USA"
+license: MIT
+license-url: "https://opensource.org/licenses/MIT"
+repository-code: "https://github.com/mdw7fc/soil-n-resilience"
+type: software
+keywords:
+  - soil organic carbon
+  - nitrogen
+  - fertilizer
+  - food security
+  - resilience
+  - biogeochemistry
+  - agricultural economics
+preferred-citation:
+  type: article
+  title: "Soil health buffers nitrogen supply disruptions"
+  authors:
+    - family-names: Wallenstein
+      given-names: Matthew D.
+      orcid: "https://orcid.org/0000-0002-6219-1442"
+    - family-names: Manning
+      given-names: Dale T.
+  journal: "Nature Food"
+  year: 2026

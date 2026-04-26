@@ -1,0 +1,30 @@
+Creative Commons Attribution 4.0 International (CC-BY-4.0)
+
+The data files distributed in this repository (everything under data/) and the
+figures generated from them (under figures/) are made available under the
+Creative Commons Attribution 4.0 International License. You are free to share
+and adapt the material for any purpose, including commercially, provided that
+appropriate credit is given to:
+
+  Wallenstein, M.D. & Manning, D.T. (2026). Soil health buffers nitrogen
+  supply disruptions. Nature Food.
+
+The full legal text of CC-BY-4.0 is available at:
+https://creativecommons.org/licenses/by/4.0/legalcode
+
+Source code in this repository is licensed under the MIT License (see LICENSE).
+
+Third-party data redistributed or derived in this repository retain their
+original licenses:
+
+  - FAOSTAT (Fertilizers by Nutrient, Land Use, Trade Detailed):
+    CC-BY-NC-SA-3.0-IGO. https://www.fao.org/contact-us/terms/db-terms-of-use/en/
+  - ISRIC SoilGrids 2.0: CC-BY-4.0. https://www.isric.org/explore/soilgrids
+  - MIRCA2000 (Portmann et al. 2010): CC-BY-4.0.
+  - Natural Earth Admin 0 (1:50 m): public domain. https://www.naturalearthdata.com/
+  - Rothamsted Broadbalk yield and SOC trajectories: courtesy of the
+    Rothamsted Long-Term Experiments National Capability (BBSRC); see
+    https://www.rothamsted.ac.uk/long-term-experiments
+
+Users redistributing FAOSTAT-derived products are bound by FAOSTAT's
+non-commercial share-alike terms and should consult the FAOSTAT terms of use.

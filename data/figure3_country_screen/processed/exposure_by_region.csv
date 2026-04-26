@@ -1,0 +1,29 @@
+region_grp,exposure_class,cropland_Mha,n_countries
+Central Asia,low,34.12293333333333,2
+Central Asia,moderate,4.0584394,3
+East & Southeast Asia,data_missing,0.19229333333333337,3
+East & Southeast Asia,high,0.0036666666666666666,1
+East & Southeast Asia,low,55.583432933333334,3
+East & Southeast Asia,moderate,197.7514558333333,12
+Europe,data_missing,1.8611478000000001,9
+Europe,high,1.1694826,5
+Europe,low,229.67360793333333,15
+Europe,moderate,55.2720716,18
+Latin America & Caribbean,data_missing,0.137907,12
+Latin America & Caribbean,high,0.8557539666666666,4
+Latin America & Caribbean,low,8.757978433333333,3
+Latin America & Caribbean,moderate,164.76796556666667,26
+North Africa & West Asia,data_missing,8.6092262,3
+North Africa & West Asia,low,37.98819039999999,11
+North Africa & West Asia,moderate,43.5148845,11
+Northern America,data_missing,0.002,2
+Northern America,high,0.0003,1
+Northern America,low,196.84773,2
+Oceania,data_missing,0.028810000000000002,10
+Oceania,high,0.6033333333333334,1
+Oceania,moderate,32.82475,14
+South Asia,low,31.633333333333333,1
+South Asia,moderate,189.7826705,7
+Sub-Saharan Africa,data_missing,1.1828063333333332,4
+Sub-Saharan Africa,low,47.09950506666666,2
+Sub-Saharan Africa,moderate,222.3207471,46

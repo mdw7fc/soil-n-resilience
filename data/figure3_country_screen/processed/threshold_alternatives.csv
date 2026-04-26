@@ -1,0 +1,5 @@
+rule,data_missing,high_buffer_high_exposure,high_buffer_low_exposure,intermediate,low_buffer_high_exposure,low_buffer_low_exposure
+alt1 (combined ≥0.50),0.9,4.2,15.4,56.0,15.7,7.8
+alt2 (max-rule),0.3,4.5,10.0,60.4,19.6,5.2
+alt3 (exposure terciles),0.9,3.7,16.7,50.5,6.3,21.9
+locked (combined ≥0.66),1.0,0.2,16.0,74.8,0.0,8.0

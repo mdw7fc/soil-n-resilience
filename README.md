@@ -1,63 +1,138 @@
 # soil-n-resilience
 
-Code and data for: **Soil health buffers nitrogen supply disruptions** (Wallenstein & Manning, 2026, *Nature Food*)
+Code and data for **Wallenstein, M.D. & Manning, D.T. (2026). Soil health buffers nitrogen supply disruptions.** *Nature Food.*
 
-## Overview
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19561127.svg)](https://doi.org/10.5281/zenodo.19561127)
 
-This repository contains the coupled biophysical-economic model that simulates how soil organic carbon (SOC) and economic structure jointly determine agricultural vulnerability to fertilizer supply disruptions. The model combines:
+This repository is the complete reproducibility package for the paper. It contains the coupled biophysical-economic framework (Century/RothC and MEMS structural variants), all analysis and plotting scripts, and the model output data underlying every figure in the manuscript and supplementary information.
 
-- A three-pool SOM model (Century/RothC kinetics) with monthly nitrogen balance
-- A partial equilibrium economic framework (Manning) with regional price elasticities
-- Eight global agricultural regions covering ~1,230 Mha cropland and ~99 Tg N yr⁻¹
+## What's in the paper
 
-## Repository structure
+The framework simulates how soil organic carbon (SOC) and economic structure jointly determine agricultural vulnerability to fertilizer supply disruptions across eight global regions covering ~1,230 Mha of cropland and ~99 Tg N yr⁻¹ of synthetic nitrogen. Key components:
+
+- **Biophysical core**: 3-pool Century/RothC SOM dynamics with monthly N balance (Q10 mineralization, soil moisture correction, leaching, denitrification) and Mitscherlich yield response.
+- **Structural variant**: MEMS 4-pool engine routing all SOM formation through microbial biomass (POM → DOM → MBC → MAOM), used for the structural-sensitivity comparison.
+- **Economic module**: partial equilibrium with regional fertilizer-demand and food-demand price elasticities, land allocation, and three behavioral scenario tiers (S1–S3) plus two physical supply-constrained scenarios (SC1 permanent, SC2 recovering).
+- **Country-level screen**: cropland-weighted soil organic N buffer proxy (SoilGrids + MIRCA2000) crossed with fertilizer-shock exposure (FAOSTAT N intensity + import reliance) across 154 cropland-bearing countries.
+
+## Repository layout
 
 ```
 model/
-  soil_n_model.py              # Core SOM model: 3-pool dynamics, regional params, scenarios
-  monthly_model_v3.py          # Hybrid annual SOM + monthly N balance engine
-  coupled_econ_biophysical.py  # Manning partial equilibrium economics
-  coupled_monthly.py           # Monthly biophysical-economic coupling (main model)
+  soil_n_model.py                 Core SOM model: 3-pool dynamics, regions, scenarios
+  monthly_model_v3.py             Hybrid annual SOM + monthly N balance (Century)
+  coupled_econ_biophysical.py     Manning partial equilibrium economics
+  coupled_monthly.py              Monthly biophysical-economic coupling (Century)
+  coupled_mems.py                 Same coupling but with MEMS 4-pool SOM engine
+  scripts/
+    monthly_mems_v1.py            MEMS pool-level model used by coupled_mems
+    benchmark_broadbalk.py        Broadbalk site-specific reinitialization helpers
 
-scripts/
-  run_price_shock_analysis.py      # Farm-level SOC gradient x price shock (Figs 1-2)
-  run_resilience_monthly.py        # Regional scenarios S1-S3, SC1-SC2, NUE sweeps (Figs 3-5)
-  generate_publication_figures.py  # Generates all 6 manuscript figures
-  generate_sensitivity_fig_s1.py   # Supplementary Figure S1
+scripts/                          Analysis runners and figure generators (top level)
+scripts/figure3_country_screen/   Country-level screen pipeline (numbered 01–19)
 
-data/
-  buffer_metrics.csv           # Regional soil N buffer ratios and dependencies
-  scenario_trajectories.csv    # 30-year S1/S2/S3 yield and SOC trajectories
-  supply_constrained.csv       # SC1 (20% permanent) + SC2 (20% with recovery) scenarios
-  degradation_scenarios.csv    # SOC degradation gradient results
-  nue_sensitivity.csv          # NUE sensitivity sweep (0.45-0.95)
-  duration_comparison.csv      # 1/5/10/30-year disruption duration comparison
-  price_shock_farm.csv         # Farm-level price shock x SOC analysis
-  soc_gradient.csv             # Fine SOC gradient across all 8 regions
-  regional_parameters.csv      # All regional model parameters
+data/                             Model output data underlying all figures
+data/mc_ensemble/                 Monte Carlo ensemble outputs (Note 6, Fig S8)
+data/benchmark_broadbalk/         Broadbalk reference yield and SOC trajectories
+data/figure3_country_screen/
+  processed/                      Country-level screen processed CSVs
+  raw/                            Raw downloads (recreated by 01_, 05_, 06_, 12_; gitignored)
+  outputs/                        Intermediate analytic outputs
+
+figures/                          Figures produced by the scripts (gitignored;
+                                  generated by running the scripts below)
 ```
 
-## Requirements
+## Figure → script → data map
 
-- Python 3.10+
-- numpy, scipy, pandas, matplotlib
+Every figure and table in the paper traces back to a script and a data file in this repo.
+
+### Main text
+
+| Figure | Script(s) | Data file(s) |
+|---|---|---|
+| **Fig 1** Farm-level SOC × 100% price spike (yield + gross margin over fertilizer cost) | `scripts/run_price_shock_analysis.py` → `scripts/generate_publication_figures.py` | `data/price_shock_farm.csv`, `data/soc_gradient.csv` |
+| **Fig 2** Regional vulnerability under sustained 20% price-mediated reduction | `scripts/run_resilience_monthly.py` → `scripts/generate_publication_figures.py` | `data/scenario_trajectories.csv`, `data/buffer_metrics.csv`, `data/regional_parameters.csv` |
+| **Fig 3** Country-level soil-buffer / exposure screen (SoilGrids + MIRCA2000 + FAOSTAT) | `scripts/figure3_country_screen/01_..19_*.py` (run sequentially); see [Country-screen pipeline](#country-screen-pipeline) | `data/figure3_country_screen/processed/*.csv` |
+| **Table 1** Scenario structure | (text only; documented in Methods) | — |
+
+### Supplementary information
+
+| Figure / Table | Script(s) | Data file(s) |
+|---|---|---|
+| **Fig S1** Coupled model architecture | (conceptual diagram; not script-generated) | — |
+| **Table S1** Regional parameters | — | `data/regional_parameters.csv` |
+| **Fig S2** Broadbalk benchmark (modern yield + SOC trajectories) | `scripts/diagnose_broadbalk_nil_bias.py`, `scripts/plot_broadbalk_minifigure.py` | `data/benchmark_broadbalk/*.csv`, `data/broadbalk_nil_diagnostic.csv` |
+| **Fig S3** Mineralizable-N parameter sensitivity | `scripts/run_mineralizable_n_sensitivity.py` → `scripts/plot_mineralizable_n_sensitivity.py` | `data/mineralizable_n_sensitivity.pkl`, `data/mineralizable_n_sensitivity_gaps.csv` |
+| **Fig S4** 2022 fertilizer-crisis hindcast (with elasticity halving/doubling) | `scripts/generate_figS4_hindcast_sensitivity.py` | `data/regional_parameters.csv` (in-script analytic; reproduces from regional params) |
+| **Fig S5 + Table 2** MEMS structural sensitivity (matched 20% SC1 + flux decomposition) | `scripts/run_matched_mems_comparison.py`, `scripts/run_cue_decomp_matched.py` → `scripts/generate_figS5_mems_flux.py` | `data/matched_mems_century.pkl`, `data/mems_flux_decomposition.pkl`, `data/cue_decomposition_matched.pkl` |
+| **Fig S6** Within-region halved-elasticity sensitivity | `scripts/generate_figS6_elasticity_sensitivity.py` | `data/price_shock_farm.csv` |
+| **Fig S7** Cross-regional halved-elasticity sustained-disruption sensitivity | `scripts/generate_figS7_econ_sensitivity.py` | `data/scenario_trajectories.csv` |
+| **Fig S8 + Note 6** 1,000-draw joint-prior Monte Carlo ensemble | `scripts/monte_carlo_ensemble.py` → `scripts/plot_mc_ensemble.py` | `data/mc_ensemble/mc_priors.json`, `mc_summary.csv`, `mc_probabilities.csv`, `mc_posterior.csv.gz` |
+| **Fig S9** Monthly N capture efficiency parameter sweep | `scripts/run_resilience_monthly.py` → `scripts/generate_publication_figures.py` | `data/nue_sensitivity.csv` |
+| **Fig S10** Shock severity gradient widens SOC buffering | `scripts/run_price_shock_analysis.py` → `scripts/generate_publication_figures.py` | `data/price_shock_farm.csv` |
 
 ## Reproducing the analysis
 
 ```bash
-# 1. Generate analysis data
+# Requires: Python 3.10+, numpy, scipy, pandas, matplotlib
+
+# (Optional) regenerate primary data — outputs already shipped in data/
 python scripts/run_price_shock_analysis.py
 python scripts/run_resilience_monthly.py
+python scripts/run_matched_mems_comparison.py
+python scripts/run_cue_decomp_matched.py
+python scripts/run_mineralizable_n_sensitivity.py
+python scripts/diagnose_broadbalk_nil_bias.py
+python scripts/monte_carlo_ensemble.py    # 1,000 draws; CPU-bound, ~1 hr
 
-# 2. Generate figures
-python scripts/generate_publication_figures.py
-python scripts/generate_sensitivity_fig_s1.py
+# Generate figures
+python scripts/generate_publication_figures.py        # Fig 1, Fig 2, Fig S9, Fig S10
+python scripts/generate_figS4_hindcast_sensitivity.py # Fig S4
+python scripts/generate_figS5_mems_flux.py            # Fig S5
+python scripts/generate_figS6_elasticity_sensitivity.py # Fig S6
+python scripts/generate_figS7_econ_sensitivity.py     # Fig S7
+python scripts/plot_mc_ensemble.py                    # Fig S8
+python scripts/plot_broadbalk_minifigure.py           # Fig S2
+python scripts/plot_mineralizable_n_sensitivity.py    # Fig S3
 ```
+
+### Country-screen pipeline
+
+The country-level screen (Fig 3, Supplementary Note 7) is its own self-contained pipeline because it pulls large public datasets:
+
+```bash
+cd scripts/figure3_country_screen
+python 01_download_faostat.py        # ~5 MB FAOSTAT zips
+python 02_build_countries_master.py
+python 03_build_exposure.py
+python 04_exposure_diagnostics.py
+python 05_download_soilgrids_5km.py  # ~50 MB SoilGrids global rasters
+python 06_download_naturalearth.py
+python 07_build_buffer_country.py
+python 08_build_vulnerability.py
+python 12_download_mirca2000.py      # ~15 MB MIRCA2000 grids
+python 13_build_buffer_country_cwm.py
+python 14_phase2_sensitivity.py
+python 15_phase2_panels.py
+python 16_phase2_final_audit.py
+python 17_phase2_panels_production.py
+python 18_phase2_publication_ready.py
+python 19_fig4_mechanism_screen_v10.py   # final composite assembly
+```
+
+The processed outputs are already shipped in `data/figure3_country_screen/processed/`; the download scripts (`01_`, `05_`, `06_`, `12_`) only need to be re-run if you want to rebuild from raw sources.
 
 ## Citation
 
-Wallenstein, M.D. & Manning, D. (2026). Soil health buffers nitrogen supply disruptions. *Nature Food*.
+If you use this code or data, please cite the paper and the archive:
+
+> Wallenstein, M.D. & Manning, D.T. (2026). Soil health buffers nitrogen supply disruptions. *Nature Food*. https://github.com/mdw7fc/soil-n-resilience  archived at https://doi.org/10.5281/zenodo.19561127
+
+A `CITATION.cff` is included for automated citation tooling.
 
 ## License
 
-MIT
+- **Source code** (`model/`, `scripts/`): MIT (see `LICENSE`).
+- **Data** (`data/`, `figures/`): CC-BY-4.0 (see `LICENSE-DATA`).
+- **Third-party data** redistributed here retain their original licenses, listed in `LICENSE-DATA`.

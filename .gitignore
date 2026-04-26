@@ -1,7 +1,24 @@
 __pycache__/
 *.pyc
 *.pyo
+.DS_Store
+*.egg-info/
+.venv/
+venv/
+.ipynb_checkpoints/
 
-# Regenerated model outputs (CSV snapshots in data/ are canonical)
-data/*.pkl
-data/*.pkl.bak
+# Generated figures (regenerate with the scripts)
+figures/
+
+# Country-screen large raw downloads (recreate via 01_, 05_, 06_, 12_)
+data/figure3_country_screen/raw/
+data/figure3_country_screen/outputs/
+
+# Local MC ensemble intermediates (canonical outputs are committed)
+data/mc_ensemble/chunks/
+data/mc_ensemble/ym_cache.json
+data/mc_ensemble/mc_run.log
+data/mc_ensemble/mc_summary.txt
+
+# Backup / scratch
+*.pkl.bak
