@@ -1,0 +1,9 @@
+region,FAOSTAT_yobs_tha,N_current_kgha,N_no_synth_kgha,ymax_calibrated_tha,mitscherlich_c,yield_floor_tha,y_no_synth_sim_tha,floor_source
+north_america,5.5,223.9,147.9,6.277,0.015,1.10,3.71,Morrow Plots & Sanborn Field (Nafziger & Dunker 2011; Miles & Brown 2011)
+europe,5.0,210.1,125.1,6.119,0.015,1.00,2.29,Rothamsted Broadbalk & Hoosfield (Poulton et al. 2018)
+east_asia,6.0,355.0,105.0,6.095,0.015,0.90,3.13,China 1949 national avg (crop-mix blended)
+south_asia,3.2,186.5,76.5,3.636,0.015,0.50,1.76,Pre-Green-Revolution wheat + ICRISAT Vertisol trials
+southeast_asia,4.2,185.5,96.5,4.871,0.015,1.20,3.03,Wetland-rice BNF-supported floor (Ladha et al. 2016)
+latin_america,4.5,183.6,133.6,5.602,0.015,0.90,3.56,Pampas/Cerrado blended pre-modern yields
+sub_saharan_africa,1.5,37.7,30.7,3.876,0.015,0.40,1.26,TSBF unfertilized controls; AFDB traditional-yield synthesis
+fsu_central_asia,2.8,143.0,105.0,4.293,0.015,0.90,1.68,Pryanishnikov Institute trials; Kazakhstan dryland wheat

@@ -1,0 +1,14 @@
+{
+  "title": "Soil organic matter buffers fertilizer supply disruptions — model code and canonical reproducibility deposit",
+  "upload_type": "software",
+  "description": "Coupled biophysical-economic model code, frozen canonical model output (ERA5 data-based climate run to year 30), and regeneration scripts for all figures and tables in Wallenstein & Manning, Environmental Research: Food Systems (ERFS-100341). This deposit corresponds to the v12 (canonical) manuscript and supplementary information: every figure and table derives from the single frozen output produced by code/repro/run_canonical.py.",
+  "creators": [
+    {"name": "Wallenstein, Matthew D.", "affiliation": "Syngenta Group; Colorado State University"},
+    {"name": "Manning, Dale T.", "affiliation": "University of Tennessee, Knoxville"}
+  ],
+  "license": "MIT",
+  "keywords": ["soil organic matter", "fertilizer supply disruption", "nitrogen", "biogeochemical-economic modeling", "food security"],
+  "related_identifiers": [
+    {"identifier": "10.5281/zenodo.19699772", "relation": "isVersionOf", "scheme": "doi"}
+  ]
+}
