@@ -13,7 +13,7 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.19699772
     description: Zenodo deposit
-repository-code: "https://github.com/<owner>/ERFS-100341-soil-resilience"
+repository-code: "https://github.com/mdw7fc/soil-n-resilience"
 license: MIT
 version: "v12-canonical"
 date-released: 2026-07-22
