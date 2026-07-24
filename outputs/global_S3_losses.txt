@@ -1,4 +1,4 @@
 Production-weighted global S3 yield loss (%)
-year 1 : 4.33
-year 10: 5.58
-year 30: 5.95
+year 1 : 2.30
+year 10: 3.41
+year 30: 3.64

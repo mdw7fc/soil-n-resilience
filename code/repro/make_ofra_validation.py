@@ -28,6 +28,6 @@ ax.legend(loc='upper left',fontsize=11,framealpha=0.9)
 ax.text(0.99,0.02,'Model ceiling sits below the OFRA median but within the interquartile range;\nthe no-synthetic-N control sits at the low edge, consistent with degraded regional-mean soils.\nNote: model x-axis is N availability/uptake; OFRA is applied N.',
         transform=ax.transAxes,ha='right',va='bottom',fontsize=9,color='#555555',style='italic')
 plt.tight_layout()
-fig.savefig(os.path.join(HERE,'..','..','figures','Figure_S14_OFRA_SSA_validation.png'),dpi=200,bbox_inches='tight',facecolor='white')
+fig.savefig(os.path.join(HERE,'..','..','figures','Figure_S13_OFRA_SSA_validation.png'),dpi=200,bbox_inches='tight',facecolor='white')
 print('n=%d  median[0]=%.2f median[-1]=%.2f  IQR[-1]=[%.2f,%.2f]'%(len(funcs),med[0],med[-1],p25[-1],p75[-1]))
 print('ceiling 3.876 vs median[-1] %.2f (below median) ; within IQR [%.2f,%.2f]: %s'%(med[-1],p25[-1],p75[-1], p25[-1]<=3.876<=p75[-1]))

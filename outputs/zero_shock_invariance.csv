@@ -1,0 +1,9 @@
+region,yr10_yield_fraction,yr30_yield_fraction,max_abs_deviation_30yr,yr2_yield_tha,faostat_target_tha
+north_america,0.99997,0.99989,0.000107,5.577,5.5
+europe,0.99999,0.99994,5.9e-05,5.089,5.0
+east_asia,0.99989,0.99962,0.000375,5.878,6.0
+south_asia,0.9999,0.99967,0.000329,3.076,3.2
+southeast_asia,0.99991,0.99969,0.000315,4.197,4.2
+latin_america,0.99995,0.99981,0.000187,4.688,4.5
+sub_saharan_africa,0.99995,0.99984,0.000159,1.45,1.5
+fsu_central_asia,0.99986,0.99952,0.000484,2.78,2.8

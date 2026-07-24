@@ -16,7 +16,7 @@ axa.fill_between(yrs,ghalf,gbase,color='0.8',alpha=0.7,label='Elasticity range')
 axa.plot(yrs,gbase,color='#C0392B',lw=2.6,label='Baseline ε$_{F,PF}$')
 axa.plot(yrs,ghalf,color='#1565C0',lw=2.4,ls='--',label='Halved ε$_{F,PF}$ (0.5×)')
 axa.set_xlabel('Years after disruption onset'); axa.set_ylabel('Global yield loss (%)')
-axa.set_xlim(0,30); axa.set_ylim(0,6.5); axa.legend(loc='upper left',frameon=True)
+axa.set_xlim(0,30); axa.set_ylim(0,4.5); axa.legend(loc='upper left',frameon=True)
 axa.text(-0.08,1.02,'a',transform=axa.transAxes,fontsize=17,fontweight='bold')
 # Panel b: sort descending by baseline yr10
 order=sorted(RO,key=lambda k:base[k]['10'])  # ascending -> bottom-to-top
@@ -26,10 +26,10 @@ for i,k in enumerate(order):
     axb.plot([h,b],[i,i],color='0.6',lw=2,zorder=1)
     axb.scatter([b],[i],s=130,c=COL[k],edgecolors='black',lw=0.5,zorder=3)
     axb.scatter([h],[i],s=130,facecolors='white',edgecolors=COL[k],lw=2,zorder=3)
-    axb.text(h-0.25,i,f'{h:.1f}%',ha='right',va='center',fontsize=10.5,color='0.35')
-    axb.text(b+0.25,i,f'{b:.1f}%',ha='left',va='center',fontsize=10.5,color='black')
+    axb.text(h-0.12,i,f'{h:.1f}%',ha='right',va='center',fontsize=10.5,color='0.35')
+    axb.text(b+0.12,i,f'{b:.1f}%',ha='left',va='center',fontsize=10.5,color='black')
 axb.set_yticks(ypos); axb.set_yticklabels([NAME[k] for k in order])
-axb.set_xlabel('Year-10 yield loss (%)'); axb.set_xlim(0,16.5); axb.axvline(0,color='0.7',ls=':',lw=1)
+axb.set_xlabel('Year-10 yield loss (%)'); axb.set_xlim(0,8.0); axb.axvline(0,color='0.7',ls=':',lw=1)
 axb.text(-0.02,1.02,'b',transform=axb.transAxes,fontsize=17,fontweight='bold')
 from matplotlib.lines import Line2D
 axb.legend(handles=[Line2D([0],[0],marker='o',color='w',markerfacecolor='#C62828',markeredgecolor='black',markersize=11,label='Baseline'),

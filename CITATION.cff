@@ -15,8 +15,8 @@ identifiers:
     description: Zenodo deposit
 repository-code: "https://github.com/mdw7fc/soil-n-resilience"
 license: MIT
-version: "v12-canonical"
-date-released: 2026-07-22
+version: "v14-canonical"
+date-released: 2026-07-24
 keywords:
   - soil organic matter
   - fertilizer supply disruption

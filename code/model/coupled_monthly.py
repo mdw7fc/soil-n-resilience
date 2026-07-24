@@ -321,6 +321,7 @@ class CoupledMonthlyModel:
         t_max: float = 100.0,
         dt: float = 1.0,
         yield_max_override: float = None,
+        initial_pools: dict = None,
     ):
         self.region = region
         self.econ = econ
@@ -356,6 +357,7 @@ class CoupledMonthlyModel:
         self.bio = MonthlyBiophysicalEngine(
             region, region_key=region_key,
             yield_max_override=yield_max_override,
+            initial_pools=initial_pools,
         )
 
         # Baseline values
@@ -373,6 +375,12 @@ class CoupledMonthlyModel:
         self.F_hat = 0.0
         self.L_hat = 0.0
         self.N_hat = 0.0
+
+    def _lambda_L(self) -> float:
+        """Land-market reduction coefficient, L_hat = lambda_L * PY_hat."""
+        if abs(self.eps_LS_PL - self.eps_LD_PL) > 1e-10:
+            return self.eps_LS_PL * self.eps_LD_PY / (self.eps_LS_PL - self.eps_LD_PL)
+        return 0.0
 
     def _solve_equilibrium(self, beta: float, gamma: float) -> Tuple[float, float, float]:
         """Solve the simultaneous system for PY_hat, F_hat, L_hat.
@@ -396,6 +404,33 @@ class CoupledMonthlyModel:
         F_hat = self.eps_F_PF * self.PF_hat + self.eps_F_PY * PY_hat + self.eps_F_N * self.N_hat
         L_hat = lambda_L * PY_hat
 
+        return PY_hat, F_hat, L_hat
+
+    def _solve_equilibrium_capped(self, beta: float, gamma: float, ln_c: float):
+        """Constrained equilibrium when the physical fertilizer cap binds.
+
+        When supply is rationed, fertilizer quantity is set by physical
+        availability, not price: F_hat = ln(c) - L_hat = ln(c) - lambda_L*PY_hat
+        (exactly the per-hectare cap F0*L0*c / L_level in log-changes).
+        Substituting into supply Y_hat = alpha*L_hat + beta*N_hat + gamma*F_hat
+        and imposing market clearing Y_hat = eta*PY_hat gives
+
+            PY_hat = (beta*N_hat + gamma*ln(c)) / (eta - (alpha - gamma)*lambda_L).
+
+        Food price and land are then consistent with the fertilizer actually
+        available; the fertilizer-price term drops out because price no longer
+        rations demand once the physical cap binds (constrained-cap fix).
+        """
+        if abs(self.eps_LS_PL - self.eps_LD_PL) > 1e-10:
+            lambda_L = self.eps_LS_PL * self.eps_LD_PY / (self.eps_LS_PL - self.eps_LD_PL)
+        else:
+            lambda_L = 0.0
+
+        num = beta * self.N_hat + gamma * ln_c
+        den = self.eta - (self.alpha - gamma) * lambda_L
+        PY_hat = num / den if abs(den) > 1e-10 else 0.0
+        L_hat = lambda_L * PY_hat
+        F_hat = ln_c - L_hat
         return PY_hat, F_hat, L_hat
 
     def run(self) -> pd.DataFrame:
@@ -426,6 +461,8 @@ class CoupledMonthlyModel:
             'gamma': np.zeros(n_steps),
             'total_production_index': np.zeros(n_steps),
             'carrying_capacity_fraction': np.zeros(n_steps),
+            'cap_binding': np.zeros(n_steps),
+            'clearing_residual': np.zeros(n_steps),
         }
 
         # Compute initial elasticities without mutating state
@@ -460,6 +497,13 @@ class CoupledMonthlyModel:
         init_beta = init_elast * max(0.0, soil_share)
         init_gamma = init_elast * fert_share
 
+        # Normalize N_hat to the year-0 recorded mineralization so that
+        # N_hat = 0 at the true baseline flux (stationary-baseline fix, second
+        # discontinuity). Previously N_min_baseline was the spin-up value
+        # n_min_eq, which differed from the year-0 recorded flux and made
+        # N_hat nonzero in year 1 before the shock affected the soil.
+        self.N_min_baseline = n_min_init
+
         for i in range(n_steps):
             t = i * self.dt
             results['year'][i] = t
@@ -489,6 +533,8 @@ class CoupledMonthlyModel:
                 results['gamma'][i] = init_gamma
                 results['total_production_index'][i] = 1.0
                 results['carrying_capacity_fraction'][i] = 1.0
+                results['cap_binding'][i] = 0.0
+                results['clearing_residual'][i] = 0.0
                 continue
 
             # Update N_hat from biophysical state (use previous step's mineralization)
@@ -510,26 +556,42 @@ class CoupledMonthlyModel:
             beta = results['beta'][i-1]
             gamma = results['gamma'][i-1]
 
-            # Solve equilibrium
+            # Solve the unconstrained equilibrium
             PY_hat, F_hat, L_hat = self._solve_equilibrium(beta, gamma)
-            self.PY_hat = PY_hat
-            self.F_hat = F_hat
-            self.L_hat = L_hat
-
-            # Convert to levels
-            F_level = self.F_baseline * np.exp(F_hat)
+            F_level = max(0.0, self.F_baseline * np.exp(F_hat))
             L_level = self.L_baseline * np.exp(L_hat)
-            F_level = max(0.0, F_level)
+            cap_binding = False
+            clearing_residual = 0.0
 
-            # Supply ceiling
+            # Physical supply ceiling. If the cap binds, RE-SOLVE the
+            # equilibrium with fertilizer set by physical availability so that
+            # food price and land clear the market for the fertilizer actually
+            # available (constrained-cap fix); otherwise keep the unconstrained
+            # solution.
             if self.econ.fert_supply_ceiling < 1.0:
                 ceiling = self.econ.fert_supply_ceiling
                 if self.econ.fert_capacity_recovery_years > 0 and t > 0:
                     recovery_frac = min(1.0, t / self.econ.fert_capacity_recovery_years)
                     ceiling = ceiling + (1.0 - ceiling) * recovery_frac
-                total_n_available = self.F_baseline * self.L_baseline * ceiling
-                F_max = total_n_available / max(L_level, 1e-6)
-                F_level = min(F_level, F_max)
+                F_max = self.F_baseline * self.L_baseline * ceiling / max(L_level, 1e-6)
+                if F_level > F_max * (1.0 + 1e-9):
+                    PY_hat, F_hat, L_hat = self._solve_equilibrium_capped(
+                        beta, gamma, np.log(ceiling))
+                    F_level = max(0.0, self.F_baseline * np.exp(F_hat))
+                    L_level = self.L_baseline * np.exp(L_hat)
+                    cap_binding = True
+                    # Clearing diagnostic. With the cap binding, the fertilizer
+                    # consistent with the reported food price is
+                    # ln(c_t) - lambda_L*PY_hat. clearing_residual is the
+                    # supply-side error gamma*(F_realised - F_implied): non-zero
+                    # under post-hoc clipping, identically zero under the
+                    # constrained re-solve. Reported for auditability.
+                    F_implied = np.log(ceiling) - self._lambda_L() * PY_hat
+                    clearing_residual = gamma * (F_hat - F_implied)
+
+            self.PY_hat = PY_hat
+            self.F_hat = F_hat
+            self.L_hat = L_hat
 
             # Advance biophysical model
             bio_state = self.bio.step(F_level)
@@ -562,6 +624,8 @@ class CoupledMonthlyModel:
             results['gamma'][i] = bio_state['gamma']
             results['total_production_index'][i] = total_prod_index
             results['carrying_capacity_fraction'][i] = total_prod_index
+            results['cap_binding'][i] = 1.0 if cap_binding else 0.0
+            results['clearing_residual'][i] = clearing_residual
 
         return pd.DataFrame(results)
 

@@ -9,8 +9,14 @@ Outputs (written to ../../data/ and ../../outputs/):
   canonical_ERA5_y30.csv / .json  - per-region descriptors + yr1/10/30 losses
   global_S3_losses.txt            - production-weighted global loss, yr 1/10/30
 
-Reproduces (production-weighted): 4.33 / 5.58 / 5.95 % for years 1 / 10 / 30,
-matching the manuscript's 4.3 / 5.6 / 5.9 %.
+Reproduces (production-weighted): 2.30 / 3.41 / 3.64 % for years 1 / 10 / 30,
+matching the manuscript's 2.3 / 3.4 / 3.6 %.
+
+v1.3: these values supersede the v1.2 figures of 4.33 / 5.58 / 5.95 %. Two
+internal-consistency corrections were applied to the model (a stationary
+Century spin-up that applies the same baseline water-stress multiplier the
+simulation uses, and a re-solved rather than clipped equilibrium when the
+physical fertilizer ceiling binds). See CHANGELOG.md.
 """
 import os, sys, json, csv, warnings
 warnings.filterwarnings("ignore")
@@ -80,7 +86,7 @@ def main():
         f.write("Production-weighted global S3 yield loss (%)\n")
         f.write("year 1 : %.2f\nyear 10: %.2f\nyear 30: %.2f\n" % (gl[1], gl[10], gl[30]))
     print("Global production-weighted S3 loss  yr1/yr10/yr30 = %.2f / %.2f / %.2f %%" % (gl[1], gl[10], gl[30]))
-    print("(manuscript: 4.3 / 5.6 / 5.9)")
+    print("(manuscript: 2.3 / 3.4 / 3.6)")
     print("buffer ratios:", [x['buffer_ratio_pct'] for x in rows])
 
 if __name__ == '__main__':

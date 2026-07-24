@@ -93,6 +93,22 @@ FAOSTAT_TARGETS = {
 }
 
 
+def baseline_water_stress(region, water_stress_eps_mm: float = 3.0) -> float:
+    """Water-stress multiplier at the SOC baseline (delta_SOC = 0).
+
+    This is exactly the value MonthlyBiophysicalEngine._water_stress returns
+    when soc_current == soc_initial (no SOC deviation): the WHC change term is
+    zero, so only the region's baseline water deficit (through the same soft
+    floor) enters. Applying this constant factor to yield during spin-up makes
+    the spin-up's residue-C input consistent with the coupled simulation, which
+    is what renders the no-shock baseline stationary (v13 internal-consistency fix: stationary baseline).
+    """
+    raw = region.baseline_water_deficit
+    total_deficit = 0.5 * (raw + np.sqrt(raw * raw + water_stress_eps_mm ** 2))
+    stress = 1.0 - region.water_stress_coeff * total_deficit
+    return max(0.3, min(1.0, stress))
+
+
 # ============================================================================
 # Parameters
 # ============================================================================
@@ -299,6 +315,7 @@ def century_dynamic_spinup(
     som_params: SOMPoolParams = None,
     crop_params: CropParams = None,
     region_override: RegionParams = None,
+    apply_water_stress: bool = True,
 ) -> Dict:
     """Iterate Century 3-pool SOM to true steady state.
 
@@ -311,17 +328,17 @@ def century_dynamic_spinup(
     Convergence criterion: fractional SOC change over a 50-year window
     < tol, with a minimum of 100 years.
 
-    Note: the coupled monthly model multiplies Mitscherlich yield by a
-    SOC-dependent water-stress factor that this spinup does not apply.
-    Consequently, in low-SOC regions (notably Sub-Saharan Africa) the
-    coupled model exhibits a few-percent yield drift over the first
-    decade even with no shock applied — interpreted in Supplementary
-    Methods as residual non-equilibrium dynamics under current
-    management. A water-stress-aware spinup variant is available on
-    request but is not used for the published analyses; reverting to it
-    would compress the year-10 yield-loss numbers in SSA / SA / FSU by
-    several percentage points and change the regional vulnerability
-    ranking.
+    Note (v1.3): the spin-up now applies the same baseline water-stress
+    multiplier (evaluated at delta_SOC = 0) that the coupled monthly model
+    applies during simulation, so the residue-C input used to equilibrate
+    the SOM pools is consistent with the annual step and the equilibrium
+    pools are a genuine fixed point. Earlier versions omitted this factor,
+    which left the no-shock baseline nonstationary: low-SOC regions
+    (notably Sub-Saharan Africa) drifted downward by several percent over
+    the first decade with no shock applied, inflating reported yield
+    losses. Setting apply_water_stress=False restores the legacy
+    (nonstationary) behaviour for comparison only; it should not be used
+    for published analyses.
 
     Parameters
     ----------
@@ -391,6 +408,11 @@ def century_dynamic_spinup(
 
     mineral_n = 12.0
 
+    # Baseline water-stress factor (delta_SOC = 0), applied to yield so that
+    # spin-up residue C matches the coupled simulation. Setting
+    # apply_water_stress=False recovers the legacy (non-stationary) spin-up.
+    ws0 = baseline_water_stress(region) if apply_water_stress else 1.0
+
     converged = False
     years_to_converge = n_spinup
     conv_window = 50
@@ -404,9 +426,10 @@ def century_dynamic_spinup(
             som_params=som)
         mineral_n = nb['mineral_n_end']
 
-        # Yield
+        # Yield (baseline water-stress factor applied to the Mitscherlich term
+        # only, matching MonthlyBiophysicalEngine.step so residue C is consistent)
         n_eff = nb['uptake']
-        y = ym * (1 - np.exp(-mit_c * n_eff))
+        y = ym * (1 - np.exp(-mit_c * n_eff)) * ws0
         y_stoich = n_eff / n_grain_t if n_grain_t > 0 else y
         y = min(y, y_stoich)
         y = max(region.yield_min_regional if region.yield_min_regional > 0 else 0.0, y)

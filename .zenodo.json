@@ -1,7 +1,7 @@
 {
-  "title": "Soil organic matter buffers fertilizer supply disruptions \u2014 model code and canonical reproducibility deposit",
+  "title": "Soil organic matter buffers fertilizer supply disruptions — model code and canonical reproducibility deposit",
   "upload_type": "software",
-  "description": "Coupled biophysical-economic model code, frozen canonical model output (ERA5 data-based climate run to year 30), and regeneration scripts for all figures and tables in Wallenstein & Manning, Environmental Research: Food Systems (ERFS-100341). This deposit corresponds to the v12 (canonical) manuscript and supplementary information: every figure and table derives from the single frozen output produced by code/repro/run_canonical.py.",
+  "description": "Coupled biophysical-economic model code, frozen canonical model output (ERA5 data-based climate run to year 30), and regeneration scripts for all figures and tables in Wallenstein & Manning, Environmental Research: Food Systems (ERFS-100341). This deposit corresponds to the v14 (canonical) manuscript and supplementary information: every figure and table derives from the single frozen output produced by code/repro/run_canonical.py. Deposit v1.4 applies two internal-consistency corrections to the model (a stationary Century spin-up and a re-solved rather than clipped equilibrium under a binding fertilizer supply ceiling), adds two invariance tests, and deposits the previously missing generators for main-text Figures 1 and 2 and for Supplementary Figures S7, S9, S10 and S11.",
   "creators": [
     {
       "name": "Wallenstein, Matthew D.",
@@ -31,5 +31,6 @@
       "relation": "isSupplementTo",
       "scheme": "url"
     }
-  ]
+  ],
+  "version": "v14-canonical"
 }
