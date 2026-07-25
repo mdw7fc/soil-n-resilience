@@ -1,0 +1,1240 @@
+# FINDINGS
+
+Dated record of defects found during the v15 hardening pass, what was measured,
+and where the numbers live. Each entry names the test that will fail if the
+finding is reversed, so that no finding rests on this file being read.
+
+---
+
+## F-001 — 2026-07-25 — The spin-up does not reach a steady state, and the registry's exemption said it did
+
+`som_pool_fractions` was exempted from the Monte Carlo on the grounds that the
+dynamic spin-up overwrites the initial 4/38/58 partition of SOC. That claim was
+false. With `k_passive = 0.000728/yr` the passive pool has a 1374-year turnover,
+while the spin-up's convergence criterion (fractional SOC drift below 0.002 over
+a 50-year window) is met after 101 to 130 years. The active and slow pools do
+equilibrate and are partition-independent to better than 1.5%; the passive pool
+is essentially inherited.
+
+Measured. Starting North America from `f_passive` 0.10, 0.58 and 0.90 gives
+converged passive stocks of 6.98, 28.91 and 43.00 t C/ha and total SOC of 29.23,
+51.01 and 64.98 t C/ha. Run to a true fixed point (`n_spinup=20000, tol=1e-6`)
+all three land on 49.79 t C/ha to within 5.4e-5, so the equilibrium itself is
+partition-free; the shipped spin-up does not run that far. Against the analytic
+fixed point `c_p* = h_slow_to_passive * k_slow * c_slow* / k_passive` the passive
+pool covers 7.5-8.5% of the distance in the five temperate regions and 90.9-91.6%
+in the four regions on the Laub tropical parameterisation.
+
+Consequence. Temperate SOC is anchored on the measured stock (North America 51.0
+against a registered `soc_initial` of 50.0) and tropical SOC on the model's own
+kinetics (Sub-Saharan Africa 5.99 against a registered 9.0). Absolute stocks are
+therefore not comparable across regimes even though relative changes are.
+Absolute SOC is initialization, not prediction, and the manuscript must not
+present it as one. **Owed to the SI as a stated limitation.**
+
+What licenses the exemption instead. Over `f_passive` 0.45 to 0.73 the S3 year-1
+and year-10 yield losses move by at most 0.01 and 0.02 percentage points in any
+region, against a shift of up to 12.3 t C/ha in absolute SOC. The water-stress
+term responds to SOC change measured against each run's own equilibrium, and the
+passive pool contributes about 2% of N mineralization.
+
+Written to: `code/model/params.yaml` (`som_pool_fractions.mc_exempt_reason`),
+`monthly_model_v3.century_dynamic_spinup` docstring.
+Asserted by: `code/tests/test_spinup_partition_independence.py`.
+
+---
+
+## F-002 — 2026-07-25 — The calibration was fitted on a code path nobody published
+
+`monthly_model_v3.calibrate_ym` roots on `run_model`, which uses the global
+`CropParams.mitscherlich_c` and applies no baseline water-stress multiplier.
+Every published run goes through `century_dynamic_spinup` plus
+`MonthlyBiophysicalEngine`, which use `region.mitscherlich_c_regional` and do
+apply water stress. The manuscript's statement that yields are calibrated to
+FAOSTAT was true of a path that was never run. No test caught it because every
+test compared the model to itself, which is the user's condition #3 (tests
+checking internal reproducibility rather than external validity) intersecting
+condition #2 (calibration masking errors).
+
+Measured, under the published ERA5 forcing. Production baseline yields missed
+their FAOSTAT targets by -3.87% (South Asia) to +4.19% (Latin America).
+Recalibrating on the production path moves `yield_max` by -3.36% to +3.78% and
+the reported S3 losses by at most 0.10 pp (Latin America year-10 2.32 to 2.42
+pp), with no change in the regional ranking: FSU/Central Asia remains the
+highest year-1 loss.
+
+Fixed by `coupled_monthly.calibrate_ym_production`, which roots the production
+path itself; `get_calibrated_ym` now calls it. `CALIBRATION_SCHEME =
+'production_path_v2'` is the first element of `calibration_fingerprint`, so every
+`yield_max` cached on disk under the old scheme is stale by construction and
+cannot be reused. `YM_REGION_FIELDS` grew from 9 to 13 fields, adding
+`mitscherlich_c_regional`, `baseline_water_deficit`, `water_stress_coeff` and
+`whc_sensitivity`. The legacy `calibrate_ym` is left importable on purpose: the
+test measures the gap rather than deleting the evidence.
+
+Written to: `results/calibration_production_path.csv`,
+`logs/run_01_calib_fingerprint.log`.
+Asserted by: `code/tests/test_calibration_fingerprint.py`, which reproduces the
+FAOSTAT targets to 1e-3 relative (achieved: 8e-3 percent worst case), AST-scans
+the calibration path for region fields the fingerprint does not hash, perturbs
+all 19 RegionParams fields and fails if an unregistered field moves `yield_max`,
+and fails if the legacy objective's gap ever falls below 1%.
+
+Consequence. **The 1000-draw Monte Carlo and every figure must be regenerated
+under the new calibration.**
+
+---
+
+## F-003 — 2026-07-25 — `k_slow` uncertainty cannot reach the baseline, which is why one `yield_max` per region is sound
+
+`run_mc_ensemble.py` computes `yield_max` once outside the draw loop (line ~481)
+and then perturbs `k_slow` inside it by a truncated normal on [0.60, 1.40]. That
+would be a stale-calibration bug if `k_slow` reached the baseline. It does not,
+structurally: a first-order pool at steady state passes its input through
+unchanged, `c_slow* = 0.46 c_in / k_slow`, so the mineralization flux
+`k_slow * c_slow*` is invariant to `k_slow`.
+
+Measured. Baseline yield spans 0.098% at worst across the prior's full range,
+against a calibration tolerance of 0.20%. `k_slow` uncertainty therefore
+propagates only into the transient response, never into the equilibrium. This is
+what licenses omitting `som_params` from `calibration_fingerprint`.
+
+Written to: `logs/run_01_calib_fingerprint.log` section [7].
+Asserted by: `test_k_slow_does_not_enter_the_baseline`, which fails if the span
+exceeds 0.5% and names the line in `run_mc_ensemble.py` that depends on it.
+
+---
+
+## F-004 — 2026-07-25 — The deposited ERA5 climate module did not reproduce the published runs
+
+`code/era5/REGIONAL_CLIMATES_era5.py` is the file a reader of the deposit would
+import to get the published forcing. It was hand-maintained, and it disagreed
+with what ran. Its temperature, precipitation and PET arrays matched
+`data/era5_regional_climates.json` exactly (max absolute difference 0.0 across
+all eight regions and all three arrays), but its maturity months differed for
+three regions: Latin America 4 against 3, Sub-Saharan Africa 10 against 9,
+FSU/Central Asia 9 against 8. `run_canonical.patch_era5_climate` reads the
+arrays from the JSON and keeps planting and maturity months from the built-in
+`monthly_model_v3.REGIONAL_CLIMATES`, so the deposited module was never the
+configuration that produced any figure.
+
+Measured, under the production-path calibration. Re-running S3 for 30 years with
+the deposited calendar moves the year-1 yield loss by -0.163 pp (Latin America),
++0.129 pp (Sub-Saharan Africa) and -0.263 pp (FSU/Central Asia), and `yield_max`
+by -1.51%, -2.62% and +0.11%. North America, whose calendar agreed, reproduced
+bit-identically, which confirms the deltas are the calendar and not run-to-run
+noise. Five of the six affected loss values move by more than the paper's 0.1 pp
+reporting precision, and all of them by more than the 0.05 pp tolerance the
+spin-up test uses to license its own exemption.
+
+Why nothing caught it, and this is the same mechanism as F-002. `yield_max` is
+refitted to the FAOSTAT target on whatever calendar it is handed, so the
+baseline yield lands within 4e-5 relative of the target under either calendar.
+Every check that compares the model to its own calibration target passes. The
+error survives only in the shock response, which is the quantity the paper
+reports and no test compared. Calibration absorbed the defect in the checked
+quantity and left it in the reported one.
+
+Ruled out while sizing this. `calibration_fingerprint` does include
+`planting_month` and `maturity_month` (`coupled_monthly.py:731`) and the
+fingerprints did differ across the two calendars, so there is no stale-`ym`
+cache hazard here.
+
+Fixed by making the file generated rather than maintained.
+`code/era5/generate_era5_module.py` emits it from the JSON extract plus the
+built-in calendar, the same two sources `patch_era5_climate` reads. The published
+calendar is kept; the deposited months were not adopted, because there is no
+evidence they are the better crop calendar and adopting them would change
+published numbers on no authority.
+
+Registry gap this exposed, not yet closed. The crop calendar is a per-region
+empirical assumption (dominant regional crop after Sacks et al. 2010) that lives
+in code, not in `code/model/params.yaml`, and it is not varied in the Monte
+Carlo. It moves the reported loss by up to 0.26 pp per month of growing season,
+which is larger than several parameters that are sampled. **Owed: register the
+twelve planting and maturity months with provenance, and state in the SI that
+the growing season is fixed.**
+
+Written to: `results/era5_calendar_discrepancy.csv`,
+`results/era5_calendar_discrepancy_summary.csv`,
+`code/repro/measure_era5_calendar.py`, `logs/run_13_era5_calendar.log`.
+Asserted by: `code/tests/test_era5_deposit_matches_runtime.py`, which fails if
+regenerating the module would change a byte and, independently, if the parsed
+deposit disagrees with the patched runtime state on any field. Negative control
+run: reverting one maturity month produced 3 failures
+(`logs/run_17_era5_negctl.log`).
+
+---
+
+## F-005 — 2026-07-25 — Three aggregation bases in one paper, and two docstrings named the wrong one
+
+A global figure is a weighted mean, and the weights are a scientific claim. This
+repository made that claim three different ways, in three files, and described it
+in words a fourth way.
+
+What was where. `coupled_econ_biophysical.calibrate_price_shock` weighted the
+regional fertilizer-demand responses by **nitrogen tonnage**
+(`cropland_mha * synth_n_current`) while its own docstring, and the docstring of
+`get_scenario_params` below it, said "area-weighted".
+`coupled_econ_biophysical.aggregate_global` weighted every outcome column by
+**cropland area**. `code/repro/run_canonical.py` normalised a third vector
+inline, **production tonnage** (`cropland_mha * y_base`), and that third one is
+what produced the published 2.30 / 3.41 / 3.64 % headline. Nothing in the code
+compared them, and no output labelled which one it used.
+
+Measured spread, from `results/aggregation_basis_comparison.csv` (per-region
+losses reweighted from the frozen `data/scenario_trajectories.csv`; weights from
+`data/canonical_ERA5_y30.csv`). Global S3 yield loss, area / nitrogen /
+production: year 1 **2.652 / 2.156 / 2.305 %**, year 10 **4.006 / 3.310 /
+3.412 %**, year 30 **4.289 / 3.508 / 3.636 %**. The delivered year-1 fertilizer
+reduction from the calibrated shock (`fert_price_shock = 1.0389792148`) is
+**21.42 / 20.00 / 19.56 %**. Largest spread on any reported quantity: **1.87 pp**,
+on the fertilizer reduction, against a reporting precision of 0.1 pp.
+
+The scenario headline is basis-dependent in a way the paper does not state. "A
+20% reduction in fertilizer application" is exactly 20.00% only on the
+nitrogen-tonnage basis the shock was calibrated on. On the production basis that
+the yield headline uses, the same shock delivers 19.56%. Two numbers in the same
+sentence, computed on different weights.
+
+Why no published number moved when this was fixed. `aggregate_global`, the
+function carrying the area basis, has exactly two call sites
+(`coupled_econ_biophysical.py:1052` and `:1072`), both inside that module's
+`__main__` demonstration printout. It fed no figure, no table and no manuscript
+sentence. The published path was `run_canonical.py`'s inline normalisation, which
+was already production-weighted and stayed so.
+
+Resolution, and it is a resolution of the concept and not of the numbers. There
+are two quantity classes, not two competing bases for one quantity.
+`outcome_weights()` returns the single declared basis for outcome shares
+(`yield_fraction`, `soc_fraction`, `food_price_index`): production tonnage,
+because a fifth of the world's grain lost in one region is not offset by a fifth
+of a region that grows little. `intensity_weights()` returns the basis for
+per-hectare rates (`fert_applied_kgha`, `n_mineralized`, `water_stress`):
+cropland area, because the global mean of a per-hectare rate is its area-weighted
+mean by definition. Nitrogen tonnage is retained in `calibrate_price_shock` alone
+and now says so, because a scenario defined as a reduction in nitrogen mass is
+correctly weighted by nitrogen mass; weighting a mass-defined scenario by
+anything else would mean the scenario does not deliver its own definition. Both
+false docstrings were corrected and both name the date they were wrong until.
+Every call site now goes through one of the two factories, and `run_canonical.py`
+takes the published vector from `outcome_weights` rather than building its own.
+
+The check is on construction, not on inspection. `SeamD_AggregationWeights`
+(`code/model/seams.py`) is a frozen dataclass that validates in `__post_init__`:
+weights sum to one, no region silently dropped, no zero-weight region, and a
+non-empty provenance string. `assert_same_basis()` refuses two vectors built on
+different bases. There is no way to obtain a weight vector and skip the check.
+
+A vacuous assertion was written and removed during this work. The first version
+called `assert_same_basis(*[W_prod for _ in OUTCOME_COLS])` inside
+`aggregate_global`, which passes the same object N times and therefore cannot
+fail. It was deleted; the real cross-quantity check lives in the test file, where
+two independently constructed vectors meet. An assertion that cannot fail
+ratifies rather than tests.
+
+Caveat carried forward. The rerun used to fill the columns with no per-region
+file on disk (SOC change, delivered fertilizer) does not reproduce the frozen
+canonical, because current HEAD recalibrates `yield_max` on the production path
+(F-002). Maximum residual 1.4502 pp at south_asia year 30; at year 1 only
+0.0702 pp. Those rows are labelled `_rerun_currentcode` in the CSV and must not
+be mixed with the frozen rows.
+
+Owed to the manuscript. The MS and SI must state, for every global number, which
+basis it is on, and must not present a nitrogen-weighted 20% and a
+production-weighted 2.30% as if they were the same average.
+
+Written to: `results/aggregation_basis_comparison.csv`,
+`results/aggregation_basis_weights.csv`,
+`results/aggregation_basis_comparison_README.txt`,
+`results/seam_contract_checks.yaml`, `logs/run_21_seams.log`.
+Asserted by: `code/tests/test_seam_contracts.py` sections D1-D3. D2 is an
+external-validity probe with an independent hand implementation and a guard that
+fails if the constructed case stops separating the two bases. D3 recomputes the
+deposited headline from its own per-region rows and requires exact agreement at
+the deposit's 2 dp (measured unrounded gap 0.0049 pp). Verified no behaviour
+change: `calibrate_price_shock(0.20)` returns 1.0389792148114703 before and
+after. Negative controls firing in this area: a production vector and an area
+vector passed to `assert_same_basis`, a vector with no provenance, weights
+summing to 0.9, a region silently dropped, a region with zero weight.
+
+---
+
+## F-006 — 2026-07-25 — The registry documents the model; it does not drive it
+
+Mutation coverage was run over the whole registry for the first time
+(`code/tests/run_mutation_coverage.py`, 56 mutable leaves, one canonical S3 run
+plus six test files per leaf, ~38 s each). The plan expected the output to be a
+list of parameters nothing tests. The actual output is one line down from that:
+**perturbing 45 of the 56 registered leaves by 10% changes no published number
+at all.**
+
+Only five leaves reach the canonical run: `soc_bulk_density`, `cm2_per_ha`,
+`g_per_t` and `pct_to_fraction`, all of which reach it through the single
+derived quantity `soc_tha_per_pct`, and `residue_c_to_active_fraction`, which
+was wired earlier today. Six more are refused at load by the registry's own
+constraints (the two sum-to-one blocks and the profile-depth unit check), which
+is the registry working. Everything else is declared and mirrored.
+
+The mechanism. `code/model/registry.py` is imported by exactly four modules and
+supplies exactly two things: `soc_tha_per_pct()` and, since today,
+`value('residue_c_to_active_fraction')`. Every other registered value is
+restated as a literal in code, and `code/tests/test_registry_consistency.py`
+compares the two, entry by entry, with an explicit wiring table. So the registry
+cannot drift from the code, which is what that test was built to guarantee and
+it does guarantee it. But the direction of authority runs from the code to the
+registry, not the other way. `params.yaml` is a documentation layer with a drift
+alarm attached.
+
+Why this matters more than it sounds. Mutation coverage is only informative
+about parameters the model actually reads. Run against a registry the model does
+not read, it returns "everything is caught" for the same reason a thermometer in
+a drawer reports a stable temperature. The 45 leaves are not proven safe; they
+are unmeasured, and the harness cannot measure them until they are wired. The
+verdict `DECLARED_NOT_WIRED` exists in the harness so this result cannot be read
+as coverage.
+
+The sharper case is the Monte Carlo. **33 of the 45 unwired leaves carry an
+`uncertainty:` block**, including `som_decay_rates.k_slow`, `whc_sensitivity`,
+`eps_F_N`, `eps_F_PF`, `cre_base`, `residue_retention` and `soc_initial`.
+`code/repro/run_mc_ensemble.py` imports nothing from `registry`. The prior
+stated in `params.yaml`, which is what the SI parameter table is generated from,
+and the prior the ensemble actually samples are two separate statements of the
+same thing, and nothing compares them. This is systemic condition 1, "the same
+concept specified in multiple places", in the one place where it would move a
+published uncertainty interval rather than a central estimate.
+
+What is owed, and it is a refactor, not a patch. Each unwired leaf needs its
+literal replaced by a registry read, in dependency order, with the mutation
+harness rerun after each batch so the verdict moves from DECLARED_NOT_WIRED to
+COVERED or UNTESTED and the UNTESTED rows become the real worklist the plan
+asked for. The highest-value batch is the one the ensemble samples: the SOM
+kinetics, `whc_sensitivity`, the demand elasticities, and the region tables. A
+narrower interim step, if the refactor cannot be completed before v15, is a test
+asserting that every `uncertainty:` block in `params.yaml` matches the
+distribution `run_mc_ensemble.py` draws, which closes the specific gap above
+without rewiring anything.
+
+One caveat on REACH. It is measured on the canonical S3 run only. A parameter
+that matters solely in the Monte Carlo tails, the price-shock analysis or the
+four-pool comparison would read as not reaching even once wired. The verdict
+column carries that limit.
+
+Written to: `results/mutation_coverage.csv` (one row per leaf, with the
+mutation rule, the maximum relative move, the quantity that moved most, and the
+tests that failed), `results/mutation_coverage_summary.txt`,
+`logs/run_28_mutation_coverage.log`.
+Asserted by: nothing yet, deliberately. The harness is a measuring instrument
+run on demand, not a test, because a 36-minute sweep in the suite would stop
+being run. Whether it becomes a gate is a decision for after the rewiring, when
+its output is capable of failing for a reason other than the one above.
+
+
+## F-007 — 2026-07-25 — Every prior the SI reports and the ensemble draws that could be compared numerically disagreed
+
+`code/tests/test_uncertainty_completeness.py` was written as the narrower
+interim step F-006 named, and run for the first time today
+(`logs/run_30_uncertainty.log`, exit 1, 27 findings). It compares the
+`uncertainty:` block of every registry entry against the prior
+`code/repro/run_mc_ensemble.py` actually draws.
+
+`params.yaml` declares 25 uncertainties. Eight are mapped to a drawn prior; two
+of those (`n_price_wedge`, `crop_price_usd_t`) defer to a per-region bounds
+table that the ensemble reads directly, so they cannot disagree. **Of the six
+that could be compared number by number, all six differed**, in 13 of the 18
+compared fields:
+
+| parameter | params.yaml declared | run_mc_ensemble drew |
+|---|---|---|
+| `som_decay_rates` (k_slow) | sd 0.15, [0.6, 1.5] | sd 0.20, [0.60, 1.40] |
+| `eps_F_PF` | sd 0.2, [0.5, 1.5] | sd 0.30, [0.50, 1.50] |
+| `eta` | sd 0.2, [0.5, 1.5] | sd 0.25, [0.60, 1.40] |
+| `residue_retention` | sd 0.15, [0.6, 1.3] | sd 0.10, [0.80, 1.15] |
+| `cre_regional` | sd 0.2, [0.05, 0.6] absolute clip | sd 0.30, [0.40, 1.80] multiplier, then clipped to [0.01, 0.99] |
+| `whc_sensitivity` | [2.3, 8.4] mm/pp | [2.2995, 8.4] mm/pp |
+
+The direction of correction is not symmetric. The ensemble is what ran, so
+`params.yaml` is what was wrong, and every block above has been rewritten to the
+drawn prior with a dated note saying so. Editing the ensemble instead would have
+made the published interval unreproducible from the code that produced it.
+
+Two of the six are worth separating from the arithmetic. `residue_retention`'s
+declared prior was *wider* than the drawn one in both directions, so the SI
+table has been advertising an input-carbon uncertainty three times the width of
+the one that was propagated. And `cre_regional` wrote two different quantities
+into one pair of fields: the numbers `[0.05, 0.6]` are an absolute retention
+range, while `low` and `high` in every other block are multipliers on the
+central value. That is F-005's error class in a new place, a number recorded
+without its basis, and it is why the block now carries `clip_absolute` as an
+explicit `[0.01, 0.99]` pair rather than as a bare `true`.
+
+`whc_sensitivity` is a transcription, not a disagreement: the ensemble writes
+the lower bound as `0.657`, three significant figures of `2.3 / 3.5 =
+0.657143`, so it draws from 2.2995 mm rather than 2.3 mm. Neither side was
+edited. Changing the ensemble literal would move the support of a truncated
+normal and therefore every draw, to correct 0.02% of one bound of a
+meta-analytic range. The test declares the rounding explicitly
+(`ensemble_sig_figs=3` with a required `rounding_reason`) and still fails on any
+residual the declared rounding cannot produce.
+
+**Seventeen declared uncertainties are never sampled.** Fourteen had no recorded
+reason, which is the finding underneath the finding: a prior in `params.yaml` is
+what the SI parameter table prints, so the paper has been stating priors on
+fourteen parameters it holds fixed. Each now carries a reason in `MAPPING`, and
+each reason is required to state both the mechanism and the consequence for the
+SI limitations section, because an unpropagated uncertainty is a sentence the
+limitations owe the reader. Three of those reasons are themselves findings:
+
+- **`root_shoot_c_ratio` is an understatement, not a cancellation.** The model
+  forms residue carbon as `c_in ∝ (residue_retention + root_shoot_c_ratio)`
+  (`monthly_model_v3:505-507`), a sum, not a product. Only the shoot term is
+  drawn, so input-side carbon uncertainty is propagated on roughly half the
+  input and the reported SOC interval is narrower than an input-complete
+  ensemble would give. This one should be drawn in the next ensemble.
+- **`bnf_potential` and `bnf_ramp_years` document a mechanism the model does not
+  have.** Fixation in the published run comes from
+  `monthly_model_v3.get_regional_bnf`, a constant landscape average computed
+  from legume rotation fraction and net nitrogen credit; it never reads either
+  parameter, and there is no ramp anywhere. `bnf_potential` survives only
+  because `run_canonical.py:71` copies it into the canonical CSV as a reported
+  column; `bnf_ramp_years` has no consumer at all. Both `used_by` fields named
+  `soil_n_model.get_regional_bnf`, a function that is neither in that module nor
+  a reader of these values. Both entries now carry `superseded_by` and
+  `superseded_note` (new registry keys, `code/model/registry.py`), because
+  deleting them would erase the fact that the manuscript still describes the
+  superseded mechanism. **The manuscript must stop saying fixation ramps in over
+  8 to 15 years, and fixation carries no sampled uncertainty at all**, since
+  `MANAGED_TRANSITION_PARAMS` is neither registered nor drawn.
+- **`residue_c_to_active_fraction` is wired and unsampled.** It is the only
+  registered non-conversion parameter the canonical run reads (F-006), the
+  mutation sweep put its reach at 2.5e-2 pp on southeast Asia year 1, and it was
+  a bare literal until today, so no ensemble that has run could have drawn it.
+
+What this does not assert. That any of these priors is right. It asserts only
+that the paper's two statements of each are now the same statement. Whether a
+truncated normal on [0.60, 1.40] is the correct prior for `k_slow` is benchmark
+B2's question.
+
+Consequence for the manuscript. The SI parameter table is generated from
+`params.yaml`, so every number in the six rows above was wrong in the submitted
+version, and the fourteen rows carrying a prior the ensemble never drew were
+misleading in a worse way, because a declared prior reads as a propagated one.
+The corrected table must also mark which rows are declared-but-fixed. No
+published result changes: the ensemble drew what it drew, and this finding
+changes only what the paper says it drew.
+
+Written to: `code/model/params.yaml` (six corrected `uncertainty:` blocks, each
+with a dated note; two `superseded_*` blocks), `code/model/registry.py`
+(`superseded_by`, `superseded_note` added to `ALLOWED_KEYS`),
+`code/tests/test_uncertainty_completeness.py` (14 reasons, the declared-rounding
+mechanism), `logs/run_30_uncertainty.log` (the failing first run),
+`logs/run_31_uncertainty.log` (green).
+Asserted by: `code/tests/test_uncertainty_completeness.py`, which fails if a new
+`uncertainty:` block appears with no decision recorded, if a mapped pair
+disagrees on family, sd or either bound, if a NOT_SAMPLED entry carries no
+reason, if a declared rounding carries no cause, or if the ensemble draws a
+prior no registry entry declares.
+
+---
+
+## F-008 — 2026-07-25 — The first comparison to data the model was never fitted to: temperate yield under nitrogen withdrawal falls about twice as far as a 66-year unfertilized control shows
+
+`code/repro/run_benchmarks.py`, `outputs/benchmarks.csv`, run log
+`logs/run_36_benchmarks.log`. 41 rows: 11 PASS, 3 MARGINAL, 1 FAIL, 18
+INFORMATIVE, 7 OWED, 1 NOT_APPLICABLE. Fifteen rows are marked STRONG, meaning
+the model quantity and the observed quantity are the same quantity measured at
+a matched horizon and, where it matters, a matched nitrogen rate.
+
+Every test written for this model before today compares the model to itself: to
+a calibration fingerprint, a registry entry, a seam contract, a previous run.
+Those catch drift. None of them can catch a model that is internally consistent
+and externally wrong, which is exactly what F-002 and F-004 turned out to be.
+This is the first check of the other kind. Nothing in `params.yaml` was fitted
+to anything in `data/benchmarks/observed_values.yaml`; the only calibration
+target in the model is `FAOSTAT_TARGETS`, which appears in none of the
+benchmark sources. Every row is therefore held out by construction, and the
+planned "calibrate on Broadbalk, then predict Morrow and Sanborn" split was
+unnecessary.
+
+### The failure
+
+**B3-europe-YR30.** Yield with no synthetic nitrogen, as a fraction of yield at
+the region's current rate, read at the same elapsed year from a common spun-up
+equilibrium. This is the paired-plot design of a long-term experiment.
+
+| | model | observed |
+|---|---|---|
+| 1 year | 0.763 | — |
+| 30 years | **0.406** | **0.681 to 0.776** |
+| 96 years | 0.364 | beyond the observation window |
+
+The observed values are Prague-Ruzyne, unfertilized since 1954 against its NPK4
+arm at 95 kg N/ha, which is close to the model's European regional mean of 85.
+The two published ratios are 0.776 over harvest years 1961-1981 (7 to 27 years
+unfertilized) and 0.681 over 1983-2020 (29 to 66 years), so the model's 30-year
+row is the matched horizon, and it is also the manuscript's own horizon. The
+model loses 59 percent of yield where the experiment lost 22 to 32 percent.
+
+The decline between the two observed windows is confounded with the change from
+long-strawed to short-strawed varieties, which raised the fertilized arm from
+4.9 to 6.9 t/ha, so the observed trend in the ratio is not a clean measure of
+soil depletion and no benchmark row is built on it.
+
+A second quantity at a second site points the same way. **B2-BROADBALK-FERT-
+MINUS-NIL**: soil carbon under fertilization as an excess over soil carbon
+without it, model 38.6 percent at 96 years against 18.6 percent observed at
+Broadbalk in 2010 (plot 8 inorganic NPKMg, 30.0 Mg C/ha, against plot 3, nil
+since 1843, 25.3 Mg C/ha). MARGINAL against a band of half to twice the single
+observed value. At the manuscript's 30-year horizon the model gives 21.0
+percent, which is inside the band; the discrepancy is in the extrapolation, not
+in the published horizon.
+
+The two rows agree on direction and roughly on magnitude, at two sites, in two
+different quantities, one a yield and one a carbon stock. The model's response
+to complete nitrogen withdrawal in a temperate system is about twice what the
+field record shows.
+
+### What the shape of the model trajectory says
+
+The model front-loads the collapse. Europe's nil ratio goes 0.763 → 0.406 →
+0.364 at 1, 30 and 96 years: most of the loss is spent in the first three
+decades and the curve then flattens. Prague declines gently and is still
+declining at 66 years. Whatever is too strong is therefore in the fast part of
+the coupling, the residue-to-active-pool and mineralization feedback that
+operates on a 3-year and a 27-year turnover, rather than in the slow carbon
+kinetics. `B2-EUROPE-DRIFT-NIL` puts the model's 96-year soil carbon loss under
+nil at -28.0 percent, which is internally consistent with a yield ratio of 0.36
+halving residue inputs, so the carbon side and the yield side are not
+independent failures. They are one mechanism seen twice.
+
+### What is not a failure
+
+**Sub-Saharan Africa is consistent with the meta-analysis once the rate is
+matched.** The raw comparison looked bad: the model's marginal physical product
+of nitrogen at the regional mean of 7 kg N/ha is 24.8 kg grain per kg N against
+an on-farm envelope of 7.7 to 20.0 (B1-SSA-MPP, MARGINAL). But a marginal
+product is a derivative at a point, and 7 kg N/ha is the steepest part of the
+response curve, while the surveys measured wherever those farmers actually
+were. Two inversions settle it without inventing an observation:
+
+* B1-SSA-IMPLIED-RATE-RANGE: the model reproduces an MPP of 20.0 at 25.9 kg
+  N/ha and of 7.7 at 109.2 kg N/ha. The Kenyan estimates (17 overall, 17.6 in
+  Vihiga, 11 to 20 in the western districts) correspond to model rates of
+  roughly 26 to 30 kg N/ha, which is where Kenyan maize farmers who fertilize
+  actually are. The Nigerian plot-level estimate of 7.7 would require 109 kg
+  N/ha, which they are not.
+* B3-sub_saharan_africa-IMPLIED-RATE: the rate at which the model reproduces
+  the observed nil-to-fertilized ratio of 0.572 is 47.6 kg N/ha, which is
+  inside the range of recommended maize rates the on-farm trials behind that
+  meta-analysis would have used.
+
+So the model's nitrogen response in SSA agrees with the Kenyan on-farm
+evidence and with the response-ratio meta-analysis, and disagrees with the
+single Nigerian plot-level estimate, which is the one estimate whose gap most
+plausibly reflects constraints this model does not represent (phosphorus,
+weeds, application timing). Neither B1 nor B3 for SSA carries a verdict,
+because the compilation does not record the nitrogen rate on either the
+surveyed plots or the trials' fertilized arm. Those two missing numbers are
+recorded as B1-OWED-SURVEY-RATE and B3-OWED-SSA-TRIAL-RATE; the second is the
+single most valuable missing number in the whole compilation.
+
+**B5.** All eight regional own-price elasticities of fertilizer demand fall
+inside the range spanned by the retrieved estimates (-1.87 to -0.21) and inside
+the tighter 14-study range (-0.7 to -0.2). North America's -0.20 sits 0.01
+outside the extreme retrieved estimate and is reported MARGINAL rather than
+FAIL, because the endpoint is itself an estimate carrying standard errors of
+0.14 to 0.84 and an excursion of 0.05 is inside the reporting precision of the
+band. **B4** confirms the whc_sensitivity arithmetic: 1.16 mm per 100 mm soil
+per percentage point SOC over a 300 mm profile is 3.48, registered as 3.5.
+
+**`eps_F_N` has no published analogue and must stop being presented as though it
+has one.** B5-EPS-F-N-NO-ANALOGUE is filed as OWED. Every study in the
+compilation estimates a response to a *price*; `eps_F_N` is the response to a
+soil nitrogen *stock*. It is the dial that turns the substitution of soil
+nitrogen for fertilizer on and off, so it is load-bearing for the paper's
+central claim, and it is the least externally constrained number in the model.
+Its numerical coincidence with the sub-Saharan own-price elasticity, both
+-0.50, is a coincidence and must not be read as corroboration.
+
+### Rows that pass for the wrong reason, and are marked as such
+
+`benchmarks.csv` carries `informativeness` beside `verdict` because a benchmark
+can be passed for reasons that have nothing to do with the model being right.
+B2-EUROPE-DRIFT-FERT reports a 96-year soil carbon drift of -0.21 percent under
+unchanged management, against an observed Broadbalk mineral-plot envelope of
+-8.3 to +4.5 percent. That looks like a pass and is worth nothing: the engine
+is initialised at a spun-up equilibrium, so near-zero drift is a property of
+the initialisation and any model with a spin-up would reproduce it. It is
+marked WEAK and carries no verdict. B2-BROADBALK-FYM is NOT_APPLICABLE: the
+model has no organic amendment pathway at all, carbon enters only as crop
+residue and roots, and the manure plot holds 73.3 Mg C/ha against 30.0 on the
+inorganic plot, so the omitted pathway is large and the manuscript must not
+claim the model represents organic amendment.
+
+Three B2 time series were examined and rejected as comparators, with the reason
+recorded in the code rather than by silent omission: Broadbalk plot 3 (nil since
+1843, drifting around its own low equilibrium, not a fertilizer-withdrawal
+transient), Morrow unfertilized (a prairie-conversion legacy the model does not
+represent), and Morrow 1964 (79.87 against 58.0 Mg C/ha, nine years after
+fertilization began on that plot, so a 37.7 percent carbon difference cannot be
+a fertilization response).
+
+### Consequence for the manuscript
+
+The direction is stated, not corrected. **The model must not be retuned to
+these benchmarks.** Fitting to them would convert the only external check this
+project has into calibration data and would reproduce, at a larger scale, the
+error F-002 records.
+
+1. The SI must report the benchmark suite, including the failure. A validation
+   section that reports only the eleven passes would be the same defect as a
+   test that compares the model to itself.
+2. The S3 temperate yield losses are the quantity B3-europe-YR30 bears on
+   directly, and the benchmark says the mechanism runs about twice as hard as
+   one long-term control shows. The manuscript's temperate loss figures should
+   be presented with that stated, and the abstract should not describe the
+   magnitude as validated.
+3. B3-europe-YR30 is scored against one site. Broadbalk plot 3 has been
+   unfertilized since 1843 and its soil carbon is already compiled here, but
+   its grain yields are not, and they are the natural second temperate
+   comparator (B3-OWED-BROADBALK-YIELD-RATIO). Until they are compiled this is
+   a failure against one observation and should be reported as one.
+4. The buffering claim itself is not contradicted by any row. What the
+   benchmark constrains is the size of the yield penalty when nitrogen is
+   withdrawn, not whether soil organic matter cushions it.
+
+Written to: `code/repro/run_benchmarks.py` (new, with the rejected-comparator
+reasoning in the docstrings), `outputs/benchmarks.csv`, `outputs/benchmarks.json`
+(git commit, params SHA, script SHA, observed-values SHA),
+`logs/run_32_benchmarks.log` through `logs/run_36_benchmarks.log`.
+Asserted by: `code/tests/test_benchmark_baseline.py`, via `make verify`. The
+suite now gates. The verdict recorded here is frozen in
+`data/benchmarks/baseline_verdicts.json`, so this failure is tracked without
+having to be fixed first, and any movement away from it stops the build. See
+F-009.
+
+## F-009 — 2026-07-25 — Two artifacts were being cited as results with no live generator, and one of them held pre-recalibration numbers
+
+The build graph in `code/build.py` declares every generated artifact together
+with the script that makes it and the files it reads, then compares recorded
+hashes against current ones. Standing it up over the existing deposit found
+exactly the two orphans the assurance plan predicted, and one of them was worse
+than an orphan.
+
+`data/climate_swap_comparison.csv` was a duplicate of
+`outputs/climate_swap_comparison.csv` holding numbers from before the production
+path recalibration. The two files disagreed on every row: south Asia's year-10
+climate-swap shift read 0.54 pp in the data copy against 0.58 pp in the current
+output, sub-Saharan Africa's year-10 loss read 14.0% against 4.87%. Only
+`code/repro/climate_comparison.py` regenerates the output copy; nothing had
+regenerated the data copy since the recalibration, and nothing could, because no
+script writes to that path. It has been deleted. `MANIFEST.md` still describes
+this comparison as having a maximum year-10 shift of 0.74 pp, which matches
+neither the deleted file (max 0.54) nor the current output (max 0.58); that
+number is from a third generation of the analysis and has to be corrected in the
+manifest pass.
+
+`data/figS12_curves.json` is read by `make_figure_s12.py` and written by
+nothing. The README says it has a generator. This is the second direction of the
+same check and needed its own detection rule: an orphan is a file nobody
+produces *and* nobody declares, whereas this file is declared as an input, so
+only a graph that reasons about inputs as well as outputs sees it. `build.py`
+now reports it as UNSOURCED. Figure S12 is therefore drawn from a file of
+unknown provenance and stays that way until the generator is written or the
+curves are recomputed.
+
+`figures/Figure_S5_flux_decomposition.png` is the one remaining orphan and is a
+known gap: `make_figure_s5.py` has not been written yet.
+
+Twenty-three nodes are declared. Twenty-two carry no provenance sidecar because
+they predate the graph, which makes that set the regeneration to-do list. It is
+recorded in `.build/unstamped_baseline.json` and is pruned on every successful
+`make verify`, so a node that has been stamped once loses its exemption
+permanently and cannot silently regress.
+
+The same baseline logic carries F-008's failure. `code/tests/test_benchmark_baseline.py`
+re-runs the benchmark suite (about six seconds; it does not read the committed
+CSV, which would only check that a file had not been edited) and compares every
+verdict against `data/benchmarks/baseline_verdicts.json`. It fails on a
+regression, on a baselined row disappearing from the suite, on a new row
+arriving already failing, and on a row's informativeness being downgraded, which
+is the other way to make a failure go away: stop claiming the row proves
+anything. It also fails on an *improvement*, until the baseline is regenerated,
+so that a change in what the model says about the field record gets written down
+at the moment it happens.
+
+Both gates were watched failing before being trusted. Appending a comment to
+`params.yaml` turned the stamped `benchmarks` node STALE and returned exit 1;
+`test_gate_can_fail` runs the verdict comparison against a synthetic regression,
+improvement, disappearance, downgrade and new-failure and asserts each is
+reported.
+
+Written to: `code/build.py` (new), `Makefile` (new),
+`code/tests/test_benchmark_baseline.py` (new),
+`data/benchmarks/baseline_verdicts.json` (generated, 41 rows),
+`.build/unstamped_baseline.json` (generated),
+`code/repro/run_benchmarks.py` (split into `build_rows` and `main`, plus
+`--write-baseline`), `logs/run_41_build_status.log` through
+`logs/run_50_build_verify.log`.
+Asserted by: `make verify`, which runs nine test files and the build graph and
+currently exits 0.
+Owed: MANIFEST.md's 0.74 pp climate-swap figure; a generator for
+`data/figS12_curves.json`; `make_figure_s5.py`.
+
+## F-010 — 2026-07-25 — The constrained market-clearing test asserted an identity, and a wrong denominator passed it
+
+`code/repro/test_cap_market_clearing.py` was the evidence offered for the v1.3
+constrained-cap fix. It asserted that the model's `clearing_residual` column
+stayed below 1e-6. That column is
+
+    gamma * (F_hat - [ln(c) - lambda_L * PY_hat])
+
+and the capped solver sets `F_hat = ln(c) - L_hat` with
+`L_hat = lambda_L * PY_hat`. The two expressions are the same expression. The
+residual is zero by algebra for every possible value of alpha, beta, gamma, eta
+and lambda_L, correct or not, so the test could not fail and never tested the
+equilibrium. It tested that subtraction works.
+
+The test now re-solves the market from outside the class. For each step it
+takes the model's reported PY_hat, F_hat, L_hat, N_hat and the *lagged*
+elasticities the solver actually used, and evaluates the four structural
+equations (land, fertilizer, supply, clearing) independently; then it
+root-finds the food price with `scipy.optimize.brentq` on the excess-supply
+function built from those same four equations, bracketing outward until the
+sign changes rather than assuming a bracket. The reported price must be that
+root to 1e-10.
+
+On the current model the worst structural residual across 337 cap-binding steps
+and both scenarios is 1.4e-17 and the worst root gap is 2.8e-17, which is
+floating-point noise. The point of the rewrite is what happens when the algebra
+is wrong: dropping the gamma term from the capped denominator, so that
+
+    PY_hat = (beta*N_hat + gamma*ln(c)) / (eta - alpha*lambda_L)
+
+instead of `eta - (alpha - gamma)*lambda_L`, drives the structural residual to
+3.0e-03 and the root gap to 6.7e-03 and the test returns 1. The old residual
+stays at zero under exactly that mutation, because the mutation changes PY_hat
+and the identity is defined in terms of whatever PY_hat comes out.
+
+The rewrite also fails if the cap never binds, since a run in which the
+constrained branch is never entered would otherwise pass on a model that has no
+constrained branch at all.
+
+Two diagnostic columns were added to `CoupledMonthlyModel.run`, `N_hat` (which
+already existed) and `ln_cap`, so that the check can be made from the
+DataFrame without reaching into solver internals.
+
+Written to: `code/repro/test_cap_market_clearing.py` (rewritten),
+`code/model/coupled_monthly.py` (`ln_cap` column),
+`results/cap_market_clearing.txt` (new, both scenarios plus the residuals),
+`logs/run_51_capclear.log`, `logs/run_52_capclear_mutation.log`,
+`logs/run_53_capclear.log`.
+Asserted by: `make verify`. The mutation run is recorded in
+`logs/run_52_capclear_mutation.log` rather than automated; wiring it into the
+mutation harness is owed.
+
+## F-011 — 2026-07-25 — The registry now supplies the model rather than documenting it, and the mutation sweep says so: 45 declared-not-wired leaves fell to 3
+
+F-006 recorded the defect: `params.yaml` held a value, the model held a literal
+of the same value, and a consistency test compared them. Perturbing the registry
+entry therefore changed no published number and broke only the mirror test. The
+registry documented the model. It did not drive it.
+
+The direction of authority has been reversed. `code/model/soil_n_model.py`,
+`code/model/coupled_econ_biophysical.py`, `code/model/prices.py` and
+`code/model/monthly_model_v3.py` now read their constants from the registry at
+import. The eight regions' seventeen quantitative fields in `soil_n_model.py`
+were literals until today.
+
+A refactor that changes no number has to be shown to change no number, so three
+things were checked rather than asserted. A field-by-field equality log compares
+every regional field before and after the rewiring. The benchmark baseline gate
+is unchanged, which means the model's agreement with the field record did not
+move. A 123-field canonical diff returns zero numeric differences.
+
+WHAT THE SWEEP SAYS
+
+`code/tests/run_mutation_coverage.py` perturbs each registry leaf, re-runs the
+canonical S3 model in a sandbox copy of the repository, and scores the leaf on
+two axes: did a published number move (REACH), and did any test object (CATCH).
+
+                        before    after
+    COVERED                  5       12
+    UNTESTED                 0       22
+    DECLARED_NOT_WIRED      45        3
+    GUARDED_AT_LOAD          6        6
+    INERT                    0       13
+                            --       --
+                            56       56
+
+The before column is `logs/mutation_coverage_prerefactor.csv`; the after column
+is `results/mutation_coverage.csv`.
+
+The 45-to-3 collapse is the finding. Forty-two parameters that the model
+previously ignored now drive it. The three that remain are `eps_F_N`,
+`fert_reduction_target` and `texture_class`, and each is a separate small piece
+of unfinished wiring rather than a systemic condition.
+
+UNTESTED IS NOT A REGRESSION, IT IS THE BILL COMING DUE
+
+Nothing moved from COVERED to UNTESTED. The 22 UNTESTED leaves were all
+DECLARED_NOT_WIRED before, which is to say the reason no test caught a
+perturbation was that the perturbation did nothing. Now it does something and
+still nothing catches it. That is the honest state of the test suite and it is
+the worklist:
+
+    alpha, atm_n_deposition, baseline_water_deficit, bnf_potential, cn_bulk,
+    cropland_mha, eps_F_PF, eps_F_PY, eps_LD_PL, eps_LD_PY, eps_LS_PL, eta,
+    laub_tropical_ratios.k_passive_ratio, laub_tropical_ratios.k_slow_ratio,
+    physical_feedback_strength, som_decay_rates.k_active,
+    som_decay_rates.k_slow, som_humification.h_slow_to_passive,
+    synth_n_current, water_stress_coeff, whc_sensitivity, yield_min_regional
+
+Eight of the twelve COVERED leaves are caught by a single test,
+`test_spinup_partition_independence.py`. Four more (`cm2_per_ha`, `g_per_t`,
+`pct_to_fraction`, `soc_bulk_density`) are caught by `registry_consistency` and
+`soc_conversion_invariance`, both of which compare the registry against a
+literal. Their coverage is real but it rests on the literal continuing to exist.
+A suite whose catching power sits in one behavioural test and two mirror tests
+is thin, and the claim register (`docs/claims.yaml`) is the next layer, because
+it turns each published number into something a mutation can break.
+
+TWO WAYS AN INERT VERDICT CAN BE WRONG
+
+INERT went from 0 to 13, and two of the thirteen are artifacts of how the probe
+is built rather than statements about the parameters.
+
+First, the fingerprint is too narrow. `probe()` builds its comparison from
+`data/canonical_ERA5_y30.json` alone, flattened by `_flatten_canonical()` into
+the per-region numeric fields plus `global_prodweighted`. Gross margins, prices
+and cost shares are not in that artifact. So `crop_price_usd_t`,
+`n_price_wedge`, `n_price_usd_kg_farmer_paid`, `n_benchmark_usd_kg`,
+`urea_n_fraction` and `price_benchmark_max_factor` score INERT by construction,
+not because they are irrelevant: every one of them moves the gross-margin
+figures the abstract quotes. The published-number set the probe fingerprints has
+to include the margin outcomes before an INERT verdict on a price parameter
+means anything. Until it does, those six rows should be read as "not probed".
+
+Second, `cre_base` scores INERT because `cre_regional` overrides it in all eight
+regions. The base value is dead code reached by nothing. That is a real INERT,
+and the repair is to delete the fallback rather than to widen the probe.
+
+THREE INERT VERDICTS THAT CORROBORATE SOMETHING ELSE
+
+`yield_max_regional` is INERT, and SI [65] already says why: the static values
+are legacy fallbacks, not the reported calibration, which solves for y_max
+against the FAOSTAT target. Document and sweep agree.
+
+`bnf_ramp_years` is INERT, and both MS [78] and SI [14] state that fixation is
+held static during disruption scenarios. The string "ramp" does not appear
+anywhere in the v14 documents. So a ramp parameter is registered, carries
+per-region values of 8 to 15 years, drives nothing, and is denied by the text.
+It must be marked declared-but-fixed in the SI parameter table or removed.
+
+`pop_supported` and the three `som_pool_cn` entries are reporting quantities
+that no published number in the canonical artifact depends on. They are
+candidates for the same treatment once the probe is widened.
+
+Written to: `results/mutation_coverage.csv`,
+`results/mutation_coverage_summary.txt`, `logs/run_67_mutation.log`.
+Compared against: `logs/mutation_coverage_prerefactor.csv`,
+`logs/mutation_coverage_summary_prerefactor.txt`.
+Still owed: widen `_flatten_canonical` to the margin and price outcomes; delete
+the `cre_base` fallback; mark `bnf_ramp_years` and `yield_max_regional`
+declared-but-fixed; write a test for each of the 22 UNTESTED leaves.
+
+## F-012 — 2026-07-25 — The claim register found nineteen drifted numbers on its first run, and the largest block traces to one stale artifact
+
+`docs/claims.yaml` records 19 quantitative claims made in the manuscript, the
+SI or the author response, each with the sentence that states it, the artifact
+that should produce it, and one or more arithmetic checks over that artifact.
+`code/tests/test_claims.py` resolves every check and fails the build when a
+published number and the model disagree beyond tolerance.
+
+First full run: **60 checks, 41 agreeing, 19 drifted across five claims, zero
+unresolved paths.** Every drift is a real edit owed to v15, not a tolerance
+artefact; the smallest is 0.118 pp against a 0.1 pp tolerance and the largest
+is 14.98 pp.
+
+**The single largest block is C-060, and it has one cause.** Every year-10
+regional figure in MS [56] — East Asia 1.3, South Asia 6.0, FSU 5.5, SSA 5.4,
+global 3.4 — matches `data/figure2_panels.json`, which predates the
+production-path recalibration. None matches `data/canonical_ERA5_y30.json`,
+which is what the deposit ships (1.182, 4.812, 5.126, 4.749, 3.03). Two checks
+in the same claim still agree: `global_yr1` (2.32) and total cropland
+(1230 Mha). So this is not a paragraph that was written carelessly. It is a
+paragraph whose numbers were correct when written and were never re-read
+against a rerun. That is exactly the failure the register exists to catch, and
+the register caught it on the first run rather than at proof stage.
+
+**C-021 shows the same failure in the other direction.** The registry carries
+`whc_sensitivity` = 3.5 mm per pp SOC (Minasny & McBratney 2018); MS [31],
+MS [28] and AR [40] all still say 8.4. The code change landed and the prose
+did not follow it. A register that reads the registry rather than a document
+is the only thing that would have noticed.
+
+**C-014 and C-030 confirm the fertilizer-cost-share correction propagated
+into the artifacts and not into the text.** The v14 margin gaps of 2.5–4.2 pp
+were computed with the hardcoded 25% cost share; with derived regional shares
+they are 0.27–0.99 pp. SSA's nitrogen price moved from the implied $1.40/kg N
+to the registry's $2.30. The abstract edit already on the worklist (~0.3–1.0 pp)
+is the right one, and now a test will fail if it is not made.
+
+**C-031 settles a conflict between two documents in the main text's favour.**
+MS [53] says the SOC-related spread is 0.2–1.5 pp; SI [197] says 0.1–1.5. All
+four checks agree with the model, whose minimum spread across regions at the
+100–150% shock is 0.214. SI [197] is the sentence to correct. A claim stated
+twice is a claim that can drift apart, and the register is what makes the
+two statements comparable instead of merely coexisting.
+
+**What the register refuses to do.** `text` and `location` are transcribed
+verbatim from v14. They record what has been claimed; they are not a target
+the model may be tuned toward. When a check disagrees, the default repair is
+to the document. Four claims carry `status: owed_generator` — no script yet
+produces the number, so the claim is recorded rather than silently published
+unbacked (C-011 figure-2 regeneration, C-041 figure S8 curves, C-050 the S3
+shock calibration, C-061 the one-year pulse). `test_owed_count_may_only_shrink`
+means that debt cannot grow.
+
+**The gate is two-way.** `depends_on_params` in the register is the reverse
+index of `affects_claims` in `params.yaml`, and both directions are checked.
+On the first run this failed on C-061, which listed `eps_F_PF` and
+`som_decay_rates` as affecting it while neither parameter declared the claim.
+Fixed in `params.yaml`. A register that only pointed one way would have let
+a parameter change without anyone knowing which published sentences moved.
+
+**An improvement also stops the build.** `docs/claims_baseline.json` records
+the five drifted claims and the four owed generators. A check moving to AGREES
+without the baseline being regenerated fails, on the same principle as the
+benchmark and unstamped baselines: a number that gets better silently is a
+number nobody read.
+
+**Side effect on the build graph.** Adding `affects_claims: C-061` to two
+parameters marked every params-dependent node STALE, because the node
+fingerprint hashed the bytes of `params.yaml`. A documentation edit that
+cannot change any output should not invalidate artifacts, or STALE stops
+carrying information. `build.params_fingerprint()` now hashes the document
+with `DOCUMENTARY_KEYS` removed (provenance, note, used_by, affects_claims,
+benchmark, source, citation and their kin). The list is a denylist so a new
+key is fingerprinted by default and must be exempted deliberately.
+`results/climate_swap_stats.txt` also stopped being an orphan:
+`climate_comparison.py` now writes it instead of printing the two numbers for
+a human to transcribe, which is how 0.74 pp and rho=0.93 survived
+recalibration in both the README and the response letter (F-009).
+
+Written to: `docs/claims.yaml`, `docs/claims_baseline.json`,
+`code/tests/test_claims.py`, `logs/run_76_report.log`.
+Compared against: `data/canonical_ERA5_y30.json`, `data/figure2_panels.json`,
+`data/figure1_farm_gradient.json`, `data/figS11_severity_sweep.json`,
+`data/food_price_response.csv`, `code/model/registry.py`.
+Still owed: the four `owed_generator` scripts; the document edits for C-010,
+C-014, C-021, C-030, C-060 and SI [197]; regeneration of
+`data/figure2_panels.json` (C-011).
+
+## F-013 — 2026-07-25 — Two of the three regional rankings the paper asserts are not supported by the posterior, and one of them names the wrong region
+
+Run IDs: `logs/run_86_cs.log` (scoring, post-recalibration ensemble),
+`logs/run_88_cs.log` (gate), `logs/run_90_neg.log` (gate watched failing),
+`logs/run_94_verify.log` (full gate, exit 0, 15 tests).
+Artifacts: `results/claim_strength.csv`, `results/claim_strength.md`,
+`docs/claim_strength_baseline.json`.
+
+Assurance plan 3.8 asks a question no unit test asks: before a ranking is
+written down, how often does the ensemble actually produce it. Every number
+behind the v14 rankings was computed correctly. What was missing was the step
+between a computed ordering and a stated one.
+
+Three ordering families are scored against the 1000-draw post-recalibration
+ensemble, under thresholds declared in `code/repro/make_claim_strength.py`
+rather than chosen per claim (0.90 to state a ranking, 0.60 to hedge it):
+
+    P3   highest year-1 yield loss          fsu_central_asia  p = 0.998  state
+    P4   worst year-1 net-revenue change    south_asia        p = 0.542  not separable
+    P4b  highest derived nitrogen cost share south_asia       p = 0.958  state
+
+Each family accounts for its full mass, so the leader probabilities are
+probabilities of leading and not of leading among the regions the scoring
+happened to see.
+
+SI [163] states all three in one sentence. Registered as C-062, C-063 and
+C-064, that sentence fails twice.
+
+**C-063, the P4 claim.** "Sub-Saharan Africa is the worst region for year-1
+gross margin in 83.7% of draws." The 83.7% was computed against a hardcoded
+`FERT_COST_FRAC` dictionary that assigned Sub-Saharan Africa 0.25 and North
+America 0.08 and varied neither, so the probability measured the assumption.
+With regional nitrogen and crop prices registered and drawn as per-region
+multipliers, Sub-Saharan Africa is worst in 0.000 of draws, South Asia leads at
+0.542, East Asia is at 0.447, and the two together account for 0.989. Below
+0.60 the paper is licensed to report the group and nothing more. The v15 text
+should read that South Asia and East Asia are not separable.
+
+**C-064, the P4b claim.** The same sentence attributes the P4 result to Sub-
+Saharan Africa's "high fertilizer-cost share." Under derived regional prices
+the highest share is South Asia in 0.958 of draws and Sub-Saharan Africa leads
+in none. The 0.25 that clause rested on implied a Sub-Saharan African baseline
+price of $15.53 per kg N.
+
+C-064 is the finding that changed the gate. A threshold check alone would have
+passed it: "most exposed" is a licensed form of statement about a family whose
+leader clears 0.90. The claim is wrong about *which* region, not about how
+strongly to say it. So `claim_strength` carries a `region` and the test now
+fails a claim that names a region the ensemble does not put first, at any band.
+`logs/run_90_neg.log` records the gate rejecting a deliberately mislabelled
+C-062 before the real claims were trusted to it.
+
+**C-062, the P3 claim,** survives: FSU/Central Asia at 0.998 may be stated
+outright. It is registered anyway so that it is scored rather than assumed. A
+later ensemble that moves it below 0.90 stops the build instead of leaving a
+sentence standing on the strength of having once been true.
+
+The two overstatements are carried in `docs/claim_strength_baseline.json`
+pending the v15 document edits, on the same terms as the other four baselines:
+the list may only shrink, and a claim that comes into line without the baseline
+being regenerated also fails.
+
+**Rescoring against the post-recalibration ensemble moved the numbers but not
+the verdicts.** P4b fell 0.984 to 0.958 and P4 fell 0.559 to 0.542. Any
+claim-strength figure quoted from before `logs/run_83_mc.log` is stale.
+
+Also this entry: SI Table S1 is now generated from the registry
+(`code/repro/make_table_s1.py`, gated by `code/tests/test_table_s1.py`), and
+its `varied_in_mc` column reports the ensemble rather than the declaration. Of
+54 registered parameters the ensemble draws 8, holds 17 fixed that declare an
+uncertainty, exempts 25 with a stated reason, and 4 are not applicable. The 17
+are the honest disclosure: the credible intervals this paper reports do not
+contain them. Their justifications moved out of a test file into
+`code/model/mc_mapping.py`, because the SI has to print them and a generator
+importing a test would have rebuilt the one-concept-two-places failure the
+whole rebuild is about.
+
+Still owed: the C-063 and C-064 sentence edits; the four `owed_generator`
+scripts; the document edits for C-010, C-014, C-021, C-030, C-060 and SI [197];
+regeneration of `data/figure2_panels.json` (C-011) and the remaining downstream
+artifacts under the new ensemble.
+
+## F-014 — 2026-07-25 — Regenerating the chain moved one artifact and one claim, and exposed a node that had been reporting STALE for a reason nobody had read
+
+Run IDs: `logs/run_95_all.log` (26 nodes, all succeeded), `logs/run_98_prices.log`,
+`logs/run_101_verify.log` (exit 0, 14 suites).
+Report: `logs/regeneration/regeneration_report.csv`, `.md`.
+
+The whole build graph was re-run against the recalibrated production path and
+the post-recalibration ensemble. Thirty-two artifacts changed, forty-six were
+byte-identical. The Monte Carlo reproduces exactly: `mc_summary.csv`,
+`mc_probabilities.csv` and `mc_priors.json` are unchanged bit for bit, and only
+the gzip container of `mc_posterior.csv.gz` differs.
+
+**`data/canonical_ERA5_y30.json` did not move.** Production-weighted global
+yield loss stands at 2.32% in year 1 and 3.03% in year 10, and every regional
+year-10 loss is unchanged: FSU/Central Asia 5.126, South Asia 4.812, sub-Saharan
+Africa 4.749, Southeast Asia 3.675, Europe 3.429, Latin America 2.418, North
+America 1.726, East Asia 1.182.
+
+**`data/figure2_panels.json` is where the recalibration had not landed**, which
+is what F-012 predicted from the register. Global total 3.412% to 3.032%
+(direct 3.094 to 2.870, SOM penalty 0.319 to 0.161). South Asia 5.979 to 4.812,
+Southeast Asia 4.485 to 3.675, sub-Saharan Africa 5.415 to 4.749. Its regional
+totals now agree with the canonical year-10 losses to three decimal places,
+which they did not before. C-011 leaves `pending_regeneration`.
+
+**One claim newly drifted: C-042**, the regional output-price indices. Model
+now gives year-1 production-weighted 5.34% against a stated 5.5%, year-10 5.95%
+against 5.0%, Latin America year-10 3.97% against 1.0%, FSU/Central Asia 10.16%
+against 10.3%. The Latin American figure is the one that matters: 1.0% was the
+low end of the stated year-10 range and is now nearly four times that, so the
+sentence's claim about how wide the regional spread is has changed, not only
+its numbers. Recorded as `document_edit_owed` on C-042 and added to
+`docs/claims_baseline.json` deliberately, per the rule that a baseline grows
+only with an entry here saying why.
+
+**The `prices` node had been reporting STALE for a defect in its own
+declaration.** It claimed three outputs and writes one.
+`data/eurostat_price_observations.json` is a hand-transcribed observation file
+`derive_prices.py` only reads, and `data/nitrogen_price_table.json` is written
+by `run_price_shock_analysis.py`. So the node was stale immediately after a
+clean run of itself, permanently, and the only way to read that signal was to
+learn to ignore it. This is the same failure as the params fingerprint in
+F-012, arriving by a different route: a staleness signal that fires when
+nothing is wrong stops being a staleness signal. The declaration now names one
+output, takes the observation file as an input, and lists it under
+`EXTERNAL_INPUTS` with a note on where the numbers come from. `nitrogen_price_table
+.json` moved to the `price_shock` node that writes it.
+
+Still owed: the C-042, C-063 and C-064 sentence edits, on top of the list in
+F-013.
+
+---
+
+## F-015. The +104% shock is right; "averages approximately 20%" is stated on a basis the paper never names, and on the paper's own basis it is 18.7%
+
+**Date** 2026-07-25. **Run** `logs/run_104_s3cal.log`, `logs/run_105_rep.log`.
+**Artifacts** `results/s3_shock_calibration.csv`, `results/s3_shock_calibration.json`.
+**Generator** `code/repro/make_s3_shock_calibration.py`. **Claim** C-050,
+`owed_generator` -> `current`.
+
+Three numbers appear in three document locations (MS [56], MS [65], SI [78]):
+a +104% fertilizer price shock, a 20% S1 reduction it is calibrated to
+deliver, and an S3 reduction that "averages approximately 20% over the
+sustained-disruption period." The 20% target was registered as
+`fert_reduction_target` and therefore checkable. The other two were not
+written anywhere. They could be confirmed only by rerunning the model and
+reading a number off a console, which is the F-009 mechanism: a number a
+person transcribes is a number that survives the recalibration which
+invalidated it.
+
+The generator now solves and deposits all three. The solve reproduces:
+**+103.90%**, which rounds to the stated +104%. S1 realizes **0.2000** by
+construction on the nitrogen-tonnage basis. The sustained mean under S3, with
+`eps_F_N` active, is **0.1911**.
+
+The defect the deposit exposes is not in either number. It is that the sentence
+does not say on what basis the reduction is averaged, and the two available
+bases are not close. The scenario removes a fifth of the world's applied
+fertilizer nitrogen, which is a mass, so the calibration targets nitrogen
+tonnage. The paper's outcome aggregates are production-weighted. On the
+production basis the same two figures are **0.1964** and **0.1872**. This is
+F-005 again, in a sentence F-005 did not reach.
+
+Two edits are owed and are recorded in C-050's `document_edit_owed`. State the
+basis. And report the S3 figure as 19%, not 20%: the gap between the calibrated
+reduction and the realized one *is* the depletion feedback, and rounding it away
+erases the mechanism the S3 scenario exists to demonstrate. Farmers buy back
+part of the reduction as soil nitrogen falls, and they buy back more of it over
+time, from 0.1911 averaged over years 1-10 down to a year-30 realized reduction
+that is smaller again in every region.
+
+The sustained-disruption period is declared in the generator as
+`SUSTAINED_YEARS = (1..10)` rather than chosen once the numbers were visible.
+"Averages approximately 20% over the period" is only a claim after the period
+is fixed; before that it is a search over windows.
+
+Per-region realized S3 means span 0.126 (North America) to 0.292 (sub-Saharan
+Africa). That is the own-price elasticity acting on regions with very different
+baseline application rates. The shock itself is uniform.
+
+**Baseline growth.** `docs/claims_baseline.json` gained C-041 in `drifted`, and
+`owed` lost C-041 and C-050 (`owed_count` 4 -> 2). C-041's three new drifts are
+the Figure S8 caption numbers that only became checkable once
+`compute_figS8_curves.py` deposited its `summary` block: document 3.4/1.9/46%
+against model 3.032/1.519/49.91%. They are not new errors, they are newly
+visible ones, and the caption edit is owed under C-041.
+
+**A second reverse index that was decoration.** Adding checks to C-041 and
+C-050 tripped `test_depends_on_params_mirrors_the_registry`: `eps_F_PF`
+declared `affects_claims: [C-041]` while C-041 listed no parameters, and C-050
+named `eps_F_N` in its own text without `eps_F_N` declaring the claim. Both
+directions are now stated: `eps_F_N` gained `affects_claims: [C-040, C-050]`.
+The forward index existed the whole time; nothing read it until a claim
+acquired a check.
+
+---
+
+## F-016. The last three owed generators are closed; the one-year pulse recovers thirty times faster than the paper says, and SSA's 30-year SOC decline is 2.14% not 2.5%
+
+Runs: `logs/run_120_traj.log` (pulse), `logs/run_121_soc.log` (SOC),
+`logs/run_122_soc_test.log` (SOC test), `logs/run_126_verify.log` (gate).
+Artifacts: `data/scenario_trajectories.csv` (new `PULSE1_global` column),
+`data/soc_trajectories.csv` / `.json`.
+
+**The register now has zero owed generators.** `docs/claims_baseline.json`
+`owed_count` goes 4 to 0 across F-015 and this entry: C-050 and C-061 out of
+`owed_generator`, C-011 out of `pending_regeneration`, and C-010 out of an
+`owed:` note. Every sentence in the register is scored against a live artifact
+on every `make verify`. Nothing is left that the register admits it cannot
+check.
+
+**C-010 carried an `owed:` note while its status said `current`, so nothing
+counted it.** `write_baseline`'s owed counter reads `status`, and C-010's said
+the claim was checked. Four of its five checks were. The fifth, the SOC
+decline, had no artifact behind it and said so in a field the counter does not
+read. An `owed:` note on a claim nothing counts is the same object as an
+unwired contract or a registry the model does not read: a comment. No other
+claim in the register has this shape; that was checked, not assumed.
+
+**The SOC deposit.** `code/repro/make_soc_trajectories.py` runs S3 at the
+calibrated shock for 30 years and writes the carbon stock per region per year,
+which the canonical run has never deposited. For a paper arguing that soil
+organic matter buffers a fertilizer disruption, the SOC trajectory was the
+wrong thing to be missing. Sub-Saharan Africa declines **2.145%** over 30 years
+against a stated 2.5% (`tol: 0.15`, taken from the sentence's own precision
+rather than widened to fit). Per region, year-0 to year-30 stock in t/ha and
+the 10-/30-year decline: NA 50.69 to 50.39 (0.30/0.61%), EU 42.60 to 42.12
+(0.58/1.12%), EA 35.47 to 35.32 (0.22/0.44%), SA 17.37 to 17.01 (1.14/2.09%),
+SEA 22.24 to 21.87 (0.88/1.65%), LATAM 31.26 to 30.91 (0.58/1.13%), SSA 6.18 to
+6.04 (1.09/2.14%), FSU 35.31 to 34.72 (0.85/1.67%).
+
+**The SOC ordering is not the yield-loss ordering, and the paper reads as if it
+were.** South Asia loses 2.09% of its carbon from a stock less than a third of
+North America's, so a small percentage there is a smaller absolute buffer than
+the same percentage anywhere else. FSU declines 1.67%, mid-pack, while carrying
+one of the two largest year-30 yield losses. Percentage SOC decline is not a
+proxy for exposure and should not be presented beside the loss ranking without
+saying so.
+
+**The duplication is checked rather than trusted.** The SOC generator is a
+second script running the same configuration as `run_canonical.py`, which is
+exactly the condition that has produced entries in this file before. It is a
+separate script because canonical is the root of the build graph and widening
+it restales every downstream node for a change that alters no existing number.
+So it also deposits each region's year-1/10/30 yield loss, and
+`code/tests/test_soc_trajectories.py` fails if any differs from
+`data/canonical_ERA5_y30.json` by more than 0.005 pp. If the two configurations
+diverge, the loss columns diverge first and the test names the region and the
+column. All eight regions agree today. The test also asserts SOC falls
+monotonically in every region, because the shock never lifts in S3 and a rising
+year would be a sign change in the mechanism the paper is about.
+
+**The one-year pulse: year 1 reproduces, year 5 does not.** C-061 states that a
+single-year disruption costs 2.3% in year 1 and still leaves about 0.3% in year
+5. The model gives **2.316%** and **0.009%**. The full curve, by year:
+1: 2.316, 2: 0.492, 3: 0.044, 4: 0.015, 5: 0.009, 6: 0.007, 7: 0.006,
+8: 0.005, 9: 0.005, 10: 0.004. The residual crosses 0.3% between year 2 and
+year 3, so if 0.3% was ever measured it was measured in year 2. The model
+recovers roughly thirty times more completely by year 5 than the sentence
+claims.
+
+**And the sentence credits a mechanism that is off.** It attributes the
+recovery to soils re-equilibrating *and* food prices normalizing. Under a
+pulse the price returns to baseline by construction at the end of year 1, so
+everything after year 1 is the soil alone. The second half of the attribution
+is not a magnitude error; it names a process the scenario has already switched
+off.
+
+**A pulse is a new capability, not a reinterpreted old one.**
+`EconParams.fert_price_shock_years` is a square pulse: full strength for
+`t < years`, exactly zero after. It is deliberately distinct from the existing
+`fert_capacity_recovery_years` ramp, and `get_pulse_scenario` refuses to build
+a pulse of a recovering scenario, because two recovery mechanisms at once give
+a trajectory attributable to neither. `get_pulse_scenario` takes an
+already-configured scenario and `dataclasses.replace`s one field, which
+introduces zero new numeric literals and makes "identical to S3 in every other
+parameter" true by construction rather than by docstring.
+
+**The `>=` that zeroed every year.** The pulse first read 0.000 at every
+reported year. The condition was `t >= fert_price_shock_years`, and the model
+samples year 1 at `t = 1.0`, so a one-year pulse ended before the harvest it
+was supposed to damage. Corrected to `t >`, with the failure mode recorded in
+the comment. Worth noting how this one presented: not as an error but as a
+clean column of zeros, which is a readable result. A one-year disruption
+costing nothing is a publishable-looking finding.
+
+**The claim-register resolver could not select a CSV row by an integer key.**
+Registering C-061's checks failed three times: `[year=1]` (the CSV loads as
+`{'rows': [...]}`), `rows[year=1]` (`_maybe_float` turns the key into `1.0` and
+`_apply` string-compares), `rows[year=1.0]` (`.` is a path separator, so the
+segment does not parse). The resolver reported this as "matched 0 elements",
+which reads as a claim about the artifact rather than about the resolver. Fixed
+in the resolver with `_sel_eq`, not worked around in the claim.
+
+**Baseline growth.** No id enters `docs/claims_baseline.json` `drifted` in this
+entry that was not already there; C-010's fifth check adds a drift to a claim
+already carried. The drifted set stands at C-010, C-011, C-014, C-021, C-030,
+C-041, C-042, C-060, C-061. Register report: AGREES 42, DRIFTED 28. Build graph
+28 nodes, all OK, one orphan (`figures/Figure_S5_flux_decomposition.png`) and
+one unsourced input (`data/figS12_curves.json`), both tracked in F-009/F-010.
+
+**Document edits owed from this entry:** SSA 30-year SOC decline 2.5% to 2.14%;
+pulse year-5 residual 0.3% to 0.009%, and drop the food-price half of its
+attribution; state that percentage SOC decline does not order regions the way
+yield loss does.
