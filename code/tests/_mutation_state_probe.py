@@ -73,8 +73,23 @@ def main():
             except Exception:
                 pass
 
-    # The price seam. These move gross margins, which the canonical artifact
-    # does not carry -- see the INERT caveat in F-011.
+    # The tropical SOM variant. SOMPoolParams() built with defaults does not
+    # read laub_tropical_ratios, so without this both of its leaves look like
+    # nothing depends on them.
+    cls = getattr(S, "SOMPoolParams", None)
+    if cls is not None:
+        for ctor in ("tropical", "for_tropical", "tropical_defaults"):
+            f = getattr(cls, ctor, None)
+            if callable(f):
+                try:
+                    _flat(f(), f"cls.SOMPoolParams.{ctor}", state)
+                except Exception:
+                    pass
+
+    # The price seam. These move gross margins, prices and cost shares, none
+    # of which the canonical artifact carries -- the INERT caveat in F-011.
+    # Every price entry point is exercised, including the bounds checks, so a
+    # constant read only inside a validator is not mistaken for an unwired one.
     try:
         import prices as P
         for fn in ("nitrogen_price_in_yield_units", "n_price_usd_kg"):
@@ -86,6 +101,18 @@ def main():
                     _flat(f(rk), f"prices.{fn}.{rk}", state)
                 except Exception:
                     pass
+        for fn in ("check_price_bounds",):
+            f = getattr(P, fn, None)
+            if callable(f):
+                try:                     # a list of violation strings: its
+                    v = f()              # length is the observable
+                    state[f"prices.{fn}.n_violations"] = float(len(v or []))
+                except Exception:
+                    pass
+        for const in ("SOUTH_ASIA_FARMER_PAID_N_PRICE", "N_PRICE_WEDGE",
+                      "UREA_N_FRACTION", "PRICE_BENCHMARK_MAX_FACTOR"):
+            if hasattr(P, const):
+                _flat(getattr(P, const), f"prices.{const}", state)
     except Exception:
         pass
 

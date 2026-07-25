@@ -261,13 +261,17 @@ def score_leaf(leaf: str, base_state: dict, base_pub: dict, green: list) -> dict
             row["note"] = "registry refused the value at load"
             return row
 
-        smoved = _diff(base_state, state)
-        row["state_fields_moved"] = len(smoved)
-        if not smoved:
-            row["verdict"] = "DECLARED_NOT_WIRED"
-            row["note"] = "registry declares it; no model state depends on it"
-            return row
+        row["state_fields_moved"] = len(_diff(base_state, state))
 
+        # The canonical run happens for every leaf, never conditionally on the
+        # state snapshot. An earlier revision short-circuited to
+        # DECLARED_NOT_WIRED whenever the state fingerprint did not move, which
+        # silently mis-scored every parameter consumed inside the run rather
+        # than stored on a parameter object: residue_c_to_active_fraction and
+        # both laub_tropical_ratios leaves move published numbers and were
+        # being reported as reaching nothing. REACH is the stronger signal and
+        # is now always measured; the state snapshot only ever breaks the tie
+        # between INERT and DECLARED_NOT_WIRED.
         pub, log = _canonical(sb)
         if pub is None:
             row["verdict"] = "ERROR"
@@ -278,11 +282,16 @@ def score_leaf(leaf: str, base_state: dict, base_pub: dict, green: list) -> dict
         row["published_fields_moved"] = len(pmoved)
         if pmoved:
             row["worst_field"], _, _, row["worst_delta"] = pmoved[0]
+
         if not pmoved:
-            row["verdict"] = "INERT"
-            row["note"] = ("wired, but its effect is outside the canonical artifact"
-                           if row["not_probed"] else
-                           "wired, but no published number depends on it")
+            if row["state_fields_moved"]:
+                row["verdict"] = "INERT"
+                row["note"] = ("wired, but its effect is outside the canonical "
+                               "artifact" if row["not_probed"] else
+                               "wired, but no published number depends on it")
+            else:
+                row["verdict"] = "DECLARED_NOT_WIRED"
+                row["note"] = "registry declares it; nothing the probe reads depends on it"
             return row
 
         verdicts = _suite(sb, green)
