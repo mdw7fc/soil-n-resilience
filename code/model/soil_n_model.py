@@ -18,6 +18,7 @@ import pandas as pd
 from dataclasses import dataclass, field
 from typing import Dict, List, Tuple, Optional
 import json
+import registry as _reg
 from parameter_registry import (
     BASELINE_BNF_KG_N_HA_YR,
     RESIDUE_C_FRACTION,
@@ -27,6 +28,51 @@ from parameter_registry import (
     WATER_STRESS_SOFTPLUS_EPS_MM,
     WHC_MM_PER_SOC_PCT_30CM,
 )
+
+# v15 (F-011). Everything below that used to be a literal is now read from
+# code/model/params.yaml through registry.py at import. The registry drives the
+# model; it no longer documents it. Perturbing an entry in params.yaml changes
+# the number this module hands the engine.
+_SOM_F = _reg.value('som_pool_fractions')      # guarded at load: sums to 1
+_SOM_K = _reg.value('som_decay_rates')
+_SOM_CN = _reg.value('som_pool_cn')
+_SOM_H = _reg.value('som_humification')
+_LAUB = _reg.value('laub_tropical_ratios')
+_CRE_ALLOC = _reg.value('cre_allocation')      # guarded at load: sums to 1
+
+# The eight regions' seventeen quantitative fields. Order is the order the
+# fields appear on RegionParams, and it is the order the equality log and the
+# mutation harness both walk, so it is stated once, here.
+REGISTRY_REGION_FIELDS = (
+    'soc_initial',
+    'cn_bulk',
+    'cropland_mha',
+    'synth_n_current',
+    'pop_supported',
+    'texture_class',
+    'whc_sensitivity',
+    'water_stress_coeff',
+    'baseline_water_deficit',
+    'atm_n_deposition',
+    'bnf_potential',
+    'bnf_ramp_years',
+    'residue_retention',
+    'yield_max_regional',
+    'yield_min_regional',
+    'root_shoot_c_ratio',
+    'cre_regional',
+)
+
+REGION_DISPLAY_NAMES = {
+    'north_america': 'North America',
+    'europe': 'Europe',
+    'east_asia': 'East Asia',
+    'south_asia': 'South Asia',
+    'southeast_asia': 'Southeast Asia',
+    'latin_america': 'Latin America',
+    'sub_saharan_africa': 'Sub-Saharan Africa',
+    'fsu_central_asia': 'Former Soviet Union & Central Asia',
+}
 
 
 # ============================================================
@@ -44,24 +90,26 @@ class SOMPoolParams:
     paper2-soil-resilience/tropical-reparam-2026-04-14/PARAMETERS.md
     for full documentation of the mapping.
     """
-    # Pool fractions of total SOC (must sum to 1.0)
-    f_active: float = 0.04      # 2-5% of total SOM
-    f_slow: float = 0.38        # 25-50% of total SOM
-    f_passive: float = 0.58     # 45-73% of total SOM
+    # Pool fractions of total SOC. The sum-to-one constraint is enforced by
+    # registry.py at load, not here: a partition that does not sum to one
+    # cannot reach this dataclass.
+    f_active: float = _SOM_F['f_active']
+    f_slow: float = _SOM_F['f_slow']
+    f_passive: float = _SOM_F['f_passive']
 
     # Decay constants (yr^-1) — reciprocal of turnover time
-    k_active: float = 0.33      # ~3 yr turnover
-    k_slow: float = 0.03705     # ~27 yr turnover (calibrated for SOC equilibrium)
-    k_passive: float = 0.000728 # ~1,373 yr turnover (calibrated for SOC equilibrium)
+    k_active: float = _SOM_K['k_active']      # ~3 yr turnover
+    k_slow: float = _SOM_K['k_slow']          # ~27 yr turnover
+    k_passive: float = _SOM_K['k_passive']    # ~1,373 yr turnover (F-001)
 
     # C:N ratios by pool
-    cn_active: float = 8.0
-    cn_slow: float = 12.0
-    cn_passive: float = 12.0
+    cn_active: float = _SOM_CN['cn_active']
+    cn_slow: float = _SOM_CN['cn_slow']
+    cn_passive: float = _SOM_CN['cn_passive']
 
     # Fraction of decomposed C transferred to next pool (humification)
-    h_active_to_slow: float = 0.40
-    h_slow_to_passive: float = 0.03
+    h_active_to_slow: float = _SOM_H['h_active_to_slow']
+    h_slow_to_passive: float = _SOM_H['h_slow_to_passive']
 
     # Tag identifying the parameterization regime (for traceability in
     # saved outputs and figures)
@@ -86,8 +134,8 @@ class SOMPoolParams:
         Scope: Sub-Saharan Africa, South Asia, Southeast Asia, Latin America.
         Not applied to: North America, Europe, East Asia, FSU/Central Asia.
         """
-        LAUB_K_SLOW_RATIO = 1.30     # 0.13 / 0.10
-        LAUB_K_PASSIVE_RATIO = 1.71  # 0.0060 / 0.0035
+        LAUB_K_SLOW_RATIO = _LAUB['k_slow_ratio']        # 0.13 / 0.10
+        LAUB_K_PASSIVE_RATIO = _LAUB['k_passive_ratio']  # 0.0060 / 0.0035
 
         base = cls()  # pull temperate defaults
         return cls(
@@ -201,7 +249,7 @@ class RegionParams:
 
     # Water holding capacity sensitivity to SOC (mm per SOC percentage point
     # in the modeled 0-30 cm layer)
-    whc_sensitivity: float = WHC_MM_PER_SOC_PCT_30CM
+    whc_sensitivity: float = _reg.value('whc_sensitivity')
 
     # Yield penalty per mm of water deficit (fraction per mm)
     water_stress_coeff: float = 0.004
@@ -299,7 +347,7 @@ class FeedbackParams:
     physical_feedback: bool = True
 
     # Physical feedback strength multiplier (0-1)
-    physical_strength: float = 1.0
+    physical_strength: float = _reg.value('physical_feedback_strength')
 
     # Marginal land expansion feedback: enabled
     expansion_feedback: bool = False  # Off by default (regional, not always relevant)
@@ -308,11 +356,13 @@ class FeedbackParams:
     cn_coupling_feedback: bool = True
 
     # Carbon retention efficiency of residue (fraction of residue C entering SOM)
-    cre_base: float = 0.11  # 11% long-term average (Lehtinen et al. 2014)
+    # F-011 scores this leaf INERT: cre_regional overrides it in all eight
+    # regions, so the fallback is dead code. Deleting it is owed work.
+    cre_base: float = _reg.value('cre_base')  # Lehtinen et al. 2014
 
-    # Fraction of CRE going to active vs. slow pool
-    cre_to_active: float = 0.60
-    cre_to_slow: float = 0.40
+    # Fraction of CRE going to active vs. slow pool. Guarded at load: sums to 1.
+    cre_to_active: float = _CRE_ALLOC['cre_to_active']
+    cre_to_slow: float = _CRE_ALLOC['cre_to_slow']
 
 
 # ============================================================
@@ -333,172 +383,11 @@ def get_default_regions() -> Dict[str, RegionParams]:
     Total population supported: ~7,650 M (global food system, excluding fisheries/pasture)
     """
     return {
-        'north_america': RegionParams(
-            name='North America',
-            soc_initial=50.0,       # t C/ha, 0-30 cm; blended US+Canada
-            cn_bulk=10.0,
-            cropland_mha=170.0,     # US ~155 + Canada ~35 Mha arable (FAO)
-            synth_n_current=76.0,   # ~13 Tg N / 170 Mha (USDA ERS, IFA)
-            pop_supported=900.0,    # ~12% of global crop calories (high yields, major exporter)
-            texture_class=1,        # Loam dominant
-            whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
-            water_stress_coeff=0.003,
-            baseline_water_deficit=0.0,
-            atm_n_deposition=10.0,  # NADP monitoring: 8-12 kg N/ha in Corn Belt (Vet et al. 2014)
-            bnf_potential=BASELINE_BNF_KG_N_HA_YR['north_america'],
-            bnf_ramp_years=8.0,
-            residue_retention=0.90,
-            yield_max_regional=0.0,     # Disabled: canonical y_max is solved at runtime
-            yield_min_regional=1.1,     # Morrow Plots/Sanborn Field unfertilized: ~1.0-1.1 t/ha
-            root_shoot_c_ratio=0.80,    # Bolinder et al. 2007; temperate cereals
-            cre_regional=0.280,         # Calibrated: active pool equilibrium at initial SOC
-        ),
-        'europe': RegionParams(
-            name='Europe',
-            soc_initial=42.0,       # t C/ha; LUCAS 2018, Lugato et al. 2014
-            cn_bulk=10.5,
-            cropland_mha=130.0,     # EU27 + UK + non-EU Europe (FAO)
-            synth_n_current=85.0,   # ~11 Tg N / 130 Mha (Eurostat, IFA)
-            pop_supported=900.0,    # ~12% of global crop calories
-            texture_class=1,
-            whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
-            water_stress_coeff=0.003,
-            baseline_water_deficit=0.0,
-            atm_n_deposition=12.0,  # EMEP: 10-15 kg N/ha in W. Europe (Simpson et al. 2014)
-            bnf_potential=BASELINE_BNF_KG_N_HA_YR['europe'],
-            bnf_ramp_years=8.0,
-            residue_retention=0.90,
-            yield_max_regional=0.0,
-            yield_min_regional=1.0,     # Rothamsted Broadbalk unfertilized: ~1.0 t/ha
-            root_shoot_c_ratio=0.80,    # Bolinder et al. 2007; temperate cereals
-            cre_regional=0.259,         # Calibrated: active pool equilibrium at initial SOC
-        ),
-        'east_asia': RegionParams(
-            name='East Asia',
-            soc_initial=35.0,       # t C/ha; China SOC variable, much degraded
-            cn_bulk=10.0,
-            cropland_mha=120.0,     # China ~120 Mha arable (NBS, FAO)
-            atm_n_deposition=20.0,  # Very high in E. China: 15-30 kg N/ha (Liu et al. 2013)
-            synth_n_current=250.0,  # ~30 Tg N / 120 Mha; China is world's largest N consumer
-            pop_supported=1875.0,   # ~25% of global crop calories (China dominates)
-            texture_class=1,
-            whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
-            water_stress_coeff=0.004,
-            baseline_water_deficit=5.0,
-            bnf_potential=BASELINE_BNF_KG_N_HA_YR['east_asia'],
-            bnf_ramp_years=10.0,
-            residue_retention=0.75, # Significant residue burning despite bans
-            yield_max_regional=0.0,
-            yield_min_regional=0.9,     # China 1949 avg ~1.0; depleted dryland blended: 0.9
-            root_shoot_c_ratio=0.60,    # Lower for rice-dominated systems (Katterer 2011)
-            cre_regional=0.226,         # Calibrated: active pool equilibrium at initial SOC
-        ),
-        'south_asia': RegionParams(
-            name='South Asia',
-            soc_initial=25.0,       # t C/ha; severely depleted (Lal 2004, SoilGrids)
-            cn_bulk=9.5,
-            cropland_mha=200.0,     # India ~155 + Pakistan ~22 + Bangladesh ~8 (FAO)
-            synth_n_current=110.0,  # ~22 Tg N / 200 Mha (FAI India, IFA)
-            pop_supported=1350.0,   # ~18% of global crop calories
-            texture_class=1,
-            whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
-            water_stress_coeff=0.005,  # Monsoon dependence, high evaporative demand
-            baseline_water_deficit=10.0,
-            atm_n_deposition=12.0,  # Indo-Gangetic Plain: 10-15 (Dentener et al. 2006)
-            bnf_potential=BASELINE_BNF_KG_N_HA_YR['south_asia'],
-            bnf_ramp_years=12.0,
-            residue_retention=0.50, # Widespread harvesting for fuel/fodder
-            yield_max_regional=0.0,
-            yield_min_regional=0.5,     # ICRISAT Vertisol trials: 0.3-0.6; pre-GR wheat: 0.66
-            root_shoot_c_ratio=0.70,    # Moderate; rice+wheat systems (Johnson et al. 2006)
-            cre_regional=0.341,         # Calibrated: active pool equilibrium at initial SOC
-        ),
-        'southeast_asia': RegionParams(
-            name='Southeast Asia',
-            soc_initial=32.0,       # t C/ha; tropical soils, variable
-            cn_bulk=10.0,
-            cropland_mha=90.0,      # Indonesia, Vietnam, Thailand, Myanmar, etc.
-            synth_n_current=89.0,   # ~8 Tg N / 90 Mha (IFA)
-            pop_supported=750.0,    # ~10% of global crop calories (rice-dominant)
-            texture_class=1,
-            whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
-            water_stress_coeff=0.004,
-            baseline_water_deficit=5.0,
-            atm_n_deposition=8.0,   # Moderate tropical: 5-10 (Vet et al. 2014)
-            bnf_potential=BASELINE_BNF_KG_N_HA_YR['southeast_asia'],
-            bnf_ramp_years=10.0,
-            residue_retention=0.70, # Some residue burning in rice systems
-            yield_max_regional=0.0,
-            yield_min_regional=1.2,     # Wetland rice BNF advantage: 30-60 kg N/ha/yr
-            root_shoot_c_ratio=0.60,    # Lower for rice systems (Katterer 2011)
-            cre_regional=0.307,         # Calibrated: active pool equilibrium at initial SOC
-        ),
-        'latin_america': RegionParams(
-            name='Latin America',
-            soc_initial=45.0,       # t C/ha; blended; Cerrado degraded, Pampas higher
-            cn_bulk=11.0,
-            cropland_mha=160.0,     # Brazil ~55, Argentina ~30, Mexico ~20, etc. (FAO)
-            atm_n_deposition=5.0,   # Low: relatively clean atmosphere (Vet et al. 2014)
-            synth_n_current=50.0,   # ~8 Tg N / 160 Mha (IFA); soybean BNF offsets
-            pop_supported=900.0,    # ~12% of global crop calories (major exporter)
-            texture_class=1,
-            whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
-            water_stress_coeff=0.003,
-            baseline_water_deficit=0.0,
-            bnf_potential=BASELINE_BNF_KG_N_HA_YR['latin_america'],
-            bnf_ramp_years=8.0,
-            residue_retention=0.80,
-            yield_max_regional=0.0,
-            yield_min_regional=0.9,     # Pampas ~1.0-1.5, Cerrado degraded; blended: 0.9
-            root_shoot_c_ratio=0.90,    # High; diverse cropping, deep-rooted tropical systems
-            cre_regional=0.308,         # Calibrated: active pool equilibrium at initial SOC
-        ),
-        'sub_saharan_africa': RegionParams(
-            name='Sub-Saharan Africa',
-            soc_initial=9.0,        # t C/ha, 0-30 cm; cropland-specific on degraded
-                                    # Oxisols/Ultisols. AfSIS landscape avg ~35 includes
-                                    # forest/woodland. Cultivated soils 5-15 t/ha typical
-                                    # (Batjes 2001; Vågen et al. 2005)
-            cn_bulk=11.0,
-            cropland_mha=230.0,     # Largest cropland area, low intensity (FAO)
-            synth_n_current=7.0,    # ~1.5 Tg N / 230 Mha (IFA); extremely low
-            pop_supported=600.0,    # ~8% of global crop calories (low yields)
-            texture_class=0,        # Sandy dominant in many regions
-            whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
-            water_stress_coeff=0.005,
-            baseline_water_deficit=15.0,
-            atm_n_deposition=5.0,   # Low: 3-7 kg/ha (Dentener et al. 2006)
-            bnf_potential=BASELINE_BNF_KG_N_HA_YR['sub_saharan_africa'],
-            bnf_ramp_years=15.0,
-            residue_retention=0.55, # Fuel, construction, livestock feed
-            yield_max_regional=0.0,
-            yield_min_regional=0.4,     # TSBF network controls: 0.3-0.6; Oxisol/Ultisol baseline
-            root_shoot_c_ratio=1.0,     # High; grassland-origin soils, deep roots (Bolinder 2007)
-            cre_regional=0.20,          # Within literature range; equilibrium at SOC=9
-        ),
-        'fsu_central_asia': RegionParams(
-            name='Former Soviet Union & Central Asia',
-            soc_initial=35.0,       # t C/ha; cultivated chernozems (lower than native ~50+)
-                                    # Reflects ~30% loss from decades of cultivation
-                                    # (Mikhailova et al. 2000; Torn et al. 2002)
-            cn_bulk=10.0,
-            cropland_mha=130.0,     # Russia ~80, Ukraine ~33, Kazakhstan ~12, etc.
-            synth_n_current=38.0,   # ~5 Tg N / 130 Mha (IFA)
-            pop_supported=375.0,    # ~5% of global crop calories
-            atm_n_deposition=5.0,   # Low: continental interior (Vet et al. 2014)
-            texture_class=1,
-            whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
-            water_stress_coeff=0.004,
-            baseline_water_deficit=10.0,
-            bnf_potential=BASELINE_BNF_KG_N_HA_YR['fsu_central_asia'],
-            bnf_ramp_years=10.0,
-            residue_retention=0.85,
-            yield_max_regional=0.0,
-            yield_min_regional=0.9,     # Pryanishnikov Institute trials: 0.8-1.0 t/ha
-            root_shoot_c_ratio=1.0,     # High; steppe-origin soils, deep roots (Bolinder 2007)
-            cre_regional=0.35,          # Slightly elevated; includes manure/organic amendments
-                                        # common in FSU mixed crop-livestock systems
-        ),
+        region_key: RegionParams(
+            name=REGION_DISPLAY_NAMES[region_key],
+            **_reg.region_fields(region_key, REGISTRY_REGION_FIELDS)
+        )
+        for region_key in _reg.REGIONS
     }
 
 

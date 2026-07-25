@@ -41,6 +41,7 @@ from soil_n_model import (
     SOMPoolParams, CropParams, RegionParams, FeedbackParams,
     get_default_regions,
 )
+import registry as _reg
 from parameter_registry import (
     SOC_T_C_HA_PER_PERCENT_30CM,
     SOIL_N_RESPONSE_ELASTICITY_CENTRAL,
@@ -146,47 +147,26 @@ class EconParams:
 #   eps_F_N: structural sensitivity only (no clean regional estimates)
 #   Land elasticities: CGE practice (Lubowski et al. 2006; Gurgel et al. 2007)
 #     with two-tier differentiation for frontier vs. constrained regions
+# v15 (F-011): the eight regions' elasticities are read from
+# code/model/params.yaml at import rather than restated here.
+#
+# eps_F_N is deliberately NOT read from the registry. The registered value
+# (-0.5) is the S4 structural-sensitivity setting; the reported S1-S3 runs hold
+# it at SOIL_N_RESPONSE_ELASTICITY_CENTRAL = 0.0, and eps_F_N is the dial that
+# defines which scenario is running. Wiring it here would make the scenario
+# definition a registry edit. F-011 scores it DECLARED_NOT_WIRED for this
+# reason; the verdict is correct and is not a gap to close.
+_ECON_REGISTRY_FIELDS = (
+    'eta', 'alpha', 'eps_F_PF', 'eps_F_PY',
+    'eps_LD_PL', 'eps_LD_PY', 'eps_LS_PL',
+)
+
 REGIONAL_ECON_PARAMS = {
-    'north_america': {
-        'eta': -0.30, 'alpha': 0.10, 'eps_F_PF': -0.20,
-        'eps_F_PY': 0.10, 'eps_F_N': 0.0,
-        'eps_LD_PL': -0.30, 'eps_LD_PY': 0.20, 'eps_LS_PL': 0.40,
-    },
-    'europe': {
-        'eta': -0.35, 'alpha': 0.08, 'eps_F_PF': -0.25,
-        'eps_F_PY': 0.10, 'eps_F_N': 0.0,
-        'eps_LD_PL': -0.30, 'eps_LD_PY': 0.15, 'eps_LS_PL': 0.30,
-    },
-    'east_asia': {
-        'eta': -0.45, 'alpha': 0.10, 'eps_F_PF': -0.30,
-        'eps_F_PY': 0.10, 'eps_F_N': 0.0,
-        'eps_LD_PL': -0.30, 'eps_LD_PY': 0.15, 'eps_LS_PL': 0.30,
-    },
-    'south_asia': {
-        'eta': -0.60, 'alpha': 0.12, 'eps_F_PF': -0.40,
-        'eps_F_PY': 0.10, 'eps_F_N': 0.0,
-        'eps_LD_PL': -0.30, 'eps_LD_PY': 0.20, 'eps_LS_PL': 0.50,
-    },
-    'southeast_asia': {
-        'eta': -0.55, 'alpha': 0.12, 'eps_F_PF': -0.40,
-        'eps_F_PY': 0.10, 'eps_F_N': 0.0,
-        'eps_LD_PL': -0.30, 'eps_LD_PY': 0.20, 'eps_LS_PL': 0.50,
-    },
-    'latin_america': {
-        'eta': -0.50, 'alpha': 0.15, 'eps_F_PF': -0.30,
-        'eps_F_PY': 0.10, 'eps_F_N': 0.0,
-        'eps_LD_PL': -0.30, 'eps_LD_PY': 0.25, 'eps_LS_PL': 0.70,
-    },
-    'sub_saharan_africa': {
-        'eta': -0.70, 'alpha': 0.15, 'eps_F_PF': -0.50,
-        'eps_F_PY': 0.03, 'eps_F_N': 0.0,
-        'eps_LD_PL': -0.30, 'eps_LD_PY': 0.25, 'eps_LS_PL': 0.70,
-    },
-    'fsu_central_asia': {
-        'eta': -0.45, 'alpha': 0.12, 'eps_F_PF': -0.30,
-        'eps_F_PY': 0.10, 'eps_F_N': 0.0,
-        'eps_LD_PL': -0.30, 'eps_LD_PY': 0.20, 'eps_LS_PL': 0.50,
-    },
+    rk: dict(
+        _reg.region_fields(rk, _ECON_REGISTRY_FIELDS),
+        eps_F_N=SOIL_N_RESPONSE_ELASTICITY_CENTRAL,
+    )
+    for rk in _reg.REGIONS
 }
 
 

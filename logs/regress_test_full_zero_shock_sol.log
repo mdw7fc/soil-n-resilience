@@ -1,0 +1,9 @@
+north_america          max 30-yr deviation 1.088e-05
+europe                 max 30-yr deviation 5.988e-06
+east_asia              max 30-yr deviation 9.913e-06
+south_asia             max 30-yr deviation 1.088e-05
+southeast_asia         max 30-yr deviation 1.278e-05
+latin_america          max 30-yr deviation 1.030e-05
+sub_saharan_africa     max 30-yr deviation 1.627e-05
+fsu_central_asia       max 30-yr deviation 3.477e-05
+FULL S3 ZERO-SHOCK INVARIANCE: PASS (3.477e-05)

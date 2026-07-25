@@ -1,0 +1,1243 @@
+# =====================================================================
+# params.yaml -- the parameter registry for ERFS-100341
+# "Soil organic matter buffers fertilizer supply disruptions"
+#
+# v15. Reconstructed 2026-07-25 from outputs/table_S1_parameters.md and
+# findings F-001, F-006, F-007 and F-011 after the v15 working tree was lost.
+#
+# DIRECTION OF AUTHORITY (F-011). This file drives the model. The four
+# modules soil_n_model.py, coupled_econ_biophysical.py, prices.py and
+# monthly_model_v3.py read their constants from registry.py at import.
+# Editing a value here changes the model. It is not documentation.
+#
+# SCHEMA. Every entry may carry:
+#   value                 scalar, per-region mapping, or named-leaf mapping
+#   units                 unit string; checked against soc_profile_depth_cm
+#                         where the string names a profile depth
+#   category              measured | calibrated | judgment | derived
+#   source                provenance, with DOI or URL where one exists
+#   used_by               module.symbol readers, for the wiring table
+#   affects_claims        claim IDs in docs/claims.yaml
+#   benchmark             benchmark IDs in data/benchmarks/observed_values.yaml
+#   mc                    drawn | declared_fixed | exempt | not_applicable
+#   mc_exempt_reason      required whenever mc is not 'drawn'
+#   uncertainty           the prior run_mc_ensemble.py ACTUALLY DRAWS (F-007)
+#   derived_from          the expression, for category: derived
+#   superseded_by         the symbol that replaced this parameter's mechanism
+#   superseded_note       why the entry survives despite being superseded
+#   documented_as         a surviving v15 artifact records a different value;
+#                         the code is authoritative and the artifact owes an edit
+#
+# UNCERTAINTY BLOCKS ARE THE DRAWN PRIOR, NOT THE DECLARED ONE (F-007).
+# Six of six comparable priors disagreed between this file and the ensemble.
+# The ensemble is what ran, so this file was the side that was wrong, and each
+# of the six blocks below has been rewritten to the drawn prior with a dated
+# note saying so. Editing the ensemble instead would have made the published
+# credible intervals unreproducible from the code that produced them.
+#
+# REGION ORDER is canonical everywhere: north_america, europe, east_asia,
+# south_asia, southeast_asia, latin_america, sub_saharan_africa,
+# fsu_central_asia.
+# =====================================================================
+
+schema_version: 2
+registry_version: v15
+regions:
+  - north_america
+  - europe
+  - east_asia
+  - south_asia
+  - southeast_asia
+  - latin_america
+  - sub_saharan_africa
+  - fsu_central_asia
+
+parameters:
+
+  # -------------------------------------------------------------------
+  # Unit conversions and accounting conventions
+  # -------------------------------------------------------------------
+
+  cm2_per_ha:
+    value: 1.0e+08
+    units: cm2 per ha
+    category: measured
+    source: Exact by definition of the unit
+    used_by: [registry.soc_tha_per_pct]
+    mc: exempt
+    mc_exempt_reason: Exact by definition; not an uncertain quantity.
+
+  g_per_t:
+    value: 1.0e+06
+    units: g per t_C
+    category: measured
+    source: Exact by definition of the unit
+    used_by: [registry.soc_tha_per_pct]
+    mc: exempt
+    mc_exempt_reason: Exact by definition; not an uncertain quantity.
+
+  pct_to_fraction:
+    value: 0.01
+    units: dimensionless per pct_SOC
+    category: measured
+    source: Exact by definition of the unit
+    used_by: [registry.soc_tha_per_pct]
+    mc: exempt
+    mc_exempt_reason: Exact by definition; not an uncertain quantity.
+
+  soc_bulk_density:
+    value: 1.3
+    units: g per cm3
+    category: judgment
+    source: Representative cultivated-topsoil bulk density
+    used_by: [registry.soc_tha_per_pct]
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      Enters only through the derived soc_tha_per_pct, which is an accounting
+      convention for converting a reported stock to a reported percentage.
+      Varying it would change the units of the answer rather than the answer.
+      Its effect is measured instead by test_soc_conversion_invariance.
+
+  soc_profile_depth_cm:
+    value: 30
+    units: cm
+    category: judgment
+    source: Model convention, stated once here
+    used_by: [registry.soc_tha_per_pct, registry.check_profile_depth_units]
+    mc: exempt
+    mc_exempt_reason: >-
+      A convention, not an uncertain quantity. Changing it changes what the
+      model means rather than how uncertain the model is. It is registered so
+      that whc_sensitivity's units string can be checked against it.
+    guarded_at_load: profile_depth_units
+
+  soc_tha_per_pct:
+    value: 39.0
+    units: t_C per ha per pct_SOC
+    category: derived
+    derived_from: soc_bulk_density * soc_profile_depth_cm * cm2_per_ha / g_per_t * pct_to_fraction
+    source: 'derived: soc_bulk_density * soc_profile_depth_cm * cm2_per_ha / g_per_t * pct_to_fraction'
+    used_by: [soil_n_model.soc_pct_from_tha, coupled_monthly.MonthlyBiophysicalEngine]
+    affects_claims: [C-001, C-014]
+    mc: not_applicable
+    mc_exempt_reason: Derived; cannot be set independently of its four factors.
+
+  urea_n_fraction:
+    value: 0.46
+    units: dimensionless
+    category: measured
+    source: Stoichiometric nitrogen content of urea, CO(NH2)2
+    used_by: [prices.n_price_usd_kg]
+    mc: exempt
+    mc_exempt_reason: A stoichiometric constant, not an uncertain quantity.
+
+  # -------------------------------------------------------------------
+  # Soil organic matter kinetics
+  # -------------------------------------------------------------------
+
+  som_decay_rates:
+    value:
+      k_active: 0.33
+      k_slow: 0.03705
+      k_passive: 0.000728
+    units: per year
+    category: calibrated
+    source: Century-family first-order decay constants, temperate regime
+    used_by: [soil_n_model.SOMPoolParams]
+    affects_claims: [C-010, C-011, C-061]
+    benchmark: [B2]
+    mc: drawn
+    uncertainty:
+      applies_to: k_slow
+      family: truncnorm
+      mode: multiplier
+      mean: 1.0
+      sd: 0.20
+      low: 0.60
+      high: 1.40
+      ensemble_symbol: run_mc_ensemble.PRIORS['k_slow_mult']
+      note: >-
+        2026-07-25 (F-007): corrected from a declared sd 0.15 on [0.6, 1.5].
+        params.yaml was the side that was wrong. The ensemble drew
+        sd 0.20 on [0.60, 1.40] and the ensemble is what ran, so the declared
+        block has been rewritten to the drawn prior rather than the ensemble
+        edited to the declared one. Only k_slow is drawn; k_active and
+        k_passive are held at their Century values.
+
+  som_humification:
+    value:
+      h_active_to_slow: 0.40
+      h_slow_to_passive: 0.03
+    units: dimensionless
+    category: judgment
+    source: Century-family humification efficiencies
+    used_by: [soil_n_model.SOMPoolParams, monthly_model_v3.update_som_pools]
+    affects_claims: [C-010, C-011]
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      The active-to-slow and slow-to-passive transfer efficiencies. Not drawn
+      because the k_slow prior already moves the slow pool's turnover, and over
+      a 30-year horizon a humification error and a decay error are close to
+      indistinguishable in the reported stock trajectory. SI limitation:
+      pool-transfer efficiencies are fixed at Century-family values and the SOC
+      interval covers turnover uncertainty through k_slow alone; structural
+      sensitivity here is tested by the four-pool comparison rather than by the
+      ensemble.
+
+  som_pool_cn:
+    value:
+      cn_active: 8.0
+      cn_slow: 12.0
+      cn_passive: 12.0
+    units: g_C per g_N
+    category: measured
+    source: Century-family pool C:N ratios
+    used_by: [soil_n_model.SOMPoolParams, monthly_model_v3.update_som_pools]
+    mc: exempt
+    mc_exempt_reason: >-
+      Pool C:N enters only the mineralization stoichiometry, which is
+      constrained by the Seam B mass balance; the mass balance holds for any
+      declared C:N, and the paper reports no quantity sensitive to it at the
+      precision the ensemble could resolve. Flagged for review by the mutation
+      harness rather than assumed harmless.
+
+  som_pool_fractions:
+    value:
+      f_active: 0.04
+      f_slow: 0.38
+      f_passive: 0.58
+    units: dimensionless
+    category: measured
+    source: Century-family pool partitioning for temperate cultivated soils
+    used_by: [soil_n_model.SOMPoolParams]
+    mc: exempt
+    guarded_at_load: sum_to_one
+    mc_exempt_reason: >-
+      2026-07-25 (F-001): the reported outcomes are invariant to this
+      partition, which is a weaker statement than the one recorded here before
+      today. The earlier reason claimed the dynamic spin-up overwrites the
+      initial partition entirely. It does not, and
+      test_spinup_partition_independence.py was written to check that claim and
+      falsified it: with k_passive at 0.000728 per year the passive pool has a
+      1374-year turnover time, while the spin-up's convergence criterion
+      (fractional SOC drift below 0.002 over a 50-year window) is met after
+      about a century. The active and slow pools do reach equilibrium in that
+      time and are partition-independent to within the asserted fast-pool
+      tolerance; the passive pool does not, and the total SOC the spin-up
+      delivers therefore still carries the assumed passive fraction. Run to a
+      true fixed point (n_spinup 20000, tol 1e-6) every starting partition
+      lands on the same SOC, so the equilibrium itself is partition-independent;
+      the shipped spin-up simply does not run that far, and should not, because
+      the model's own equilibrium would replace a measured stock with an
+      inferred one. What licenses the exemption is the measured sensitivity of
+      the published quantities: over f_passive 0.45 to 0.73 the S3 year-1 and
+      year-10 yield losses move by less than 0.05 percentage points in every
+      region against a reporting precision of 0.1, while absolute SOC moves by
+      more than 8 t C/ha in every temperate region. The water-stress term
+      responds to SOC change measured against each run's own equilibrium, and
+      the passive pool contributes about 2 percent of N mineralization. SI
+      limitation: absolute SOC is initialization, not prediction, anchored on
+      measurement in temperate regions and on model kinetics in tropical ones,
+      so absolute stocks are not comparable across regimes even though relative
+      changes are. Point values are deliberately not restated here; the
+      measured characterisation is written by the test to
+      results/spinup_partition_characterisation.yaml on every run and is cited
+      from there.
+
+  laub_tropical_ratios:
+    value:
+      k_slow_ratio: 1.30
+      k_passive_ratio: 1.71
+    units: dimensionless
+    category: measured
+    source: Laub et al. (2024) Biogeosciences 21:3691-3716; doi:10.5194/bg-21-3691-2024
+    used_by: [soil_n_model.SOMPoolParams.tropical]
+    mc: exempt
+    mc_exempt_reason: >-
+      A ratio between two published parameterisations, varied implicitly
+      through the som_decay_rates multiplier which scales the temperate and
+      tropical rates together.
+
+  residue_c_to_active_fraction:
+    value: 0.90
+    units: dimensionless
+    category: judgment
+    source: Century-family structural partition of fresh residue carbon
+    used_by: [monthly_model_v3.update_som_pools]
+    affects_claims: [C-010, C-011]
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      Wired but not drawn. Outside the SOC unit conversions this is the only
+      registered parameter the published canonical run reads at all (F-006),
+      and the mutation sweep measured a 10 percent perturbation moving
+      southeast Asia year-1 loss by 2.5e-2 percentage points, the largest reach
+      of any registered leaf. It was a bare literal at two use sites until
+      2026-07-25, so no ensemble that has run could have drawn it. SI
+      limitation: the structural residue-carbon split is fixed at 0.90/0.10;
+      its measured reach is small against the reported interval, but it is
+      unsampled and the next ensemble should draw it.
+
+  cre_base:
+    value: 0.11
+    units: dimensionless
+    category: measured
+    source: Lehtinen et al. (2014) Soil Use and Management 30:524-538; doi:10.1111/sum.12134
+    used_by: [soil_n_model.FeedbackParams]
+    affects_claims: [C-010]
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      The ensemble perturbs the regional carbon-response efficiency
+      (cre_regional_mult), and cre_base is the global fallback those regional
+      values override in every region the paper reports. Sampling both would
+      double-count the same uncertainty. F-011 scores this leaf INERT and the
+      repair is to delete the fallback rather than to widen the probe; the
+      deletion is owed and not yet made.
+
+  cre_allocation:
+    value:
+      cre_to_active: 0.60
+      cre_to_slow: 0.40
+    units: dimensionless
+    category: judgment
+    source: Century-family allocation of retained carbon between the fast pools
+    used_by: [soil_n_model.FeedbackParams]
+    mc: exempt
+    guarded_at_load: sum_to_one
+    mc_exempt_reason: >-
+      The split redistributes a fixed carbon input between two pools whose
+      combined stock is what the reported SOC change measures. Perturbation
+      moves the partition of a small flux, not its magnitude. Flagged for the
+      mutation harness to confirm rather than assumed.
+
+  cre_regional:
+    value:
+      north_america: 0.280
+      europe: 0.259
+      east_asia: 0.226
+      south_asia: 0.341
+      southeast_asia: 0.307
+      latin_america: 0.308
+      sub_saharan_africa: 0.20
+      fsu_central_asia: 0.35
+    units: dimensionless
+    category: calibrated
+    source: Regionalised carbon retention efficiency
+    used_by: [soil_n_model.RegionParams, monthly_model_v3.run_model]
+    affects_claims: [C-010, C-011]
+    benchmark: [B2]
+    mc: drawn
+    uncertainty:
+      family: truncnorm
+      mode: multiplier
+      mean: 1.0
+      sd: 0.30
+      low: 0.40
+      high: 1.80
+      clip_absolute: [0.01, 0.99]
+      ensemble_symbol: run_mc_ensemble.PRIORS['cre_regional_mult']
+      note: >-
+        2026-07-25 (F-007): corrected from a declared sd 0.20 on an absolute
+        clip of [0.05, 0.6]. params.yaml was the side that was wrong. The
+        ensemble drew sd 0.30 on a MULTIPLIER of [0.40, 1.80], then clipped
+        absolutely to [0.01, 0.99]. The old block wrote two different
+        quantities into one pair of fields: [0.05, 0.6] was an absolute
+        retention range while low/high in every other block are multipliers on
+        the central value. That is F-005's error class, a number recorded
+        without its basis, which is why clip_absolute is now an explicit pair
+        rather than a bare boolean.
+
+  residue_retention:
+    value:
+      north_america: 0.90
+      europe: 0.90
+      east_asia: 0.75
+      south_asia: 0.50
+      southeast_asia: 0.70
+      latin_america: 0.80
+      sub_saharan_africa: 0.55
+      fsu_central_asia: 0.85
+    units: dimensionless
+    category: judgment
+    source: Regional crop-residue retention fractions
+    used_by: [soil_n_model.RegionParams, monthly_model_v3.run_model]
+    affects_claims: [C-010, C-011]
+    benchmark: [B2]
+    mc: drawn
+    uncertainty:
+      family: truncnorm
+      mode: multiplier
+      mean: 1.0
+      sd: 0.10
+      low: 0.80
+      high: 1.15
+      ensemble_symbol: run_mc_ensemble.PRIORS['residue_retention_mult']
+      note: >-
+        2026-07-25 (F-007): corrected from a declared sd 0.15 on [0.6, 1.3].
+        params.yaml was the side that was wrong. The ensemble drew sd 0.10 on
+        [0.80, 1.15]. The declared prior was WIDER than the drawn one in both
+        directions, so the SI table had been advertising an input-carbon
+        uncertainty roughly three times the width of the one that was actually
+        propagated.
+
+  root_shoot_c_ratio:
+    value:
+      north_america: 0.80
+      europe: 0.80
+      east_asia: 0.60
+      south_asia: 0.70
+      southeast_asia: 0.60
+      latin_america: 0.90
+      sub_saharan_africa: 1.0
+      fsu_central_asia: 1.0
+    units: dimensionless
+    category: judgment
+    source: Regional root-to-shoot carbon ratios for the dominant cereal mix
+    used_by: [soil_n_model.RegionParams, monthly_model_v3.run_model]
+    affects_claims: [C-010]
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      Scales the below-ground half of the annual residue-carbon input, which
+      the model forms as a SUM rather than a product: c_in is proportional to
+      (residue_retention + root_shoot_c_ratio) at monthly_model_v3:505-507. The
+      ensemble draws residue_retention, so only the shoot term varies. This is
+      an understatement rather than a cancellation, and naming it as one is the
+      point of this entry. SI limitation: input-side carbon uncertainty is
+      propagated on roughly half the input, so the reported SOC interval is
+      narrower than an input-complete ensemble would give. F-007 records that
+      this one should be drawn in the next ensemble.
+
+  soc_initial:
+    value:
+      north_america: 50.0
+      europe: 42.0
+      east_asia: 35.0
+      south_asia: 25.0
+      southeast_asia: 32.0
+      latin_america: 45.0
+      sub_saharan_africa: 9.0
+      fsu_central_asia: 35.0
+    units: t_C per ha
+    category: measured
+    source: SoilGrids 250m cropland SOC stock, 0-30 cm, regional medians; https://soilgrids.org/
+    used_by: [soil_n_model.RegionParams]
+    affects_claims: [C-001, C-014]
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      Not a free parameter of the run. It is the anchor the spin-up targets,
+      and engine_at_soc rescales the pools to it, so a draw would move the
+      starting point and the calibration target together. The paper reports
+      fractional losses relative to each region's own baseline, which removes
+      the level but not the nitrogen-supply effect of a larger stock, and that
+      residual effect is unsampled. SI limitation: absolute SOC stocks are
+      initialisation anchored, on measurement in temperate regions and on model
+      kinetics in tropical ones (F-001), and the measurement uncertainty of the
+      source product is not propagated.
+
+  cn_bulk:
+    value:
+      north_america: 10.0
+      europe: 10.5
+      east_asia: 10.0
+      south_asia: 9.5
+      southeast_asia: 10.0
+      latin_america: 11.0
+      sub_saharan_africa: 11.0
+      fsu_central_asia: 10.0
+    units: g_C per g_N
+    category: measured
+    source: Bulk soil C:N ratios for cultivated soils, regional means
+    used_by: [soil_n_model.RegionParams, monthly_model_v3.update_som_pools]
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      The bulk soil C:N ratio converts mineralized carbon to mineralized
+      nitrogen. Not drawn because the ensemble already samples k_slow, and
+      delivered nitrogen is to first order the quotient of the two, so a 10
+      percent error in C:N and a 10 percent error in decay are the same 10
+      percent error in the nitrogen the crop sees. Drawing both would report
+      one uncertain number as two. SI limitation: the mineralization interval
+      should be read as covering decay and stoichiometry jointly through the
+      k_slow prior; the carbon-stock trajectory, which responds to k_slow
+      alone, is the one place the two are separable.
+
+  # -------------------------------------------------------------------
+  # Water
+  # -------------------------------------------------------------------
+
+  whc_sensitivity:
+    value: 3.48
+    units: mm_water per pct_SOC per 30cm_profile
+    category: measured
+    source: Minasny & McBratney (2018) Eur J Soil Sci 69:39-47; doi:10.1111/ejss.12475
+    used_by: [soil_n_model.RegionParams, coupled_monthly.MonthlyBiophysicalEngine]
+    affects_claims: [C-014, C-021]
+    benchmark: [B4]
+    documented_as: >-
+      2026-07-25 (WP1 rebuild): v15/outputs/table_S1_parameters.md prints this
+      row as 3.5 and FINDINGS F-008 records it as "3.48, registered as 3.5".
+      The code carries 3.48 (1.16 mm per 100 mm soil per percentage point SOC
+      over a 300 mm profile = 1.16 * 3). Registering 3.5 moves sixteen of the
+      123 canonical fields at the 1e-5 relative level, which would break the
+      WP1 no-op acceptance test, so the code's 3.48 stands and Table S1 owes
+      the edit. C-021's manuscript correction is 8.4 -> 3.48, which is 3.5 at
+      the two significant figures the manuscript states.
+    mc: drawn
+    uncertainty:
+      family: truncnorm
+      mode: multiplier
+      mean: 1.0
+      sd: 0.35
+      low: 0.657
+      high: 2.40
+      declared_absolute_bounds: [2.3, 8.4]
+      ensemble_sig_figs: 3
+      rounding_reason: >-
+        The ensemble writes the lower bound as 0.657, which is three
+        significant figures of 2.3 / 3.5 = 0.657143, so it draws from 2.2995 mm
+        rather than 2.3 mm. Neither side was edited. Changing the ensemble
+        literal would move the support of a truncated normal and therefore
+        every draw, to correct 0.02 percent of one bound of a meta-analytic
+        range.
+      ensemble_symbol: run_mc_ensemble.PRIORS['whc_sensitivity_mult']
+      note: >-
+        2026-07-25 (F-007): this is the one comparable prior of the six where
+        neither side was edited, because the discrepancy is a declared
+        transcription rounding rather than a disagreement. It is recorded here
+        as the multiplier the ensemble draws, with the absolute bounds the SI
+        states given separately, so the basis of each number is explicit.
+
+  water_stress_coeff:
+    value:
+      north_america: 0.003
+      europe: 0.003
+      east_asia: 0.004
+      south_asia: 0.005
+      southeast_asia: 0.004
+      latin_america: 0.003
+      sub_saharan_africa: 0.005
+      fsu_central_asia: 0.004
+    units: dimensionless per mm
+    category: judgment
+    source: Regional conversion of water deficit to yield-fraction penalty
+    used_by: [soil_n_model.RegionParams, coupled_monthly.MonthlyBiophysicalEngine]
+    affects_claims: [C-014]
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      Converts a water deficit into a yield-fraction penalty inside
+      _water_stress, multiplying whc_sensitivity along the SOC-to-yield water
+      pathway. whc_sensitivity is drawn across a factor of 3.65 (0.657x to
+      2.40x), which is the wider of the two and dominates the product. SI
+      limitation: the water pathway carries one multiplier of uncertainty; how
+      much water a percentage point of SOC holds and how much yield a
+      millimetre of water buys are not separately identified.
+
+  baseline_water_deficit:
+    value:
+      north_america: 0.0
+      europe: 0.0
+      east_asia: 5.0
+      south_asia: 10.0
+      southeast_asia: 5.0
+      latin_america: 0.0
+      sub_saharan_africa: 15.0
+      fsu_central_asia: 10.0
+    units: mm
+    category: judgment
+    source: Regional constant offset standing in for a growing-season climatology
+    used_by: [soil_n_model.RegionParams, coupled_monthly.MonthlyBiophysicalEngine]
+    affects_claims: [C-014]
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      A regional constant offset added inside
+      coupled_monthly.MonthlyBiophysicalEngine._water_stress before the
+      SOC-dependent water-holding term. It sets the LEVEL of water stress; the
+      paper reports the CHANGE in stress that follows a change in SOC, which is
+      governed by whc_sensitivity and water_stress_coeff. Held fixed because it
+      is a judgment-coded stand-in for a climatology the model does not
+      otherwise carry, so a prior on it would express a precision the
+      underlying quantity does not have. SI limitation: absolute water-stress
+      levels carry no interval; only the SOC-driven change does.
+
+  physical_feedback_strength:
+    value: 1.0
+    units: dimensionless
+    category: judgment
+    source: Switch scaling the SOC-to-water physical feedback; 1.0 is fully on
+    used_by: [soil_n_model.FeedbackParams]
+    mc: exempt
+    mc_exempt_reason: >-
+      Perfectly collinear with whc_sensitivity, which does enter the ensemble.
+      Varying both would double-count the same uncertainty.
+
+  texture_class:
+    value:
+      north_america: 1
+      europe: 1
+      east_asia: 1
+      south_asia: 1
+      southeast_asia: 1
+      latin_america: 1
+      sub_saharan_africa: 0
+      fsu_central_asia: 1
+    units: dimensionless
+    category: judgment
+    source: Coarse categorical texture label; 0 = coarse, 1 = medium
+    used_by: [soil_n_model.RegionParams]
+    mc: exempt
+    mc_exempt_reason: >-
+      A categorical label with no continuous perturbation, and it does not
+      currently modify any coefficient. F-011 scores it DECLARED_NOT_WIRED. If
+      the mutation harness confirms it is unused it should be deleted rather
+      than exempted.
+
+  # -------------------------------------------------------------------
+  # Nitrogen supply
+  # -------------------------------------------------------------------
+
+  synth_n_current:
+    value:
+      north_america: 76.0
+      europe: 85.0
+      east_asia: 250.0
+      south_asia: 110.0
+      southeast_asia: 89.0
+      latin_america: 50.0
+      sub_saharan_africa: 7.0
+      fsu_central_asia: 38.0
+    units: kg_N per ha
+    category: measured
+    source: IFA regional nitrogen consumption divided by FAOSTAT cropland area, 2019-2021
+    used_by: [soil_n_model.RegionParams, coupled_econ_biophysical.CoupledModel]
+    affects_claims: [C-030, C-031, C-070]
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      The observed regional application rate, which also defines the scenario:
+      the disruption is specified as a fractional reduction from it, so a draw
+      would rescale the shock rather than express uncertainty about it. Its
+      measurement uncertainty reaches the reported outcomes through the cost
+      share, where the drawn nitrogen-price multiplier carries it. SI
+      limitation: FAOSTAT application rates are treated as known, so a region
+      whose reported rate is biased has a proportionally biased baseline and
+      shock.
+
+  atm_n_deposition:
+    value:
+      north_america: 10.0
+      europe: 12.0
+      east_asia: 20.0
+      south_asia: 12.0
+      southeast_asia: 8.0
+      latin_america: 5.0
+      sub_saharan_africa: 5.0
+      fsu_central_asia: 5.0
+    units: kg_N per ha per year
+    category: measured
+    source: Regional total reactive nitrogen deposition to cropland
+    used_by: [soil_n_model.RegionParams, monthly_model_v3.run_model]
+    affects_claims: [C-070]
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      Added to mineral nitrogen every month in both the baseline and the
+      disrupted run (monthly_model_v3:260), so it cancels to first order in the
+      reported differences and what survives is second-order through the
+      curvature of the yield-nitrogen response. Held fixed because the
+      deposition field is a spatially interpolated product, and resampling it
+      as eight independent regional multipliers would treat a spatially
+      structured error as independent noise. SI limitation: the reported losses
+      are conditional on fixed deposition, and the residual sensitivity is
+      largest where deposition is the largest share of total nitrogen supply,
+      which is sub-Saharan Africa (5 of about 40 kg N/ha) rather than east
+      Asia, where deposition is largest in absolute terms (20 of about 340).
+
+  bnf_potential:
+    value:
+      north_america: 31.923076923076923
+      europe: 18.333333333333336
+      east_asia: 13.75
+      south_asia: 22.142857142857142
+      southeast_asia: 23.0
+      latin_america: 37.72727272727273
+      sub_saharan_africa: 15.0
+      fsu_central_asia: 13.75
+    units: kg_N per ha per year
+    category: judgment
+    source: >-
+      Derived landscape biological fixation, legume_frac * net_n_credit /
+      (1 - legume_frac) + free_living_bnf over parameter_registry.BNF_COMPONENTS
+    used_by: [soil_n_model.RegionParams, run_canonical]
+    affects_claims: [C-071]
+    superseded_by: monthly_model_v3.get_regional_bnf
+    superseded_note: >-
+      2026-07-25 (F-007). Fixation in the published run comes from
+      monthly_model_v3.get_regional_bnf, a constant landscape average computed
+      from legume rotation fraction and net nitrogen credit
+      (MANAGED_TRANSITION_PARAMS); it never reads this parameter, and there is
+      no ramp anywhere. The only surviving consumer is run_canonical.py, which
+      copies it into the canonical CSV as a reported column. The entry is kept
+      rather than deleted because deleting it would erase the fact that the
+      manuscript still describes the superseded mechanism. Its used_by field
+      previously named soil_n_model.get_regional_bnf, a function that is
+      neither in that module nor a reader of these values.
+    documented_as: >-
+      2026-07-25 (WP1 rebuild): v15/outputs/table_S1_parameters.md prints this
+      row's range as "15 to 35", which is the legacy uniform managed-transition
+      range recorded at monthly_model_v3:647, not the live per-region values.
+      The live values are the BNF_COMPONENTS derivation above, which is what
+      RegionParams carries and what the canonical artifact reports. The code is
+      authoritative; Table S1 owes the edit on regeneration.
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      Superseded. Drawing it would perturb a reported column and no modelled
+      quantity. SI limitation: the parameter table must not present
+      bnf_potential as an input to the transition, and fixation carries no
+      sampled uncertainty at all, because MANAGED_TRANSITION_PARAMS is neither
+      registered nor drawn.
+
+  bnf_ramp_years:
+    value:
+      north_america: 8.0
+      europe: 8.0
+      east_asia: 10.0
+      south_asia: 12.0
+      southeast_asia: 10.0
+      latin_america: 8.0
+      sub_saharan_africa: 15.0
+      fsu_central_asia: 10.0
+    units: year
+    category: judgment
+    source: Assumed length of a managed legume transition
+    used_by: []
+    affects_claims: [C-071]
+    superseded_by: monthly_model_v3.get_regional_bnf
+    superseded_note: >-
+      2026-07-25 (F-007). Superseded with bnf_potential, and more completely:
+      no module reads it. Fixation in the published model is a constant
+      landscape average with no ramp, so there is no transition length in the
+      code that ran. The string "ramp" does not appear anywhere in the v14
+      documents, and both MS [78] and SI [14] state that fixation is held
+      static during disruption scenarios. THE MANUSCRIPT MUST STOP SAYING
+      FIXATION RAMPS IN OVER 8 TO 15 YEARS. That is a description-versus-code
+      discrepancy to fix in the text, not a prior to widen. F-011 requires this
+      row to be marked declared-but-fixed in SI Table S1 or removed.
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      No consumer exists. A prior on a parameter no module reads would state an
+      uncertainty about nothing.
+
+  # -------------------------------------------------------------------
+  # Yield response
+  # -------------------------------------------------------------------
+
+  faostat_yield_target:
+    value:
+      north_america: 5.50
+      europe: 5.00
+      east_asia: 6.00
+      south_asia: 3.20
+      southeast_asia: 4.20
+      latin_america: 4.50
+      sub_saharan_africa: 1.50
+      fsu_central_asia: 2.80
+    units: t_grain per ha
+    category: measured
+    source: FAOSTAT cereal yield, 2019-2021 mean, aggregated to the eight model regions; https://www.fao.org/faostat/en/#data/QCL
+    used_by: [monthly_model_v3.FAOSTAT_TARGETS, coupled_monthly.get_calibrated_ym]
+    affects_claims: [C-070]
+    mc: exempt
+    mc_exempt_reason: >-
+      An observation the model is fitted to, not a parameter. Its uncertainty
+      propagates through the fitted ceiling, and the ensemble recalibrates the
+      ceiling every draw.
+
+  yield_max_regional:
+    value:
+      north_america: 0.0
+      europe: 0.0
+      east_asia: 0.0
+      south_asia: 0.0
+      southeast_asia: 0.0
+      latin_america: 0.0
+      sub_saharan_africa: 0.0
+      fsu_central_asia: 0.0
+    units: t_grain per ha
+    category: calibrated
+    source: Fallback ceiling used only when no monthly calibration is available
+    used_by: [soil_n_model.RegionParams]
+    affects_claims: [C-070]
+    documented_as: >-
+      2026-07-25 (WP1 rebuild): v15/outputs/table_S1_parameters.md prints this
+      row's range as "3.453 to 6.09", a legacy static fallback table. The v14
+      code sets every region to 0.0 in get_default_regions, so the fallback is
+      never populated and the reported ceiling is the one
+      coupled_monthly.get_calibrated_ym solves against the FAOSTAT target. The
+      legacy eight values did not survive the crash and are not reconstructed
+      here, because inventing them would put a number in the registry that no
+      code produces. The code is authoritative; Table S1 owes the edit.
+    mc: exempt
+    mc_exempt_reason: >-
+      Recalibrated within every Monte Carlo draw rather than perturbed: each
+      draw's ceiling is solved against that draw's own parameters, so the
+      calibration is re-established rather than carried over. Perturbing the
+      stored fallback in addition would double-count. F-011 scores this leaf
+      INERT and SI [65] already says why; it must be marked declared-but-fixed
+      in the SI parameter table.
+
+  yield_min_regional:
+    value:
+      north_america: 1.1
+      europe: 1.0
+      east_asia: 0.9
+      south_asia: 0.5
+      southeast_asia: 1.2
+      latin_america: 0.9
+      sub_saharan_africa: 0.4
+      fsu_central_asia: 0.9
+    units: t_grain per ha
+    category: judgment
+    source: Floor of the Mitscherlich nitrogen response
+    used_by: [soil_n_model.RegionParams, monthly_model_v3.run_model]
+    affects_claims: [C-072]
+    benchmark: [B3]
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      The floor of the Mitscherlich response, applied as a max() at
+      monthly_model_v3:502. It is not on the path the reported runs take: at
+      year 30 of S3 every region sits at least 3.5 times its floor, the closest
+      being sub-Saharan Africa at 1.42 against 0.40 t/ha. A prior on a
+      parameter that never binds would widen nothing and would suggest the
+      floor had been tested. SI limitation: the floor binds only under complete
+      withdrawal sustained past the exhaustion of mineralization, outside the
+      reported scenario set; a harsher scenario makes it a live parameter.
+
+  # -------------------------------------------------------------------
+  # Land and aggregation
+  # -------------------------------------------------------------------
+
+  cropland_mha:
+    value:
+      north_america: 170.0
+      europe: 130.0
+      east_asia: 120.0
+      south_asia: 200.0
+      southeast_asia: 90.0
+      latin_america: 160.0
+      sub_saharan_africa: 230.0
+      fsu_central_asia: 130.0
+    units: Mha
+    category: measured
+    source: FAOSTAT arable land and permanent crops, 2019-2021 mean, aggregated to the eight model regions; https://www.fao.org/faostat/en/#data/RL
+    used_by: [soil_n_model.RegionParams, run_canonical, seams.outcome_weights]
+    affects_claims: [C-060]
+    mc: exempt
+    mc_exempt_reason: >-
+      Reported areas are administrative totals with far smaller uncertainty
+      than any behavioural parameter, and they enter only as aggregation
+      weights. Perturbing them within their reported uncertainty moves the
+      global mean by less than the reporting precision of the results.
+
+  global_aggregation_weights:
+    value: null
+    units: dimensionless
+    category: derived
+    derived_from: cropland_mha / sum(cropland_mha)
+    source: 'derived: cropland_mha / sum(cropland_mha)'
+    used_by: [seams.outcome_weights]
+    affects_claims: [C-060]
+    mc: not_applicable
+    mc_exempt_reason: >-
+      Derived. NOTE (F-005): this is the AREA basis. The paper reports global
+      numbers on three different bases and every global number must state which
+      one it is on. seams.outcome_weights is the single place the basis is
+      chosen.
+
+  pop_supported:
+    value:
+      north_america: 900.0
+      europe: 900.0
+      east_asia: 1875.0
+      south_asia: 1350.0
+      southeast_asia: 750.0
+      latin_america: 900.0
+      sub_saharan_africa: 600.0
+      fsu_central_asia: 375.0
+    units: million_people
+    category: measured
+    source: Population supported by each region's cereal production at current per-capita availability
+    used_by: [soil_n_model.RegionParams]
+    mc: exempt
+    mc_exempt_reason: >-
+      A presentational conversion applied after the model has run, not a model
+      parameter.
+
+  # -------------------------------------------------------------------
+  # Economic elasticities
+  # -------------------------------------------------------------------
+
+  eta:
+    value:
+      north_america: -0.30
+      europe: -0.35
+      east_asia: -0.45
+      south_asia: -0.60
+      southeast_asia: -0.55
+      latin_america: -0.50
+      sub_saharan_africa: -0.70
+      fsu_central_asia: -0.45
+    units: dimensionless
+    category: judgment
+    source: Own-price elasticity of crop demand, regional
+    used_by: [coupled_econ_biophysical.REGIONAL_ECON_PARAMS]
+    affects_claims: [C-042]
+    mc: drawn
+    uncertainty:
+      family: truncnorm
+      mode: multiplier
+      applies_to: absolute value
+      mean: 1.0
+      sd: 0.25
+      low: 0.60
+      high: 1.40
+      ensemble_symbol: run_mc_ensemble.PRIORS['eta_mult']
+      note: >-
+        2026-07-25 (F-007): corrected from a declared sd 0.2 on [0.5, 1.5].
+        params.yaml was the side that was wrong. The ensemble drew sd 0.25 on
+        [0.60, 1.40], as a multiplier on the absolute value of the elasticity.
+
+  alpha:
+    value:
+      north_america: 0.10
+      europe: 0.08
+      east_asia: 0.10
+      south_asia: 0.12
+      southeast_asia: 0.12
+      latin_america: 0.15
+      sub_saharan_africa: 0.15
+      fsu_central_asia: 0.12
+    units: dimensionless
+    category: judgment
+    source: Land share in the reduced-form price solution
+    used_by: [coupled_econ_biophysical.REGIONAL_ECON_PARAMS]
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      Enters the price solution only as the product alpha*lambda_L in the
+      denominator of the reduced-form price equation
+      (coupled_econ_biophysical:731), and the ensemble's reduced form omits
+      that term entirely (run_mc_ensemble:365) because cropland area is held
+      fixed over the horizon. Drawing alpha would multiply a zero. The SI
+      limitation this implies is about lambda_L rather than about alpha: land
+      does not respond to price in this model, so the land-share elasticity is
+      unsampled by construction, and any extension permitting cropland
+      expansion reopens it.
+
+  eps_F_PF:
+    value:
+      north_america: -0.20
+      europe: -0.25
+      east_asia: -0.30
+      south_asia: -0.40
+      southeast_asia: -0.40
+      latin_america: -0.30
+      sub_saharan_africa: -0.50
+      fsu_central_asia: -0.30
+    units: dimensionless
+    category: judgment
+    source: >-
+      Fertilizer Demand Model Estimates; Ethiopia and sub-Saharan Africa
+      evidence; Roberts & Schlenker (2013) for the United States
+    used_by: [coupled_econ_biophysical.REGIONAL_ECON_PARAMS]
+    affects_claims: [C-040, C-041, C-061]
+    benchmark: [B5]
+    mc: drawn
+    uncertainty:
+      family: truncnorm
+      mode: multiplier
+      applies_to: absolute value
+      mean: 1.0
+      sd: 0.30
+      low: 0.50
+      high: 1.50
+      ensemble_symbol: run_mc_ensemble.PRIORS['eps_F_PF_mult']
+      note: >-
+        2026-07-25 (F-007): corrected from a declared sd 0.2 on [0.5, 1.5].
+        params.yaml was the side that was wrong on sd. The ensemble drew
+        sd 0.30 on [0.50, 1.50].
+
+  eps_F_PY:
+    value:
+      north_america: 0.10
+      europe: 0.10
+      east_asia: 0.10
+      south_asia: 0.10
+      southeast_asia: 0.10
+      latin_america: 0.10
+      sub_saharan_africa: 0.03
+      fsu_central_asia: 0.10
+    units: dimensionless
+    category: judgment
+    source: Manning calibration; Huang & Khanna (2010)
+    used_by: [coupled_econ_biophysical.REGIONAL_ECON_PARAMS]
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      Read by the ensemble at its regional central value (run_mc_ensemble:362)
+      and entering the price solution only through the same denominator as eta,
+      which is drawn (denom = eta - gamma*eps_F_PY). The two are not separately
+      identified by any quantity the paper reports, so drawing both would
+      report as independent uncertainty what is one uncertain number. SI
+      limitation: the reported price interval is a statement about that
+      denominator, not about eps_F_PY.
+
+  eps_F_N:
+    value: -0.5
+    units: dimensionless
+    category: judgment
+    source: No clean regional estimates exist; chosen for the S4 feedback channel
+    used_by: []
+    affects_claims: [C-040, C-050]
+    benchmark: [B5]
+    mc: declared_fixed
+    mc_exempt_reason: >-
+      Not a random variable in this design. It is the scenario dial: S1, S2 and
+      S3 are defined by the value it takes, so drawing it would sample across
+      the scenarios the paper reports separately. F-011 scores this leaf
+      DECLARED_NOT_WIRED; the reported S1-S3 runs hold it at
+      parameter_registry.SOIL_N_RESPONSE_ELASTICITY_CENTRAL = 0.0 and this
+      registered value is the S4 sensitivity setting. F-008: eps_F_N has no
+      published analogue and must stop being presented as though it has one.
+
+  eps_LD_PL:
+    value: -0.30
+    units: dimensionless
+    category: judgment
+    source: Land demand elasticity with respect to land price
+    used_by: [coupled_econ_biophysical.REGIONAL_ECON_PARAMS]
+    mc: exempt
+    mc_exempt_reason: >-
+      The land market is inactive in the S1-S3 experiments the paper reports;
+      cropland_expansion feedback is off. Enters only the S4 supplementary
+      scenario, whose claims are qualitative.
+
+  eps_LD_PY:
+    value:
+      north_america: 0.20
+      europe: 0.15
+      east_asia: 0.15
+      south_asia: 0.20
+      southeast_asia: 0.20
+      latin_america: 0.25
+      sub_saharan_africa: 0.25
+      fsu_central_asia: 0.20
+    units: dimensionless
+    category: judgment
+    source: Land demand elasticity with respect to crop price
+    used_by: [coupled_econ_biophysical.REGIONAL_ECON_PARAMS]
+    mc: exempt
+    mc_exempt_reason: 'As eps_LD_PL: land market inactive in the reported experiments.'
+
+  eps_LS_PL:
+    value:
+      north_america: 0.40
+      europe: 0.30
+      east_asia: 0.30
+      south_asia: 0.50
+      southeast_asia: 0.50
+      latin_america: 0.70
+      sub_saharan_africa: 0.70
+      fsu_central_asia: 0.50
+    units: dimensionless
+    category: judgment
+    source: Land supply elasticity with respect to land price
+    used_by: [coupled_econ_biophysical.REGIONAL_ECON_PARAMS]
+    mc: exempt
+    mc_exempt_reason: 'As eps_LD_PL: land market inactive in the reported experiments.'
+
+  # -------------------------------------------------------------------
+  # Prices and scenario definition
+  # -------------------------------------------------------------------
+
+  n_benchmark_usd_kg:
+    value: 0.876
+    units: USD per kg_N
+    category: measured
+    source: World Bank Pink Sheet, urea, East Europe bulk FOB, 2019-2023 mean, 46% N; https://www.worldbank.org/en/research/commodity-markets
+    used_by: [prices.n_price_usd_kg]
+    mc: exempt
+    mc_exempt_reason: >-
+      The benchmark is a common factor on all eight regional nitrogen prices.
+      Scaling it scales every price together, which the model absorbs into the
+      same shock calibration; the quantity that matters for the regional
+      comparison is the wedge, and that is what the ensemble varies. Recorded
+      rather than varied.
+
+  n_price_wedge:
+    value:
+      north_america: 1.2557077625570778
+      south_asia: 1.36986301369863
+      latin_america: 1.3127853881278537
+      sub_saharan_africa: 2.6255707762557075
+    units: dimensionless
+    category: judgment
+    source: Regional delivered-price premia over the world urea benchmark
+    used_by: [prices.n_price_usd_kg, run_mc_ensemble]
+    affects_claims: [C-030, C-031, C-032]
+    documented_as: >-
+      2026-07-25 (WP1 rebuild): v15/outputs/table_S1_parameters.md prints this
+      row's range as "0.8 to 2.63" over eight regions. The v15 prices.py that
+      held the eight-region table did not survive the crash and is not in the
+      v14 deposit, which carries audited prices for four regions only
+      (parameter_registry.REGIONAL_PRICES). The four wedges above are those
+      four prices divided by n_benchmark_usd_kg, so prices.n_price_usd_kg
+      reproduces the v14 values exactly. The remaining four regions are NOT
+      reconstructed, because inventing a delivered-price premium would put a
+      fabricated number in the registry. This is a recorded reconstruction gap;
+      see v15/RECONSTRUCTION_GAPS.md. It does not touch the canonical
+      artifact, whose 123 fields carry no price.
+    mc: drawn
+    uncertainty:
+      family: truncnorm
+      mode: multiplier
+      mean: 1.0
+      defers_to: n_price_wedge_bounds
+      ensemble_symbol: run_mc_ensemble
+      note: >-
+        2026-07-25 (F-007): one of the two mapped priors that defer to a
+        per-region bounds table the ensemble reads directly, so the declared
+        and drawn priors cannot disagree number by number.
+
+  n_price_wedge_bounds:
+    value:
+      north_america: [0.9, 1.15]
+      europe: [0.9, 1.12]
+      east_asia: [0.7, 1.35]
+      south_asia: [0.8, 1.25]
+      southeast_asia: [0.7, 1.3]
+      latin_america: [0.85, 1.2]
+      sub_saharan_africa: [0.85, 1.2]
+      fsu_central_asia: [0.65, 1.4]
+    units: dimensionless
+    category: judgment
+    source: Per-region multiplier bounds the ensemble draws the wedge within
+    used_by: [run_mc_ensemble]
+    mc: exempt
+    mc_exempt_reason: These are the prior bounds themselves, not a modelled quantity.
+
+  n_price_usd_kg:
+    value: null
+    units: USD per kg_N
+    category: derived
+    derived_from: n_benchmark_usd_kg * n_price_wedge
+    source: 'derived: n_benchmark_usd_kg * n_price_wedge'
+    used_by: [prices.nitrogen_price_in_yield_units, prices.nitrogen_cost_share]
+    affects_claims: [C-030, C-031, C-032]
+    mc: not_applicable
+    mc_exempt_reason: Derived; cannot be set independently of benchmark and wedge.
+
+  n_price_usd_kg_farmer_paid:
+    value:
+      south_asia: 0.39
+    units: USD per kg_N
+    category: measured
+    source: Indian urea maximum retail price, subsidised, 2019-2023
+    used_by: [prices.SOUTH_ASIA_FARMER_PAID_N_PRICE]
+    affects_claims: [C-033]
+    documented_as: >-
+      2026-07-25 (WP1 rebuild): v15/outputs/table_S1_parameters.md prints 0.35;
+      the v14 code carries 0.39
+      (parameter_registry.SOUTH_ASIA_FARMER_PAID_N_PRICE). The code is
+      authoritative and Table S1 owes the edit, unless the v15 pass had a
+      recorded source for 0.35, which did not survive.
+    mc: exempt
+    mc_exempt_reason: >-
+      Used only in a labelled one-region sensitivity reported in the SI, not in
+      the main experiment or the ensemble.
+
+  crop_price_usd_t:
+    value:
+      north_america: 250.0
+      south_asia: 280.0
+      latin_america: 260.0
+      sub_saharan_africa: 300.0
+    units: USD per t_grain
+    category: measured
+    source: Farm-gate producer prices for the regionally dominant cereal mix, 2019-2023
+    used_by: [prices.nitrogen_price_in_yield_units, prices.nitrogen_cost_share]
+    affects_claims: [C-030, C-031, C-032]
+    documented_as: >-
+      2026-07-25 (WP1 rebuild): v15/outputs/table_S1_parameters.md prints this
+      row's range as "200 to 385" over eight regions. The v14 deposit carries
+      four audited regions only. The other four are a recorded reconstruction
+      gap; see v15/RECONSTRUCTION_GAPS.md.
+    mc: drawn
+    uncertainty:
+      family: truncnorm
+      mode: multiplier
+      mean: 1.0
+      defers_to: crop_price_bounds
+      ensemble_symbol: run_mc_ensemble
+      note: >-
+        2026-07-25 (F-007): the second of the two mapped priors that defer to a
+        per-region bounds table the ensemble reads directly.
+
+  crop_price_bounds:
+    value:
+      north_america: [0.88, 1.15]
+      europe: [0.92, 1.1]
+      east_asia: [0.8, 1.25]
+      south_asia: [0.85, 1.2]
+      southeast_asia: [0.8, 1.25]
+      latin_america: [0.85, 1.2]
+      sub_saharan_africa: [0.8, 1.25]
+      fsu_central_asia: [0.75, 1.35]
+    units: dimensionless
+    category: judgment
+    source: Per-region multiplier bounds the ensemble draws the crop price within
+    used_by: [run_mc_ensemble]
+    mc: exempt
+    mc_exempt_reason: These are the prior bounds themselves, not a modelled quantity.
+
+  price_benchmark_max_factor:
+    value: 3
+    units: dimensionless
+    category: judgment
+    source: Contract bound on how far a regional price may exceed the world benchmark
+    used_by: [prices.check_price_bounds]
+    mc: exempt
+    mc_exempt_reason: A contract bound, not a model parameter.
+
+  cost_share_band:
+    value: [0.01, 0.4]
+    units: dimensionless
+    category: judgment
+    source: Contract bound on the plausible nitrogen expenditure share of gross revenue
+    used_by: [prices.check_cost_share_bounds]
+    mc: exempt
+    mc_exempt_reason: A contract bound, not a model parameter.
+
+  fert_cost_frac:
+    value: null
+    units: dimensionless
+    category: derived
+    derived_from: n_price_usd_kg * synth_n_current / (crop_price_usd_t * yield_baseline)
+    source: 'derived: n_price_usd_kg * synth_n_current / (crop_price_usd_t * yield_baseline)'
+    used_by: [prices.nitrogen_cost_share]
+    affects_claims: [C-030, C-031, C-032]
+    mc: not_applicable
+    mc_exempt_reason: >-
+      Derived. F-013: the superseded 83.7 percent sub-Saharan Africa figure
+      measured a hardcoded cost-share dictionary rather than this derivation.
+
+  fert_reduction_target:
+    value: 0.20
+    units: dimensionless
+    category: judgment
+    source: Scenario definition
+    used_by: [coupled_econ_biophysical.calibrate_price_shock]
+    affects_claims: [C-050]
+    mc: exempt
+    mc_exempt_reason: >-
+      A scenario definition. The uncertainty of interest is what a given
+      reduction implies, not how large a reduction to consider; alternative
+      magnitudes are reported as separate scenarios rather than as a prior.
+      F-011 scores this leaf DECLARED_NOT_WIRED: the 0.20 is still an inline
+      literal at four sites in coupled_econ_biophysical.py. F-015: the
+      calibrated 20 percent is a NITROGEN-basis target and the realized
+      sustained reduction on the paper's own production basis is 18.7 percent,
+      so every statement of it must name its basis.

@@ -45,6 +45,7 @@ from monthly_model_v3 import (
     century_dynamic_spinup,
     get_regional_bnf,
 )
+from scipy.optimize import brentq
 
 # Re-export economic infrastructure unchanged from the original coupled model
 from coupled_econ_biophysical import (
@@ -97,7 +98,13 @@ class MonthlyBiophysicalEngine:
         if yield_max_override is not None:
             self.y_max = yield_max_override
         elif region_key and region_key in FAOSTAT_TARGETS:
-            self.y_max = calibrate_ym(region_key, FAOSTAT_TARGETS[region_key], self.mp)
+            # F-002: calibrate on the path this engine actually runs, not on
+            # `run_model`. `calibrate_ym_production` is defined below in this
+            # module; the late lookup avoids a forward reference at class-body
+            # definition time and costs nothing at call time.
+            self.y_max = calibrate_ym_production(
+                region_key, FAOSTAT_TARGETS[region_key], self.mp,
+                region=region, som_params=self.som, crop_params=self.crop)
         else:
             self.y_max = region.yield_max_regional
         self.y_floor = region.yield_min_regional if region.yield_min_regional > 0 else 0.0
@@ -482,6 +489,11 @@ class CoupledMonthlyModel:
             'carrying_capacity_fraction': np.zeros(n_steps),
             'cap_binding': np.zeros(n_steps),
             'clearing_residual': np.zeros(n_steps),
+            # F-010 diagnostic. ln(ceiling) for the step, after any capacity
+            # recovery, so that an external check can re-solve the constrained
+            # equilibrium from the DataFrame alone rather than reaching into
+            # solver internals. NaN in steps where the cap does not bind.
+            'ln_cap': np.full(n_steps, np.nan),
         }
 
         # Compute initial elasticities without mutating state
@@ -582,6 +594,7 @@ class CoupledMonthlyModel:
             L_level = self.L_baseline * np.exp(L_hat)
             cap_binding = False
             clearing_residual = 0.0
+            ln_cap_i = np.nan
 
             # Physical supply ceiling. If the cap binds, RE-SOLVE the
             # equilibrium with fertilizer set by physical availability so that
@@ -600,13 +613,23 @@ class CoupledMonthlyModel:
                     F_level = max(0.0, self.F_baseline * np.exp(F_hat))
                     L_level = self.L_baseline * np.exp(L_hat)
                     cap_binding = True
+                    ln_cap_i = np.log(ceiling)
                     # Clearing diagnostic. With the cap binding, the fertilizer
                     # consistent with the reported food price is
                     # ln(c_t) - lambda_L*PY_hat. clearing_residual is the
-                    # supply-side error gamma*(F_realised - F_implied): non-zero
-                    # under post-hoc clipping, identically zero under the
-                    # constrained re-solve. Reported for auditability.
-                    F_implied = np.log(ceiling) - self._lambda_L() * PY_hat
+                    # supply-side error gamma*(F_realised - F_implied).
+                    #
+                    # F-010 (2026-07-25): THIS COLUMN IS AN IDENTITY, NOT A
+                    # TEST. The capped solver sets F_hat = ln(c) - lambda_L*
+                    # PY_hat, which is exactly F_implied, so this residual is
+                    # zero by algebra for every possible value of alpha, beta,
+                    # gamma, eta and lambda_L, correct or not. It is retained
+                    # as a cheap regression guard against a future reversion to
+                    # post-hoc clipping, under which it does become non-zero.
+                    # It is not evidence that the equilibrium is right; the
+                    # external re-solve in code/repro/test_cap_market_clearing.py
+                    # is.
+                    F_implied = ln_cap_i - self._lambda_L() * PY_hat
                     clearing_residual = gamma * (F_hat - F_implied)
 
             self.PY_hat = PY_hat
@@ -646,13 +669,65 @@ class CoupledMonthlyModel:
             results['carrying_capacity_fraction'][i] = total_prod_index
             results['cap_binding'][i] = 1.0 if cap_binding else 0.0
             results['clearing_residual'][i] = clearing_residual
+            results['ln_cap'][i] = ln_cap_i
 
         return pd.DataFrame(results)
 
 
 # ============================================================
-# CALIBRATION CACHE
+# CALIBRATION — PRODUCTION PATH
 # ============================================================
+#
+# Finding F-002 (2026-07-25). `monthly_model_v3.calibrate_ym` roots on
+# `run_model`, which uses the global `CropParams.mitscherlich_c` and applies
+# no baseline water-stress multiplier. Every published run goes through
+# `century_dynamic_spinup` plus `MonthlyBiophysicalEngine`, which use
+# `region.mitscherlich_c_regional` and do apply water stress. The manuscript's
+# statement that yields are calibrated to FAOSTAT was true of a path that was
+# never run: measured under the published ERA5 forcing, production baseline
+# yields missed their FAOSTAT targets by -3.87% (South Asia) to +4.19% (Latin
+# America).
+#
+# No test caught it because every test compared the model to itself.
+#
+# `calibrate_ym_production` roots the production path itself. The legacy
+# `calibrate_ym` is left importable on purpose: the test measures the gap
+# rather than deleting the evidence.
+
+#: Identifies the code path a cached `yield_max` was fitted on. It is the
+#: first element of `calibration_fingerprint`, so every `yield_max` cached on
+#: disk under the old scheme is stale by construction and cannot be reused.
+CALIBRATION_SCHEME = 'production_path_v2'
+
+#: RegionParams fields that enter the calibration objective and therefore
+#: must be hashed into the fingerprint. The first nine are the fields the
+#: legacy `run_model` objective touched. `production_path_v2` added the last
+#: four: the production path uses the regional Mitscherlich curvature rather
+#: than the global one, and applies the baseline water-stress multiplier.
+#: A field that moves `yield_max` and is not in this tuple is a silent
+#: cache-poisoning bug; `test_calibration_fingerprint` perturbs all 19
+#: RegionParams fields and fails if an unregistered one moves the answer.
+YM_REGION_FIELDS = (
+    'soc_initial',
+    'cn_bulk',
+    'synth_n_current',
+    'atm_n_deposition',
+    'residue_retention',
+    'root_shoot_c_ratio',
+    'cre_regional',
+    'yield_min_regional',
+    'yield_max_regional',
+    # added by production_path_v2 (F-002)
+    'mitscherlich_c_regional',
+    'baseline_water_deficit',
+    'water_stress_coeff',
+    'whc_sensitivity',
+)
+
+#: Convergence tolerance on the calibrated baseline yield, as a fraction of
+#: the FAOSTAT target. The published requirement is 1e-3 relative; the solver
+#: is run tighter than that so the assertion has headroom.
+YM_CALIBRATION_RTOL = 1e-5
 
 _YM_CACHE = {}
 
@@ -664,14 +739,126 @@ def _mp_cache_key(mp: MonthlyNParams) -> tuple:
             mp.max_uptake_frac, mp.min_n_pool)
 
 
-def get_calibrated_ym(region_key: str, mp: MonthlyNParams = None) -> float:
-    """Get calibrated yield_max for a region, cached for performance."""
+def _region_cache_key(region: RegionParams) -> tuple:
+    """Hash the RegionParams fields the calibration objective depends on."""
+    return tuple(float(getattr(region, f)) for f in YM_REGION_FIELDS)
+
+
+def calibration_fingerprint(region_key: str,
+                            mp: MonthlyNParams = None,
+                            region: RegionParams = None) -> tuple:
+    """Everything a cached `yield_max` is a function of.
+
+    The scheme name comes first, so a cache written by an earlier scheme can
+    never be mistaken for one written by this scheme, whatever else agrees.
+
+    `som_params` is deliberately absent. F-003: a first-order pool at steady
+    state passes its input through unchanged (`c_slow* = 0.46 c_in / k_slow`),
+    so the mineralization flux `k_slow * c_slow*` is invariant to `k_slow` and
+    SOM kinetics do not reach the calibrated baseline. Measured span of the
+    baseline yield across the full `k_slow` prior is 0.098%, against a
+    calibration tolerance of 0.20%.
+    """
     if mp is None:
         mp = MonthlyNParams()
-    cache_key = (region_key, _mp_cache_key(mp))
+    if region is None:
+        region = get_default_regions()[region_key]
+    return (CALIBRATION_SCHEME, region_key,
+            _mp_cache_key(mp), _region_cache_key(region))
+
+
+def calibrate_ym_production(region_key: str,
+                            target: float,
+                            mp: MonthlyNParams = None,
+                            region: RegionParams = None,
+                            som_params: SOMPoolParams = None,
+                            crop_params: CropParams = None,
+                            rtol: float = YM_CALIBRATION_RTOL) -> float:
+    """Calibrate `yield_max` on the code path the published runs use.
+
+    Roots the equilibrium yield returned by `century_dynamic_spinup` — the
+    same call `MonthlyBiophysicalEngine.__init__` makes, with the same
+    regional Mitscherlich curvature, the same baseline water-stress
+    multiplier and the same residue-C feedback into the SOM pools — against
+    the region's FAOSTAT target.
+
+    The objective is not monotone-trivial: raising `yield_max` raises yield,
+    which raises residue C, which raises SOC and hence mineralization, which
+    raises uptake. The fixed point is what is being solved, which is why this
+    cannot be done on a five-year `run_model` call.
+
+    Returns
+    -------
+    float
+        `yield_max` (t/ha) such that the production-path equilibrium yield
+        equals `target` to within `rtol` relative.
+    """
+    if mp is None:
+        mp = MonthlyNParams()
+    if region is None:
+        region = get_default_regions()[region_key]
+
+    def y_prod(ym: float) -> float:
+        eq = century_dynamic_spinup(
+            region_key,
+            p=mp,
+            synth_n=region.synth_n_current,
+            yield_max_override=ym,
+            som_params=som_params,
+            crop_params=crop_params,
+            region_override=region,
+        )
+        return eq['yield_eq']
+
+    def obj(ym: float) -> float:
+        return y_prod(ym) - target
+
+    # Bracket outward rather than assuming [1, 50] contains a sign change.
+    lo, hi = 1.0, 50.0
+    f_lo, f_hi = obj(lo), obj(hi)
+    expand = 0
+    while f_lo * f_hi > 0.0 and expand < 8:
+        if abs(f_lo) < abs(f_hi):
+            lo = max(1e-3, lo / 4.0)
+            f_lo = obj(lo)
+        else:
+            hi = hi * 4.0
+            f_hi = obj(hi)
+        expand += 1
+
+    if f_lo * f_hi <= 0.0:
+        ym = brentq(obj, lo, hi, xtol=1e-10, rtol=1e-14, maxiter=200)
+        return float(ym)
+
+    # No sign change even after expansion: the target is unreachable on this
+    # path (a stoichiometric or water-stress ceiling below it). Report the
+    # closest attainable value rather than a silently wrong root.
+    best, best_e = lo, abs(f_lo)
+    for ym in np.linspace(lo, hi, 80):
+        e = abs(obj(ym))
+        if e < best_e:
+            best, best_e = float(ym), e
+    return float(best)
+
+
+def get_calibrated_ym(region_key: str, mp: MonthlyNParams = None,
+                      region: RegionParams = None) -> float:
+    """Get calibrated yield_max for a region, cached for performance.
+
+    Calibrates on the production path (F-002). The cache key is the full
+    `calibration_fingerprint`, whose first element is `CALIBRATION_SCHEME`,
+    so a value fitted under the legacy `run_model` objective can never be
+    served here.
+    """
+    if mp is None:
+        mp = MonthlyNParams()
+    if region is None:
+        region = get_default_regions()[region_key]
+    cache_key = calibration_fingerprint(region_key, mp, region)
     if cache_key not in _YM_CACHE:
         target = FAOSTAT_TARGETS[region_key]
-        _YM_CACHE[cache_key] = calibrate_ym(region_key, target, mp)
+        _YM_CACHE[cache_key] = calibrate_ym_production(
+            region_key, target, mp, region)
     return _YM_CACHE[cache_key]
 
 

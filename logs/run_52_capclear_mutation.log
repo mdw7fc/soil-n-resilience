@@ -1,0 +1,31 @@
+SC1 production-weighted global loss  yr1/yr10/yr30 = 2.72 / 3.75 / 3.89 %
+    north_america            2.63   3.05   3.13
+    europe                   3.41   5.07   5.20
+    east_asia                1.18   1.31   1.32
+    south_asia               2.90   5.12   5.22
+    southeast_asia           3.14   3.84   3.98
+    latin_america            1.83   2.75   2.88
+    sub_saharan_africa       3.50   4.93   5.37
+    fsu_central_asia         5.09   6.44   6.82
+SC2 production-weighted global loss  yr1/yr10/yr30 = 2.58 / 1.92 / 0.04 %
+    north_america            2.48   1.49   0.02
+    europe                   3.23   2.52   0.04
+    east_asia                1.10   0.56   0.00
+    south_asia               2.76   2.65   0.03
+    southeast_asia           2.98   2.00   0.04
+    latin_america            1.74   1.43   0.04
+    sub_saharan_africa       3.35   2.87   0.17
+    fsu_central_asia         4.82   3.33   0.12
+
+cap-binding steps checked            : 325
+worst structural residual (log-pts)  : 2.98e-03
+worst root gap on the food price     : 6.75e-03
+worst step                           : SC1/fsu_central_asia year 30
+MUTATION APPLIED                     : drop-gamma
+CONSTRAINED MARKET CLEARING: FAIL
+
+CONTROL — the v1.3 identity assertion under the SAME mutation
+  max |clearing_residual| : 0.00e+00   (old test tolerance 1e-6)
+  old test verdict        : PASS
+  The mutation changes PY_hat, and the identity is defined in terms of
+  whatever PY_hat comes out, so it cannot see the error.

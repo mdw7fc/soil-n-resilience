@@ -1,19 +1,39 @@
 """Audited, single-source model parameters for the ERFS-100341 SOL freeze.
 
-Only quantities used by more than one model or reproduction script belong
-here. Derived quantities, including fertilizer cost shares, must be computed
-from these primitive inputs rather than specified independently.
+v15 (F-011). THIS MODULE NO LONGER HOLDS VALUES. It is a compatibility shim.
+
+Before v15 the constants below were literals here, and ``params.yaml`` restated
+them with a mirror test comparing the two. The direction of authority has been
+reversed: ``code/model/params.yaml`` is now the single source and
+``code/model/registry.py`` is the loader. Prices moved to
+``code/model/prices.py``. Everything this module exports is re-derived from
+those two so that existing importers keep working without a second statement of
+any number.
+
+Do not add a value here. Add it to ``params.yaml``.
 """
 
-from dataclasses import dataclass
 from typing import Dict
+
+import registry as _reg
+from prices import (  # noqa: F401  (re-exported for backward compatibility)
+    REGIONAL_PRICES,
+    RegionalPrice,
+    SOUTH_ASIA_FARMER_PAID_N_PRICE,
+    nitrogen_cost_share,
+    nitrogen_price_in_yield_units,
+)
 
 
 # Physical conversions and shared response-shape constants. These are used by
 # both the annual diagnostic engine and the canonical monthly coupled engine.
-# Keeping them here prevents physically identical calculations from silently
-# diverging.
-SOC_T_C_HA_PER_PERCENT_30CM = 39.0
+SOC_T_C_HA_PER_PERCENT_30CM = _reg.soc_tha_per_pct()
+
+# Not yet registered. Recorded here as owed: RESIDUE_C_FRACTION and the three
+# water-stress shape constants are model constants that no params.yaml entry
+# declares, so the registry cannot vouch for them and the mutation harness
+# cannot reach them. Registering them is WP-later work, not a WP1 edit, because
+# adding an entry changes the leaf count the harness is calibrated against.
 RESIDUE_C_FRACTION = 0.45
 WATER_STRESS_GAIN_SAT_SOC_PCT = 1.0
 WATER_STRESS_SOFTPLUS_EPS_MM = 3.0
@@ -23,14 +43,17 @@ WATER_STRESS_MIN_FACTOR = 0.30
 # Minasny & McBratney (2018) report a mean increase in plant-available water
 # of 1.16 mm per 100 mm soil for a one percentage-point increase in SOC.
 # The model expresses SOC over 0-30 cm, giving 1.16 * 3 = 3.48 mm.
-WHC_MM_PER_SOC_PCT_30CM = 3.48
-WHC_MM_PER_SOC_PCT_LOW = 2.32
-WHC_MM_PER_SOC_PCT_HIGH = 8.40
+WHC_MM_PER_SOC_PCT_30CM = _reg.value('whc_sensitivity')
+_WHC_UNC = _reg.uncertainty('whc_sensitivity')
+WHC_MM_PER_SOC_PCT_LOW, WHC_MM_PER_SOC_PCT_HIGH = _WHC_UNC['declared_absolute_bounds']
 
 
 # No clean empirical estimate exists for fertilizer demand's response to
 # changes in mineralized soil N. It is zero in the central run and examined
-# only as a structural sensitivity.
+# only as a structural sensitivity. The registered eps_F_N (-0.5) is the S4
+# setting; S1-S3 hold the elasticity at the central value below. F-011 scores
+# eps_F_N DECLARED_NOT_WIRED for exactly this reason and that verdict is right:
+# it is the scenario dial, not a model constant.
 SOIL_N_RESPONSE_ELASTICITY_CENTRAL = 0.0
 SOIL_N_RESPONSE_ELASTICITY_SENSITIVITY = (0.0, -0.25, -0.50, -1.0)
 
@@ -41,6 +64,11 @@ SOIL_N_RESPONSE_ELASTICITY_SENSITIVITY = (0.0, -0.25, -0.50, -1.0)
 #     BNF = legume_fraction * net_credit / (1 - legume_fraction)
 #           + free_living_BNF.
 # These values are scenario inputs, not fitted model outputs.
+#
+# NOT YET REGISTERED. F-007: fixation in the published run comes from
+# get_regional_bnf, which reads these components; MANAGED_TRANSITION_PARAMS is
+# neither registered nor drawn, so fixation carries no sampled uncertainty at
+# all. Registering BNF_COMPONENTS is owed work.
 BNF_COMPONENTS = {
     "north_america": {
         "legume_frac": 0.35, "net_n_credit": 50.0,
@@ -91,44 +119,3 @@ def baseline_bnf_kg_n_ha_yr(region_key: str) -> float:
 BASELINE_BNF_KG_N_HA_YR = {
     key: baseline_bnf_kg_n_ha_yr(key) for key in BNF_COMPONENTS
 }
-
-
-@dataclass(frozen=True)
-class RegionalPrice:
-    """Baseline prices used for the nitrogen-expenditure calculation."""
-
-    nitrogen_usd_per_kg_n: float
-    crop_usd_per_t: float
-    convention: str
-
-
-# Market/replacement-cost convention used for the disruption experiment.
-# SSA uses the lower end of observed non-subsidized African retail urea prices
-# expressed per kg N. South Asia is explicitly an import-parity convention.
-REGIONAL_PRICES: Dict[str, RegionalPrice] = {
-    "sub_saharan_africa": RegionalPrice(2.30, 300.0, "non-subsidized retail"),
-    "south_asia": RegionalPrice(1.20, 280.0, "market replacement cost"),
-    "latin_america": RegionalPrice(1.15, 260.0, "market replacement cost"),
-    "north_america": RegionalPrice(1.10, 250.0, "market replacement cost"),
-}
-
-
-# Farmer-paid South Asian sensitivity. At the canonical modeled yield and
-# fertilizer rate this produces an N-expenditure share close to 5%.
-SOUTH_ASIA_FARMER_PAID_N_PRICE = 0.39
-
-
-def nitrogen_price_in_yield_units(region_key: str) -> float:
-    """Return tonnes of regional crop needed to purchase one kg of N."""
-
-    p = REGIONAL_PRICES[region_key]
-    return p.nitrogen_usd_per_kg_n / p.crop_usd_per_t
-
-
-def nitrogen_cost_share(region_key: str, n_kg_ha: float, yield_t_ha: float) -> float:
-    """Return nitrogen expenditure divided by gross crop revenue."""
-
-    if yield_t_ha <= 0:
-        raise ValueError("yield_t_ha must be positive")
-    p = REGIONAL_PRICES[region_key]
-    return p.nitrogen_usd_per_kg_n * n_kg_ha / (p.crop_usd_per_t * yield_t_ha)

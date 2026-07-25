@@ -31,6 +31,7 @@ from monthly_model_v3 import MonthlyNParams, apply_era5_climate_file, get_region
 from coupled_monthly import CoupledMonthlyModel, get_calibrated_ym
 from coupled_econ_biophysical import get_scenario_params, calibrate_price_shock, REGIONAL_ECON_PARAMS
 from soil_n_model import get_default_regions
+from seams import outcome_weights
 
 REGIONS = ['north_america','europe','east_asia','south_asia',
            'southeast_asia','latin_america','sub_saharan_africa','fsu_central_asia']
@@ -75,10 +76,19 @@ def main():
             f, fieldnames=list(rows[0].keys()), lineterminator="\n"
         ); w.writeheader()
         [w.writerow(x) for x in rows]
-    area = np.array([x['cropland_mha'] for x in rows]); yb = np.array([x['y_base'] for x in rows])
-    W = area * yb; W /= W.sum()
+    # Global aggregation basis is declared, not improvised here. Until
+    # 2026-07-25 (F-005) this line normalised its own production-tonnage
+    # vector inline while two other files used two other bases; the vector is
+    # now supplied and validated by seams.outcome_weights, which produces the
+    # identical weights and additionally refuses a dropped or zero-weight
+    # region and carries a provenance string into the frozen output.
+    yb = [x['y_base'] for x in rows]
+    W_out = outcome_weights([x['region'] for x in rows], yb, regions)
+    W = W_out.as_array()
     gl = {y: round(float((np.array([x[f'loss_yr{y}'] for x in rows]) * W).sum()), 2) for y in (1, 10, 30)}
-    json.dump({'regions': rows, 'global_prodweighted': gl},
+    json.dump({'regions': rows, 'global_prodweighted': gl,
+               'aggregation_basis': W_out.basis,
+               'aggregation_provenance': W_out.provenance},
               open(os.path.join(DATA, 'canonical_ERA5_y30.json'), 'w'), indent=1)
     with open(os.path.join(OUT, 'global_S3_losses.txt'), 'w') as f:
         f.write("Production-weighted global S3 yield loss (%)\n")

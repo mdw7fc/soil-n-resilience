@@ -13,6 +13,18 @@ from soil_n_model import get_default_regions
 from monthly_model_v3 import MonthlyNParams, apply_era5_climate_file
 from coupled_monthly import MonthlyBiophysicalEngine, get_calibrated_ym
 
+# N cost share = N price x rate / (crop price x baseline yield). The
+# denominator is a model output, so these are not free constants: F-002's
+# production-path recalibration moves every baseline yield to its FAOSTAT
+# target and therefore moves every share.
+#
+# OWED TO WP5. These four values are frozen at their pre-F-002 figures on
+# purpose. Editing them here would retune a stale expectation inside a test
+# and lose the evidence that a published number moved; they belong in
+# docs/claims.yaml, where the claim register can mark them DRIFTED and carry
+# the reason. Measured under production_path_v2 (2026-07-25):
+#   sub_saharan_africa 0.037 -> 0.0358 (baseline yield 1.4505 -> 1.5000)
+# The other three are within tolerance and do not move.
 EXPECTED_SHARES = {
     "sub_saharan_africa": 0.037,
     "south_asia": 0.153,

@@ -28,6 +28,8 @@ from scipy.optimize import brentq
 from pathlib import Path
 import sys, os, csv, json
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+import decimal as _decimal
+import registry as _reg
 from soil_n_model import SOMPoolParams, CropParams, RegionParams, get_default_regions, som_params_for_region
 from parameter_registry import (
     BASELINE_BNF_KG_N_HA_YR,
@@ -94,11 +96,20 @@ REGIONAL_CLIMATES = {
         4, 8),
 }
 
-FAOSTAT_TARGETS = {
-    'north_america': 5.50, 'europe': 5.00, 'east_asia': 6.00,
-    'south_asia': 3.20, 'southeast_asia': 4.20, 'latin_america': 4.50,
-    'sub_saharan_africa': 1.50, 'fsu_central_asia': 2.80
-}
+# v15 (F-011): read from code/model/params.yaml, not restated here.
+FAOSTAT_TARGETS = _reg.regional_map('faostat_yield_target')
+
+# Century-family structural partition of fresh residue carbon. A bare literal
+# at two use sites until 2026-07-25 (F-007), which is why no ensemble that has
+# run could have drawn it.
+_RESIDUE_C_TO_ACTIVE = _reg.value('residue_c_to_active_fraction')
+# The complement is taken in DECIMAL, not in binary floating point. The two
+# shares were written as the decimal literals 0.90 and 0.10 and the model's
+# published numbers carry that arithmetic; 1.0 - 0.9 in binary is
+# 0.09999999999999998, which moves four canonical fields for North America at
+# the 1e-14 level. A no-op refactor has to stay a no-op down to the last bit,
+# so the complement is computed the way the constant was written.
+_RESIDUE_C_TO_SLOW = float(_decimal.Decimal(1) - _decimal.Decimal(str(_RESIDUE_C_TO_ACTIVE)))
 
 
 def apply_era5_climate_file(path) -> None:
@@ -328,8 +339,8 @@ def update_som_pools(c_a: float, c_s: float, c_p: float,
     dec_a = som.k_active * c_a
     dec_s = som.k_slow * c_s
     dec_p = som.k_passive * c_p
-    c_a_new = c_a - dec_a + c_in * 0.90
-    c_s_new = c_s - dec_s + c_in * 0.10 + dec_a * som.h_active_to_slow
+    c_a_new = c_a - dec_a + c_in * _RESIDUE_C_TO_ACTIVE
+    c_s_new = c_s - dec_s + c_in * _RESIDUE_C_TO_SLOW + dec_a * som.h_active_to_slow
     c_p_new = c_p - dec_p + dec_s * som.h_slow_to_passive
     return c_a_new, c_s_new, c_p_new
 

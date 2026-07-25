@@ -1,0 +1,25 @@
+
+D1  construction contract — negative controls
+  [PASS] different bases refused                              aggregation bases disagree: cropland_area, nitrogen_tonnage
+  [PASS] weight vector with blank provenance refused          weight vector on basis 'cropland_area' has no provenance string
+  [PASS] weights summing to 0.9 refused                       weights on basis 'cropland_area' sum to 0.90000000000000002, not 1 (to
+  [PASS] silently dropped region refused                      basis 'cropland_area' drops 1 region(s) present in the model: fsu_cent
+  [PASS] zero-weight region refused                           region 'north_america' carries zero or negative raw weight (0.0) on ba
+  [PASS] same object passed N times refused (vacuous assertion) assert_same_basis was given the same object 3 times; an assertion that
+  [PASS] undeclared column has no basis                       column 'n_leached' has no declared aggregation basis; add it to OUTCOM
+  [PASS] two independent same-basis vectors accepted          
+
+D2  external-validity probe
+  [PASS] production basis matches hand implementation         3.246613146011
+  [PASS] area basis matches hand implementation               4.804878048780
+  [PASS] GUARD: the case still separates the two bases        separation 1.5583
+
+D3  deposited headline recomputed from its own rows
+  [PASS] year 1  headline agrees at 2 dp                      recomputed 2.3058 vs deposited 2.31 (gap 0.0042 pp)
+  [PASS] year 10 headline agrees at 2 dp                      recomputed 3.1785 vs deposited 3.18 (gap 0.0015 pp)
+  [PASS] year 30 headline agrees at 2 dp                      recomputed 3.2883 vs deposited 3.29 (gap 0.0017 pp)
+
+INVARIANCE  the refactor changed no published number
+  [PASS] calibrate_price_shock(0.20) unchanged                1.0389792148114703
+
+SEAM CONTRACTS: PASS  (15 checks)

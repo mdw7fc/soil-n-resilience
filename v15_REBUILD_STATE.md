@@ -24,7 +24,7 @@ Each is one Cowork task. Do not combine them. Mark status here and commit this f
 | # | Package | Spec | Status |
 |---|---|---|---|
 | WP1 | Parameter registry (`params.yaml`, `registry.py`) + wire it into the four model modules | F-001, F-006, F-007, F-011 | not started |
-| WP2 | Production-path calibration + seam contracts + `test_cap_market_clearing` rewrite | F-002, F-005, F-010 | not started |
+| WP2 | Production-path calibration + seam contracts + `test_cap_market_clearing` rewrite | F-002, F-005, F-010 | **DONE 2026-07-25** — all three acceptances met |
 | WP3 | Mutation coverage harness | F-011 | not started |
 | WP4 | Benchmark suite + `observed_values.yaml` + baseline verdicts | F-008 | not started |
 | WP5 | Claim register (`claims.yaml`) + claim strength | F-012, F-013, F-015, F-016 | not started |
@@ -34,6 +34,8 @@ Each is one Cowork task. Do not combine them. Mark status here and commit this f
 | D3 | Deposit docs: MANIFEST.md, `make_figure_s5.py`, `figS12_curves.json` generator | F-009 | not started |
 
 **Dependencies.** WP1 blocks WP2–WP6. WP2 blocks WP6. WP4 and WP5 are independent of each other. D1, D2 and D3 depend on nothing and can run first or in parallel with any WP.
+
+**WP2 ran before WP1.** It did not need the registry: `seams.py` is self-contained and the calibration reads `RegionParams` directly, as the model already did. Nothing in WP2 has to be redone when WP1 lands, but WP1 must re-run `code/tests/test_calibration_fingerprint.py` after rewiring — its C3 sweep perturbs `RegionParams` fields, and once the registry drives those fields the sweep is testing the registry rather than the dataclass.
 
 ---
 
@@ -84,3 +86,30 @@ Start a new Cowork task with the project folder connected and paste the matching
 ## Log
 
 - **2026-07-25** — v15 pass completed through F-016 in a session that then became unrecoverable. Working tree lost. Container rescue attempted and failed; the session dies mid-turn before executing any tool call. No local footprint under `/sessions/`. Handoff and this state file written. Nothing rebuilt yet.
+
+- **2026-07-25 — working tree recreated.** `git clone` of the base at `20defb2` into `v15/`, with the six surviving v15 artifacts copied over the clone so the regenerated versions win. Commit `8b36c38`. The `origin` remote could not be removed (see the git note below) and still points at the v14 bundle; do not push to it.
+
+- **2026-07-25 — WP2 done.** All three acceptances met and logged.
+  - **F-002** `coupled_monthly.calibrate_ym_production` roots `century_dynamic_spinup` (the published path) rather than `run_model`. Worst residual **1.9e-13 percent** against the 8e-3 bar. The finding's two independent numbers both reproduced exactly: the legacy path missed FAOSTAT by **-3.87% (South Asia) to +4.19% (Latin America)**, and recalibrating moves `yield_max` by **-3.36% (Latin America) to +3.78% (South Asia)**. `CALIBRATION_SCHEME = 'production_path_v2'` leads `calibration_fingerprint`; `YM_REGION_FIELDS` is 13. `MonthlyBiophysicalEngine.__init__`'s internal fallback was switched to the production path too — it was a second stale call site the finding does not name.
+  - **F-005** `code/model/seams.py`. `calibrate_price_shock(0.20)` returns **1.0389792148114703, bit-identical**. Both false docstrings corrected and dated. All three call sites now go through a factory: `calibrate_price_shock` → `nitrogen_weights`, `aggregate_global` → `outcome_weights` + `intensity_weights` (it weighted all six columns by area before), `run_canonical.py` → `outcome_weights`, which also now writes `aggregation_basis` and `aggregation_provenance` into `canonical_ERA5_y30.json`.
+  - **F-010** `test_cap_market_clearing.py` re-solves the four structural equations from the DataFrame and root-finds the price with `brentq`, bracketing outward. Worst structural residual **1.39e-17**, worst root gap 2.2e-16, over **325** cap-binding steps. `--mutate drop-gamma` drives them to **2.98e-03** and 6.75e-03 and the test returns 1. The control is in `logs/run_52_capclear_mutation.log`: under the same mutation the old identity assertion reports **exactly 0.00e+00** and passes. New `ln_cap` column on `CoupledMonthlyModel.run`, NaN where the cap does not bind.
+
+### What WP2 turned up that the next task should know
+
+1. **`test_parameter_consistency_sol.py` now fails, correctly, and was left failing.** SSA's N cost share moves 0.037 → **0.0358** because F-002 moves SSA's baseline yield 1.4505 → 1.5000 and the yield is the denominator. Retuning the constant inside the test would destroy the evidence that a published number moved. It is annotated in place and **owed to WP5's claim register**. The other three regions do not move.
+2. **`test_parameter_boundaries_sol.py` was rewired, not retuned.** Its calibration block rooted `run_model` and passed only because `get_calibrated_ym` was calibrated on the same path — the exact circularity F-002 is about. It now checks the production path at 1e-3 relative and passes.
+3. **The other three v14 tests still pass** unchanged: `test_zero_shock_invariance`, `test_full_zero_shock_sol`, `test_dimensional_consistency_sol`.
+4. **Canonical headline under the new calibration, for WP6's benefit:** year-1/10/30 = **2.32 / 3.20 / 3.31 %** (was 2.31 / 3.18 / 3.29). Year-1 already matches WP6's expected 2.32%. **Year-10 is 3.20, not the 3.03 WP6 expects** — so 3.03 must arrive from a later package (F-004's climate calendar and/or WP1's rewiring), not from WP2. Do not chase it inside WP2. The regenerated `canonical_ERA5_y30.json` was deliberately **not** committed; WP6 owns that file.
+5. **F-002's AST scan is not implemented.** `test_calibration_fingerprint.py` C3 is the empirical version — it perturbs all 18 numeric `RegionParams` fields across two contrasting regions and confirms **no unregistered field moves `yield_max`** — but it cannot catch a field that is read and happens to have no effect at the current parameter point. Marked `owed` in `results/calibration_fingerprint_checks.yaml`.
+6. **`whc_sensitivity` is declared in `YM_REGION_FIELDS` but is inert at the calibration point**, along with `yield_max_regional` and `yield_min_regional`. That is expected and correct: at the calibrated equilibrium ΔSOC = 0 by construction, so the WHC term vanishes. Over-declaring the fingerprint is safe; under-declaring poisons the cache.
+7. **Read of F-002's "fails if the legacy objective's gap ever falls below 1%":** implemented as a floor on the **worst-case** gap across regions, not the smallest. Southeast Asia's legacy gap is only 0.074% — individual regions can agree by coincidence without the two paths being one path.
+8. **Binding-step count is 325, not the 337 the finding records.** Expected: the production-path recalibration shifts `yield_max`, so a slightly different set of steps hits the ceiling. The residuals are what the acceptance is on and they match.
+
+### Git in this folder is half-broken from a cloud session
+
+The project lives on iCloud Drive and the cloud sandbox's bridge **cannot unlink files** there. Consequences, all worked around rather than fixed:
+
+- Every `git add` leaves undeletable `.git/objects/**/tmp_obj_*` files and a stale `.git/index.lock`. **Before any git command in `v15/`, move the stale locks aside** (`mv .git/index.lock _stale_git_locks/`), or git refuses to start. Committed work is intact; this is litter, not corruption.
+- `git remote remove origin` failed for the same reason. `origin` still points at the v14 bundle.
+- A session running **on Matthew's computer** rather than in the cloud has normal delete permissions and can clean `_stale_git_locks/`, `_transfer/` and the stray `tmp_obj_*` objects in one `rm`. Worth doing before WP6, which regenerates enough files to make the litter annoying.
+- `_transfer/v15_code_data.tgz` is a staging tarball this task created to move the tree into the sandbox. It is safe to delete.

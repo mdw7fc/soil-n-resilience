@@ -1,0 +1,94 @@
+{
+ "FAOSTAT_TARGETS": {
+  "east_asia": 6.0,
+  "europe": 5.0,
+  "fsu_central_asia": 2.8,
+  "latin_america": 4.5,
+  "north_america": 5.5,
+  "south_asia": 3.2,
+  "southeast_asia": 4.2,
+  "sub_saharan_africa": 1.5
+ },
+ "REGIONAL_ECON_PARAMS": {
+  "east_asia": {
+   "alpha": 0.1,
+   "eps_F_N": 0.0,
+   "eps_F_PF": -0.3,
+   "eps_F_PY": 0.1,
+   "eps_LD_PL": -0.3,
+   "eps_LD_PY": 0.15,
+   "eps_LS_PL": 0.3,
+   "eta": -0.45
+  },
+  "europe": {
+   "alpha": 0.08,
+   "eps_F_N": 0.0,
+   "eps_F_PF": -0.25,
+   "eps_F_PY": 0.1,
+   "eps_LD_PL": -0.3,
+   "eps_LD_PY": 0.15,
+   "eps_LS_PL": 0.3,
+   "eta": -0.35
+  },
+  "fsu_central_asia": {
+   "alpha": 0.12,
+   "eps_F_N": 0.0,
+   "eps_F_PF": -0.3,
+   "eps_F_PY": 0.1,
+   "eps_LD_PL": -0.3,
+   "eps_LD_PY": 0.2,
+   "eps_LS_PL": 0.5,
+   "eta": -0.45
+  },
+  "latin_america": {
+   "alpha": 0.15,
+   "eps_F_N": 0.0,
+   "eps_F_PF": -0.3,
+   "eps_F_PY": 0.1,
+   "eps_LD_PL": -0.3,
+   "eps_LD_PY": 0.25,
+   "eps_LS_PL": 0.7,
+   "eta": -0.5
+  },
+  "north_america": {
+   "alpha": 0.1,
+   "eps_F_N": 0.0,
+   "eps_F_PF": -0.2,
+   "eps_F_PY": 0.1,
+   "eps_LD_PL": -0.3,
+   "eps_LD_PY": 0.2,
+   "eps_LS_PL": 0.4,
+   "eta": -0.3
+  },
+  "south_asia": {
+   "alpha": 0.12,
+   "eps_F_N": 0.0,
+   "eps_F_PF": -0.4,
+   "eps_F_PY": 0.1,
+   "eps_LD_PL": -0.3,
+   "eps_LD_PY": 0.2,
+   "eps_LS_PL": 0.5,
+   "eta": -0.6
+  },
+  "southeast_asia": {
+   "alpha": 0.12,
+   "eps_F_N": 0.0,
+   "eps_F_PF": -0.4,
+   "eps_F_PY": 0.1,
+   "eps_LD_PL": -0.3,
+   "eps_LD_PY": 0.2,
+   "eps_LS_PL": 0.5,
+   "eta": -0.55
+  },
+  "sub_saharan_africa": {
+   "alpha": 0.15,
+   "eps_F_N": 0.0,
+   "eps_F_PF": -0.5,
+   "eps_F_PY": 0.03,
+   "eps_LD_PL": -0.3,
+   "eps_LD_PY": 0.25,
+   "eps_LS_PL": 0.7,
+   "eta": -0.7
+  }
+ }
+}

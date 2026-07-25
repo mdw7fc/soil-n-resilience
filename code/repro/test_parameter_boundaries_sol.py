@@ -17,7 +17,7 @@ from soil_n_model import (
 )
 from monthly_model_v3 import (
     FAOSTAT_TARGETS, MonthlyNParams, REGIONAL_CLIMATES,
-    apply_era5_climate_file, run_model,
+    apply_era5_climate_file, run_model, century_dynamic_spinup,
 )
 from coupled_monthly import get_calibrated_ym
 from coupled_econ_biophysical import (
@@ -114,15 +114,25 @@ def main():
         assert scenario.fert_capacity_recovery_years >= 0
 
     # Calibration boundary: every runtime root lies within the solver bracket
-    # and reproduces its FAOSTAT year-2 target to the declared 0.01 t/ha xtol.
+    # and reproduces its FAOSTAT target on THE PATH THE PUBLISHED RUNS USE.
+    #
+    # F-002 (2026-07-25). This block used to root `run_model` and require the
+    # year-2 yield to hit the target within 0.011 t/ha. It passed because
+    # `get_calibrated_ym` was itself calibrated on `run_model` — the test and
+    # the calibration shared a path, and neither was the path that produced a
+    # published number. Under the production-path calibration the legacy path
+    # now misses by up to 4.19%, which is the finding, not a regression: see
+    # code/tests/test_calibration_fingerprint.py, which asserts that the gap
+    # persists rather than papering over it.
+    regions_all = get_default_regions()
     for key in REGIONS:
         ym = get_calibrated_ym(key, monthly)
         assert 1.0 <= ym <= 50.0
-        frame = run_model(
-            key, n_years=5, yield_max_override=ym, p=monthly
-        )
-        actual = float(frame["yield_tha"][2])
-        assert abs(actual - FAOSTAT_TARGETS[key]) <= 0.011, (
+        actual = century_dynamic_spinup(
+            key, p=monthly, synth_n=regions_all[key].synth_n_current,
+            yield_max_override=ym, region_override=regions_all[key],
+        )["yield_eq"]
+        assert abs(actual - FAOSTAT_TARGETS[key]) <= 1e-3 * FAOSTAT_TARGETS[key], (
             key, actual, FAOSTAT_TARGETS[key]
         )
 

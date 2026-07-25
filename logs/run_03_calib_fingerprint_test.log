@@ -1,0 +1,16 @@
+
+C1  production path reproduces FAOSTAT     C2  legacy gap still present
+  [PASS] FAOSTAT reproduced to 0.001 relative                     worst 1.924e-15 relative (1.924e-13 percent)
+  [PASS] legacy objective still misses by >= 1.0% somewhere       worst legacy gap 4.185 percent (latin_america)
+
+C3  every field that moves yield_max is fingerprinted
+  [PASS] no unregistered field moves yield_max                    unregistered movers: none
+  [PASS] declared-but-inert fields (informational, not a failure) whc_sensitivity, yield_max_regional, yield_min_regional
+  [PASS] fields observed to reach the calibration                 atm_n_deposition, baseline_water_deficit, cn_bulk, cre_regional, mitscherlich_c_regional, residue_retention, root_shoot_c_ratio, soc_initial, synth_n_current, water_stress_coeff
+
+C4  the fingerprint leads with the scheme
+  [PASS] fingerprint[0] is CALIBRATION_SCHEME                     'production_path_v2'
+  [PASS] YM_REGION_FIELDS has 13 entries                          13
+  [PASS] perturbing a registered field changes the fingerprint    
+
+CALIBRATION FINGERPRINT: PASS  (8 checks)
