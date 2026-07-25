@@ -4,9 +4,24 @@
 A refactor that changes no number has to be SHOWN to change no number (F-011).
 This script runs the three checks that showing takes:
 
-  1. A 123-field canonical diff. The canonical artifact is eight regions of
-     fifteen fields plus three global production-weighted losses. Every numeric
-     field must be bit-identical before and after the rewiring.
+  1. A 123-field canonical diff against a FRESHLY REGENERATED artifact. The
+     canonical artifact is eight regions of fifteen fields plus three global
+     production-weighted losses.
+
+     Revised 2026-07-25 (WP3). This check originally required every field to
+     be bit-identical, and read the artifact straight off the tree. Both parts
+     had to change. It read a deposit file that is only rewritten when someone
+     runs the model, so on an un-regenerated checkout it compared the 20defb2
+     baseline against the 20defb2 artifact and reported "no number moved" --
+     passing because the file was stale rather than because the code agreed.
+     And WP2's F-002 production-path recalibration then moved 50 of the 123
+     fields on purpose, so bit-identity can never hold again.
+
+     The check now re-runs the model into a throwaway copy and asserts the
+     DELTA: exactly these 50 fields moved, to these values, and nothing else
+     did. That still fails on an unintended change in either direction, and it
+     keeps the evidence of what WP2 moved instead of rebaselining it away.
+     The pinned set is baseline/canonical_expected_delta.json.
   2. A field-by-field equality log over every regional field, plus the three
      parameter dataclasses, plus FAOSTAT_TARGETS and REGIONAL_ECON_PARAMS.
   3. The global S3 production-weighted yield loss, reported so the run's
@@ -19,7 +34,9 @@ This script runs the three checks that showing takes:
 The 'before' snapshots are committed under .baseline/ and were taken from the
 reconstruction base, git 20defb2, with every literal still in place.
 
-Exit 0 means WP1 holds. Any nonzero exit names the first field that moved.
+Exit 0 means WP1 holds and the canonical artifact moves only where WP2 is
+recorded as having moved it. Any nonzero exit names the first field that
+disagrees with the pinned delta.
 """
 
 import dataclasses
@@ -73,20 +90,92 @@ def flatten_canonical(doc):
     return flat
 
 
+def regenerate_canonical():
+    """Run the canonical model in a throwaway copy and return its artifact.
+
+    CHECK 1 used to read ``data/canonical_ERA5_y30.json`` straight off the
+    tree. That file is a deposit artifact, not a run: on a checkout where it
+    has not been regenerated it still holds the 20defb2 figures, so the check
+    compared the baseline against itself and reported "no number moved". It
+    passed by being stale. Re-running is the only way the comparison says
+    anything about the code as it stands.
+    """
+    import shutil, subprocess, tempfile
+    tmp = tempfile.mkdtemp(prefix="wp1_canon_")
+    try:
+        for sub in ("code", "data", "outputs", "results"):
+            src = os.path.join(ROOT, sub)
+            if os.path.isdir(src):
+                shutil.copytree(src, os.path.join(tmp, sub),
+                                ignore=shutil.ignore_patterns("__pycache__", "*.pyc"),
+                                dirs_exist_ok=True)
+        p = subprocess.run([sys.executable, "run_canonical.py"],
+                           cwd=os.path.join(tmp, "code", "repro"),
+                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                           timeout=900)
+        path = os.path.join(tmp, "data", "canonical_ERA5_y30.json")
+        if p.returncode != 0 or not os.path.exists(path):
+            return None
+        return json.load(open(path))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 log("=" * 72)
-log("CHECK 1 -- canonical diff")
+log("CHECK 1 -- canonical diff against a freshly regenerated artifact")
 before = flatten_canonical(json.load(open(os.path.join(BASELINE, "canonical_before.json"))))
-after = flatten_canonical(json.load(open(os.path.join(ROOT, "data", "canonical_ERA5_y30.json"))))
+fresh = regenerate_canonical()
+
+if not check(fresh is not None, "canonical model failed to run"):
+    after = {}
+else:
+    after = flatten_canonical(fresh)
 
 check(len(before) == 123, "canonical fingerprint is %d fields, expected 123" % len(before))
 check(set(before) == set(after), "canonical field set changed")
-n_diff = 0
+
+# WP1 changed no number. WP2's F-002 production-path recalibration then moved
+# 50 of the 123 deliberately, by solving y_max against the FAOSTAT target
+# rather than reading a static value. Asserting "nothing moved" can therefore
+# never pass again, and rebaselining to the post-WP2 figures would erase the
+# evidence that anything moved at all. The gate instead pins the delta: these
+# fields moved, by these amounts, and nothing else did. It still catches an
+# unintended change -- in either direction -- and it keeps the record.
+EXPECTED_DELTA = os.path.join(BASELINE, "canonical_expected_delta.json")
+expected = {}
+if os.path.exists(EXPECTED_DELTA):
+    expected = json.load(open(EXPECTED_DELTA))["moved"]
+
+DELTA_TOL = 1e-9
+moved, unexpected, mismatched = {}, [], []
 for k in sorted(before):
     if k in after and before[k] != after[k]:
-        n_diff += 1
-        log("  moved  %-44s %r -> %r" % (k, before[k], after[k]))
-log("  %d fields compared, %d numeric differences" % (len(before), n_diff))
-check(n_diff == 0, "canonical diff returned %d numeric differences" % n_diff)
+        moved[k] = after[k]
+        if k not in expected:
+            unexpected.append(k)
+            log("  UNEXPECTED MOVE  %-40s %r -> %r" % (k, before[k], after[k]))
+        elif isinstance(after[k], (int, float)) and not isinstance(after[k], bool):
+            if abs(float(expected[k]) - float(after[k])) > DELTA_TOL:
+                mismatched.append(k)
+                log("  WRONG VALUE      %-40s expected %r, got %r"
+                    % (k, expected[k], after[k]))
+        elif expected[k] != after[k]:
+            mismatched.append(k)
+            log("  WRONG VALUE      %-40s expected %r, got %r"
+                % (k, expected[k], after[k]))
+
+healed = [k for k in expected if k not in moved]
+for k in healed:
+    log("  NO LONGER MOVES  %-40s expected it to move to %r" % (k, expected[k]))
+
+log("  %d fields compared, %d moved, %d pinned as expected"
+    % (len(before), len(moved), len(expected)))
+check(not unexpected, "%d field(s) moved that the pinned delta does not "
+                      "account for: %s" % (len(unexpected), unexpected[:6]))
+check(not mismatched, "%d field(s) moved to a value the pinned delta does not "
+                      "expect: %s" % (len(mismatched), mismatched[:6]))
+check(not healed, "%d field(s) the pinned delta expects to move no longer "
+                  "move: %s" % (len(healed), healed[:6]))
 
 
 # ---------------------------------------------------------------------------
@@ -167,17 +256,24 @@ check(moved == 0, "REGIONAL_ECON_PARAMS: %d moved" % moved)
 
 log("=" * 72)
 log("CHECK 3 -- global S3 production-weighted yield loss")
-gl = json.load(open(os.path.join(ROOT, "data", "canonical_ERA5_y30.json")))["global_prodweighted"]
-log("  year 1  %.2f %%" % gl["1"])
-log("  year 10 %.2f %%" % gl["10"])
-log("  year 30 %.2f %%" % gl["30"])
-log("  NOTE: the reconstruction base (git 20defb2, pre-F-002) produces")
-log("        2.31 / 3.18 / 3.29. The 2.32 / 3.03 recorded in HANDOFF section 5")
-log("        is post-recalibration and is WP2's acceptance target, not WP1's.")
-log("        WP1's requirement is that the rewiring moves nothing, which")
-log("        CHECK 1 is the test of.")
-check(gl["1"] == 2.31 and gl["10"] == 3.18 and gl["30"] == 3.29,
-      "canonical global losses moved from the 20defb2 base of 2.31/3.18/3.29")
+# Read from the same fresh run CHECK 1 used, not from data/. Reading the
+# deposit artifact made this check pass on a stale file, which is how it came
+# to assert the 20defb2 figures long after WP2 had moved them.
+gl = (fresh or {}).get("global_prodweighted", {})
+if not gl:
+    check(False, "no fresh canonical artifact to read the headline from")
+else:
+    log("  year 1  %.2f %%" % gl["1"])
+    log("  year 10 %.2f %%" % gl["10"])
+    log("  year 30 %.2f %%" % gl["30"])
+    log("  NOTE: the reconstruction base (git 20defb2, pre-F-002) produces")
+    log("        2.31 / 3.18 / 3.29. WP2's F-002 recalibration moved this to")
+    log("        2.32 / 3.20 / 3.31. The 3.03 year-10 figure quoted in HANDOFF")
+    log("        section 5 and in WP6's acceptance matches neither and is")
+    log("        owed a restatement -- see results/mutation_coverage_reconciliation.md.")
+    check(gl["1"] == 2.32 and gl["10"] == 3.20 and gl["30"] == 3.31,
+          "canonical global losses are %.2f/%.2f/%.2f, expected the post-WP2 "
+          "2.32/3.20/3.31" % (gl["1"], gl["10"], gl["30"]))
 
 
 # ---------------------------------------------------------------------------
@@ -249,7 +345,7 @@ if failures:
     for f in failures:
         log("  " + f)
 else:
-    log("WP1 PASSED -- the registry drives the model and no number moved.")
+    log("WP1 PASSED -- the registry drives the model; the canonical artifact moves\n              only the 50 fields WP2 pinned, by the pinned amounts.")
 
 os.makedirs(RESULTS, exist_ok=True)
 with open(os.path.join(RESULTS, "wp1_equality_log.txt"), "w") as fh:

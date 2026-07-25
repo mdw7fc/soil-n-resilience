@@ -22,9 +22,23 @@ from coupled_monthly import MonthlyBiophysicalEngine, get_calibrated_ym
 # purpose. Editing them here would retune a stale expectation inside a test
 # and lose the evidence that a published number moved; they belong in
 # docs/claims.yaml, where the claim register can mark them DRIFTED and carry
-# the reason. Measured under production_path_v2 (2026-07-25):
-#   sub_saharan_africa 0.037 -> 0.0358 (baseline yield 1.4505 -> 1.5000)
-# The other three are within tolerance and do not move.
+# the reason. This file therefore FAILS BY DESIGN until WP5 lands, and is
+# excluded from mutation-coverage CATCH for that reason rather than as a
+# broken test.
+#
+# CORRECTED 2026-07-25 (WP3). The note here previously read "the other three
+# are within tolerance and do not move". That was wrong: the assertion below
+# stopped at the first region and never evaluated the rest. Three of the four
+# have drifted. Measured under production_path_v2 against the 1e-3 tolerance:
+#
+#   sub_saharan_africa  0.037 -> 0.035778   (-1.22e-3)  DRIFTED
+#   south_asia          0.153 -> 0.147321   (-5.68e-3)  DRIFTED
+#   latin_america       0.047 -> 0.049145   (+2.15e-3)  DRIFTED
+#   north_america       0.060 -> 0.060800   (+8.00e-4)  within tolerance
+#
+# South Asia is the largest mover and the one that matters most: SI [163] and
+# claims C-063/C-064 turn on which region carries the highest derived nitrogen
+# cost share. WP5 should carry all three, not one.
 EXPECTED_SHARES = {
     "sub_saharan_africa": 0.037,
     "south_asia": 0.153,
@@ -41,6 +55,9 @@ def main():
     assert all(abs(r.whc_sensitivity - 3.48) < 1e-12
                for r in regions.values())
 
+    # Every region is measured before anything is asserted. Failing on the
+    # first drifted region hid two more for a full work package.
+    drifted = []
     for region, expected in EXPECTED_SHARES.items():
         ym = get_calibrated_ym(region, mp)
         baseline_yield = MonthlyBiophysicalEngine(
@@ -50,7 +67,16 @@ def main():
         got = nitrogen_cost_share(
             region, regions[region].synth_n_current,
             baseline_yield)
-        assert abs(got - expected) < 1e-3, (region, got, expected)
+        print(f"  {region:20s} expected {expected:.6f}  model {got:.6f}  "
+              f"delta {got - expected:+.2e}"
+              f"{'  DRIFTED' if abs(got - expected) >= 1e-3 else ''}")
+        if abs(got - expected) >= 1e-3:
+            drifted.append((region, got, expected))
+    assert not drifted, (
+        f"{len(drifted)} of {len(EXPECTED_SHARES)} derived cost shares have "
+        f"drifted from their pre-F-002 figures: {drifted}. This is owed to "
+        f"WP5's claim register, not repaired here -- see the note above."
+    )
 
     code_text = "\n".join(
         p.read_text(errors="ignore")

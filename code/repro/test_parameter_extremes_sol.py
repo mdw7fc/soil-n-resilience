@@ -39,10 +39,28 @@ NONNEGATIVE = [
 ]
 TOL = 1e-9
 
+# Columns that are diagnostics rather than model state. `ln_cap` (added by
+# F-010 so the market-clearing test could be made from the DataFrame rather
+# than from solver internals) is the log of the physical fertilizer ceiling and
+# is undefined when the ceiling does not bind. NaN is the correct encoding of
+# "not applicable", so a blanket finiteness assertion over every numeric column
+# fails on a correct run. It is checked below where it is defined instead of
+# being exempted outright.
+DIAGNOSTIC = ["ln_cap"]
+
 
 def assert_domain(frame, model):
-    values = frame.select_dtypes(include=[np.number]).to_numpy()
+    state = frame.drop(columns=DIAGNOSTIC, errors="ignore")
+    values = state.select_dtypes(include=[np.number]).to_numpy()
     assert np.isfinite(values).all()
+    if "ln_cap" in frame and "cap_binding" in frame:
+        binding = frame["cap_binding"].astype(bool).to_numpy()
+        ln_cap = frame["ln_cap"].to_numpy()
+        # Defined exactly where the ceiling binds, and nowhere else. Both
+        # directions matter: a ln_cap that goes finite while cap_binding is
+        # false means the two disagree about whether the branch was entered.
+        assert np.isfinite(ln_cap[binding]).all()
+        assert np.isnan(ln_cap[~binding]).all()
     assert (frame[NONNEGATIVE] >= -TOL).all().all()
     assert model.bio.mineral_n >= -TOL
     assert min(model.bio.C_active, model.bio.C_slow, model.bio.C_passive) >= -TOL
