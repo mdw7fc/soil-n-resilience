@@ -18,6 +18,7 @@ import pandas as pd
 from dataclasses import dataclass, field
 from typing import Dict, List, Tuple, Optional
 import json
+from parameter_registry import WHC_MM_PER_SOC_PCT_30CM
 
 
 # ============================================================
@@ -191,7 +192,7 @@ class RegionParams:
     texture_class: int = 1
 
     # Water holding capacity sensitivity to SOC (mm per % SOC in top 20 cm)
-    whc_sensitivity: float = 8.4
+    whc_sensitivity: float = WHC_MM_PER_SOC_PCT_30CM
 
     # Yield penalty per mm of water deficit (fraction per mm)
     water_stress_coeff: float = 0.004
@@ -330,7 +331,7 @@ def get_default_regions() -> Dict[str, RegionParams]:
             synth_n_current=76.0,   # ~13 Tg N / 170 Mha (USDA ERS, IFA)
             pop_supported=900.0,    # ~12% of global crop calories (high yields, major exporter)
             texture_class=1,        # Loam dominant
-            whc_sensitivity=8.4,
+            whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
             water_stress_coeff=0.003,
             baseline_water_deficit=0.0,
             atm_n_deposition=10.0,  # NADP monitoring: 8-12 kg N/ha in Corn Belt (Vet et al. 2014)
@@ -350,7 +351,7 @@ def get_default_regions() -> Dict[str, RegionParams]:
             synth_n_current=85.0,   # ~11 Tg N / 130 Mha (Eurostat, IFA)
             pop_supported=900.0,    # ~12% of global crop calories
             texture_class=1,
-            whc_sensitivity=8.4,
+            whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
             water_stress_coeff=0.003,
             baseline_water_deficit=0.0,
             atm_n_deposition=12.0,  # EMEP: 10-15 kg N/ha in W. Europe (Simpson et al. 2014)
@@ -371,7 +372,7 @@ def get_default_regions() -> Dict[str, RegionParams]:
             synth_n_current=250.0,  # ~30 Tg N / 120 Mha; China is world's largest N consumer
             pop_supported=1875.0,   # ~25% of global crop calories (China dominates)
             texture_class=1,
-            whc_sensitivity=8.4,
+            whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
             water_stress_coeff=0.004,
             baseline_water_deficit=5.0,
             bnf_potential=20.0,     # Dense cropping limits rotation options
@@ -390,7 +391,7 @@ def get_default_regions() -> Dict[str, RegionParams]:
             synth_n_current=110.0,  # ~22 Tg N / 200 Mha (FAI India, IFA)
             pop_supported=1350.0,   # ~18% of global crop calories
             texture_class=1,
-            whc_sensitivity=8.4,
+            whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
             water_stress_coeff=0.005,  # Monsoon dependence, high evaporative demand
             baseline_water_deficit=10.0,
             atm_n_deposition=12.0,  # Indo-Gangetic Plain: 10-15 (Dentener et al. 2006)
@@ -410,7 +411,7 @@ def get_default_regions() -> Dict[str, RegionParams]:
             synth_n_current=89.0,   # ~8 Tg N / 90 Mha (IFA)
             pop_supported=750.0,    # ~10% of global crop calories (rice-dominant)
             texture_class=1,
-            whc_sensitivity=8.4,
+            whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
             water_stress_coeff=0.004,
             baseline_water_deficit=5.0,
             atm_n_deposition=8.0,   # Moderate tropical: 5-10 (Vet et al. 2014)
@@ -431,7 +432,7 @@ def get_default_regions() -> Dict[str, RegionParams]:
             synth_n_current=50.0,   # ~8 Tg N / 160 Mha (IFA); soybean BNF offsets
             pop_supported=900.0,    # ~12% of global crop calories (major exporter)
             texture_class=1,
-            whc_sensitivity=8.4,
+            whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
             water_stress_coeff=0.003,
             baseline_water_deficit=0.0,
             bnf_potential=35.0,     # Strong soybean/legume tradition; highest BNF potential
@@ -453,7 +454,7 @@ def get_default_regions() -> Dict[str, RegionParams]:
             synth_n_current=7.0,    # ~1.5 Tg N / 230 Mha (IFA); extremely low
             pop_supported=600.0,    # ~8% of global crop calories (low yields)
             texture_class=0,        # Sandy dominant in many regions
-            whc_sensitivity=8.4,
+            whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
             water_stress_coeff=0.005,
             baseline_water_deficit=15.0,
             atm_n_deposition=5.0,   # Low: 3-7 kg/ha (Dentener et al. 2006)
@@ -476,7 +477,7 @@ def get_default_regions() -> Dict[str, RegionParams]:
             pop_supported=375.0,    # ~5% of global crop calories
             atm_n_deposition=5.0,   # Low: continental interior (Vet et al. 2014)
             texture_class=1,
-            whc_sensitivity=8.4,
+            whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
             water_stress_coeff=0.004,
             baseline_water_deficit=10.0,
             bnf_potential=20.0,     # Cold climate limits BNF season

@@ -4,8 +4,8 @@
 a. Year-1 yield change versus farm SOC (10-200% of the regional mean) under a
    100% fertilizer price spike, with baseline regional price elasticities of
    fertilizer demand (solid) and with every eps_F_PF halved (dashed).
-b. Year-1 gross-margin change over the same gradient and the same two
-   elasticity treatments.
+b. Year-1 change in crop revenue net of nitrogen-fertilizer expenditure over
+   the same gradient and the same two elasticity treatments.
 
 The farm-level calculation is identical to the one behind main-text Figure 1
 (run_price_shock_analysis.farm_sweep_single, 100% price spike, SOC gradient
@@ -115,7 +115,8 @@ def main():
     }
 
     for ax, key, ylab, tag in ((axa, 'yield', 'Yield change (%)', 'a'),
-                               (axb, 'margin', 'Gross margin change (%)',
+                               (axb, 'margin',
+                                'Net revenue after N expenditure change (%)',
                                 'b')):
         for rn in PANEL_REGIONS:
             b, h = series[key][rn]
@@ -175,7 +176,7 @@ def main():
              - series['yield']['sub_saharan_africa'][0][i10]))
     gaps = [series['margin'][rn][0] - series['margin'][rn][1]
             for rn in PANEL_REGIONS]
-    print('margin penalty from halving (pp deeper), range over regions '
+    print('net-revenue penalty from halving (pp deeper), range over regions '
           'and SOC: %.2f to %.2f' % (min(g.min() for g in gaps),
                                      max(g.max() for g in gaps)))
     for rn in PANEL_REGIONS:

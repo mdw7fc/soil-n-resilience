@@ -56,7 +56,7 @@ corrected model. See `CHANGELOG.md`.
 - `make_ofra_validation.py` — Figure S13 (OFRA SSA maize-N validation overlay, canonical y_max)
 - `run_price_shock_analysis.py` — **new in v1.3** — farm-level SOC-gradient computation for main
   Figures 1 and 2a; writes `figure1_farm_gradient.json` and `figure2_soc_gradient.json` (~90 s)
-- `make_figure_1.py` — **new in v1.3** — renders Figure 1 (farm yield and gross-margin buffering)
+- `make_figure_1.py` — renders Figure 1 (farm yield and partial net-revenue buffering)
 - `make_figure_2.py` — **new in v1.3** — renders Figure 2 (SOC gradient, direct/SOM decomposition, bubble panel)
 - `test_zero_shock_invariance.py` — **new in v1.3** — asserts that a zero shock leaves every
   region at its baseline yield; writes `outputs/zero_shock_invariance.csv`
@@ -102,10 +102,10 @@ corrections and is carried over unchanged.
 
 ## Figures (`figures/`)
 
-- `Figure_1_farm_buffering.png` / `.pdf` — **new in v1.3** — farm yield and gross-margin buffering
+- `Figure_1_farm_buffering.png` / `.pdf` — farm yield and partial net-revenue buffering
 - `Figure_2_regional_vulnerability.png` / `.pdf` — **new in v1.3** — regional vulnerability, three panels
-- `Figure_S5_flux_decomposition.png` — 4-pool CUE/necromass flux decomposition (SC1). **Not
-  regenerable from this deposit**: the microbially-explicit 4-pool SOM scheme is not included
+- `excluded_legacy_sol/Figure_S5_flux_decomposition_legacy_sol.png` — legacy
+  exploratory figure; excluded from the revised evidentiary chain
   in the code. Illustrative only; no manuscript or SI number derives from it. This gap
   predates v1.3.
 - `Figure_S6_pairwise_diagnostics.png` — pairwise regional diagnostics (canonical ERA5)

@@ -164,8 +164,10 @@ class MonthlyBiophysicalEngine:
             return 1.0
 
         soc_current = self.C_active + self.C_slow + self.C_passive
-        soc_pct = soc_current / (300 * 0.01)  # 30cm depth, bulk density ~1.0
-        soc_pct_init = self.soc_initial / (300 * 0.01)
+        # 1 percentage point SOC in 0-30 cm at bulk density 1.3 g cm-3
+        # corresponds to 39 t C ha-1.
+        soc_pct = soc_current / 39.0
+        soc_pct_init = self.soc_initial / 39.0
         delta = soc_pct_init - soc_pct  # >0 when degraded, <0 when accumulated
         whc_sens = self.region.whc_sensitivity * self.fb.physical_strength
 
@@ -472,7 +474,8 @@ class CoupledMonthlyModel:
             self.bio.C_active, self.bio.C_slow, self.bio.C_passive,
             self.region.cn_bulk, self.F_baseline, bnf_base,
             self.region.atm_n_deposition, self.bio.climate,
-            self.bio.mineral_n, self.bio.mp
+            self.bio.mineral_n, self.bio.mp,
+            som_params=self.bio.som,
         )
         n_up_init = init_nb['uptake']
         n_min_init = init_nb['min']

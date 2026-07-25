@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Figure 1 — farm-level yield and gross-margin buffering under a 100% spike.
+"""Figure 1 — farm-level yield and net-revenue buffering under a 100% spike.
 
 a. Year-1 yield change versus farm SOC (10-200% of the regional mean) for the
    four regions with farm-gate cost-structure data.
-b. Year-1 gross-margin change over the same gradient.
+b. Year-1 change in crop revenue net of nitrogen-fertilizer expenditure.
 
 Reads data/figure1_farm_gradient.json, written by run_price_shock_analysis.py.
 Writes data/figure1_soc_gradient.csv and
@@ -60,7 +60,8 @@ def main():
 
     fig, (axa, axb) = plt.subplots(1, 2, figsize=(13.5, 6.2))
     for ax, key, ylab, tag in ((axa, 'yield_pct', 'Yield change (%)', 'a'),
-                               (axb, 'margin_pct', 'Gross margin change (%)',
+                               (axb, 'margin_pct',
+                                'Net revenue after N expenditure change (%)',
                                 'b')):
         for rk in PANEL_REGIONS:
             ax.plot(x, res[rk][key], lw=2.6, color=COLOR[rk], zorder=3)
@@ -93,9 +94,10 @@ def main():
                     fontweight='bold', color=COLOR[rk], va='center')
 
     fig.text(0.5, 0.015,
-             'SOC effects are shown within each region; cross-region contrasts '
-             'also reflect regional economic structure (price elasticity, '
-             'fertilizer share of revenue), not soil alone.',
+             'Net revenue equals crop revenue minus nitrogen-fertilizer '
+             'expenditure; it is not whole-farm gross margin. SOC effects are '
+             'within-region contrasts; cross-region contrasts also reflect '
+             'regional prices and demand elasticities.',
              ha='center', fontsize=10.5, style='italic', color='0.35')
     fig.tight_layout(rect=[0, 0.045, 1, 1])
     os.makedirs(FIGS, exist_ok=True)
@@ -107,7 +109,7 @@ def main():
     i50, i100, i200 = (list(x).index(v) for v in (50.0, 100.0, 200.0))
     for rk in PANEL_REGIONS:
         v = res[rk]
-        print('%-20s yield %6.2f %6.2f %6.2f   margin %7.2f %7.2f %7.2f'
+        print('%-20s yield %6.2f %6.2f %6.2f   net rev %7.2f %7.2f %7.2f'
               % (rk, v['yield_pct'][i50], v['yield_pct'][i100],
                  v['yield_pct'][i200], v['margin_pct'][i50],
                  v['margin_pct'][i100], v['margin_pct'][i200]))

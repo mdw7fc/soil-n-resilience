@@ -3,14 +3,14 @@
 Canonical model run for Wallenstein & Manning, ERFS-100341.
 Runs the coupled biophysical-economic model under the ERA5 data-based climate
 out to year 30 (scenario S3, 100% fertilizer-price spike) and writes the single
-frozen output that every figure and table in the paper derives from.
+frozen output used for central regional trajectories and correlations.
 
 Outputs (written to ../../data/ and ../../outputs/):
   canonical_ERA5_y30.csv / .json  - per-region descriptors + yr1/10/30 losses
   global_S3_losses.txt            - production-weighted global loss, yr 1/10/30
 
-Reproduces (production-weighted): 2.30 / 3.41 / 3.64 % for years 1 / 10 / 30,
-matching the manuscript's 2.3 / 3.4 / 3.6 %.
+Audited SOL result (production-weighted): 2.31 / 3.18 / 3.29 % for years
+1 / 10 / 30.
 
 v1.3: these values supersede the v1.2 figures of 4.33 / 5.58 / 5.95 %. Two
 internal-consistency corrections were applied to the model (a stationary
@@ -86,7 +86,7 @@ def main():
         f.write("Production-weighted global S3 yield loss (%)\n")
         f.write("year 1 : %.2f\nyear 10: %.2f\nyear 30: %.2f\n" % (gl[1], gl[10], gl[30]))
     print("Global production-weighted S3 loss  yr1/yr10/yr30 = %.2f / %.2f / %.2f %%" % (gl[1], gl[10], gl[30]))
-    print("(manuscript: 2.3 / 3.4 / 3.6)")
+    print("(SOL manuscript: 2.3 / 3.2 / 3.3)")
     print("buffer ratios:", [x['buffer_ratio_pct'] for x in rows])
 
 if __name__ == '__main__':

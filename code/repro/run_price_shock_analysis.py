@@ -50,6 +50,11 @@ from coupled_monthly import (CoupledMonthlyModel, MonthlyBiophysicalEngine,
 from coupled_econ_biophysical import (get_scenario_params, REGIONAL_ECON_PARAMS,
                                       EconParams)
 from soil_n_model import get_default_regions
+from parameter_registry import (
+    REGIONAL_PRICES,
+    nitrogen_cost_share,
+    nitrogen_price_in_yield_units,
+)
 
 DATA = os.path.join(HERE, '..', '..', 'data')
 
@@ -68,19 +73,6 @@ LABEL = {'north_america': 'North America', 'europe': 'Europe',
          'southeast_asia': 'Southeast Asia', 'latin_america': 'Latin America',
          'sub_saharan_africa': 'Sub-Saharan Africa',
          'fsu_central_asia': 'FSU/Central Asia'}
-
-# Fertilizer cost as a fraction of gross crop revenue at the regional mean
-# farm (FAO/IFDC regional cost-structure surveys). This is the quantity that
-# sets how a given percentage yield loss translates into a percentage gross
-# margin loss: Sub-Saharan African farms spend a quarter of revenue on
-# fertilizer despite low application rates, because fertilizer is expensive
-# relative to farm-gate grain there, while North American farms spend 8%.
-FERT_COST_FRAC = {
-    'sub_saharan_africa': 0.25,
-    'south_asia': 0.20,
-    'latin_america': 0.12,
-    'north_america': 0.08,
-}
 
 FINE_SOC_PCTS = list(range(10, 205, 5))       # Figure 1, step 5
 GRADIENT_SOC_PCTS = list(range(10, 205, 10))  # Figure 2a, step 10
@@ -105,11 +97,13 @@ def patch_era5():
 def farm_sweep_single(region, rn, ym, mp, soc_pct, price_shock_frac):
     """One farm-level (SOC level, price shock) combination.
 
-    Returns yield penalty, fertilizer reduction and gross-margin change,
+    Returns yield penalty, fertilizer reduction and change in revenue net of
+    nitrogen-fertilizer expenditure,
     all in percent relative to the same farm with no shock.
     """
     rp = REGIONAL_ECON_PARAMS.get(rn, {})
-    fcf = FERT_COST_FRAC.get(rn, 0.15)
+    if rn not in REGIONAL_PRICES:
+        raise KeyError(f"No audited nitrogen/crop price pair for {rn}")
 
     eq = MonthlyBiophysicalEngine(region, region_key=rn, monthly_params=mp,
                                   yield_max_override=ym)
@@ -160,12 +154,9 @@ def farm_sweep_single(region, rn, ym, mp, soc_pct, price_shock_frac):
     yield_pen = (1 - y_shock / y_base_soc) * 100 if y_base_soc > 0 else 0.0
     fert_red = (1 - F_shocked / base_fert) * 100 if base_fert > 0 else 0.0
 
-    # Gross margin over fertilizer cost. The per-unit fertilizer price is
-    # calibrated from the regional cost share at the regional-mean farm, so a
-    # degraded farm still pays the full market price for what it buys rather
-    # than an artificially cheaper one. Revenue on the shocked side carries
-    # the output-price recovery exp(PY_hat), which partly offsets the loss.
-    pf_per_unit = fcf * y_regional_baseline / base_fert if base_fert > 0 else 0.0
+    # Revenue net of nitrogen-fertilizer expenditure. Nitrogen and crop prices
+    # are primitive inputs; cost share is derived only as a diagnostic.
+    pf_per_unit = nitrogen_price_in_yield_units(rn)
     margin_b = y_base_soc - base_fert * pf_per_unit
     margin_s = (y_shock * np.exp(PY_hat)
                 - F_shocked * pf_per_unit * (1 + price_shock_frac))
@@ -278,9 +269,25 @@ def main():
     print('  %-20s %-22s %s' % ('', 'yield change @50/100/200',
                                 'margin change @50/100/200'))
     f1 = build_figure1(regions, mp)
+    derived_shares = {}
+    for rn in KEY4:
+        r = regions[rn]
+        ym = get_calibrated_ym(rn, mp)
+        y = MonthlyBiophysicalEngine(
+            r, region_key=rn, monthly_params=mp,
+            yield_max_override=ym).step(r.synth_n_current)['yield_tha']
+        derived_shares[rn] = nitrogen_cost_share(
+            rn, r.synth_n_current, y)
     json.dump(dict(regions=f1, soc_pcts=FINE_SOC_PCTS,
                    price_shock=PRICE_SHOCK_FINE,
-                   fert_cost_frac=FERT_COST_FRAC),
+                   regional_prices={
+                       k: dict(
+                           nitrogen_usd_per_kg_n=v.nitrogen_usd_per_kg_n,
+                           crop_usd_per_t=v.crop_usd_per_t,
+                           convention=v.convention)
+                       for k, v in REGIONAL_PRICES.items()
+                   },
+                   derived_n_cost_share=derived_shares),
               open(os.path.join(DATA, 'figure1_farm_gradient.json'), 'w'),
               indent=1)
     print('  wrote data/figure1_farm_gradient.json')

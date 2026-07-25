@@ -21,7 +21,9 @@ Scenarios (following Manning's framework):
     S2: Land expansion response (endogenous land market)
     S3: Full behavioral (land + fert response to food prices)
     SC1-SC2: Supply-constrained variants with S3 elasticities + soil-N
-             feedback (eps_F_N = -0.50). SC1 = permanent 20% supply loss;
+             soil-N demand feedback is off in the central case because no
+             empirical regional estimate is available. SC1 = permanent 20%
+             supply loss;
              SC2 = 20% loss with 20-year recovery. The S4 behavioral channel is
              reserved for supply-constrained scenarios where SOC decline
              is large enough for the feedback to matter.
@@ -30,6 +32,7 @@ Author: Matthew Wallenstein & Dale Manning
 """
 
 import numpy as np
+from parameter_registry import SOIL_N_RESPONSE_ELASTICITY_CENTRAL
 import pandas as pd
 from dataclasses import dataclass, field
 from typing import Dict, List, Tuple, Optional
@@ -69,10 +72,9 @@ class EconParams:
     # empirical estimates (Huang & Khanna 2010).
     eps_F_PY: float = 0.10
 
-    # eps_F_N: elasticity of fert demand w.r.t. soil N stock (negative)
-    # Farmers compensate for depleted soil by applying more fertilizer.
-    # No clean empirical estimates; -0.50 is calibration starting point.
-    # Set to 0 in S1-S3; negative in S4. Prominent sensitivity parameter.
+    # eps_F_N: elasticity of fert demand w.r.t. soil N stock (negative).
+    # No clean empirical estimate exists. The audited central run therefore
+    # sets it to zero; negative values are structural sensitivities only.
     eps_F_N: float = 0.0
 
     # --- Food demand elasticity ---
@@ -138,48 +140,48 @@ class EconParams:
 #   alpha: Growth-accounting land cost shares (Manning calibration)
 #   eps_F_PF: FDME + Ethiopia/SSA evidence; Roberts & Schlenker 2013 (US)
 #   eps_F_PY: Manning calibration; Huang & Khanna 2010
-#   eps_F_N: Calibration/sensitivity (no clean regional estimates)
+#   eps_F_N: structural sensitivity only (no clean regional estimates)
 #   Land elasticities: CGE practice (Lubowski et al. 2006; Gurgel et al. 2007)
 #     with two-tier differentiation for frontier vs. constrained regions
 REGIONAL_ECON_PARAMS = {
     'north_america': {
         'eta': -0.30, 'alpha': 0.10, 'eps_F_PF': -0.20,
-        'eps_F_PY': 0.10, 'eps_F_N': -0.50,
+        'eps_F_PY': 0.10, 'eps_F_N': 0.0,
         'eps_LD_PL': -0.30, 'eps_LD_PY': 0.20, 'eps_LS_PL': 0.40,
     },
     'europe': {
         'eta': -0.35, 'alpha': 0.08, 'eps_F_PF': -0.25,
-        'eps_F_PY': 0.10, 'eps_F_N': -0.50,
+        'eps_F_PY': 0.10, 'eps_F_N': 0.0,
         'eps_LD_PL': -0.30, 'eps_LD_PY': 0.15, 'eps_LS_PL': 0.30,
     },
     'east_asia': {
         'eta': -0.45, 'alpha': 0.10, 'eps_F_PF': -0.30,
-        'eps_F_PY': 0.10, 'eps_F_N': -0.50,
+        'eps_F_PY': 0.10, 'eps_F_N': 0.0,
         'eps_LD_PL': -0.30, 'eps_LD_PY': 0.15, 'eps_LS_PL': 0.30,
     },
     'south_asia': {
         'eta': -0.60, 'alpha': 0.12, 'eps_F_PF': -0.40,
-        'eps_F_PY': 0.10, 'eps_F_N': -0.50,
+        'eps_F_PY': 0.10, 'eps_F_N': 0.0,
         'eps_LD_PL': -0.30, 'eps_LD_PY': 0.20, 'eps_LS_PL': 0.50,
     },
     'southeast_asia': {
         'eta': -0.55, 'alpha': 0.12, 'eps_F_PF': -0.40,
-        'eps_F_PY': 0.10, 'eps_F_N': -0.50,
+        'eps_F_PY': 0.10, 'eps_F_N': 0.0,
         'eps_LD_PL': -0.30, 'eps_LD_PY': 0.20, 'eps_LS_PL': 0.50,
     },
     'latin_america': {
         'eta': -0.50, 'alpha': 0.15, 'eps_F_PF': -0.30,
-        'eps_F_PY': 0.10, 'eps_F_N': -0.50,
+        'eps_F_PY': 0.10, 'eps_F_N': 0.0,
         'eps_LD_PL': -0.30, 'eps_LD_PY': 0.25, 'eps_LS_PL': 0.70,
     },
     'sub_saharan_africa': {
         'eta': -0.70, 'alpha': 0.15, 'eps_F_PF': -0.50,
-        'eps_F_PY': 0.03, 'eps_F_N': -0.50,
+        'eps_F_PY': 0.03, 'eps_F_N': 0.0,
         'eps_LD_PL': -0.30, 'eps_LD_PY': 0.25, 'eps_LS_PL': 0.70,
     },
     'fsu_central_asia': {
         'eta': -0.45, 'alpha': 0.12, 'eps_F_PF': -0.30,
-        'eps_F_PY': 0.10, 'eps_F_N': -0.50,
+        'eps_F_PY': 0.10, 'eps_F_N': 0.0,
         'eps_LD_PL': -0.30, 'eps_LD_PY': 0.20, 'eps_LS_PL': 0.50,
     },
 }
@@ -478,14 +480,9 @@ def get_scenario_params() -> Dict[str, EconParams]:
         - Land market active
         - As food prices rise, farmers source more fert (other suppliers,
           organic sources, etc.)
-        - Soil-N depletion feedback ACTIVE (eps_F_N = -0.50). Per Dale's
-          2026-05 review (manuscript v4 → v5): the depletion-driven
-          adjustment is a real behavioural channel that should be active
-          whenever soil N draws down under sustained disruption, not only
-          when supply is physically capped. Activating it in S3 makes the
-          price-mediated headline scenario self-consistent with SC1/SC2 on
-          this channel; the distinguishing feature of SC1/SC2 is now
-          purely the physical supply cap.
+        - The soil-N response elasticity is zero in the central case because
+          no empirical regional estimate is available. Negative values are
+          evaluated separately as structural sensitivities.
     """
     shock = calibrate_price_shock(0.20)
 
@@ -513,12 +510,11 @@ def get_scenario_params() -> Dict[str, EconParams]:
         # __init__ doesn't override them to zero)
     )
 
-    # S3: Full behavioral response. All channels active including the
-    # soil-N depletion feedback. eps_F_PY uses regional value (0.10
-    # default, 0.03 SSA); eps_F_N = -0.50 matches SC1/SC2.
+    # S3: Observed-price and land-response channels active. eps_F_PY uses the
+    # regional value (0.10 default, 0.03 SSA); eps_F_N is zero centrally.
     s3 = EconParams(
         fert_price_shock=shock,
-        eps_F_N=-0.50,
+        eps_F_N=SOIL_N_RESPONSE_ELASTICITY_CENTRAL,
         # eps_F_PY, alpha, land elasticities all from regional defaults
     )
 
@@ -535,20 +531,18 @@ def get_supply_constrained_scenarios() -> Dict[str, EconParams]:
     - Conflict destroying production capacity
     - Long-term fossil fuel depletion raising feedstock costs permanently
 
-    Uses full behavioral response (S3 elasticities) PLUS the soil-N depletion
-    feedback (eps_F_N = -0.50, Dale's S4 channel). The S4 feedback is placed
-    here because supply-constrained scenarios produce enough SOC decline for
-    the feedback to be meaningful, unlike pure price shocks where SOC barely
-    moves.
+    Uses the S3 price and land responses plus a physical supply cap. The
+    unsupported soil-N demand response is zero centrally and evaluated
+    separately as a structural sensitivity.
     """
     shock = calibrate_price_shock(0.20)
 
-    # Full behavioral response + soil-N feedback.
+    # Price and land response plus physical supply constraint.
     # eps_F_PY, alpha, and land elasticities from regional defaults.
-    # eps_F_N activated here (S4 channel).
+    # eps_F_N remains zero in the central case.
     base_kwargs = dict(
         fert_price_shock=shock,
-        eps_F_N=-0.50,    # Farmers compensate for depleting soil N
+        eps_F_N=SOIL_N_RESPONSE_ELASTICITY_CENTRAL,
     )
 
     # SC1: 20% supply reduction, no recovery (permanent capacity loss)

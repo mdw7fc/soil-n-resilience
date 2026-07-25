@@ -29,16 +29,12 @@ fsu_central_asia             50     5.21%     2.83%     8.61%
 fsu_central_asia            100     4.21%     2.15%     7.37%
 fsu_central_asia            150     3.46%     1.65%     6.46%
 
-Per-region year-1 gross-margin-over-fert-cost change (%) at SOC=100%
+Year-1 revenue-net-of-N-expenditure change (%) at SOC=100%
 ----------------------------------------------------------------------
-north_america                     -3.14%    -6.56%     1.86%
-europe                            -1.11%    -6.16%     7.36%
-east_asia                         -7.27%   -11.27%    -3.70%
-south_asia                        -8.13%   -16.47%    -0.27%
-southeast_asia                    -8.31%   -15.29%    -1.11%
-latin_america                     -6.09%   -10.41%    -1.28%
-sub_saharan_africa               -10.67%   -21.20%    -2.51%
-fsu_central_asia                  -5.63%   -12.05%     3.11%
+sub_saharan_africa                 0.21%    -1.76%     4.25%
+south_asia                        -5.08%   -11.22%     1.70%
+latin_america                     -1.05%    -2.98%     2.76%
+north_america                     -1.64%    -4.26%     3.03%
 
 Probability statements
 ----------------------------------------------------------------------
@@ -50,16 +46,12 @@ Probability statements
   P(low-SOC yield loss > high-SOC yield loss | latin_america)               1.000  (n=1000)
   P(low-SOC yield loss > high-SOC yield loss | sub_saharan_africa)          1.000  (n=1000)
   P(low-SOC yield loss > high-SOC yield loss | fsu_central_asia)            1.000  (n=1000)
-  P(high-SOC gross margin > low-SOC gross margin | north_america)           1.000  (n=1000)
-  P(high-SOC gross margin > low-SOC gross margin | europe)                  1.000  (n=1000)
-  P(high-SOC gross margin > low-SOC gross margin | east_asia)               1.000  (n=1000)
-  P(high-SOC gross margin > low-SOC gross margin | south_asia)              1.000  (n=1000)
-  P(high-SOC gross margin > low-SOC gross margin | southeast_asia)          1.000  (n=1000)
-  P(high-SOC gross margin > low-SOC gross margin | latin_america)           1.000  (n=1000)
-  P(high-SOC gross margin > low-SOC gross margin | sub_saharan_africa)      1.000  (n=1000)
-  P(high-SOC gross margin > low-SOC gross margin | fsu_central_asia)        1.000  (n=1000)
+  P(high-SOC net-N-expenditure revenue > low-SOC | sub_saharan_africa)      1.000  (n=1000)
+  P(high-SOC net-N-expenditure revenue > low-SOC | south_asia)              1.000  (n=1000)
+  P(high-SOC net-N-expenditure revenue > low-SOC | latin_america)           1.000  (n=1000)
+  P(high-SOC net-N-expenditure revenue > low-SOC | north_america)           1.000  (n=1000)
   P(SSA = highest year-1 yield loss across all 8 regions, SOC=100%)         0.000  (n=1000)
-  P(SSA = worst year-1 gross margin across all 8 regions, SOC=100%)         0.837  (n=1000)
+  P(SSA = worst year-1 net-N-expenditure revenue across 4 priced regions, SOC=100%)    0.001  (n=1000)
   P(soil-N buffer ratio > 1 ppt in EVERY region simultaneously)             0.000  (n=1000)
   Median across-region buffer (ppt yield, low - high SOC), median across draws    0.885  (n=1000)
   Global area-weighted year-1 yield loss at SOC=100% (median % loss)        2.509  (n=1000)

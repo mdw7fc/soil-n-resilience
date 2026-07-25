@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Supplementary Figure S10 - monthly N capture efficiency (NUE) as a buffering lever.
 
-Canonical S3 scenario (eps_F_N = -0.50), ERA5 climate, years 0-10. Two panels:
+Canonical S3 scenario (eps_F_N = 0 centrally), ERA5 climate, years 0-10.
 
   a) global production-weighted yield-loss trajectory for NUE in
      {0.45, 0.55, 0.65, 0.75 (default), 0.85, 0.95}

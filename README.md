@@ -7,12 +7,11 @@ Model code and **canonical reproducibility deposit** for:
 
 Zenodo: https://doi.org/10.5281/zenodo.19699772
 
-This deposit corresponds to the **v14 (canonical) manuscript and SI**. Every
-figure and table in the paper derives from a **single frozen model output** —
-the ERA5 data-based climate run extended to year 30 — produced by
-`code/repro/run_canonical.py`. Earlier deposits mixed an expert-climate run
-(which stopped at year 10) with the ERA5 run; this version resolves that so all
-artifacts trace to one output set.
+This SOL deposit corresponds to the final audited manuscript and SI. Central
+regional trajectories derive from the frozen ERA5 run produced by
+`code/repro/run_canonical.py`; farm gradients, sensitivities and validation
+figures have their own named generators. The parameter ledger records every
+live parameter, source category, unit, code location and uncertainty treatment.
 
 **v1.4 supersedes v1.2.** Two internal-consistency corrections were applied to
 the model, and the generators for main Figures 1 and 2 and for Supplementary
@@ -23,8 +22,8 @@ than in v1.2; see `CHANGELOG.md` for the full list and the before/after values.
 
 A coupled monthly biophysical–economic framework for eight global agricultural
 regions. The biophysical layer tracks soil nitrogen (SOM mineralization,
-immobilization, leaching, denitrification), SOM pools (Century/RothC and a
-microbially-explicit 4-pool scheme), and a Mitscherlich crop-N yield response.
+immobilization, leaching, denitrification), Century/RothC-style SOM pools, and
+a Mitscherlich crop-N yield response.
 The economic layer solves regional fertilizer, food, and land markets under a
 fertilizer-price or physical-supply shock. See the manuscript Methods and SI.
 
@@ -56,6 +55,7 @@ python make_figure_2.py               # -> figures/Figure_2_regional_vulnerabili
 python compute_figS8_curves.py        # -> data/figS8_curves.json
 python make_figure_s8.py              # -> figures/Figure_S8_elasticity_sensitivity.png
 python make_figure_s7.py              # -> figures/Figure_S7_farm_elasticity_gradient.png/.pdf ; data/figS7_farm_elasticity_gradient.json (~2 min)
+python make_table_s4_sol.py            # -> outputs/Table_S4_calibration_sol.csv and data/figS12_curves.json
 python make_figure_s12.py             # -> figures/Figure_S12_crop_response_calibration.png
 python make_ofra_validation.py        # -> figures/Figure_S13_OFRA_SSA_validation.png
 python run_mc_ensemble.py --n 1000 --workers 4   # -> data/mc_ensemble/ (Note 6; ~7 min)
@@ -63,36 +63,40 @@ python make_figure_s9.py              # -> figures/Figure_S9_mc_ensemble.png/.pd
 python make_figure_s10.py             # -> figures/Figure_S10_nue_sensitivity.png/.pdf ; data/figS10_nue_sensitivity.json (~4 min)
 python make_figure_s11.py             # -> figures/Figure_S11_severity_gradient.png/.pdf (~3 min)
 python make_food_price_table.py       # -> data/food_price_response.csv
+python run_structural_sensitivity_sol.py  # -> outputs/structural_sensitivity_sol.csv
+python make_parameter_ledger_sol.py    # -> PARAMETER_LEDGER_sol.csv/.md
 ```
 
 Internal-consistency checks (both should print PASS):
 
 ```
 python test_zero_shock_invariance.py  # -> outputs/zero_shock_invariance.csv
+python test_full_zero_shock_sol.py
 python test_cap_market_clearing.py
+python test_parameter_consistency_sol.py
 ```
 
 ## Expected canonical results (what the scripts print / write)
 
 | Quantity | Value | Appears in |
 |---|---|---|
-| Global S3 yield loss, production-weighted (yr 1 / 10 / 30) | **2.30 / 3.41 / 3.64 %** → 2.3 / 3.4 / 3.6 | Abstract, Results |
-| Regional year-10 loss, range | **1.3 % (EA) – 6.0 % (SA)**; FSU 5.5, SSA 5.4, SEA 4.5, EU 3.5, LATAM 2.9, NA 1.8 | Results, Figure 2 |
-| SSA year-30 loss | **5.9 %** | Results |
-| SC1 (permanent supply loss) global year-10 | **4.0 %** (≈ 0.6 pp above S3) | Results |
-| SC2 (20-yr recovery) global year-10 | 2.2 % (0.5 % by year 20) | Results |
-| Soil-N buffer ratio (%), NA→FSU | **50, 36, 20, 32, 52, 62, 54, 49** | Supplementary table 1 |
-| Buffer ratio vs year-10 penalty | Spearman ρ = **+0.02**, R² = **0.05** | Note 3, Figure S6f, table 3 |
-| Fig S6 panel ρ (a–f) | −0.67, +0.70, −0.86, −0.45, +0.58, +0.02 | Figure S6 |
-| Climate robustness (expert vs ERA5) | max year-10 shift **0.74 pp**; Spearman ρ = 0.93 | Response letter |
-| Figure 1 gross margin at regional mean SOC | SSA **−11.4 %**, SA −8.7, LATAM −6.4, NA −3.4 | Figure 1b |
-| Figure 2b year-10 SOM-depletion share (global) | 0.32 of 3.41 pp | Figure 2b |
-| Figure S7 halved-elasticity gross-margin penalty | **2.6-10.3 pp** deeper at regional mean SOC (up to 14.1 pp on the most degraded SSA farms); SSA yield improves **2.3 pp** from 10 % to 200 % SOC | Figure S7 |
+| Global S3 yield loss, production-weighted (yr 1 / 10 / 30) | **2.31 / 3.18 / 3.29 %** | Abstract, Results |
+| Regional year-10 loss, range | **1.23 % (EA) – 5.57 % (FSU)**; SA 5.23, SSA 4.99 | Results, Figure 2 |
+| SSA year-30 loss | **5.43 %** | Results |
+| SC1 (permanent supply loss) global year-10 | **3.74 %** (0.56 pp above S3) | Results |
+| SC2 (20-yr recovery) global year-10 | **1.91 %** (0.04 % by year 30) | Results |
+| Soil-N buffer ratio (%), NA→FSU | **49.7, 36.4, 19.7, 34.2, 53.6, 64.4, 56.5, 49.0** | Supplementary table 1 |
+| Buffer ratio vs year-10 penalty | Spearman ρ = **+0.07**, Pearson R² = **0.05** | Note 3, Figure S6f, table 3 |
+| Fig S6 panel ρ (a–f) | −0.61, +0.70, −0.81, −0.45, +0.58, +0.07 | Figure S6 |
+| Climate robustness (expert vs ERA5) | max year-10 shift **0.69 pp**; Spearman ρ = 0.95 | Response letter |
+| Figure 1 net revenue at regional mean SOC | SSA **+0.31 %**, SA −5.36, LATAM −1.06, NA −1.68 | Figure 1b |
+| Figure 2b year-10 SOM-depletion share (global) | 0.32 of 3.18 pp | Figure 2b |
+| Figure S7 halved-elasticity net-revenue penalty | **1.5–6.2 pp** deeper across regions/SOC; SSA yield improves **2.31 pp** from 10 % to 200 % SOC | Figure S7 |
 | MC ensemble median year-1 loss (n = 1,000) | **2.51 %**; 5-95 % range 3.3 pp; buffer 0.88 ppt | Note 6, Figure S9 |
 | Figure S11 SOC spread (25 % vs 100 %) | **0.1-1.5 pp** at 100-150 % shock; 0.4-2.2 pp at 300 % | Figure S11 |
 | Realized S3 fertilizer reduction, yr 1-10 (N-weighted) | **20 %** | Results |
 | NUE lever: global year-10 loss, NUE 0.45 → 0.95 | **10.9 % → 1.2 %**; first 20 points of NUE deliver **59 %** of the reduction | Note 5, Figure S10 |
-| Regional food-price response (production-weighted, yr 1/10/30) | **+5.5 / +5.0 / +5.3 %**; regional yr-10 span 1.0 (LATAM) - 10.3 (FSU) | SI, Food-price impacts |
+| Regional output-price index (production-weighted, yr 1/10/30) | **+5.32 / +6.27 / +6.59 %**; regional yr-10 span 3.11 (EA) - 11.08 (FSU) | SI |
 | Zero-shock invariance | PASS (all regions yr-10 yield ratio ≥ 0.9998; minimum 0.99986, FSU) | Note on model consistency |
 | Constrained market clearing | PASS (max cap residual 0.00e+00) | Note on model consistency |
 
@@ -148,24 +152,11 @@ figures/       Figure_1_farm_buffering.png/.pdf,
 outputs/       regenerated tables (written by the scripts)
 ```
 
-**Known gap.** `figures/Figure_S5_flux_decomposition.png` is carried over from
-the earlier deposit and cannot be regenerated here: the microbially-explicit
-4-pool SOM scheme it visualizes is not part of this code deposit. That figure
-is illustrative of pool-level flux structure and no number in the manuscript
-or SI is derived from it. This gap predates the v1.3 corrections and is
-unaffected by them. With the addition of `make_figure_s7.py` in v1.4 it is now
-the only figure in the paper that cannot be regenerated end to end from this
-deposit.
-
-**Second known gap.** `data/crop_response_calibration_table.csv` (the source
-for Supplementary table 4) is carried over without a generator: the script that
-produced its `y_no_synth_sim_tha` column was not deposited and has not been
-recovered. Its `ymax_calibrated_tha` column was checked against the corrected
-canonical run and is unchanged to six figures, and re-running an equivalent
-no-synthetic-N simulation under the pre-fix and corrected models moves every
-region by ≤ 0.05 t ha⁻¹, so the table is unaffected by the v1.3 corrections.
-The missing generator is disclosed rather than reconstructed. This is a data
-gap, not a figure gap, and is separate from the Figure S5 case above.
+**Scope decision.** The earlier microbially explicit 4-pool comparison and
+Figure S5 are excluded from the revised evidentiary chain because their code
+was not deposited and their quantitative ratios could not be regenerated after
+the final corrections. Table S4 is now generated by
+`code/repro/make_table_s4_sol.py`.
 
 See `MANIFEST.md` for a per-file description and `CHANGELOG.md`
 (in the resubmission package) for the full correction history.

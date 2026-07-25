@@ -6,8 +6,9 @@ Produces a single-panel SI figure with:
 
   Panel a: per-region year-1 yield loss (%) at three SOC levels — boxplots
            summarising the joint posterior over 8 priors x 1000 draws.
-  Panel b: per-region year-1 gross-margin-over-fertilizer-cost change (%)
-           at SOC=100% — boxplots over the joint posterior.
+  Panel b: year-1 change in crop revenue net of nitrogen-fertilizer
+           expenditure (%) at SOC=100% for the four regions with audited
+           nitrogen and crop prices.
   Panel c: per-region soil-N buffer ratio (low-SOC yield loss minus high-SOC
            yield loss, ppt) — boxplots over the joint posterior.
 
@@ -51,6 +52,12 @@ LABELS = [r[1] for r in REGIONS_ORDERED]
 SOC_LEVELS = [50, 100, 150]
 SOC_COLORS = {50: '#c0392b', 100: '#7f8c8d', 150: '#2980b9'}
 SOC_LABELS = {50: 'Low SOC (50%)', 100: 'Mean SOC (100%)', 150: 'High SOC (150%)'}
+PRICED_REGIONS = [
+    ('north_america', 'N America'),
+    ('south_asia', 'S Asia'),
+    ('latin_america', 'L America'),
+    ('sub_saharan_africa', 'SSA'),
+]
 
 
 def boxprops(color):
@@ -100,13 +107,16 @@ def plot_panel_yield(ax, df):
 
 
 def plot_panel_profit(ax, df):
-    """Panel b: gross-margin boxplots at SOC=100%."""
+    """Panel b: net-revenue boxplots at SOC=100%, audited-price regions."""
     sub100 = df[df['soc_pct'] == 100]
-    data = [sub100[sub100['region'] == rn]['profit_chg'].values for rn in REGIONS]
+    priced_keys = [x[0] for x in PRICED_REGIONS]
+    priced_labels = [x[1] for x in PRICED_REGIONS]
+    data = [sub100[sub100['region'] == rn]['profit_chg'].dropna().values
+            for rn in priced_keys]
     color = '#34495e'
     bp = ax.boxplot(
         data,
-        positions=np.arange(len(REGIONS)),
+        positions=np.arange(len(priced_keys)),
         widths=0.55,
         patch_artist=True,
         whis=(5, 95),
@@ -114,10 +124,10 @@ def plot_panel_profit(ax, df):
         **boxprops(color),
     )
     ax.axhline(0, color='black', linewidth=0.8, linestyle='--', alpha=0.6)
-    ax.set_xticks(np.arange(len(REGIONS)))
-    ax.set_xticklabels(LABELS, rotation=0, fontsize=9)
-    ax.set_ylabel('Gross margin over fertilizer cost,\nyear-1 change (%)')
-    ax.set_title('b   Year-1 gross-margin-over-fertilizer-cost change at mean SOC',
+    ax.set_xticks(np.arange(len(priced_keys)))
+    ax.set_xticklabels(priced_labels, rotation=0, fontsize=9)
+    ax.set_ylabel('Net revenue after N expenditure,\nyear-1 change (%)')
+    ax.set_title('b   Year-1 net-revenue change at mean SOC (audited-price regions)',
                  loc='left', fontsize=11, fontweight='bold')
     ax.grid(axis='y', linestyle=':', alpha=0.4)
     ax.set_axisbelow(True)

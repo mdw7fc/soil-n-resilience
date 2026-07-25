@@ -38,7 +38,7 @@ Figure 1 / Sup Note 4 setup. Outputs:
   - Summary statistics (median + 5-95% CI per region)
   - Probability statements:
       * P(higher-SOC farm outperforms regional-mean farm on yield)
-      * P(higher-SOC farm outperforms regional-mean farm on gross margin)
+      * P(higher-SOC farm has higher crop revenue net of N expenditure)
       * P(SSA remains the highest-vulnerability region)
       * P(soil nitrogen buffer ratio > 1 ppt at every region)
       * P(global mean yield loss within published 1-4 ppt buffering range)
@@ -93,6 +93,7 @@ from soil_n_model import (
     get_default_regions, som_params_for_region,
 )
 from monthly_model_v3 import MonthlyNParams, MonthlyClimate, REGIONAL_CLIMATES
+from parameter_registry import REGIONAL_PRICES, nitrogen_price_in_yield_units
 
 
 def patch_era5() -> None:
@@ -132,19 +133,6 @@ SOC_LEVELS = [50, 100, 150]
 
 # Headline shock: 100% fertilizer-price spike (matches Figure 1)
 PRICE_SHOCK_FRAC_BASE = 1.0
-
-# Regional fertilizer cost as fraction of gross revenue
-# (identical to run_price_shock_analysis.py; FAO/IFDC regional cost shares)
-FERT_COST_FRAC = {
-    'north_america': 0.08,
-    'europe': 0.10,
-    'east_asia': 0.12,
-    'south_asia': 0.20,
-    'southeast_asia': 0.18,
-    'latin_america': 0.12,
-    'sub_saharan_africa': 0.25,
-    'fsu_central_asia': 0.15,
-}
 
 # Joint parameter priors
 PRIORS = {
@@ -292,9 +280,10 @@ def evaluate_one_draw(params: pd.Series,
         F_hat = eps_F_PF * PF_hat + eps_F_PY * PY_hat
         F_shocked = max(0.0, region.synth_n_current * np.exp(F_hat))
 
-        fcf = FERT_COST_FRAC.get(rn, 0.15)
-        pf_per_unit = (fcf * y_regional_baseline / region.synth_n_current
-                       if region.synth_n_current > 0 else 0.0)
+        # Expenditure outputs are limited to regions with audited price pairs.
+        # No cost shares are invented for the remaining regions.
+        pf_per_unit = (nitrogen_price_in_yield_units(rn)
+                       if rn in REGIONAL_PRICES else np.nan)
 
         for soc_pct in SOC_LEVELS:
             scale = soc_pct / 100.0
@@ -326,12 +315,15 @@ def evaluate_one_draw(params: pd.Series,
 
             yield_pen = (1 - y_shock / y_base) * 100 if y_base > 0 else 0.0
 
-            # Gross margin over fertilizer cost
-            profit_b = y_base - region.synth_n_current * pf_per_unit
-            profit_s = (y_shock * np.exp(PY_hat)
-                        - F_shocked * pf_per_unit * (1 + shock))
-            profit_chg = ((profit_s / profit_b - 1) * 100
-                          if abs(profit_b) > 1e-10 else 0.0)
+            # Change in revenue net of nitrogen-fertilizer expenditure.
+            if np.isfinite(pf_per_unit):
+                profit_b = y_base - region.synth_n_current * pf_per_unit
+                profit_s = (y_shock * np.exp(PY_hat)
+                            - F_shocked * pf_per_unit * (1 + shock))
+                profit_chg = ((profit_s / profit_b - 1) * 100
+                              if abs(profit_b) > 1e-10 else np.nan)
+            else:
+                profit_chg = np.nan
 
             rows.append(dict(
                 region=rn, soc_pct=soc_pct,
@@ -496,8 +488,8 @@ def summarize(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame, str]:
             value=p_yield, n=len(common),
         ))
 
-    # P2: Same for gross margin
-    for rn in ALL_REGIONS:
+    # P2: Same for revenue net of N expenditure (audited-price regions only)
+    for rn in REGIONAL_PRICES:
         s50 = df[(df['region'] == rn) & (df['soc_pct'] == 50)].set_index('draw')['profit_chg']
         s150 = df[(df['region'] == rn) & (df['soc_pct'] == 150)].set_index('draw')['profit_chg']
         common = s50.index.intersection(s150.index)
@@ -506,7 +498,7 @@ def summarize(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame, str]:
         diff = s150.loc[common] - s50.loc[common]
         p_margin = float((diff > 0).mean())
         prob_rows.append(dict(
-            statement=f'P(high-SOC gross margin > low-SOC gross margin | {rn})',
+            statement=f'P(high-SOC net-N-expenditure revenue > low-SOC | {rn})',
             value=p_margin, n=len(common),
         ))
 
@@ -520,13 +512,13 @@ def summarize(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame, str]:
             value=float(ssa_top), n=len(by_draw_region),
         ))
 
-    # P4: P(SSA worst gross margin at SOC=100%)
+    # P4: P(SSA worst net-N-expenditure revenue among audited-price regions)
     by_draw_region_p = (df[df['soc_pct'] == 100]
                         .pivot(index='draw', columns='region', values='profit_chg'))
     if 'sub_saharan_africa' in by_draw_region_p.columns:
         ssa_worst = (by_draw_region_p.idxmin(axis=1) == 'sub_saharan_africa').mean()
         prob_rows.append(dict(
-            statement='P(SSA = worst year-1 gross margin across all 8 regions, SOC=100%)',
+            statement='P(SSA = worst year-1 net-N-expenditure revenue across 4 priced regions, SOC=100%)',
             value=float(ssa_worst), n=len(by_draw_region_p),
         ))
 
@@ -591,9 +583,9 @@ def summarize(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame, str]:
             lines.append(f'{rn:<25} {soc_pct:>5d} {r["median"]:>8.2f}% '
                          f'{r["p5"]:>8.2f}% {r["p95"]:>8.2f}%')
     lines.append('')
-    lines.append('Per-region year-1 gross-margin-over-fert-cost change (%) at SOC=100%')
+    lines.append('Year-1 revenue-net-of-N-expenditure change (%) at SOC=100%')
     lines.append('-' * 70)
-    for rn in ALL_REGIONS:
+    for rn in REGIONAL_PRICES:
         r = summary[(summary['region'] == rn) & (summary['soc_pct'] == 100)
                     & (summary['metric'] == 'profit_chg')]
         if len(r) == 0:
