@@ -25,9 +25,17 @@ import numpy as np
 from dataclasses import dataclass
 from typing import List, Dict, Optional
 from scipy.optimize import brentq
-import sys, os, csv
+from pathlib import Path
+import sys, os, csv, json
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from soil_n_model import SOMPoolParams, CropParams, RegionParams, get_default_regions, som_params_for_region
+from parameter_registry import (
+    BASELINE_BNF_KG_N_HA_YR,
+    BNF_COMPONENTS,
+    RESIDUE_C_FRACTION,
+    WATER_STRESS_MIN_FACTOR,
+    WATER_STRESS_SOFTPLUS_EPS_MM,
+)
 
 
 # ============================================================================
@@ -93,7 +101,34 @@ FAOSTAT_TARGETS = {
 }
 
 
-def baseline_water_stress(region, water_stress_eps_mm: float = 3.0) -> float:
+def apply_era5_climate_file(path) -> None:
+    """Replace fallback climatologies with the canonical ERA5 JSON forcing.
+
+    The JSON file is the single authoritative climate input. Planting and
+    maturity months remain explicit crop-calendar assumptions in this module.
+    """
+    climate = json.loads(Path(path).read_text())
+    missing = set(REGIONAL_CLIMATES) - set(climate)
+    if missing:
+        raise KeyError(f"ERA5 climate file is missing regions: {sorted(missing)}")
+    for key, old in list(REGIONAL_CLIMATES.items()):
+        new = climate[key]
+        vectors = {
+            "temp": list(map(float, new["temp"])),
+            "precip": list(map(float, new["precip"])),
+            "pet": list(map(float, new["pet"])),
+        }
+        if any(len(v) != 12 for v in vectors.values()):
+            raise ValueError(f"{key}: ERA5 vectors must contain 12 months")
+        REGIONAL_CLIMATES[key] = MonthlyClimate(
+            old.name, vectors["temp"], vectors["precip"], vectors["pet"],
+            old.planting_month, old.maturity_month,
+        )
+
+
+def baseline_water_stress(
+    region, water_stress_eps_mm: float = WATER_STRESS_SOFTPLUS_EPS_MM
+) -> float:
     """Water-stress multiplier at the SOC baseline (delta_SOC = 0).
 
     This is exactly the value MonthlyBiophysicalEngine._water_stress returns
@@ -106,7 +141,7 @@ def baseline_water_stress(region, water_stress_eps_mm: float = 3.0) -> float:
     raw = region.baseline_water_deficit
     total_deficit = 0.5 * (raw + np.sqrt(raw * raw + water_stress_eps_mm ** 2))
     stress = 1.0 - region.water_stress_coeff * total_deficit
-    return max(0.3, min(1.0, stress))
+    return max(WATER_STRESS_MIN_FACTOR, min(1.0, stress))
 
 
 # ============================================================================
@@ -400,7 +435,14 @@ def century_dynamic_spinup(
     # Yield parameters
     mit_c = (region.mitscherlich_c_regional
              if region.mitscherlich_c_regional > 0 else crop.mitscherlich_c)
-    ym = yield_max_override if yield_max_override else region.yield_max_regional
+    ym = (
+        yield_max_override if yield_max_override is not None
+        else (
+            region.yield_max_regional
+            if region.yield_max_regional > 0
+            else crop.yield_max
+        )
+    )
     n_grain_t = crop.grain_n_fraction * 1000
     hi = crop.harvest_index
     rf = (1 - hi) / hi
@@ -435,8 +477,10 @@ def century_dynamic_spinup(
         y = max(region.yield_min_regional if region.yield_min_regional > 0 else 0.0, y)
 
         # Residue C
-        shoot_c = y * 1000 * 0.45 * rf * rr / 1000
-        root_c = y * 1000 * 0.45 * rf * region.root_shoot_c_ratio / 1000
+        shoot_c = y * crop.residue_c_fraction * rf * rr
+        root_c = (
+            y * crop.residue_c_fraction * rf * region.root_shoot_c_ratio
+        )
         c_in = (shoot_c + root_c) * region.cre_regional
 
         # Update SOM pools
@@ -520,7 +564,14 @@ def run_model(
     c_p = soc * (1 - som.f_active - som.f_slow)
 
     c_mits = crop.mitscherlich_c
-    ym = yield_max_override if yield_max_override else region.yield_max_regional
+    ym = (
+        yield_max_override if yield_max_override is not None
+        else (
+            region.yield_max_regional
+            if region.yield_max_regional > 0
+            else crop.yield_max
+        )
+    )
     n_grain_t = crop.grain_n_fraction * 1000
 
     res = {k: [] for k in ['year','soc','yield_tha','n_min','n_leach','n_den','n_uptake','n_immob']}
@@ -544,8 +595,10 @@ def run_model(
         # --- Annual SOM dynamics (reference-rate k values) ---
         hi = crop.harvest_index
         rf = (1 - hi) / hi
-        shoot_c = y * 1000 * 0.45 * rf * rr / 1000
-        root_c = y * 1000 * 0.45 * rf * region.root_shoot_c_ratio / 1000
+        shoot_c = y * crop.residue_c_fraction * rf * rr
+        root_c = (
+            y * crop.residue_c_fraction * rf * region.root_shoot_c_ratio
+        )
         c_in = (shoot_c + root_c) * region.cre_regional
 
         c_a, c_s, c_p = update_som_pools(c_a, c_s, c_p, c_in, som)
@@ -619,23 +672,8 @@ def calibrate_ym(region_key: str, target: float, p: MonthlyNParams = None) -> fl
 #   Preissel et al. 2015 (European grain legumes): 25-50 kg N/ha credit
 #   Hungria & Mendes 2015 (Brazil soybean-maize): 30-40 kg N/ha residual
 
-MANAGED_TRANSITION_PARAMS = {
-    # legume_frac: fraction of cropland in legumes in any given year
-    # net_n_credit: kg N/ha delivered to subsequent cereal (after grain export)
-    # legume_yield_cereal_equiv: legume yield in cereal-equivalent t/ha
-    #   (soy ~2.2 t/ha × 1.5 caloric adjustment ≈ 1.5 cereal-equiv;
-    #    pulses ~1.0-1.5 t/ha × 1.3 ≈ 1.3 cereal-equiv)
-    # free_living_bnf: non-symbiotic BNF (cyanobacteria, free-living fixers), kg/ha/yr
-    #   Applied to all cropland. Typically 3-8 kg/ha (Herridge et al. 2008)
-    'north_america':        {'legume_frac': 0.35, 'net_n_credit': 50, 'legume_yield_ceq': 1.8, 'free_living_bnf': 5},
-    'europe':               {'legume_frac': 0.25, 'net_n_credit': 40, 'legume_yield_ceq': 1.3, 'free_living_bnf': 5},
-    'east_asia':            {'legume_frac': 0.20, 'net_n_credit': 35, 'legume_yield_ceq': 1.2, 'free_living_bnf': 5},
-    'south_asia':           {'legume_frac': 0.30, 'net_n_credit': 40, 'legume_yield_ceq': 1.0, 'free_living_bnf': 5},
-    'southeast_asia':       {'legume_frac': 0.25, 'net_n_credit': 45, 'legume_yield_ceq': 1.2, 'free_living_bnf': 8},  # rice-paddy BNF adds to free-living
-    'latin_america':        {'legume_frac': 0.45, 'net_n_credit': 40, 'legume_yield_ceq': 1.5, 'free_living_bnf': 5},  # strong soy tradition
-    'sub_saharan_africa':   {'legume_frac': 0.25, 'net_n_credit': 30, 'legume_yield_ceq': 0.8, 'free_living_bnf': 5},  # P limitation constrains BNF
-    'fsu_central_asia':     {'legume_frac': 0.20, 'net_n_credit': 35, 'legume_yield_ceq': 1.0, 'free_living_bnf': 5},
-}
+# Backward-compatible alias. The primitives live only in parameter_registry.
+MANAGED_TRANSITION_PARAMS = BNF_COMPONENTS
 
 
 def get_regional_bnf(region_key: str) -> float:
@@ -647,12 +685,7 @@ def get_regional_bnf(region_key: str) -> float:
     Sources: Herridge et al. (2008) New Phytologist for symbiotic + free-living;
     regional legume fractions from FAOSTAT crop area shares.
     """
-    if region_key not in MANAGED_TRANSITION_PARAMS:
-        return 5.0  # fallback
-    mt = MANAGED_TRANSITION_PARAMS[region_key]
-    landscape_bnf = (mt['legume_frac'] * mt['net_n_credit']
-                     / (1 - mt['legume_frac']))
-    return landscape_bnf + mt['free_living_bnf']
+    return BASELINE_BNF_KG_N_HA_YR[region_key]
 
 
 # ============================================================================

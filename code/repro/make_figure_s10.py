@@ -76,22 +76,27 @@ REGION_COLORS = {
 # Run sweep
 # ─────────────────────────────────────────────────────────────────
 def run_sweep(regions, s3, nue_values, t_max=T_MAX):
-    """Run a coupled S3 simulation at each NUE value for every region.
+    """Run a conditional capture-efficiency intervention at fixed crop ceiling.
 
-    Recalibrates yield_max for each NUE setting (max_uptake_frac is
-    a calibration parameter, so ym depends on it).
+    The regional yield ceiling is calibrated once at the central capture
+    efficiency (0.75) and then held fixed. Recalibrating the ceiling at every
+    capture value would redefine crop potential and largely cancel the
+    intervention being tested.
     """
     trajectories = {nue: {} for nue in nue_values}
+    central_mp = MonthlyNParams(max_uptake_frac=NUE_DEFAULT)
+    clear_ym_cache()
+    calibrated_ym = {
+        rn: get_calibrated_ym(rn, central_mp) for rn in regions
+    }
     for nue in nue_values:
         mp = MonthlyNParams(max_uptake_frac=nue)
-        clear_ym_cache()
         for rn, r in regions.items():
-            ym = get_calibrated_ym(rn, mp)
             model = CoupledMonthlyModel(
                 r, s3, region_key=rn,
-                t_max=t_max, yield_max_override=ym,
+                t_max=t_max, yield_max_override=calibrated_ym[rn],
+                monthly_params=mp,
             )
-            model.bio.mp = mp
             trajectories[nue][rn] = model.run()
     clear_ym_cache()
     return trajectories

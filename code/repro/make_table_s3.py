@@ -27,5 +27,5 @@ for name,x in desc.items():
 os.makedirs(os.path.join(HERE,'..','..','outputs'),exist_ok=True)
 import csv
 with open(os.path.join(HERE,'..','..','outputs','table_S3_correlations.csv'),'w',newline='') as f:
-    w=csv.writer(f); w.writerow(['descriptor','rho_yr1','rho_yr10']); [w.writerow(r) for r in out]
+    w=csv.writer(f, lineterminator='\n'); w.writerow(['descriptor','rho_yr1','rho_yr10']); [w.writerow(r) for r in out]
 print('\nAll descriptors including the region-specific land-response coefficient are reproduced.')

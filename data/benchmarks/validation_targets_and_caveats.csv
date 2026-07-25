@@ -1,0 +1,9 @@
+metric,observed_value,observed_unit,observed_depth_cm,model_value_century_v3,model_value_mems_v1,model_depth_cm,assessment,source_short
+Broadbalk unfert yield (180yr),~1.0,t/ha grain,n/a,1.06,1.00,n/a,Both models match well,Rothamsted handout 2024
+Broadbalk unfert SOC (180yr mean 2000-2015),24.5,t C/ha,0-23,26.2,22.3,0-30,"Century v3 slightly over; MEMS v1 slightly under; both bracket observed. Note 0-23 vs 0-30cm depth mismatch.",e-RA dataset 02-BKSOC1843 v2
+Broadbalk unfert SOC range (1966-2015),21.6-25.9,t C/ha,0-23,26.2,22.3,0-30,"Observed range is wide (analytical + temporal variation). Both models fall within or near this range.",e-RA dataset 02-BKSOC1843 v2
+Broadbalk initial SOC,28.8,t C/ha,0-23,42.0 (model uses Europe regional),42.0,0-30,"Model starts at Europe SOC=42 (0-30cm); Broadbalk actual initial was 28.8 (0-23cm). Not same initial conditions.",Poulton et al. 2018 / e-RA
+Broadbalk SOC loss pct (172yr),~15,% of initial,0-23,37.6,46.9,0-30,"Observed: 28.8→24.5 = 15% loss. Models show larger % loss but start from higher SOC (42 vs 28.8). Different initial conditions.",e-RA data + Poulton 2018
+Morrow unfert yield (pre-modern 1888-1967),1.79,t/ha grain,n/a,n/a,1.10,n/a,"Model underestimates; hits yield_min floor at 1.10. N mineralization too low at model's predicted steady-state SOC.",Morrow dataset v02 (Illinois Data Bank)
+Morrow unfert yield (modern 1968-2021),2.92,t/ha grain,n/a,n/a,1.10,n/a,"Model underestimates by ~2.6x. Structural limitation: no climate-adjusted decomposition; no modern cultivar effects.",Morrow dataset v02 (Illinois Data Bank)
+Morrow unfert SOM (recent unfert CC),3.2,% SOM (≈1.86% C),0-15,n/a,n/a,0-30,"Different depth. At BD≈1.3 and 15cm: ~36 t C/ha (0-15cm). Not directly comparable to model 0-30cm prediction.",AgriNews 2020 / Nafziger

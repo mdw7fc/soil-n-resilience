@@ -51,6 +51,12 @@ from coupled_econ_biophysical import (
     EconParams, REGIONAL_ECON_PARAMS,
     calibrate_price_shock, get_scenario_params, get_supply_constrained_scenarios,
 )
+from parameter_registry import (
+    SOC_T_C_HA_PER_PERCENT_30CM,
+    WATER_STRESS_GAIN_SAT_SOC_PCT,
+    WATER_STRESS_MIN_FACTOR,
+    WATER_STRESS_SOFTPLUS_EPS_MM,
+)
 
 
 # ============================================================
@@ -166,8 +172,8 @@ class MonthlyBiophysicalEngine:
         soc_current = self.C_active + self.C_slow + self.C_passive
         # 1 percentage point SOC in 0-30 cm at bulk density 1.3 g cm-3
         # corresponds to 39 t C ha-1.
-        soc_pct = soc_current / 39.0
-        soc_pct_init = self.soc_initial / 39.0
+        soc_pct = soc_current / SOC_T_C_HA_PER_PERCENT_30CM
+        soc_pct_init = self.soc_initial / SOC_T_C_HA_PER_PERCENT_30CM
         delta = soc_pct_init - soc_pct  # >0 when degraded, <0 when accumulated
         whc_sens = self.region.whc_sensitivity * self.fb.physical_strength
 
@@ -177,7 +183,7 @@ class MonthlyBiophysicalEngine:
         # 1% SOC above baseline captures most of the achievable WHC
         # benefit. (Minasny & McBratney 2018 Fig. 4 — slope flattens as
         # SOC approaches site-specific maxima ~3-5%.)
-        whc_gain_sat_pct = 1.0
+        whc_gain_sat_pct = WATER_STRESS_GAIN_SAT_SOC_PCT
         if delta >= 0.0:
             whc_change_mm = delta * whc_sens
         else:
@@ -197,10 +203,10 @@ class MonthlyBiophysicalEngine:
         # deficits (≥10 mm) are perturbed by <5%, so degraded-soil
         # behaviour is essentially unchanged.
         raw = self.region.baseline_water_deficit + whc_change_mm
-        eps_mm = 3.0
+        eps_mm = WATER_STRESS_SOFTPLUS_EPS_MM
         total_deficit = 0.5 * (raw + np.sqrt(raw * raw + eps_mm * eps_mm))
         stress = 1.0 - self.region.water_stress_coeff * total_deficit
-        return max(0.3, min(1.0, stress))
+        return max(WATER_STRESS_MIN_FACTOR, min(1.0, stress))
 
     def step(self, fert_applied: float, bnf: float = None) -> Dict:
         """Advance one year with externally determined fertilizer.
@@ -242,8 +248,11 @@ class MonthlyBiophysicalEngine:
         hi = self.crop.harvest_index
         rf = (1 - hi) / hi
         rr = self.region.residue_retention
-        shoot_c = y * 1000 * 0.45 * rf * rr / 1000  # t C/ha
-        root_c = y * 1000 * 0.45 * rf * self.region.root_shoot_c_ratio / 1000
+        shoot_c = y * self.crop.residue_c_fraction * rf * rr
+        root_c = (
+            y * self.crop.residue_c_fraction * rf
+            * self.region.root_shoot_c_ratio
+        )
         res_c = (shoot_c + root_c) * self.region.cre_regional
 
         # Annual SOM pool update
@@ -324,6 +333,10 @@ class CoupledMonthlyModel:
         dt: float = 1.0,
         yield_max_override: float = None,
         initial_pools: dict = None,
+        som_params: SOMPoolParams = None,
+        crop_params: CropParams = None,
+        feedback_params: FeedbackParams = None,
+        monthly_params: MonthlyNParams = None,
     ):
         self.region = region
         self.econ = econ
@@ -358,6 +371,10 @@ class CoupledMonthlyModel:
         # Initialize biophysical engine
         self.bio = MonthlyBiophysicalEngine(
             region, region_key=region_key,
+            som_params=som_params,
+            crop_params=crop_params,
+            feedback_params=feedback_params,
+            monthly_params=monthly_params,
             yield_max_override=yield_max_override,
             initial_pools=initial_pools,
         )

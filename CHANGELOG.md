@@ -1,5 +1,67 @@
 # CHANGELOG — ERFS-100341
 
+## v14 SOL / deposit v1.5 — complete parameter, robustness and evidence audit
+
+This release supersedes all numerical summaries below. It executes the
+pre-specified audit in `EVIDENTIARY_STANDARD_sol.md` and records every retained,
+qualified and excluded result in `CLAIM_REGISTER_sol.csv`.
+
+### Parameter centralization
+
+- Added `parameter_registry.py` as the only source for the 0–30 cm SOC
+  conversion, residue C fraction, water-stress constants, regional price pairs,
+  BNF primitives and the central/sensitivity values of εF,N and WHC.
+- Regional BNF is now derived once from legume share, net credit and free-living
+  fixation. The resulting values are 31.9, 18.3, 13.8, 22.1, 23.0, 37.7,
+  15.0 and 13.8 kg N ha⁻¹ yr⁻¹ (NA through FSU).
+- Disabled the duplicate static regional `yield_max_regional` values. The
+  runtime Brent calibration is the only reported ceiling.
+- ERA5 JSON is the only central climate forcing. Price-dependent quantities and
+  fertilizer shares are derived, not separately hardcoded.
+- Added the 577-entry semantic parameter ledger and 2,087-line numeric-literal
+  audit, covering the coupled model, reproduction scripts and spatial screen.
+
+### Corrected derived diagnostics
+
+- The soil-N buffer ratio now uses gross N supply and the single regional BNF
+  definition: **43.2, 33.6, 19.3, 31.4, 49.6, 54.0, 45.0, 44.8%**.
+- Its year-10 association is **Spearman ρ = +0.19; Pearson R² = 0.06**; year 1
+  is **ρ = +0.40; R² = 0.11**.
+- Core S3, SC1 and SC2 yield trajectories are unchanged by this diagnostic
+  correction.
+
+### N-capture sensitivity correction
+
+The prior Figure S10 script altered monthly parameters after model
+initialization and recalibrated crop potential across the intervention sweep.
+The corrected design initializes the model with each capture setting and holds
+each region’s `y_max` fixed at the central 0.75-capture calibration. Global
+year-10 loss is **4.13% at capture 0.45 and 2.90% at 0.95**; SSA changes from
+**5.55% to 5.13% (8%)** between 0.45 and 0.65. The old 57% statement is
+excluded.
+
+### Tests and evidentiary decisions
+
+- Dimensional, calibration-boundary, duplicate/price-consistency, zero-shock,
+  full-path baseline, constrained-clearing and finite/domain tests pass.
+- The year-1 SOC-buffering direction passes every one-at-a-time prior bound and
+  all 1,000 joint-prior draws, exceeding the 95% robustness threshold.
+- The central year-10 gradient is monotone in all eight regions and remains so
+  at εF,N = −0.25. It reverses in SSA at the unsupported εF,N values −0.50 and
+  −1.00 for every tested WHC value. The documents now state central long-run
+  monotonicity without claiming robustness across that unsupported grid.
+- Broadbalk, the 2022 hindcast and OFRA are retained as contextual benchmarks,
+  not validation of the full coupled model.
+
+### Reproducibility additions
+
+- Added the complete Figure 3 country-screen pipeline, including raw inputs,
+  processed tables, threshold audit and final render.
+- Added deposited generators and source extractions for the Broadbalk and 2022
+  demand benchmarks.
+- Table S4, OFRA overlay, parameter ledger, claim register and all retained
+  numeric outputs now have named regeneration paths.
+
 ## v14 / deposit v1.4 — Figure S7 regenerated and its generator deposited
 
 The v1.3 pass recovered the generators for main-text figures 1 and 2, the Monte

@@ -32,7 +32,6 @@ Author: Matthew Wallenstein & Dale Manning
 """
 
 import numpy as np
-from parameter_registry import SOIL_N_RESPONSE_ELASTICITY_CENTRAL
 import pandas as pd
 from dataclasses import dataclass, field
 from typing import Dict, List, Tuple, Optional
@@ -41,6 +40,10 @@ from typing import Dict, List, Tuple, Optional
 from soil_n_model import (
     SOMPoolParams, CropParams, RegionParams, FeedbackParams,
     get_default_regions,
+)
+from parameter_registry import (
+    SOC_T_C_HA_PER_PERCENT_30CM,
+    SOIL_N_RESPONSE_ELASTICITY_CENTRAL,
 )
 
 
@@ -231,20 +234,25 @@ class BiophysicalSOMEngine:
 
         # Compute baseline yield (with full synthetic N, including immobilization)
         n_min_0 = self._total_n_mineralization()
-        n_avail_0 = (n_min_0 + region.synth_n_current + 5.0)
+        n_avail_0 = (
+            n_min_0 + region.synth_n_current + region.bnf_potential
+        )
         # Iterate to converge immobilization at baseline
         for _ in range(3):
             y_0 = self._mitscherlich(n_avail_0 * self.n_eff)
             res_c_0 = self._residue_c_input(y_0)
             n_immob_0 = self._n_immobilization(res_c_0)
-            n_avail_0 = (n_min_0 - n_immob_0) + region.synth_n_current + 5.0
+            n_avail_0 = (
+                (n_min_0 - n_immob_0) + region.synth_n_current
+                + region.bnf_potential
+            )
         self.yield_baseline = self._mitscherlich(n_avail_0 * self.n_eff)
 
         # Compute baseline N_mineralized for reference
         self.n_min_baseline = n_min_0
 
     def _soc_to_percent(self, soc_tha: float) -> float:
-        return soc_tha / 39.0
+        return soc_tha / SOC_T_C_HA_PER_PERCENT_30CM
 
     def _total_n_mineralization(self) -> float:
         """Total N mineralized from all 3 pools (kg N/ha/yr)."""
@@ -317,18 +325,22 @@ class BiophysicalSOMEngine:
 
         return max(0.0, n_demand - n_supply)
 
-    def step(self, fert_applied: float, bnf: float = 5.0, dt: float = 1.0):
+    def step(self, fert_applied: float, bnf: float = None, dt: float = 1.0):
         """Advance one timestep with externally determined fertilizer.
 
         Args:
             fert_applied: kg N/ha/yr of synthetic fertilizer actually applied
-            bnf: biological N fixation (kg N/ha/yr), default 5 (free-living)
+            bnf: biological N fixation (kg N/ha/yr); defaults to the
+                region's derived baseline landscape BNF
             dt: timestep in years
 
         Returns:
             dict with: yield_tha, n_mineralized, n_available, soc_total,
                        soc_fraction, water_stress, beta, gamma, n_immobilized
         """
+        if bnf is None:
+            bnf = self.region.bnf_potential
+
         # N mineralization
         n_min = self._total_n_mineralization()
 
@@ -736,17 +748,23 @@ class CoupledEconBiophysicalModel:
         # Query the biophysical engine for beta/gamma at the baseline operating point.
         _init_n_min = self.bio._total_n_mineralization()
         _init_ws = self.bio._water_stress()
-        _init_n_avail = (_init_n_min + self.F_baseline + 5.0) * self.bio.n_eff
+        _init_n_avail = (
+            _init_n_min + self.F_baseline + self.region.bnf_potential
+        ) * self.bio.n_eff
         # Iterate immobilization at baseline
         _init_n_immob = 0.0
         for _ in range(3):
             _init_n_net = _init_n_min - _init_n_immob
-            _init_n_avail = (_init_n_net + self.F_baseline + 5.0) * self.bio.n_eff
+            _init_n_avail = (
+                _init_n_net + self.F_baseline + self.region.bnf_potential
+            ) * self.bio.n_eff
             _init_y = self.bio._mitscherlich(_init_n_avail, _init_ws)
             _init_res_c = self.bio._residue_c_input(_init_y)
             _init_n_immob = self.bio._n_immobilization(_init_res_c)
         _init_n_net = _init_n_min - _init_n_immob
-        _init_n_avail = (_init_n_net + self.F_baseline + 5.0) * self.bio.n_eff
+        _init_n_avail = (
+            _init_n_net + self.F_baseline + self.region.bnf_potential
+        ) * self.bio.n_eff
         eps = 1e-10
         exp_term = np.exp(-self.bio.mit_c * max(_init_n_avail, eps))
         denom_mit = max(1.0 - exp_term, eps)

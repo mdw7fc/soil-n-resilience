@@ -20,7 +20,9 @@ warnings.filterwarnings("ignore")
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, '..', 'model'))
 import numpy as np
-from monthly_model_v3 import MonthlyClimate, MonthlyNParams, REGIONAL_CLIMATES, FAOSTAT_TARGETS
+from monthly_model_v3 import (
+    FAOSTAT_TARGETS, MonthlyNParams, apply_era5_climate_file,
+)
 from coupled_monthly import CoupledMonthlyModel, get_calibrated_ym
 from coupled_econ_biophysical import get_scenario_params
 from soil_n_model import get_default_regions
@@ -34,12 +36,7 @@ TOL_YR30 = 0.010   # 1.0 % maximum permitted year-30 drift
 
 
 def patch_era5():
-    clim = json.load(open(os.path.join(DATA, 'era5_regional_climates.json')))
-    for k, c in list(REGIONAL_CLIMATES.items()):
-        n = clim[k]
-        REGIONAL_CLIMATES[k] = MonthlyClimate(
-            c.name, list(map(float, n['temp'])), list(map(float, n['precip'])),
-            list(map(float, n['pet'])), c.planting_month, c.maturity_month)
+    apply_era5_climate_file(os.path.join(DATA, 'era5_regional_climates.json'))
 
 
 def zero_shock_econ():
@@ -81,7 +78,12 @@ def main():
                          yr2_yield_tha=round(float(df[df['year'] == 2]['yield_tha'].iloc[0]), 3),
                          faostat_target_tha=FAOSTAT_TARGETS[rk]))
     area = np.array([regions[k].cropland_mha for k in RO])
-    yb = np.array([regions[k].yield_max_regional for k in RO])
+    yb = np.array([float(
+        CoupledMonthlyModel(
+            regions[k], econ, region_key=k, t_max=0,
+            yield_max_override=get_calibrated_ym(k, mp),
+        ).run().iloc[0]["yield_tha"]
+    ) for k in RO])
     W = area * yb
     W /= W.sum()
     g10 = float(((1 - np.array([r['yr10_yield_fraction'] for r in rows])) * W).sum() * 100)

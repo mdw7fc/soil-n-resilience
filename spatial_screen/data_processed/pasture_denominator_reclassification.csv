@@ -1,0 +1,25 @@
+iso3,fao_name,region,cropland_Mha,pastures_ha_lu,agland_ha_lu,n_use_t,n_intensity_raw,n_intensity_alt,import_reliance,exposure_class_base,exposure_class_alt,panel_c_base,panel_c_alt
+USA,United States of America,Northern America,158.15573,266806242.29999998,424961972.29999995,11859149.666666666,74.98400258192774,27.906378546019063,0.1368989519633473,moderate,low,intermediate,high_buffer_low_exposure
+CHN,China; mainland,East & Southeast Asia,128.0813333333333,392833000.0,520914333.3333333,26873688.0,209.8173660486566,51.589457767527996,0.0,high,moderate,low_buffer_high_exposure,intermediate
+BRA,Brazil,Latin America & Caribbean,63.47,173360800.0,236830800.0,5138850.0,80.9650228454388,21.698402403741404,0.9234322655009096,high,moderate,low_buffer_high_exposure,intermediate
+CAN,Canada,Northern America,38.692,18872800.0,57564800.0,2794000.0,72.21130983148971,48.53660570348546,0.0,moderate,low,intermediate,high_buffer_low_exposure
+AUS,Australia,Oceania,31.074,327975000.0,359049000.0,1518114.0,48.85479822359529,4.228152703391459,0.7796030431509823,high,moderate,low_buffer_high_exposure,intermediate
+SDN,Sudan,Sub-Saharan Africa,21.211,,,163547.0,7.710480411107444,,1.0,moderate,data_missing,intermediate,data_missing
+ZAF,South Africa,Sub-Saharan Africa,12.413,83928000.0,96341000.0,543844.3333333334,43.81248153817235,5.644993651024313,0.7250438057438287,high,moderate,low_buffer_high_exposure,intermediate
+PER,Peru,Latin America & Caribbean,5.924622833333333,18221666.666666668,24146289.5,295940.6666666667,49.95097156254983,12.256154995021769,1.0,high,moderate,high_buffer_high_exposure,intermediate
+COL,Colombia,Latin America & Caribbean,4.590222233333334,39613759.333333336,44203981.56666667,493468.0,107.5041631789694,11.163428779730427,0.8142399506329496,high,moderate,high_buffer_high_exposure,intermediate
+UZB,Uzbekistan,Central Asia,4.4311,21154933.333333332,25586033.333333332,767816.0,173.2788698065943,30.009184698422708,0.0,high,low,low_buffer_high_exposure,low_buffer_low_exposure
+PRY,Paraguay,Latin America & Caribbean,4.4125203,16339636.366666667,20752156.666666668,132455.0,30.0179922118432,6.382710102259251,1.0,high,moderate,low_buffer_high_exposure,intermediate
+ZMB,Zambia,Sub-Saharan Africa,3.839,20000000.0,23839000.0,169123.0,44.05392029174264,7.094383153655774,1.0,high,moderate,low_buffer_high_exposure,intermediate
+SAU,Saudi Arabia,North Africa & West Asia,3.6199492333333327,170000000.0,173619949.23333332,207130.3333333333,57.2191265628891,1.193009986743887,0.0,moderate,low,intermediate,low_buffer_low_exposure
+MDA,Republic of Moldova,Europe,1.9892333333333327,339666.6666666667,2328900.0,55382.333333333336,27.84104428841933,23.78046860463452,1.0,high,moderate,high_buffer_high_exposure,intermediate
+CHL,Chile,Latin America & Caribbean,1.9441547,9530688.666666666,11474843.366666665,245406.66666666663,126.22795226463543,21.386493813026657,0.8175187530092974,high,moderate,high_buffer_high_exposure,intermediate
+NIC,Nicaragua,Latin America & Caribbean,1.799,3287333.3333333335,5086333.333333334,56478.0,31.394107837687603,11.103873124057932,1.0,high,moderate,high_buffer_high_exposure,intermediate
+TKM,Turkmenistan,Central Asia,1.653806066666667,37746585.6,39400391.66666667,420442.3333333333,254.2271078862088,10.671019133270036,0.0,high,low,low_buffer_high_exposure,low_buffer_low_exposure
+BEL,Belgium,Europe,0.8811496,477194.39999999997,1358344.0,151867.33333333334,172.3513616000431,111.80329381462526,0.0,high,moderate,high_buffer_high_exposure,intermediate
+ARM,Armenia,North Africa & West Asia,0.5045666666666667,1172200.0,1676766.6666666667,26860.666666666668,53.23511924423598,16.019322903206568,1.0,high,moderate,high_buffer_high_exposure,intermediate
+GEO,Georgia,North Africa & West Asia,0.4349,1940000.0,2374900.0,23979.666666666668,55.13834597991876,10.097126896571083,0.0,moderate,low,intermediate,high_buffer_low_exposure
+JOR,Jordan,North Africa & West Asia,0.2871,742000.0,1029100.0,18219.0,63.45872518286311,17.703818870858033,0.0,moderate,low,intermediate,low_buffer_low_exposure
+BWA,Botswana,Sub-Saharan Africa,0.2618666666666666,25600000.0,25861866.666666668,12094.333333333334,46.18508146639512,0.467651213627271,1.0,high,moderate,low_buffer_high_exposure,intermediate
+SWZ,Eswatini,Sub-Saharan Africa,0.195,1002666.6666666666,1197666.6666666665,7305.333333333333,37.463247863247865,6.099638185360424,1.0,high,moderate,low_buffer_high_exposure,intermediate
+JAM,Jamaica,Latin America & Caribbean,0.188,229000.0,417000.0,4953.333333333333,26.347517730496453,11.878497202238208,1.0,high,moderate,high_buffer_high_exposure,intermediate

@@ -92,7 +92,7 @@ from soil_n_model import (
     SOMPoolParams, CropParams, RegionParams, FeedbackParams,
     get_default_regions, som_params_for_region,
 )
-from monthly_model_v3 import MonthlyNParams, MonthlyClimate, REGIONAL_CLIMATES
+from monthly_model_v3 import MonthlyNParams, apply_era5_climate_file
 from parameter_registry import REGIONAL_PRICES, nitrogen_price_in_yield_units
 
 
@@ -104,15 +104,7 @@ def patch_era5() -> None:
     ERA5 forcing. This port patches ERA5 in so the ensemble is consistent with
     the canonical run. Called at import so that spawned workers inherit it.
     """
-    with open(DEPOSIT_DATA / 'era5_regional_climates.json') as f:
-        clim = json.load(f)
-    for k, c in list(REGIONAL_CLIMATES.items()):
-        if k not in clim:
-            continue
-        n = clim[k]
-        REGIONAL_CLIMATES[k] = MonthlyClimate(
-            c.name, list(map(float, n['temp'])), list(map(float, n['precip'])),
-            list(map(float, n['pet'])), c.planting_month, c.maturity_month)
+    apply_era5_climate_file(DEPOSIT_DATA / 'era5_regional_climates.json')
 
 
 patch_era5()

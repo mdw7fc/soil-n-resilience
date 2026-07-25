@@ -6,15 +6,13 @@ import os, sys, json, csv, warnings
 warnings.filterwarnings("ignore")
 HERE=os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(HERE,'..','model'))
 import numpy as np
-from monthly_model_v3 import MonthlyClimate, MonthlyNParams, REGIONAL_CLIMATES
+from monthly_model_v3 import MonthlyNParams, apply_era5_climate_file
 from coupled_monthly import CoupledMonthlyModel, get_calibrated_ym
 from coupled_econ_biophysical import get_scenario_params, calibrate_price_shock, get_supply_constrained_scenarios
 from soil_n_model import get_default_regions
 DATA=os.path.join(HERE,'..','..','data')
 RO=['north_america','europe','east_asia','south_asia','southeast_asia','latin_america','sub_saharan_africa','fsu_central_asia']
-clim=json.load(open(os.path.join(DATA,'era5_regional_climates.json')))
-for k,c in list(REGIONAL_CLIMATES.items()):
-    n=clim[k]; REGIONAL_CLIMATES[k]=MonthlyClimate(c.name,list(map(float,n['temp'])),list(map(float,n['precip'])),list(map(float,n['pet'])),c.planting_month,c.maturity_month)
+apply_era5_climate_file(os.path.join(DATA,'era5_regional_climates.json'))
 reg=get_default_regions(); mp=MonthlyNParams()
 area=np.array([reg[k].cropland_mha for k in RO])
 def traj(econ):

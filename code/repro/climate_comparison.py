@@ -6,7 +6,7 @@ import os, sys, json, csv, warnings
 warnings.filterwarnings("ignore")
 HERE=os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(HERE,'..','model'))
 import numpy as np
-from monthly_model_v3 import MonthlyClimate, MonthlyNParams, REGIONAL_CLIMATES
+from monthly_model_v3 import MonthlyNParams, apply_era5_climate_file
 from coupled_monthly import CoupledMonthlyModel, get_calibrated_ym
 from coupled_econ_biophysical import get_scenario_params, calibrate_price_shock
 from soil_n_model import get_default_regions
@@ -23,9 +23,8 @@ def run(t_max=10.0):
         out[rk]=dict(ybase=float(df[df['year']==0]['yield_tha'].iloc[0]),l1=float(f(1)),l10=float(f(10)))
     return out
 old=run()                                   # expert representative profiles
-clim=json.load(open(os.path.join(HERE,'..','..','data','era5_regional_climates.json')))
-for k,c in list(REGIONAL_CLIMATES.items()):
-    n=clim[k]; REGIONAL_CLIMATES[k]=MonthlyClimate(c.name,list(map(float,n['temp'])),list(map(float,n['precip'])),list(map(float,n['pet'])),c.planting_month,c.maturity_month)
+apply_era5_climate_file(os.path.join(
+    HERE,'..','..','data','era5_regional_climates.json'))
 new=run()                                   # ERA5 data-based
 d10=[new[k]['l10']-old[k]['l10'] for k in RO]
 os.makedirs(os.path.join(HERE,'..','..','outputs'),exist_ok=True)

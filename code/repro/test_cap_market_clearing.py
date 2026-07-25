@@ -22,7 +22,7 @@ warnings.filterwarnings("ignore")
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, '..', 'model'))
 import numpy as np
-from monthly_model_v3 import MonthlyClimate, MonthlyNParams, REGIONAL_CLIMATES
+from monthly_model_v3 import MonthlyNParams, apply_era5_climate_file
 from coupled_monthly import CoupledMonthlyModel, get_calibrated_ym
 from coupled_econ_biophysical import get_supply_constrained_scenarios
 from soil_n_model import get_default_regions
@@ -34,12 +34,7 @@ TOL = 1e-6
 
 
 def patch_era5():
-    clim = json.load(open(os.path.join(DATA, 'era5_regional_climates.json')))
-    for k, c in list(REGIONAL_CLIMATES.items()):
-        n = clim[k]
-        REGIONAL_CLIMATES[k] = MonthlyClimate(
-            c.name, list(map(float, n['temp'])), list(map(float, n['precip'])),
-            list(map(float, n['pet'])), c.planting_month, c.maturity_month)
+    apply_era5_climate_file(os.path.join(DATA, 'era5_regional_climates.json'))
 
 
 def main():

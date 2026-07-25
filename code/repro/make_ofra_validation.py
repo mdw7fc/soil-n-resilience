@@ -12,8 +12,11 @@ N=np.linspace(0,120,61)
 Y=np.array([float(r['A_control'])+float(r['B_gain'])*(1-float(r['C_base'])**N) for r in funcs])
 med=np.median(Y,0); p25=np.percentile(Y,25,0); p75=np.percentile(Y,75,0)
 p10=np.percentile(Y,10,0); p90=np.percentile(Y,90,0)
-YMAX=3.876      # canonical SSA calibrated ceiling
-CTRL=1.26       # canonical SSA no-synthetic-N emergent yield (simulated, yr2)
+calibration={r['region']:r for r in csv.DictReader(open(os.path.join(
+    HERE,'..','..','outputs','Table_S4_calibration_sol.csv')))}
+ssa=calibration['sub_saharan_africa']
+YMAX=float(ssa['calibrated_y_max_t_ha'])
+CTRL=float(ssa['simulated_year2_no_synth_n_t_ha'])
 plt.rcParams.update({'font.family':'sans-serif','font.sans-serif':['DejaVu Sans'],'font.size':12})
 fig,ax=plt.subplots(figsize=(11,6.8))
 ax.fill_between(N,p10,p90,color='#4C6EA0',alpha=0.15,label=f'OFRA maize-N 10–90th pct (n={len(funcs)})')
@@ -30,4 +33,5 @@ ax.text(0.99,0.02,'Model ceiling sits below the OFRA median but within the inter
 plt.tight_layout()
 fig.savefig(os.path.join(HERE,'..','..','figures','Figure_S13_OFRA_SSA_validation.png'),dpi=200,bbox_inches='tight',facecolor='white')
 print('n=%d  median[0]=%.2f median[-1]=%.2f  IQR[-1]=[%.2f,%.2f]'%(len(funcs),med[0],med[-1],p25[-1],p75[-1]))
-print('ceiling 3.876 vs median[-1] %.2f (below median) ; within IQR [%.2f,%.2f]: %s'%(med[-1],p25[-1],p75[-1], p25[-1]<=3.876<=p75[-1]))
+print('ceiling %.3f vs median[-1] %.2f (below median) ; within IQR [%.2f,%.2f]: %s'
+      %(YMAX,med[-1],p25[-1],p75[-1],p25[-1]<=YMAX<=p75[-1]))

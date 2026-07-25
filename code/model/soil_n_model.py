@@ -18,7 +18,15 @@ import pandas as pd
 from dataclasses import dataclass, field
 from typing import Dict, List, Tuple, Optional
 import json
-from parameter_registry import WHC_MM_PER_SOC_PCT_30CM
+from parameter_registry import (
+    BASELINE_BNF_KG_N_HA_YR,
+    RESIDUE_C_FRACTION,
+    SOC_T_C_HA_PER_PERCENT_30CM,
+    WATER_STRESS_GAIN_SAT_SOC_PCT,
+    WATER_STRESS_MIN_FACTOR,
+    WATER_STRESS_SOFTPLUS_EPS_MM,
+    WHC_MM_PER_SOC_PCT_30CM,
+)
 
 
 # ============================================================
@@ -142,7 +150,7 @@ class CropParams:
     residue_grain_ratio: float = 1.0
 
     # Carbon content of residue (fraction)
-    residue_c_fraction: float = 0.42
+    residue_c_fraction: float = RESIDUE_C_FRACTION
 
     # C:N ratio of crop residues
     # Wheat straw: 80-100, rice straw: 60-80, corn stover: 50-70.
@@ -191,7 +199,8 @@ class RegionParams:
     # 0 = sand, 1 = loam, 2 = clay
     texture_class: int = 1
 
-    # Water holding capacity sensitivity to SOC (mm per % SOC in top 20 cm)
+    # Water holding capacity sensitivity to SOC (mm per SOC percentage point
+    # in the modeled 0-30 cm layer)
     whc_sensitivity: float = WHC_MM_PER_SOC_PCT_30CM
 
     # Yield penalty per mm of water deficit (fraction per mm)
@@ -207,8 +216,9 @@ class RegionParams:
     # that was previously missing from the model.
     atm_n_deposition: float = 8.0
 
-    # BNF potential under managed transition (kg N/ha/yr NET available to crops,
-    # averaged across all cropland, not per hectare of legume).
+    # Baseline landscape BNF (kg N/ha/yr NET available to crops, expressed per
+    # cereal hectare). Values are derived from the single BNF component ledger
+    # in parameter_registry rather than specified independently here.
     # This is the net contribution after accounting for N removal in legume grain.
     # Grain legumes (soybean): fix 150-200 but export 130-170 in seed; net ~0-40 kg/ha
     # Cover crop legumes (vetch, clover): 50-80 kg net N/ha but no food production
@@ -335,10 +345,10 @@ def get_default_regions() -> Dict[str, RegionParams]:
             water_stress_coeff=0.003,
             baseline_water_deficit=0.0,
             atm_n_deposition=10.0,  # NADP monitoring: 8-12 kg N/ha in Corn Belt (Vet et al. 2014)
-            bnf_potential=25.0,     # Net landscape avg BNF under managed transition
+            bnf_potential=BASELINE_BNF_KG_N_HA_YR['north_america'],
             bnf_ramp_years=8.0,
             residue_retention=0.90,
-            yield_max_regional=5.926,   # Recalibrated (v6: NUE=0.75, gross mineral N, grain-N cap)
+            yield_max_regional=0.0,     # Disabled: canonical y_max is solved at runtime
             yield_min_regional=1.1,     # Morrow Plots/Sanborn Field unfertilized: ~1.0-1.1 t/ha
             root_shoot_c_ratio=0.80,    # Bolinder et al. 2007; temperate cereals
             cre_regional=0.280,         # Calibrated: active pool equilibrium at initial SOC
@@ -355,10 +365,10 @@ def get_default_regions() -> Dict[str, RegionParams]:
             water_stress_coeff=0.003,
             baseline_water_deficit=0.0,
             atm_n_deposition=12.0,  # EMEP: 10-15 kg N/ha in W. Europe (Simpson et al. 2014)
-            bnf_potential=25.0,
+            bnf_potential=BASELINE_BNF_KG_N_HA_YR['europe'],
             bnf_ramp_years=8.0,
             residue_retention=0.90,
-            yield_max_regional=5.448,   # Recalibrated (v6: NUE=0.75, gross mineral N, grain-N cap)
+            yield_max_regional=0.0,
             yield_min_regional=1.0,     # Rothamsted Broadbalk unfertilized: ~1.0 t/ha
             root_shoot_c_ratio=0.80,    # Bolinder et al. 2007; temperate cereals
             cre_regional=0.259,         # Calibrated: active pool equilibrium at initial SOC
@@ -375,10 +385,10 @@ def get_default_regions() -> Dict[str, RegionParams]:
             whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
             water_stress_coeff=0.004,
             baseline_water_deficit=5.0,
-            bnf_potential=20.0,     # Dense cropping limits rotation options
+            bnf_potential=BASELINE_BNF_KG_N_HA_YR['east_asia'],
             bnf_ramp_years=10.0,
             residue_retention=0.75, # Significant residue burning despite bans
-            yield_max_regional=6.090,   # Recalibrated (v6: NUE=0.75, gross mineral N, grain-N cap)
+            yield_max_regional=0.0,
             yield_min_regional=0.9,     # China 1949 avg ~1.0; depleted dryland blended: 0.9
             root_shoot_c_ratio=0.60,    # Lower for rice-dominated systems (Katterer 2011)
             cre_regional=0.226,         # Calibrated: active pool equilibrium at initial SOC
@@ -395,10 +405,10 @@ def get_default_regions() -> Dict[str, RegionParams]:
             water_stress_coeff=0.005,  # Monsoon dependence, high evaporative demand
             baseline_water_deficit=10.0,
             atm_n_deposition=12.0,  # Indo-Gangetic Plain: 10-15 (Dentener et al. 2006)
-            bnf_potential=20.0,     # Heat limits BNF; limited cover crop adoption
+            bnf_potential=BASELINE_BNF_KG_N_HA_YR['south_asia'],
             bnf_ramp_years=12.0,
             residue_retention=0.50, # Widespread harvesting for fuel/fodder
-            yield_max_regional=3.584,   # Recalibrated (v6: NUE=0.75, gross mineral N, grain-N cap)
+            yield_max_regional=0.0,
             yield_min_regional=0.5,     # ICRISAT Vertisol trials: 0.3-0.6; pre-GR wheat: 0.66
             root_shoot_c_ratio=0.70,    # Moderate; rice+wheat systems (Johnson et al. 2006)
             cre_regional=0.341,         # Calibrated: active pool equilibrium at initial SOC
@@ -415,10 +425,10 @@ def get_default_regions() -> Dict[str, RegionParams]:
             water_stress_coeff=0.004,
             baseline_water_deficit=5.0,
             atm_n_deposition=8.0,   # Moderate tropical: 5-10 (Vet et al. 2014)
-            bnf_potential=25.0,     # Rice paddy BNF + legume potential
+            bnf_potential=BASELINE_BNF_KG_N_HA_YR['southeast_asia'],
             bnf_ramp_years=10.0,
             residue_retention=0.70, # Some residue burning in rice systems
-            yield_max_regional=4.737,   # Recalibrated (v6: NUE=0.75, gross mineral N, grain-N cap)
+            yield_max_regional=0.0,
             yield_min_regional=1.2,     # Wetland rice BNF advantage: 30-60 kg N/ha/yr
             root_shoot_c_ratio=0.60,    # Lower for rice systems (Katterer 2011)
             cre_regional=0.307,         # Calibrated: active pool equilibrium at initial SOC
@@ -435,10 +445,10 @@ def get_default_regions() -> Dict[str, RegionParams]:
             whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
             water_stress_coeff=0.003,
             baseline_water_deficit=0.0,
-            bnf_potential=35.0,     # Strong soybean/legume tradition; highest BNF potential
+            bnf_potential=BASELINE_BNF_KG_N_HA_YR['latin_america'],
             bnf_ramp_years=8.0,
             residue_retention=0.80,
-            yield_max_regional=5.112,   # Recalibrated (v6: NUE=0.75, gross mineral N, grain-N cap)
+            yield_max_regional=0.0,
             yield_min_regional=0.9,     # Pampas ~1.0-1.5, Cerrado degraded; blended: 0.9
             root_shoot_c_ratio=0.90,    # High; diverse cropping, deep-rooted tropical systems
             cre_regional=0.308,         # Calibrated: active pool equilibrium at initial SOC
@@ -458,10 +468,10 @@ def get_default_regions() -> Dict[str, RegionParams]:
             water_stress_coeff=0.005,
             baseline_water_deficit=15.0,
             atm_n_deposition=5.0,   # Low: 3-7 kg/ha (Dentener et al. 2006)
-            bnf_potential=15.0,     # Limited institutional capacity for rapid BNF adoption
+            bnf_potential=BASELINE_BNF_KG_N_HA_YR['sub_saharan_africa'],
             bnf_ramp_years=15.0,
             residue_retention=0.55, # Fuel, construction, livestock feed
-            yield_max_regional=3.931,   # Recalibrated (v6: NUE=0.75, gross mineral N, grain-N cap)
+            yield_max_regional=0.0,
             yield_min_regional=0.4,     # TSBF network controls: 0.3-0.6; Oxisol/Ultisol baseline
             root_shoot_c_ratio=1.0,     # High; grassland-origin soils, deep roots (Bolinder 2007)
             cre_regional=0.20,          # Within literature range; equilibrium at SOC=9
@@ -480,10 +490,10 @@ def get_default_regions() -> Dict[str, RegionParams]:
             whc_sensitivity=WHC_MM_PER_SOC_PCT_30CM,
             water_stress_coeff=0.004,
             baseline_water_deficit=10.0,
-            bnf_potential=20.0,     # Cold climate limits BNF season
+            bnf_potential=BASELINE_BNF_KG_N_HA_YR['fsu_central_asia'],
             bnf_ramp_years=10.0,
             residue_retention=0.85,
-            yield_max_regional=3.453,   # Recalibrated (v6: NUE=0.75, gross mineral N, grain-N cap)
+            yield_max_regional=0.0,
             yield_min_regional=0.9,     # Pryanishnikov Institute trials: 0.8-1.0 t/ha
             root_shoot_c_ratio=1.0,     # High; steppe-origin soils, deep roots (Bolinder 2007)
             cre_regional=0.35,          # Slightly elevated; includes manure/organic amendments
@@ -584,7 +594,7 @@ class SoilNCarryingCapacityModel:
         Assumes bulk density ~1.3 g/cm3, 30 cm depth.
         1% SOC = 1.3 * 30 * 0.01 * 10000 / 1000 = 39 t C/ha
         """
-        return soc_tha / 39.0
+        return soc_tha / SOC_T_C_HA_PER_PERCENT_30CM
 
     def _n_mineralization(self, C_pool: float, cn_ratio: float, k: float) -> float:
         """Annual N mineralized from a single SOM pool (kg N/ha/yr).
@@ -609,7 +619,7 @@ class SoilNCarryingCapacityModel:
         Baseline BNF exists even without management; managed transition
         ramps up to region's BNF potential.
         """
-        baseline_bnf = 5.0  # kg N/ha/yr from free-living/associative fixation
+        baseline_bnf = self.region.bnf_potential
 
         if not self.scenario.bnf_managed:
             return baseline_bnf
@@ -686,7 +696,7 @@ class SoilNCarryingCapacityModel:
 
         delta_soc_pct = soc_pct_init - soc_pct  # +degraded, -accumulated
         whc_sens = self.region.whc_sensitivity * self.fb.physical_strength
-        whc_gain_sat_pct = 1.0
+        whc_gain_sat_pct = WATER_STRESS_GAIN_SAT_SOC_PCT
         if delta_soc_pct >= 0.0:
             whc_change_mm = delta_soc_pct * whc_sens
         else:
@@ -698,10 +708,10 @@ class SoilNCarryingCapacityModel:
         # Soft-abs floor on total water deficit (see coupled_monthly.py for
         # rationale). ε = 3 mm.
         raw = self.region.baseline_water_deficit + whc_change_mm
-        eps_mm = 3.0
+        eps_mm = WATER_STRESS_SOFTPLUS_EPS_MM
         total_deficit = 0.5 * (raw + np.sqrt(raw * raw + eps_mm * eps_mm))
         stress = 1.0 - self.region.water_stress_coeff * total_deficit
-        return max(0.3, min(1.0, stress))
+        return max(WATER_STRESS_MIN_FACTOR, min(1.0, stress))
 
     def _residue_c_input(self, yield_actual: float) -> float:
         """Total carbon input from above-ground residue + root C (t C/ha/yr).
@@ -841,7 +851,8 @@ class SoilNCarryingCapacityModel:
         # in the C budget but NOT deducted from plant-available N, because in
         # an annual model the gross mineralization flux and plant uptake are
         # concurrent processes drawing from the same mineral pool.
-        n_supply_0 = (n_min_0 + self.region.synth_n_current + 5.0 +
+        n_supply_0 = (n_min_0 + self.region.synth_n_current
+                      + self.region.bnf_potential +
                       self.region.atm_n_deposition)
         ws_0 = self._water_stress(soc_0)
         n_avail_0 = n_supply_0 * self.crop.nue_apparent

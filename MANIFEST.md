@@ -1,10 +1,9 @@
 # MANIFEST — ERFS-100341 canonical reproducibility deposit
 
-Generated for the v14 (canonical) manuscript, deposit v1.4. All results derive
+Generated for the v14 SOL manuscript, deposit v1.5. Central model results derive
 from the ERA5 climate run to year 30 (`code/repro/run_canonical.py`). Entries
-marked **new in v1.3** were added with the model corrections; entries marked
-**new in v1.4** were added when Supplementary Figure S7 was regenerated from the
-corrected model. See `CHANGELOG.md`.
+for benchmarks and Figure 3 use the explicitly identified deposited datasets.
+See `CHANGELOG.md`.
 
 ## Root
 
@@ -16,6 +15,10 @@ corrected model. See `CHANGELOG.md`.
 - `.zenodo.json` — Zenodo deposit metadata
 - `LICENSE` — MIT (code) + CC-BY-4.0 (data/figures)
 - `requirements.txt` — Python dependencies
+- `EVIDENTIARY_STANDARD_sol.md` — prospective acceptance rules
+- `CLAIM_REGISTER_sol.csv` / `.md` — result-by-result retain/qualify/exclude decisions
+- `PARAMETER_LEDGER_sol.csv` / `.md` — 577 semantic live-parameter entries
+- `NUMERIC_LITERAL_AUDIT_sol.csv` — 2,087 audited source-line numeric entries
 
 ## Model code (`code/model/`)
 
@@ -23,12 +26,16 @@ corrected model. See `CHANGELOG.md`.
 - `coupled_econ_biophysical.py` — economic module; scenario + regional econ params; SC1/SC2
 - `monthly_model_v3.py` — monthly soil-N dynamics; Century spin-up; regional climate profiles
 - `soil_n_model.py` — region definitions, SOM pools, default parameters
-- `scripts/validate_f_fert_broadbalk.py` — temperate crop-response validation (Broadbalk)
+- `parameter_registry.py` — authoritative shared conversions, BNF primitives/derivation,
+  regional prices and sensitivity bounds
+- `scripts/validate_f_fert_broadbalk.py` — Broadbalk parameter benchmark
+- `data/benchmark_broadbalk/` — observed and modeled benchmark trajectories
 
 ## Climate input pipeline (`code/era5/`)
 
 - `fetch_era5_climate.py` — retrieval of ERA5 monthly normals (Open-Meteo archive)
-- `REGIONAL_CLIMATES_era5.py` — ERA5-derived regional climate profiles
+- `data/era5_regional_climates.json` is the single executable ERA5 climate
+  input; no second Python copy is retained.
 
 ## Reproduction scripts (`code/repro/`)
 
@@ -53,7 +60,9 @@ corrected model. See `CHANGELOG.md`.
 - `make_figure_s11.py` — **new in v1.3** — Figure S11 (SOC gradient vs price-shock severity)
 - `make_food_price_table.py` — **new in v1.3** — regional and production-weighted global
   output-price response under S3; the SI food-price figures previously had no generator
-- `make_ofra_validation.py` — Figure S13 (OFRA SSA maize-N validation overlay, canonical y_max)
+- `make_ofra_validation.py` — Figure S13 (OFRA SSA maize-N benchmark overlay, canonical y_max)
+- `make_broadbalk_benchmark.py` — Figure S2 benchmark and reported bias
+- `make_hindcast_benchmark.py` — Figure S4 using official 2021–2022 FAOSTAT changes
 - `run_price_shock_analysis.py` — **new in v1.3** — farm-level SOC-gradient computation for main
   Figures 1 and 2a; writes `figure1_farm_gradient.json` and `figure2_soc_gradient.json` (~90 s)
 - `make_figure_1.py` — renders Figure 1 (farm yield and partial net-revenue buffering)
@@ -62,6 +71,13 @@ corrected model. See `CHANGELOG.md`.
   region at its baseline yield; writes `outputs/zero_shock_invariance.csv`
 - `test_cap_market_clearing.py` — **new in v1.3** — asserts that the constrained equilibrium
   clears when the physical fertilizer ceiling binds
+- `test_full_zero_shock_sol.py` — full S3-channel zero-shock baseline invariance
+- `test_parameter_consistency_sol.py` — unique price/share/BNF definitions
+- `test_dimensional_consistency_sol.py` — unit identities and dimensional conversions
+- `test_parameter_boundaries_sol.py` — calibration, state and domain boundaries
+- `test_mc_robustness_sol.py` — pre-specified 95% joint-prior direction gate
+- `test_parameter_extremes_sol.py` — one-at-a-time prior bounds and WHC × εF,N grid
+- `test_cross_document_consistency_sol.py` — headline values, Table S4 and embedded-figure check
 
 ## Data (`data/`)
 
@@ -69,7 +85,7 @@ corrected model. See `CHANGELOG.md`.
 - `canonical_ERA5_y30.json` — same, JSON, incl. production-weighted global losses
 - `era5_regional_climates.json` — ERA5 monthly T/precip/PET per region (model input)
 - `era5_raw/` — raw ERA5 pulls for the eight regions (provenance for the above)
-- `climate_swap_comparison.csv` — expert vs ERA5 yr1/yr10 losses (max year-10 shift 0.74 pp)
+- `climate_swap_comparison.csv` — expert vs ERA5 yr1/yr10 losses (max year-10 shift 0.69 pp)
 - `SC1_regional_trajectory.csv` — SC1 (permanent 20% supply loss) yield loss %, yr 0–30, per region
 - `SC2_regional_trajectory.csv` — SC2 (20% loss, 20-yr recovery) yield loss %, yr 0–30, per region
 - `scenario_trajectories.csv` — year 0–30 global loss for S3, SC1, SC2 + per-region S3
@@ -87,23 +103,22 @@ corrected model. See `CHANGELOG.md`.
 - `mc_ensemble/` — **new in v1.3** — Monte Carlo outputs: `mc_posterior.csv.gz`,
   `mc_summary.csv`, `mc_probabilities.csv`, `mc_summary.txt`, `mc_priors.json`, `ym_cache.json`
 - `figS12_curves.json` — precomputed simulated N-response curves for Figure S12
-- `ofra_maize_N_responsefunctions.csv` — OFRA maize N-response functions (tropical validation)
+- `ofra_maize_N_responsefunctions.csv` — OFRA maize N-response functions (tropical benchmark)
 - `crop_response_calibration_table.csv` — regional crop-response calibration table (Table S4 source)
+- `benchmarks/` — official 2022 hindcast observations, Broadbalk extraction and caveat table
 
-Note: `crop_response_calibration_table.csv` reports the simulation-calibrated
-`y_max` and the **simulated** no-synthetic-N yields (`y_no_synth_sim_tha`),
-consistent with the numerical year-2 calibration. **It has no generator in this
-deposit** — the script that produced the `y_no_synth_sim_tha` column was not
-deposited and was not recovered in this revision. The `ymax_calibrated_tha`
-column matches the corrected canonical run to six figures, and an equivalent
-no-synthetic-N simulation run against the pre-fix and the corrected model differs
-by ≤ 0.05 t ha⁻¹ in every region, so the table is unaffected by the v1.3
-corrections and is carried over unchanged.
+`crop_response_calibration_table.csv` and
+`outputs/Table_S4_calibration_sol.csv` are regenerated by
+`code/repro/make_table_s4_sol.py`, including the live simulation-calibrated
+`y_max` and simulated no-synthetic-N yield.
 
 ## Figures (`figures/`)
 
 - `Figure_1_farm_buffering.png` / `.pdf` — farm yield and partial net-revenue buffering
 - `Figure_2_regional_vulnerability.png` / `.pdf` — **new in v1.3** — regional vulnerability, three panels
+- `Figure_3_mechanism_screen.png` / `.pdf` — country mechanism screen; complete pipeline below
+- `Figure_S2_broadbalk_benchmark.png` / `.pdf` — contextual Broadbalk benchmark
+- `Figure_S4_hindcast_sensitivity.png` / `.pdf` — directional 2022 demand benchmark
 - `excluded_legacy_sol/Figure_S5_flux_decomposition_legacy_sol.png` — legacy
   exploratory figure; excluded from the revised evidentiary chain
   in the code. Illustrative only; no manuscript or SI number derives from it. This gap
@@ -116,7 +131,7 @@ corrections and is carried over unchanged.
 - `Figure_S11_severity_gradient.png` / `.pdf` — **new in v1.3** — SOC gradient vs shock severity
 - `Figure_S8_elasticity_sensitivity.png` — elasticity sensitivity (canonical ERA5)
 - `Figure_S12_crop_response_calibration.png` — simulated crop-response calibration (canonical y_max)
-- `Figure_S13_OFRA_SSA_validation.png` — OFRA validation overlay (SSA y_max = 3.88)
+- `Figure_S13_OFRA_SSA_validation.png` — OFRA contextual benchmark overlay (SSA y_max = 3.88)
 
 ## Outputs (`outputs/`)
 
@@ -126,3 +141,16 @@ Regenerated by the scripts:
 - `table_S3_correlations.csv` — Supplementary table 3
 - `climate_swap_comparison.csv` — expert vs ERA5 robustness
 - `zero_shock_invariance.csv` — **new in v1.3** — per-region zero-shock yield ratios
+- `Table_S4_calibration_sol.csv` — regenerated regional calibration table
+- `parameter_extreme_acceptance_sol.csv` — all one-at-a-time and structural-grid decisions
+- `structural_sensitivity_sol.csv` — global WHC × εF,N results
+- `price_convention_sensitivity_sol.csv` — four-region price convention check
+
+## Country mechanism screen (`spatial_screen/`)
+
+- `scripts/` — download/provenance, aggregation, threshold sensitivity, audit and render code
+- `data_raw/` — deposited SoilGrids, MIRCA2000, FAOSTAT and Natural Earth inputs
+- `data_processed/` — country buffer/exposure classifications, threshold treatments and QA
+- `docs/SPEC.md` — pre-specified screen definitions and scope
+- `scripts/16_phase2_final_audit.py` — final country and threshold audit
+- `scripts/19_fig4_mechanism_screen_v10.py` — final Figure 3 render

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Acceptance tests for corrected units, prices, and unique definitions."""
 from pathlib import Path
-import json
 import sys
 
 HERE = Path(__file__).resolve().parent
@@ -11,7 +10,7 @@ sys.path.insert(0, str(HERE.parent / "model"))
 from parameter_registry import (
     WHC_MM_PER_SOC_PCT_30CM, REGIONAL_PRICES, nitrogen_cost_share)
 from soil_n_model import get_default_regions
-from monthly_model_v3 import MonthlyClimate, MonthlyNParams, REGIONAL_CLIMATES
+from monthly_model_v3 import MonthlyNParams, apply_era5_climate_file
 from coupled_monthly import MonthlyBiophysicalEngine, get_calibrated_ym
 
 EXPECTED_SHARES = {
@@ -23,13 +22,7 @@ EXPECTED_SHARES = {
 
 
 def main():
-    climate = json.loads((ROOT / "data/era5_regional_climates.json").read_text())
-    for key, old in list(REGIONAL_CLIMATES.items()):
-        new = climate[key]
-        REGIONAL_CLIMATES[key] = MonthlyClimate(
-            old.name, list(map(float, new["temp"])),
-            list(map(float, new["precip"])), list(map(float, new["pet"])),
-            old.planting_month, old.maturity_month)
+    apply_era5_climate_file(ROOT / "data/era5_regional_climates.json")
     regions = get_default_regions()
     mp = MonthlyNParams()
     assert abs(WHC_MM_PER_SOC_PCT_30CM - 3.48) < 1e-12

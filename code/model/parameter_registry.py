@@ -9,6 +9,17 @@ from dataclasses import dataclass
 from typing import Dict
 
 
+# Physical conversions and shared response-shape constants. These are used by
+# both the annual diagnostic engine and the canonical monthly coupled engine.
+# Keeping them here prevents physically identical calculations from silently
+# diverging.
+SOC_T_C_HA_PER_PERCENT_30CM = 39.0
+RESIDUE_C_FRACTION = 0.45
+WATER_STRESS_GAIN_SAT_SOC_PCT = 1.0
+WATER_STRESS_SOFTPLUS_EPS_MM = 3.0
+WATER_STRESS_MIN_FACTOR = 0.30
+
+
 # Minasny & McBratney (2018) report a mean increase in plant-available water
 # of 1.16 mm per 100 mm soil for a one percentage-point increase in SOC.
 # The model expresses SOC over 0-30 cm, giving 1.16 * 3 = 3.48 mm.
@@ -22,6 +33,64 @@ WHC_MM_PER_SOC_PCT_HIGH = 8.40
 # only as a structural sensitivity.
 SOIL_N_RESPONSE_ELASTICITY_CENTRAL = 0.0
 SOIL_N_RESPONSE_ELASTICITY_SENSITIVITY = (0.0, -0.25, -0.50, -1.0)
+
+
+# Baseline landscape BNF is derived from three primitive quantities rather
+# than specified a second time in RegionParams. The legume credit is expressed
+# per cereal hectare because the monthly model simulates a cereal hectare:
+#     BNF = legume_fraction * net_credit / (1 - legume_fraction)
+#           + free_living_BNF.
+# These values are scenario inputs, not fitted model outputs.
+BNF_COMPONENTS = {
+    "north_america": {
+        "legume_frac": 0.35, "net_n_credit": 50.0,
+        "legume_yield_ceq": 1.8, "free_living_bnf": 5.0,
+    },
+    "europe": {
+        "legume_frac": 0.25, "net_n_credit": 40.0,
+        "legume_yield_ceq": 1.3, "free_living_bnf": 5.0,
+    },
+    "east_asia": {
+        "legume_frac": 0.20, "net_n_credit": 35.0,
+        "legume_yield_ceq": 1.2, "free_living_bnf": 5.0,
+    },
+    "south_asia": {
+        "legume_frac": 0.30, "net_n_credit": 40.0,
+        "legume_yield_ceq": 1.0, "free_living_bnf": 5.0,
+    },
+    "southeast_asia": {
+        "legume_frac": 0.25, "net_n_credit": 45.0,
+        "legume_yield_ceq": 1.2, "free_living_bnf": 8.0,
+    },
+    "latin_america": {
+        "legume_frac": 0.45, "net_n_credit": 40.0,
+        "legume_yield_ceq": 1.5, "free_living_bnf": 5.0,
+    },
+    "sub_saharan_africa": {
+        "legume_frac": 0.25, "net_n_credit": 30.0,
+        "legume_yield_ceq": 0.8, "free_living_bnf": 5.0,
+    },
+    "fsu_central_asia": {
+        "legume_frac": 0.20, "net_n_credit": 35.0,
+        "legume_yield_ceq": 1.0, "free_living_bnf": 5.0,
+    },
+}
+
+
+def baseline_bnf_kg_n_ha_yr(region_key: str) -> float:
+    """Return derived landscape BNF for a canonical region."""
+
+    p = BNF_COMPONENTS[region_key]
+    frac = p["legume_frac"]
+    return (
+        frac * p["net_n_credit"] / (1.0 - frac)
+        + p["free_living_bnf"]
+    )
+
+
+BASELINE_BNF_KG_N_HA_YR = {
+    key: baseline_bnf_kg_n_ha_yr(key) for key in BNF_COMPONENTS
+}
 
 
 @dataclass(frozen=True)

@@ -9,14 +9,16 @@ Zenodo: https://doi.org/10.5281/zenodo.19699772
 
 This SOL deposit corresponds to the final audited manuscript and SI. Central
 regional trajectories derive from the frozen ERA5 run produced by
-`code/repro/run_canonical.py`; farm gradients, sensitivities and validation
-figures have their own named generators. The parameter ledger records every
+`code/repro/run_canonical.py`; farm gradients, sensitivities, benchmarks and
+the country mechanism screen have named generators. The parameter ledger records every
 live parameter, source category, unit, code location and uncertainty treatment.
 
-**v1.4 supersedes v1.2.** Two internal-consistency corrections were applied to
-the model, and the generators for main Figures 1 and 2 and for Supplementary
-Figure S7 are now included in the deposit. All reported magnitudes are lower
-than in v1.2; see `CHANGELOG.md` for the full list and the before/after values.
+**v1.5 is the final SOL audit package.** It centralizes duplicate parameter
+definitions, derives BNF and price-dependent quantities once, corrects
+parameter propagation in the N-capture sensitivity, adds the complete Figure 3
+spatial pipeline and empirical-benchmark assets, and applies the prospective
+evidentiary rules in `EVIDENTIARY_STANDARD_sol.md`. Decisions are recorded in
+`CLAIM_REGISTER_sol.csv`.
 
 ## What the model is
 
@@ -35,9 +37,9 @@ Python ≥ 3.9 with:
 pip install -r requirements.txt      # numpy, scipy, pandas, matplotlib
 ```
 
-No network access is needed to reproduce results: the ERA5 climate normals are
-included in `data/`. (`code/era5/fetch_era5_climate.py` documents how they were
-retrieved from the Open-Meteo ERA5 archive, 2001–2020, Hargreaves PET.)
+No network access is needed to reproduce results: ERA5 normals, benchmark data,
+and the raw and processed inputs for the spatial screen are included.
+Provenance/download scripts remain in the package.
 
 ## Reproduce (in order)
 
@@ -58,6 +60,8 @@ python make_figure_s7.py              # -> figures/Figure_S7_farm_elasticity_gra
 python make_table_s4_sol.py            # -> outputs/Table_S4_calibration_sol.csv and data/figS12_curves.json
 python make_figure_s12.py             # -> figures/Figure_S12_crop_response_calibration.png
 python make_ofra_validation.py        # -> figures/Figure_S13_OFRA_SSA_validation.png
+python make_broadbalk_benchmark.py    # -> figures/Figure_S2_broadbalk_benchmark.png/.pdf
+python make_hindcast_benchmark.py     # -> figures/Figure_S4_hindcast_sensitivity.png/.pdf
 python run_mc_ensemble.py --n 1000 --workers 4   # -> data/mc_ensemble/ (Note 6; ~7 min)
 python make_figure_s9.py              # -> figures/Figure_S9_mc_ensemble.png/.pdf
 python make_figure_s10.py             # -> figures/Figure_S10_nue_sensitivity.png/.pdf ; data/figS10_nue_sensitivity.json (~4 min)
@@ -65,16 +69,29 @@ python make_figure_s11.py             # -> figures/Figure_S11_severity_gradient.
 python make_food_price_table.py       # -> data/food_price_response.csv
 python run_structural_sensitivity_sol.py  # -> outputs/structural_sensitivity_sol.csv
 python make_parameter_ledger_sol.py    # -> PARAMETER_LEDGER_sol.csv/.md
+cd ../../spatial_screen
+python scripts/16_phase2_final_audit.py
+python scripts/19_fig4_mechanism_screen_v10.py
 ```
 
-Internal-consistency checks (both should print PASS):
+Internal-consistency and robustness checks:
 
 ```
 python test_zero_shock_invariance.py  # -> outputs/zero_shock_invariance.csv
 python test_full_zero_shock_sol.py
 python test_cap_market_clearing.py
 python test_parameter_consistency_sol.py
+python test_dimensional_consistency_sol.py
+python test_parameter_boundaries_sol.py
+python test_mc_robustness_sol.py
+python test_parameter_extremes_sol.py # records the declared long-run SSA failures
+python test_cross_document_consistency_sol.py
 ```
+
+The first seven test families pass. The last script also passes its domain
+checks and year-1 robustness gate, while deliberately recording that the
+year-10 SSA gradient reverses under unsupported εF,N = −0.50 and −1.00. This is
+a disclosed evidentiary decision, not a hidden test failure.
 
 ## Expected canonical results (what the scripts print / write)
 
@@ -85,9 +102,9 @@ python test_parameter_consistency_sol.py
 | SSA year-30 loss | **5.43 %** | Results |
 | SC1 (permanent supply loss) global year-10 | **3.74 %** (0.56 pp above S3) | Results |
 | SC2 (20-yr recovery) global year-10 | **1.91 %** (0.04 % by year 30) | Results |
-| Soil-N buffer ratio (%), NA→FSU | **49.7, 36.4, 19.7, 34.2, 53.6, 64.4, 56.5, 49.0** | Supplementary table 1 |
-| Buffer ratio vs year-10 penalty | Spearman ρ = **+0.07**, Pearson R² = **0.05** | Note 3, Figure S6f, table 3 |
-| Fig S6 panel ρ (a–f) | −0.61, +0.70, −0.81, −0.45, +0.58, +0.07 | Figure S6 |
+| Soil-N buffer ratio (%), NA→FSU | **43.2, 33.6, 19.3, 31.4, 49.6, 54.0, 45.0, 44.8** | Supplementary table 1 |
+| Buffer ratio vs year-10 penalty | Spearman ρ = **+0.19**, Pearson R² = **0.06** | Note 3, Figure S6f, table 3 |
+| Fig S6 panel ρ (a–f) | −0.61, +0.70, −0.81, −0.28, +0.58, +0.19 | Figure S6 |
 | Climate robustness (expert vs ERA5) | max year-10 shift **0.69 pp**; Spearman ρ = 0.95 | Response letter |
 | Figure 1 net revenue at regional mean SOC | SSA **+0.31 %**, SA −5.36, LATAM −1.06, NA −1.68 | Figure 1b |
 | Figure 2b year-10 SOM-depletion share (global) | 0.32 of 3.18 pp | Figure 2b |
@@ -95,7 +112,7 @@ python test_parameter_consistency_sol.py
 | MC ensemble median year-1 loss (n = 1,000) | **2.51 %**; 5-95 % range 3.3 pp; buffer 0.88 ppt | Note 6, Figure S9 |
 | Figure S11 SOC spread (25 % vs 100 %) | **0.1-1.5 pp** at 100-150 % shock; 0.4-2.2 pp at 300 % | Figure S11 |
 | Realized S3 fertilizer reduction, yr 1-10 (N-weighted) | **20 %** | Results |
-| NUE lever: global year-10 loss, NUE 0.45 → 0.95 | **10.9 % → 1.2 %**; first 20 points of NUE deliver **59 %** of the reduction | Note 5, Figure S10 |
+| N-capture sensitivity, global year-10 loss, capture 0.45 → 0.95 | **4.13 % → 2.90 %** with central y_max held fixed; SSA 0.45 → 0.65 is **5.55 % → 5.13 % (8 %)** | Note 5, Figure S10 |
 | Regional output-price index (production-weighted, yr 1/10/30) | **+5.32 / +6.27 / +6.59 %**; regional yr-10 span 3.11 (EA) - 11.08 (FSU) | SI |
 | Zero-shock invariance | PASS (all regions yr-10 yield ratio ≥ 0.9998; minimum 0.99986, FSU) | Note on model consistency |
 | Constrained market clearing | PASS (max cap residual 0.00e+00) | Note on model consistency |
@@ -117,8 +134,8 @@ Figure S6c.
 code/
   model/       coupled_monthly.py, coupled_econ_biophysical.py,
                monthly_model_v3.py, soil_n_model.py
-  model/scripts/ validate_f_fert_broadbalk.py  (temperate crop-response validation)
-  era5/        fetch_era5_climate.py, REGIONAL_CLIMATES_era5.py
+  model/scripts/ validate_f_fert_broadbalk.py  (temperate parameter benchmark)
+  era5/        fetch_era5_climate.py (provenance script)
   repro/       run_canonical.py, make_table_s3.py, make_figure_s6.py,
                climate_comparison.py, make_sc_trajectories.py,
                make_scenario_trajectories.py, run_price_shock_analysis.py,
@@ -127,6 +144,7 @@ code/
                make_ofra_validation.py,
                run_mc_ensemble.py, make_figure_s9.py, make_figure_s10.py,
                make_figure_s11.py, make_food_price_table.py,
+               make_broadbalk_benchmark.py, make_hindcast_benchmark.py,
                test_zero_shock_invariance.py, test_cap_market_clearing.py
 data/          canonical_ERA5_y30.csv/.json, era5_regional_climates.json,
                era5_raw/ (8 regions), climate_swap_comparison.csv,
@@ -138,7 +156,8 @@ data/          canonical_ERA5_y30.csv/.json, era5_regional_climates.json,
                figS11_severity_sweep.json, figS12_curves.json,
                food_price_response.csv,
                mc_ensemble/ (posterior, summary, probabilities, priors),
-               ofra_maize_N_responsefunctions.csv, crop_response_calibration_table.csv
+               ofra_maize_N_responsefunctions.csv, crop_response_calibration_table.csv,
+               benchmarks/ (Broadbalk and 2022-crisis extractions)
 figures/       Figure_1_farm_buffering.png/.pdf,
                Figure_2_regional_vulnerability.png/.pdf,
                Figure_S5_flux_decomposition.png, Figure_S6_pairwise_diagnostics.png,
@@ -150,6 +169,7 @@ figures/       Figure_1_farm_buffering.png/.pdf,
                Figure_S12_crop_response_calibration.png,
                Figure_S13_OFRA_SSA_validation.png
 outputs/       regenerated tables (written by the scripts)
+spatial_screen/ complete Figure 3 source/processed data, scripts, audit and figure
 ```
 
 **Scope decision.** The earlier microbially explicit 4-pool comparison and

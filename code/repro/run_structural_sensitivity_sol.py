@@ -11,7 +11,7 @@ ROOT = HERE.parent.parent
 sys.path.insert(0, str(HERE.parent / "model"))
 
 import numpy as np
-from monthly_model_v3 import MonthlyClimate, MonthlyNParams, REGIONAL_CLIMATES
+from monthly_model_v3 import MonthlyNParams, apply_era5_climate_file
 from coupled_monthly import CoupledMonthlyModel, get_calibrated_ym
 from coupled_econ_biophysical import get_scenario_params
 from soil_n_model import get_default_regions
@@ -29,13 +29,7 @@ REGIONS = [
 
 
 def patch_era5():
-    climate = json.loads((ROOT / "data/era5_regional_climates.json").read_text())
-    for key, old in list(REGIONAL_CLIMATES.items()):
-        new = climate[key]
-        REGIONAL_CLIMATES[key] = MonthlyClimate(
-            old.name, list(map(float, new["temp"])),
-            list(map(float, new["precip"])), list(map(float, new["pet"])),
-            old.planting_month, old.maturity_month)
+    apply_era5_climate_file(ROOT / "data/era5_regional_climates.json")
 
 
 def global_losses(regions, mp, eps_n, whc):

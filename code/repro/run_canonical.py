@@ -27,7 +27,7 @@ DATA  = os.path.join(HERE, '..', '..', 'data')
 OUT   = os.path.join(HERE, '..', '..', 'outputs')
 sys.path.insert(0, MODEL)
 import numpy as np
-from monthly_model_v3 import MonthlyClimate, MonthlyNParams, REGIONAL_CLIMATES
+from monthly_model_v3 import MonthlyNParams, apply_era5_climate_file, get_regional_bnf
 from coupled_monthly import CoupledMonthlyModel, get_calibrated_ym
 from coupled_econ_biophysical import get_scenario_params, calibrate_price_shock, REGIONAL_ECON_PARAMS
 from soil_n_model import get_default_regions
@@ -38,12 +38,7 @@ ABBR = {'north_america':'NA','europe':'EU','east_asia':'EA','south_asia':'SA',
         'southeast_asia':'SEA','latin_america':'LATAM','sub_saharan_africa':'SSA','fsu_central_asia':'FSU'}
 
 def patch_era5_climate():
-    clim = json.load(open(os.path.join(DATA, 'era5_regional_climates.json')))
-    for k, c in list(REGIONAL_CLIMATES.items()):
-        n = clim[k]
-        REGIONAL_CLIMATES[k] = MonthlyClimate(
-            c.name, list(map(float, n['temp'])), list(map(float, n['precip'])),
-            list(map(float, n['pet'])), c.planting_month, c.maturity_month)
+    apply_era5_climate_file(os.path.join(DATA, 'era5_regional_climates.json'))
 
 def main():
     patch_era5_climate()
@@ -58,16 +53,17 @@ def main():
         y0 = df[df['year'] == 0].iloc[0]
         loss = lambda yr: float((1 - df[df['year'] == yr]['yield_fraction'].iloc[0]) * 100)
         nmin0 = float(y0['n_mineralized'])
-        # buffer-ratio denominator: SOM mineralization + synthetic N + atmospheric
-        # deposition + free-living fixation (5 kg N/ha); legume BNF is tracked separately.
-        total_n = nmin0 + r.synth_n_current + r.atm_n_deposition + 5.0
+        # Derived share of gross N supply supplied by SOM mineralization.
+        # All external sources use the same basis as the live monthly engine.
+        bnf = get_regional_bnf(rk)
+        total_n = nmin0 + r.synth_n_current + r.atm_n_deposition + bnf
         ep = REGIONAL_ECON_PARAMS[rk]
         rows.append(dict(
             region=rk, abbr=ABBR[rk],
             y_max=float(ym), y_base=float(y0['yield_tha']),
             loss_yr1=loss(1), loss_yr10=loss(10), loss_yr30=loss(30),
             buffer_ratio_pct=round(nmin0 / total_n * 100, 1),
-            bnf=float(r.bnf_potential), soc=float(r.soc_initial),
+            bnf=float(bnf), soc=float(r.soc_initial),
             water_deficit=float(r.baseline_water_deficit),
             synth_n=float(r.synth_n_current),
             eps_F_PF=float(ep['eps_F_PF']), eta=float(ep['eta']),
@@ -75,7 +71,9 @@ def main():
     # freeze
     os.makedirs(DATA, exist_ok=True); os.makedirs(OUT, exist_ok=True)
     with open(os.path.join(DATA, 'canonical_ERA5_y30.csv'), 'w', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=list(rows[0].keys())); w.writeheader()
+        w = csv.DictWriter(
+            f, fieldnames=list(rows[0].keys()), lineterminator="\n"
+        ); w.writeheader()
         [w.writerow(x) for x in rows]
     area = np.array([x['cropland_mha'] for x in rows]); yb = np.array([x['y_base'] for x in rows])
     W = area * yb; W /= W.sum()
