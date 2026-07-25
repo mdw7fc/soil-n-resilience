@@ -23,7 +23,7 @@ Each is one Cowork task. Do not combine them. Mark status here and commit this f
 
 | # | Package | Spec | Status |
 |---|---|---|---|
-| WP1 | Parameter registry (`params.yaml`, `registry.py`) + wire it into the four model modules | F-001, F-006, F-007, F-011 | not started |
+| WP1 | Parameter registry (`params.yaml`, `registry.py`) + wire it into the four model modules | F-001, F-006, F-007, F-011 | **DONE 2026-07-25** (concurrent session) — see `RECONSTRUCTION_GAPS.md`, `logs/wp1_acceptance.log` |
 | WP2 | Production-path calibration + seam contracts + `test_cap_market_clearing` rewrite | F-002, F-005, F-010 | **DONE 2026-07-25** — all three acceptances met |
 | WP3 | Mutation coverage harness | F-011 | not started |
 | WP4 | Benchmark suite + `observed_values.yaml` + baseline verdicts | F-008 | not started |
@@ -35,7 +35,17 @@ Each is one Cowork task. Do not combine them. Mark status here and commit this f
 
 **Dependencies.** WP1 blocks WP2–WP6. WP2 blocks WP6. WP4 and WP5 are independent of each other. D1, D2 and D3 depend on nothing and can run first or in parallel with any WP.
 
-**WP2 ran before WP1.** It did not need the registry: `seams.py` is self-contained and the calibration reads `RegionParams` directly, as the model already did. Nothing in WP2 has to be redone when WP1 lands, but WP1 must re-run `code/tests/test_calibration_fingerprint.py` after rewiring — its C3 sweep perturbs `RegionParams` fields, and once the registry drives those fields the sweep is testing the registry rather than the dataclass.
+**WP1 and WP2 ran at the same time, in the same folder, and collided.** Both are now landed and merged, and both acceptance suites pass together. What happened, because the next person needs to not repeat it:
+
+- WP2 started against the clean base at 21:04 and did not know WP1 was running. WP1 wrote its rewiring at 21:25. Both packages edit `code/model/coupled_econ_biophysical.py` — WP1 adds `import registry as _reg` and the registry-fed econ fields, WP2 rewrites `calibrate_price_shock`, `aggregate_global` and two docstrings.
+- WP1's write landed on top of WP2's, silently removing the F-005 changes from that one file. Nothing warned: writing a file to disk from a sandbox is last-write-wins, and neither session was looking.
+- **Repaired.** WP2's three edits were reapplied on top of WP1's version and the merged file is on disk. Verified together afterwards: `test_wp1_registry_wiring.py`, `test_seam_contracts.py` (15 checks), `test_calibration_fingerprint.py` (8 checks) and `test_cap_market_clearing.py` all pass, and `--mutate drop-gamma` still fails as designed.
+- The only other shared file was `v15_REBUILD_STATE.md`; both sessions rewrote it and this version reconciles both.
+- **The rule the state file should have had: one work package at a time means one session at a time.** The packages are dependency-ordered, not parallel-safe. If two must overlap, they must not share a file.
+
+**WP1's CHECK 1 is now historical and cannot be re-run as a gate.** It diffs `data/canonical_ERA5_y30.json` against `baseline/canonical_before.json` and requires zero of 123 fields to move. That is the right test of a refactor that should change nothing, and it passed the moment WP1 finished (`logs/wp1_acceptance.log`, and the two files are still bit-identical on disk today). But F-002 deliberately moves those numbers, so once the canonical is regenerated under `production_path_v2` the check must fail. **Do not re-run WP1's CHECK 1 after WP6 regenerates the canonical and read the failure as a regression** — WP6 owns rebaselining it. WP2 left `data/canonical_ERA5_y30.json` untouched for exactly this reason.
+
+**WP2 needed nothing from WP1.** `seams.py` is self-contained and the calibration reads `RegionParams` directly, as the model already did. One live follow-up: `test_calibration_fingerprint.py`'s C3 sweep perturbs `RegionParams` fields, and now that the registry drives those fields it is worth re-reading as a test of the registry rather than of the dataclass. It passes either way.
 
 ---
 

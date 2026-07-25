@@ -46,6 +46,13 @@ from parameter_registry import (
     SOC_T_C_HA_PER_PERCENT_30CM,
     SOIL_N_RESPONSE_ELASTICITY_CENTRAL,
 )
+# Declared aggregation bases (F-005). Every global mean in this module goes
+# through one of these factories; there is no unlabelled weight vector.
+from seams import (
+    OUTCOME_COLS, INTENSITY_COLS,
+    outcome_weights, intensity_weights, nitrogen_weights,
+    assert_same_basis, basis_for_column,
+)
 
 
 # ============================================================
@@ -420,8 +427,24 @@ def calibrate_price_shock(target_reduction: float = 0.20) -> float:
     """Find the fert_price_shock that delivers a target global fert reduction.
 
     The log-linear demand model gives: F_hat = eps_F_PF * ln(1 + shock).
-    With regional eps_F_PF, the area-weighted average reduction must equal
-    the target. We solve for the shock numerically.
+    With regional eps_F_PF, the **nitrogen-tonnage-weighted** average
+    reduction must equal the target. We solve for the shock numerically.
+
+    BASIS (F-005, 2026-07-25). Weights are ``cropland_mha * synth_n_current``
+    — tonnes of synthetic N applied — supplied by ``seams.nitrogen_weights``.
+    This is the only place in the model that uses that basis, and it is
+    correct here for a reason that does not generalise: the scenario is
+    *defined* as a reduction in nitrogen mass, so weighting it by anything
+    other than nitrogen mass would mean the scenario does not deliver its own
+    definition. Outcome shares take production tonnage
+    (``seams.outcome_weights``); per-hectare rates take cropland area
+    (``seams.intensity_weights``).
+
+    THIS DOCSTRING SAID "area-weighted" UNTIL 2026-07-25. It was never
+    area-weighted. The delivered year-1 reduction from the calibrated shock
+    is 20.00% on this nitrogen basis, 21.42% on area and 19.56% on
+    production, so any sentence pairing this 20% with a production-weighted
+    yield loss owes the reader both bases.
 
     Args:
         target_reduction: desired fractional reduction in global fertilizer (0.20 = 20%)
@@ -430,7 +453,13 @@ def calibrate_price_shock(target_reduction: float = 0.20) -> float:
         fert_price_shock: proportional price increase (e.g., 1.5 = 150% increase)
     """
     regions = get_default_regions()
-    total_n = sum(r.cropland_mha * r.synth_n_current for r in regions.values())
+    region_keys = tuple(regions.keys())
+    W_n = nitrogen_weights(region_keys, regions)
+    # Accumulate on the unnormalised tonnage and divide once — the arithmetic
+    # this function has always used. The seam supplies the vector and the
+    # label; it does not change the operation or its order, so the calibrated
+    # shock is bit-identical to the published 1.0389792148114703.
+    total_n = sum(W_n.raw)
 
     # Binary search for the price shock
     lo, hi = 0.01, 20.0
@@ -438,10 +467,9 @@ def calibrate_price_shock(target_reduction: float = 0.20) -> float:
         mid = (lo + hi) / 2
         PF_hat = np.log(1 + mid)
         weighted_reduction = 0.0
-        for rn, r in regions.items():
+        for rn, region_n in zip(region_keys, W_n.raw):
             eps = REGIONAL_ECON_PARAMS[rn]['eps_F_PF']
             F_hat = eps * PF_hat
-            region_n = r.cropland_mha * r.synth_n_current
             # Reduction = 1 - exp(F_hat) for this region
             weighted_reduction += (1 - np.exp(F_hat)) * region_n
         global_reduction = weighted_reduction / total_n
@@ -455,8 +483,12 @@ def calibrate_price_shock(target_reduction: float = 0.20) -> float:
 def get_scenario_params() -> Dict[str, EconParams]:
     """Return the three Manning scenarios with appropriate elasticities.
 
-    The fert_price_shock is calibrated so that the area-weighted global
-    fertilizer reduction is 20% using regional price elasticities.
+    The fert_price_shock is calibrated so that the **nitrogen-tonnage-
+    weighted** global fertilizer reduction is 20% using regional price
+    elasticities. This docstring said "area-weighted" until 2026-07-25
+    (F-005); it inherited the error from ``calibrate_price_shock`` above,
+    which is where the basis is actually chosen. On the area basis the same
+    calibrated shock delivers 21.42%, and on the production basis 19.56%.
 
     S1: No behavioral response
         - All economic elasticities = 0 except eps_F_PF (regional)
@@ -893,23 +925,49 @@ def aggregate_global(
     scenario_results: Dict[str, pd.DataFrame],
     regions: Dict[str, RegionParams] = None,
 ) -> pd.DataFrame:
-    """Aggregate across regions for one scenario, weighted by cropland area."""
+    """Aggregate across regions for one scenario on the declared bases.
+
+    Every column is aggregated on the basis its quantity class declares in
+    ``code/model/seams.py``, and the returned frame carries the two basis
+    labels in ``agg.attrs`` so that no downstream consumer has to guess:
+
+      * outcome shares (``yield_fraction``, ``soc_fraction``,
+        ``food_price_index``) — **production tonnage**, ``cropland_mha`` times
+        the region's own year-0 baseline yield;
+      * per-hectare rates (``fert_applied_kgha``, ``n_mineralized``,
+        ``water_stress``) — **cropland area**.
+
+    Until 2026-07-25 (F-005) this function weighted all six columns by
+    cropland area and its one-line docstring said so, which was at least
+    honest; the error was that the paper's published headline came from a
+    third, production-weighted vector normalised inline in
+    ``code/repro/run_canonical.py``, and nothing in the repository compared
+    the two. This function has exactly two call sites, both in this module's
+    ``__main__`` demonstration, so switching the outcome columns to their
+    declared basis moves no published number.
+    """
     if regions is None:
         regions = get_default_regions()
 
-    total_area = sum(regions[k].cropland_mha for k in scenario_results.keys())
-    total_pop = sum(regions[k].pop_supported for k in scenario_results.keys())
+    region_keys = tuple(scenario_results.keys())
+    total_pop = sum(regions[k].pop_supported for k in region_keys)
 
     first_df = list(scenario_results.values())[0]
     agg = pd.DataFrame({'year': first_df['year'].values})
 
-    # Area-weighted averages
-    for col in ['yield_fraction', 'soc_fraction', 'food_price_index',
-                'fert_applied_kgha', 'n_mineralized', 'water_stress']:
+    # Year-0 baseline yield per region defines the production basis.
+    y_base = [float(scenario_results[k]['yield_tha'].iloc[0]) for k in region_keys]
+    W_out = outcome_weights(region_keys, y_base, regions, universe=region_keys)
+    W_int = intensity_weights(region_keys, regions, universe=region_keys)
+
+    for col in OUTCOME_COLS + INTENSITY_COLS:
+        W = W_out if basis_for_column(col) == W_out.basis else W_int
         agg[col] = 0.0
-        for r_name, df in scenario_results.items():
-            weight = regions[r_name].cropland_mha / total_area
-            agg[col] += df[col].values * weight
+        for j, r_name in enumerate(region_keys):
+            agg[col] += scenario_results[r_name][col].values * W.weights[j]
+
+    agg.attrs['basis_outcome'] = W_out.label()
+    agg.attrs['basis_intensity'] = W_int.label()
 
     # Total production (sum of region production indices weighted by pop share)
     agg['pop_supported_millions'] = 0.0
