@@ -211,9 +211,12 @@ NODES: List[Node] = [
 
     # -- climate robustness -------------------------------------------------
     Node("climate_swap", "code/repro/climate_comparison.py",
-         outputs=("outputs/climate_swap_comparison.csv",),
+         outputs=("outputs/climate_swap_comparison.csv",
+                  "results/climate_swap_stats.txt"),
          inputs=(ERA5,), minutes=0.3,
-         note="expert vs ERA5 climate; reported in the response letter"),
+         note="expert vs ERA5 climate; reported in the response letter. The "
+              "stats file is declared so the two headline numbers are a "
+              "tracked artifact and not a console line (F-009)"),
 
     # -- farm gradient, main figures ---------------------------------------
     Node("price_shock", "code/repro/run_price_shock_analysis.py",
@@ -313,10 +316,11 @@ NODES: List[Node] = [
     Node("ofra_validation", "code/repro/make_ofra_validation.py",
          outputs=("figures/Figure_S13_OFRA_SSA_validation.png",),
          inputs=("data/ofra_maize_N_responsefunctions.csv",
-                 "data/crop_response_calibration_table.csv"),
+                 "outputs/Table_S4_calibration_sol.csv"),
          uses_model=False, minutes=0.1,
-         note="both inputs are now sourced; the calibration table is written "
-              "by make_table_s4_sol.py"),
+         note="declared crop_response_calibration_table.csv until D3; the "
+              "script reads Table_S4_calibration_sol.csv and always has "
+              "(make_ofra_validation.py line 15)"),
     Node("benchmarks", "code/repro/run_benchmarks.py",
          outputs=("outputs/benchmarks.csv", "outputs/benchmarks.json"),
          inputs=("data/benchmarks/observed_values.yaml",

@@ -1,6 +1,6 @@
 {
   "generator": "code/repro/make_table_s4_sol.py",
-  "generator_sha": "7e0cb5d194fa7d8a5931a1c81aa2f78592419e87d28e1f1bcaad29169551b31b",
+  "generator_sha": "73a35ca9be43e207fae5a839e1486c5c1952b0ba803f255833440eef99a01e6d",
   "inputs": {
     "code/model/coupled_econ_biophysical.py": "2465e0dd141ea2b0747743e732d8577c9e1ebc41eab17b5dad28481ecc1b0afc",
     "code/model/coupled_monthly.py": "f56c4a64c059f43302f25c38c3f80f9a96bd1507950bc04aa5b514e166a289ba",
@@ -14,10 +14,11 @@
   },
   "node": "table_s4",
   "outputs": {
+    "data/crop_response_calibration_table.csv": "c8f6ccccd349e15d45e334c95027ea69ef6fdf6312e8a00793f70641293e737b",
     "data/figS12_curves.json": "fb232610db2e8eb2a5c69c101b10d1695574ffc15af2f5b6a91226b1bf3fe009",
     "outputs/Table_S4_calibration_sol.csv": "2899f7a573ec3fbb5dc9aed859e7e6ea40fa244b59313c67c27b95ddc8055c89"
   },
   "params_fingerprint": "d382baf80d4b742f83ff56a42e1cac8375c755d176281416dd277c4a97dded37",
-  "stamped_at": "2026-07-26T01:58:38Z",
-  "stamped_at_commit": "unknown"
+  "stamped_at": "2026-07-26T10:11:28Z",
+  "stamped_at_commit": "1037e39"
 }

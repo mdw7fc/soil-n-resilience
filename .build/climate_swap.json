@@ -1,6 +1,6 @@
 {
   "generator": "code/repro/climate_comparison.py",
-  "generator_sha": "ec3ea58a250c85f36b16e9444f56bf4cc3a0e4be1e7de20836e04994fe7db102",
+  "generator_sha": "b42382ccb3641fbb838e2c537f02eb9144834e21b1df835b078d30701c19809a",
   "inputs": {
     "code/model/coupled_econ_biophysical.py": "2465e0dd141ea2b0747743e732d8577c9e1ebc41eab17b5dad28481ecc1b0afc",
     "code/model/coupled_monthly.py": "f56c4a64c059f43302f25c38c3f80f9a96bd1507950bc04aa5b514e166a289ba",
@@ -14,9 +14,10 @@
   },
   "node": "climate_swap",
   "outputs": {
-    "outputs/climate_swap_comparison.csv": "e0be7e76bd3ccd6e8dff41edc35fb2a8f7d5ffa319924d2dfb780c25cabe3191"
+    "outputs/climate_swap_comparison.csv": "e0be7e76bd3ccd6e8dff41edc35fb2a8f7d5ffa319924d2dfb780c25cabe3191",
+    "results/climate_swap_stats.txt": "8393a531ce32b29b5d8c5ce3089fdcce7e0c8452089d97fcf429e1f7d6e656bf"
   },
   "params_fingerprint": "d382baf80d4b742f83ff56a42e1cac8375c755d176281416dd277c4a97dded37",
-  "stamped_at": "2026-07-26T01:55:43Z",
-  "stamped_at_commit": "unknown"
+  "stamped_at": "2026-07-26T10:11:28Z",
+  "stamped_at_commit": "1037e39"
 }

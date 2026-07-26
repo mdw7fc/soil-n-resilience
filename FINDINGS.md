@@ -1238,3 +1238,97 @@ one unsourced input (`data/figS12_curves.json`), both tracked in F-009/F-010.
 pulse year-5 residual 0.3% to 0.009%, and drop the food-price half of its
 attribution; state that percentage SOC decline does not order regions the way
 yield loss does.
+
+---
+
+## F-017 — 2026-07-26 — Supplementary Table S4 is transcribed from a file nothing wrote, the graph declared the wrong input for the figure that was blamed for it, and the figure the handoff owed a generator for is not in the paper
+
+D3's three owed items, worked against the rebuilt tree rather than against
+HANDOFF §7's list. All three had moved since the handoff was written.
+
+### The calibration table was stale, and it is the SI's table
+
+`data/crop_response_calibration_table.csv` was written by no script in the
+deposit and had not been since at least the v14 deposit. `MANIFEST.md` credited
+`make_table_s4_sol.py` with regenerating it, and that script did not. F-009
+recorded the class of defect but named `data/figS12_curves.json`, which has had
+a live generator (`make_table_s4_sol.py` line 63) since before the
+reconstruction base; the wrong file got the work package.
+
+The file matters more than "an unsourced input read by Figure S13" suggests,
+and in a different way, because **it is not read by Figure S13 at all**.
+`make_ofra_validation.py` line 15 opens `outputs/Table_S4_calibration_sol.csv`.
+The build graph declared `crop_response_calibration_table.csv` as that node's
+input, so a file nothing wrote was recorded as feeding a figure that never
+opened it. That is the third instance of declared-versus-actual in this deposit,
+after F-014's `prices` node and F-009's `table_s4` node, and the first in the
+input direction.
+
+What actually reads the file is **the Supplementary Information**.
+Supplementary Table S4 in `v14_sol` is a row-for-row transcription of it, and
+the transcription is of the pre-recalibration copy:
+
+| | frozen file / SI Table S4 | regenerated |
+|---|---|---|
+| N America N_current | 223.9 | **142.7** |
+| N America N no-synth | 147.9 | **66.7** |
+| N America y_max | 6.277 | **6.198** |
+| S Asia y_max | 3.636 | **3.773** |
+| L America y_max | 5.602 | **5.414** |
+| SSA y_max | 3.876 | **3.967** |
+| SSA y(no-synth) sim | 1.26 | **1.29** |
+
+The regenerated values reproduce `data/figS12_curves.json` and
+`outputs/Table_S4_calibration_sol.csv` — the two artifacts of the same script
+that did have generators — to the digit, both of which are byte-identical
+before and after this pass. So the two sourced outputs were current and the
+unsourced one was two recalibrations behind, in the same script's output set.
+**Every numeric column of Supplementary Table S4 except `FAOSTAT y_obs`, `c` and
+`Floor` is wrong in `v14_sol`.** The nitrogen columns are wrong by 36% and 55%.
+
+`make_table_s4_sol.py` now writes all three outputs. Only `floor_source`
+survives as a literal, and it is documentary.
+
+Figure S13 is unaffected and its PNG is byte-identical after regeneration: it
+reads the sourced table, and its caption claim — the SSA ceiling below the OFRA
+median and inside the IQR — holds at the regenerated ceiling (3.967 against a
+median of 4.47, IQR 3.07–6.73) as it did at 3.876.
+
+### The climate-swap number was smaller than recorded, and had a console for a source
+
+F-009's "0.74 pp" is not in this tree. `MANIFEST.md` and `README.md` both read
+0.69 pp with a Spearman ρ of 0.95. The regenerated comparison gives **0.70 pp
+and ρ = 0.98**; the shift was nearly right and the ρ had drifted. Both are now
+in `results/climate_swap_stats.txt`, written by `climate_comparison.py`, which
+until this pass printed them to a console — the mechanism F-009 named, still
+operating on the finding that named it, three generations after 0.74 pp entered
+the manifest by transcription.
+
+### Figure S5 is not in the paper
+
+`make_figure_s5.py` has been carried as a debt since F-009 and appears in §7 of
+the handoff. It should not be written. `figures/Figure_S5_flux_decomposition.png`
+is not in this tree; the file exists only under `excluded_legacy_sol/`. The
+scheme it draws — CUE respiration against non-recycled necromass in the
+microbially-explicit 4-pool comparison — was never deposited, so it cannot be
+regenerated. And the SI's own paragraph 200 reads "The unsupported 4-pool
+quantitative comparison and Figure S5 were removed", which is the **only**
+surviving reference to S5 in either document. The debt is retired in
+`MANIFEST.md` and `README.md` with the reason recorded, rather than discharged
+by generating a figure the paper does not contain.
+
+Written to: `code/repro/make_table_s4_sol.py` (third output plus `FLOOR_SOURCES`),
+`code/repro/climate_comparison.py` (stats deposit), `code/build.py` (`table_s4`
+third output, `climate_swap` stats output, `ofra_validation` input corrected),
+`Makefile` (allowance removed, not exempted), `MANIFEST.md`, `README.md`,
+`data/crop_response_calibration_table.csv` (regenerated),
+`results/climate_swap_stats.txt` (new).
+Asserted by: `make verify` — thirteen suites and the build graph, 30 nodes at
+BLOCKED 2 / OK 28, one orphan and two unsourced inputs allowed by name, exit 0.
+The unsourced list is down from three to two and the removed entry is this one.
+
+**Document edits owed from this entry, and they belong to D2:** Supplementary
+Table S4 must be reprinted from the regenerated
+`data/crop_response_calibration_table.csv`. Supplementary paragraph 200's claim
+that "the deposit now includes generators for every reported numeric table" was
+false when written and is true as of this commit.
