@@ -29,9 +29,9 @@ Each is one Cowork task. Do not combine them. Mark status here and commit this f
 | WP4 | Benchmark suite + `observed_values.yaml` + baseline verdicts | F-008 | **done** — `97ccc58`, `4733bc3`; 35 rows against the acceptance 41, see Log |
 | WP5 | Claim register (`claims.yaml`) + claim strength | F-012, F-013, F-015, F-016 | **done** — `86bf0b1`, `c143f2f`, `ae3dac9`; acceptance met exactly, see Log |
 | WP6 | Build graph + Makefile + full regeneration | F-009, F-014 | **done** — `fa83999`, `4de0d19`, `+reconciliation`; 30 nodes, 28 OK, 2 blocked; **the canonical does not reproduce after year 2 and one parameter explains it — see Log** |
-| D1 | Main-text edits | HANDOFF §7 | not started |
-| D2 | SI edits + regenerated Table S1 + new limitations + benchmark section | HANDOFF §7 | not started |
-| D3 | Deposit docs: MANIFEST.md, `make_figure_s5.py`, `figS12_curves.json` generator | F-009 | not started |
+| D1 | Main-text edits | HANDOFF §7 | **held by Matthew, 2026-07-26** — will not run until `eps_F_N` is settled by him rather than by WP6; §7's list is anchored on the v14 submission and v14_sol has already made most of it |
+| D2 | SI edits + regenerated Table S1 + new limitations + benchmark section | HANDOFF §7 | **held**, same reason. Now also owes a reprint of Supplementary Table S4 (F-017) |
+| D3 | Deposit docs: MANIFEST.md, Figure S5, the genuinely unsourced input | F-009, F-017 | **done** — `1037e39`, `d6272b0`; two of the three items were the wrong items, see Log |
 
 **Dependencies.** WP1 blocks WP2–WP6. WP2 blocks WP6. WP4 and WP5 are independent of each other. D1, D2 and D3 depend on nothing and can run first or in parallel with any WP.
 
@@ -70,18 +70,52 @@ Start a new Cowork task with the project folder connected and paste the matching
 ### WP6
 > Read `paper2-soil-resilience/v15/v15_REBUILD_STATE.md` first, then WP6 only. Grep F-009 and F-014 in `v15/FINDINGS.md`. Build `code/build.py` and the `Makefile`, with `params_fingerprint()` hashing the registry with `DOCUMENTARY_KEYS` removed. Then regenerate the full chain. Acceptance: 28 nodes OK, one orphan (`figures/Figure_S5_flux_decomposition.png`), one unsourced input (`data/figS12_curves.json`); `canonical_ERA5_y30.json` unchanged at global year-1 2.32% and year-10 3.03%. Commit as you go. Update the state file and stop.
 
-### D1
-> Read `paper2-soil-resilience/v15/HANDOFF_v15_model_assurance.md` sections 5 and 7 only. Make the main-text edits listed under "Main text" in the v14_sol manuscript, tracked changes as Matthew Wallenstein. Every replacement number is in §5; do not rerun the model. Deliver a tracked and a clean docx and commit both.
+### D1 — SUPERSEDED, do not paste
+> The original prompt said "every replacement number is in §5; do not rerun the model." Both halves are now wrong. §5's canonical family was produced at `eps_F_N = -0.5` (WP6), and §7's list is anchored on the v14 submission, not v14_sol. Pasting it would overwrite correct v14_sol figures with the -0.5 family. Rewrite it after Matthew settles `eps_F_N`; it should start by diffing `resumbission/v14/…_v14-clean.docx` against `resumbission/v14_sol/…_v14_sol.docx` and land only what v14_sol has not already landed.
 
-### D2
-> Read `paper2-soil-resilience/v15/HANDOFF_v15_model_assurance.md` sections 5 and 7 only, plus `v15/outputs/table_S1_parameters.md`. Make the SI edits listed under "SI", including the three new limitations and the benchmark-suite section. Grep F-008 in FINDINGS.md for the benchmark section's content. Tracked changes as Matthew Wallenstein. Deliver tracked and clean docx and commit both.
+### D2 — SUPERSEDED, do not paste
+> Same defect as D1, plus two of its own. The SSA 30-year SOC decline is 2.145% at `eps_F_N = -0.5` and **2.24% at zero**, so the single number the prompt is most specific about depends on the open decision. And F-017 added an item the prompt does not contain: Supplementary Table S4 must be reprinted from the regenerated `data/crop_response_calibration_table.csv`. The three new limitations and the benchmark-suite section (F-001, F-004, F-008) are independent of `eps_F_N` and could be split into a package that runs now.
 
-### D3
-> Read `paper2-soil-resilience/v15/HANDOFF_v15_model_assurance.md` §7 "Deposit" and grep F-009 in `v15/FINDINGS.md`. Correct MANIFEST.md's climate-swap figure, write `make_figure_s5.py`, and either write a generator for `data/figS12_curves.json` or recompute the curves. Commit as you go.
+### D3 — done, `1037e39` and `d6272b0`
+> Two of its three items were the wrong items. `figS12_curves.json` has had a generator since before the reconstruction base; the unsourced file was `data/crop_response_calibration_table.csv`, and it is the source of Supplementary Table S4. `make_figure_s5.py` should never be written: Figure S5 is not in the paper. See F-017.
 
 ---
 
 ## Log
+
+- **2026-07-26 — D3 done, and two of its three items were the wrong items.**
+  `1037e39` (generators and stats deposit) and `d6272b0` (docs, F-017, stamps).
+  `make verify` runs thirteen suites and the graph and exits 0; 30 nodes at
+  BLOCKED 2 / OK 28; the unsourced list is down from three to two. Full account
+  in FINDINGS.md F-017. Four things the next task should know:
+
+  1. **`data/crop_response_calibration_table.csv` is Supplementary Table S4.**
+     Not "an input to Figure S13" — `make_ofra_validation.py` line 15 reads
+     `outputs/Table_S4_calibration_sol.csv` and always has, so the graph's input
+     declaration was wrong too: the third declared-versus-actual in this deposit,
+     and the first in the input direction. The file's real consumer is the SI,
+     which transcribes it row for row, and the frozen copy was two recalibrations
+     behind. **Every numeric column of SI Table S4 except `FAOSTAT y_obs`, `c` and
+     `Floor` is wrong in v14_sol**; the nitrogen columns by 36% and 55%. That is a
+     D2 edit and it is not in D2's prompt.
+  2. **`make_figure_s5.py` must not be written.** Figure S5 was withdrawn from the
+     paper — SI paragraph 200 says so and is the only surviving reference — the
+     PNG is not in `figures/`, and the 4-pool code it draws was never deposited.
+     Retired in MANIFEST.md and README.md with the reason.
+  3. **F-009's 0.74 pp is in no file in this tree.** MANIFEST and README both read
+     0.69 pp / rho 0.95; the regenerated values are **0.70 pp / rho 0.98**. Both now
+     come from `results/climate_swap_stats.txt`, because `climate_comparison.py`
+     printed them to a console until this pass — F-009's own mechanism, still
+     running on the finding that named it.
+  4. **The two sourced outputs of `make_table_s4_sol.py` were byte-identical
+     before and after regeneration** (`figS12_curves.json`,
+     `Table_S4_calibration_sol.csv`), and so is Figure S13's PNG. Only the
+     unsourced output had drifted. That is the cleanest available demonstration of
+     what the graph is for, and it is worth one sentence in the response letter.
+
+  **D1 and D2 were not started.** Matthew held both pending his own reading of
+  WP6's `eps_F_N` resolution. The kickoff prompts for both are marked SUPERSEDED
+  above with what is wrong with them.
 
 - **2026-07-26 — WP6 done, and it found something bigger than a build graph.**
   `code/build.py` (30 declared nodes), `Makefile`, `code/tests/test_benchmark_baseline.py`,
