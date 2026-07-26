@@ -96,7 +96,7 @@ claims:
       It is an ordinary check now, and `make_soc_trajectories.py` is its generator.
       Tolerance 0.15 is taken from the sentence's own precision, not widened to fit.
     checks:
-      - {id: ssa_soc_decline_30yr,   stated: 2.5, tol: 0.15, units: "% of year-0 stock", select: {kind: json, path: "regions[region=sub_saharan_africa].soc_decline_pct_yr30", artifact: data/soc_trajectories.json}}
+      - {id: ssa_soc_decline_30yr,   stated: 2.5, tol: 0.15, tol_note: "F-016: taken from the sentence's own precision (2.5% asserts nothing finer than a tenth) and deliberately not widened further; the drift is 0.355 and survives any defensible tolerance.", units: "% of year-0 stock", select: {kind: json, path: "regions[region=sub_saharan_africa].soc_decline_pct_yr30", artifact: data/soc_trajectories.json}}
       - {id: ssa_loss_yr30,          stated: 5.9, tol: 0.1,  units: "% yield loss", select: {kind: csv_cell, where: {year: 30}, column: "S3_Sub-Saharan_Africa"}}
       - {id: south_asia_loss_yr30,   stated: 6.3, tol: 0.1,  units: "% yield loss", select: {kind: csv_cell, where: {year: 30}, column: "S3_South_Asia"}}
       - {id: fsu_loss_yr30,          stated: 6.0, tol: 0.1,  units: "% yield loss", select: {kind: csv_cell, where: {year: 30}, column: "S3_Former_Soviet_Union_&_Central_Asia"}}
@@ -143,8 +143,8 @@ claims:
     checks:
       - {id: margin_gap_min_pp,     stated: 2.5,   tol: 0.1, units: "percentage points", select: {kind: derived, name: figure1_margin_gap, args: {agg: min}}}
       - {id: margin_gap_max_pp,     stated: 4.2,   tol: 0.1, units: "percentage points", select: {kind: derived, name: figure1_margin_gap, args: {agg: max}}}
-      - {id: ssa_margin_mean_pct,   stated: -11.4, tol: 0.5, units: "% change in margin", select: {kind: derived, name: figure1_margin_at, args: {region: sub_saharan_africa, soc_pct: 100}}}
-      - {id: ssa_margin_half_pct,   stated: -15.6, tol: 0.5, units: "% change in margin", select: {kind: derived, name: figure1_margin_at, args: {region: sub_saharan_africa, soc_pct: 50}}}
+      - {id: ssa_margin_mean_pct,   stated: -11.4, tol: 0.1, units: "% change in margin", select: {kind: derived, name: figure1_margin_at, args: {region: sub_saharan_africa, soc_pct: 100}}}
+      - {id: ssa_margin_half_pct,   stated: -15.6, tol: 0.1, units: "% change in margin", select: {kind: derived, name: figure1_margin_at, args: {region: sub_saharan_africa, soc_pct: 50}}}
 
   # ------------------------------------------------------ 02x: soil water / WHC
   - id: C-021
@@ -187,10 +187,10 @@ claims:
       individually is what makes that visible; a single "the price table is
       correct" check would have failed as one opaque unit.
     checks:
-      - {id: n_price_sub_saharan_africa, stated: 1.40, tol: 0.02, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: sub_saharan_africa}}}
-      - {id: n_price_south_asia,         stated: 1.20, tol: 0.02, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: south_asia}}}
-      - {id: n_price_latin_america,      stated: 1.15, tol: 0.02, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: latin_america}}}
-      - {id: n_price_north_america,      stated: 1.10, tol: 0.02, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: north_america}}}
+      - {id: n_price_sub_saharan_africa, stated: 1.40, tol: 0.01, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: sub_saharan_africa}}}
+      - {id: n_price_south_asia,         stated: 1.20, tol: 0.01, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: south_asia}}}
+      - {id: n_price_latin_america,      stated: 1.15, tol: 0.01, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: latin_america}}}
+      - {id: n_price_north_america,      stated: 1.10, tol: 0.01, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: north_america}}}
       - {id: crop_price_sub_saharan_africa, stated: 300.0, tol: 1.0, units: "USD per t", select: {kind: registry, name: crop_price_usd_t, key: sub_saharan_africa}}
       - {id: crop_price_south_asia,         stated: 280.0, tol: 1.0, units: "USD per t", select: {kind: registry, name: crop_price_usd_t, key: south_asia}}
       - {id: crop_price_latin_america,      stated: 260.0, tol: 1.0, units: "USD per t", select: {kind: registry, name: crop_price_usd_t, key: latin_america}}
@@ -262,7 +262,7 @@ claims:
       two-way index to close; registering it against the sentence that does state
       it is preferable to registering it against no sentence at all.
     checks:
-      - {id: south_asia_net_revenue_farmer_paid_pct, stated: 0.95, tol: 0.05, units: "% change in net revenue", select: {kind: csv_cell, where: {region: south_asia, price_convention: farmer_paid, soc_pct: 100}, column: net_revenue_change_pct}}
+      - {id: south_asia_net_revenue_farmer_paid_pct, stated: 0.95, tol: 0.01, units: "% change in net revenue", select: {kind: csv_cell, where: {region: south_asia, price_convention: farmer_paid, soc_pct: 100}, column: net_revenue_change_pct}}
 
   # -------------------------------------------- 04x: demand response and prices
   - id: C-040

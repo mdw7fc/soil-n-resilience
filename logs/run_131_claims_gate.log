@@ -1,0 +1,6 @@
+CLAIM REGISTER  19 claims, 70 checks, 42 AGREES, 28 DRIFTED, 0 unresolved, owed generators 0
+DRIFTED CLAIMS  C-010, C-011, C-014, C-021, C-030, C-041, C-042, C-060, C-061
+SMALLEST DRIFT  C-060/east_asia_yr10  0.118 against tol 0.1
+LARGEST DRIFT   C-014/ssa_margin_half_pct  14.98
+
+CLAIM GATE: PASS
