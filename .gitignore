@@ -1,3 +1,5 @@
 __pycache__/
 *.pyc
 .DS_Store
+_transfer/
+_stale_git_locks/

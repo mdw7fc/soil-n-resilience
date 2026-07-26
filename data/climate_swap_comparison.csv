@@ -1,9 +1,0 @@
-region,Ybase_expert,Ybase_ERA5,yr1_loss_expert,yr1_loss_ERA5,yr10_loss_expert,yr10_loss_ERA5,d_yr10_pp
-north_america,5.6,5.68,2.17,1.98,2.41,2.22,-0.2
-europe,5.11,5.11,2.91,2.94,3.94,3.95,0.0
-east_asia,6.01,6.0,3.13,3.24,3.38,3.5,0.12
-south_asia,3.26,3.21,7.1,7.45,9.58,10.13,0.54
-southeast_asia,4.31,4.3,4.72,4.7,6.15,6.15,0.0
-latin_america,4.71,4.54,1.49,1.78,2.46,2.97,0.52
-sub_saharan_africa,1.65,1.69,10.29,10.29,14.0,13.73,-0.27
-fsu_central_asia,2.93,2.93,8.29,8.26,9.78,9.76,-0.02
