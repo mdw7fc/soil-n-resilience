@@ -1,0 +1,10 @@
+north_america                  yr1= +4.51%  yr10= +5.08%  yr30= +5.25%
+europe                         yr1= +8.74%  yr10=+10.01%  yr30=+10.36%
+east_asia                      yr1= +2.01%  yr10= +3.06%  yr30= +3.08%
+south_asia                     yr1= +6.45%  yr10= +7.91%  yr30= +8.21%
+southeast_asia                 yr1= +5.47%  yr10= +6.34%  yr30= +6.70%
+latin_america                  yr1= +3.67%  yr10= +4.11%  yr30= +4.40%
+sub_saharan_africa             yr1= +5.35%  yr10= +5.76%  yr30= +6.57%
+fsu_central_asia               yr1= +9.16%  yr10=+11.03%  yr30=+11.93%
+GLOBAL (production-weighted)   yr1= +5.34%  yr10= +6.29%  yr30= +6.61%
+wrote data/food_price_response.csv

@@ -1,0 +1,7 @@
+35 rows  PASS 9  MARGINAL 3  FAIL 1  INFORMATIVE 14  OWED 7  NOT_APPLICABLE 1   STRONG 11
+  -> /home/claude/v15/outputs/benchmarks.csv
+  -> /home/claude/v15/outputs/benchmarks.json
+  MARGINAL  B1-SSA-MPP                                 model 24.7161 vs [7.7, 20.0]
+  MARGINAL  B2-BROADBALK-FERT-MINUS-NIL-YR96           model 38.4936 vs [9.3, 37.2]
+  FAIL      B3-europe-YR30                             model 0.4063 vs [0.681, 0.776]
+  MARGINAL  B5-north_america-OWN-PRICE                 model -0.2 vs [-1.87, -0.21]

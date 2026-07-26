@@ -51,8 +51,8 @@ Every drift is an edit owed to the document, not a tolerance artefact. Tolerance
 
 | check | stated | model | delta | tol | verdict |
 |---|---:|---:|---:|---:|---|
-| `figure2_global_total_yr10` | 3.4 | 3.1785 | -0.2215 | 0.1 | DRIFTED |
-| `figure2_south_asia_total_yr10` | 6 | 5.2253 | -0.7747 | 0.1 | DRIFTED |
+| `figure2_global_total_yr10` | 3.4 | 3.1975 | -0.2025 | 0.1 | DRIFTED |
+| `figure2_south_asia_total_yr10` | 6 | 5.1207 | -0.8793 | 0.1 | DRIFTED |
 
 **Document edit owed.** Regenerate `data/figure2_panels.json` and re-read MS [56] against it. F-012, F-014.
 
@@ -62,10 +62,10 @@ Every drift is an edit owed to the document, not a tolerance artefact. Tolerance
 
 | check | stated | model | delta | tol | verdict |
 |---|---:|---:|---:|---:|---|
-| `margin_gap_min_pp` | 2.5 | 0.2735 | -2.2265 | 0.1 | DRIFTED |
-| `margin_gap_max_pp` | 4.2 | 0.9837 | -3.2163 | 0.1 | DRIFTED |
-| `ssa_margin_mean_pct` | -11.4 | 0.3092 | +11.7092 | 0.1 | DRIFTED |
-| `ssa_margin_half_pct` | -15.6 | -0.6208 | +14.9792 | 0.1 | DRIFTED |
+| `margin_gap_min_pp` | 2.5 | 0.2725 | -2.2275 | 0.1 | DRIFTED |
+| `margin_gap_max_pp` | 4.2 | 0.9858 | -3.2142 | 0.1 | DRIFTED |
+| `ssa_margin_mean_pct` | -11.4 | 0.3211 | +11.7211 | 0.1 | DRIFTED |
+| `ssa_margin_half_pct` | -15.6 | -0.6108 | +14.9892 | 0.1 | DRIFTED |
 
 **Document edit owed.** 2.5-4.2 pp -> 0.27-0.99 pp (state as ~0.3-1.0). The SSA pair goes to +0.31% at the mean against -0.62% at half the mean. F-012.
 
@@ -104,10 +104,10 @@ Every drift is an edit owed to the document, not a tolerance artefact. Tolerance
 
 | check | stated | model | delta | tol | verdict |
 |---|---:|---:|---:|---:|---|
-| `spread_min_crisis` | 0.2 | 0.2137 | +0.0137 | 0.1 | AGREES |
-| `spread_max_crisis` | 1.5 | 1.4541 | -0.0459 | 0.1 | AGREES |
-| `spread_min_300` | 0.4 | 0.4102 | +0.0102 | 0.1 | AGREES |
-| `spread_max_300` | 2.2 | 2.1818 | -0.0182 | 0.1 | AGREES |
+| `spread_min_crisis` | 0.2 | 0.2173 | +0.0173 | 0.1 | AGREES |
+| `spread_max_crisis` | 1.5 | 1.4483 | -0.0517 | 0.1 | AGREES |
+| `spread_min_300` | 0.4 | 0.4172 | +0.0172 | 0.1 | AGREES |
+| `spread_max_300` | 2.2 | 2.1731 | -0.0269 | 0.1 | AGREES |
 
 **Document edit owed.** SI [197] 0.1-1.5 -> 0.2-1.5, to agree with MS [53], which the model supports. The minimum spread across regions in the crisis range is 0.214. F-012.
 
@@ -126,7 +126,7 @@ Every drift is an edit owed to the document, not a tolerance artefact. Tolerance
 
 | check | stated | model | delta | tol | verdict |
 |---|---:|---:|---:|---:|---|
-| `south_asia_net_revenue_farmer_paid_pct` | 0.95 | 0.9479 | -0.0021 | 0.01 | AGREES |
+| `south_asia_net_revenue_farmer_paid_pct` | 0.95 | 0.9496 | -0.0004 | 0.01 | AGREES |
 
 ## C-040 — MS [35]; SI [76]
 
@@ -143,9 +143,9 @@ Every drift is an edit owed to the document, not a tolerance artefact. Tolerance
 
 | check | stated | model | delta | tol | verdict |
 |---|---:|---:|---:|---:|---|
-| `global_yr10_baseline` | 3.4 | 3.1785 | -0.2215 | 0.1 | DRIFTED |
-| `global_yr10_halved` | 1.9 | 1.5928 | -0.3072 | 0.1 | DRIFTED |
-| `reduction_pct` | 46 | 49.8889 | +3.8889 | 1 | DRIFTED |
+| `global_yr10_baseline` | 3.4 | 3.1975 | -0.2025 | 0.1 | DRIFTED |
+| `global_yr10_halved` | 1.9 | 1.6024 | -0.2976 | 0.1 | DRIFTED |
+| `reduction_pct` | 46 | 49.8866 | +3.8866 | 1 | DRIFTED |
 
 **Document edit owed.** Figure S8 caption: 3.4 / 1.9 / 46% -> the regenerated triple. F-015.
 
@@ -155,12 +155,12 @@ Every drift is an edit owed to the document, not a tolerance artefact. Tolerance
 
 | check | stated | model | delta | tol | verdict |
 |---|---:|---:|---:|---:|---|
-| `global_yr1` | 5.5 | 5.3200 | -0.1800 | 0.1 | DRIFTED |
-| `global_yr10` | 5 | 6.2700 | +1.2700 | 0.1 | DRIFTED |
-| `latin_america_yr10` | 1 | 3.9300 | +2.9300 | 0.1 | DRIFTED |
-| `fsu_yr10` | 10.3 | 11.0800 | +0.7800 | 0.1 | DRIFTED |
-| `regional_yr1_min` | 2 | 2.0400 | +0.0400 | 0.1 | AGREES |
-| `regional_yr1_max` | 9.2 | 9.2100 | +0.0100 | 0.1 | AGREES |
+| `global_yr1` | 5.5 | 5.3400 | -0.1600 | 0.1 | DRIFTED |
+| `global_yr10` | 5 | 6.2900 | +1.2900 | 0.1 | DRIFTED |
+| `latin_america_yr10` | 1 | 4.1100 | +3.1100 | 0.1 | DRIFTED |
+| `fsu_yr10` | 10.3 | 11.0300 | +0.7300 | 0.1 | DRIFTED |
+| `regional_yr1_min` | 2 | 2.0100 | +0.0100 | 0.1 | AGREES |
+| `regional_yr1_max` | 9.2 | 9.1600 | -0.0400 | 0.1 | AGREES |
 
 **Document edit owed.** Year-1 global 5.5 and year-10 global 5.0 both move, and Latin America's year-10 index goes from 1.0% to roughly four times that. The Latin American figure changes the claim about how wide the regional spread is, not only the number. F-014.
 

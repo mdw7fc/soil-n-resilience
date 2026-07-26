@@ -1,0 +1,24 @@
+{
+  "generator": "code/repro/make_figure_s7.py",
+  "generator_sha": "1ee5bc1e191318b9f14a288ec443619cd6999e0ca9255d9ed3d91eb0c58b88b8",
+  "inputs": {
+    "code/model/coupled_econ_biophysical.py": "2465e0dd141ea2b0747743e732d8577c9e1ebc41eab17b5dad28481ecc1b0afc",
+    "code/model/coupled_monthly.py": "f56c4a64c059f43302f25c38c3f80f9a96bd1507950bc04aa5b514e166a289ba",
+    "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
+    "code/model/parameter_registry.py": "0033a30e18a46cf7ab7cc8072e0ce4f85fa235fbac3d4c6977c0b7d81c7a6748",
+    "code/model/prices.py": "9685f40ece2f5659bae91f9ec980ea9a76a8595e85f6cc823759cd8db7f78250",
+    "code/model/registry.py": "0ad6974d63de654822aa0b456a1b92a57052bf0092efc1ab3863b4f1dd45546f",
+    "code/model/seams.py": "5203d7d1a0f8a88ce5b94b5394e1ecc6aea8dee9d95a2df76b023572a4ad85e2",
+    "code/model/soil_n_model.py": "692a68e58819707c99f0f4ff07d6abd289e878dccbbbd1382aa3d5fb4e9dac9f",
+    "data/era5_regional_climates.json": "d2caf2eade29e2b6d32ea42d9bfcf0385f63fd2f530c3692f801df64040c43f5"
+  },
+  "node": "figure_s7",
+  "outputs": {
+    "data/figS7_farm_elasticity_gradient.json": "6906e16ef0cf2b96393fd5dae7c64a3efcc7608a2187a0fe19993f8e6766ff2d",
+    "figures/Figure_S7_farm_elasticity_gradient.pdf": "2c4143a5ca74d1a65b02429af388afd1bf5d9a2cfd36e283dbd895eeebfc910e",
+    "figures/Figure_S7_farm_elasticity_gradient.png": "c382eacc6774f03e3f534c2f3ac385988326ed2d5c02c7fe36cc9e33617bef11"
+  },
+  "params_fingerprint": "d382baf80d4b742f83ff56a42e1cac8375c755d176281416dd277c4a97dded37",
+  "stamped_at": "2026-07-26T01:58:32Z",
+  "stamped_at_commit": "unknown"
+}

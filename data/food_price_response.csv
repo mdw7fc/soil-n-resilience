@@ -1,10 +1,10 @@
 region,abbr,cropland_mha,y_base,food_price_pct_yr1,food_price_pct_yr10,food_price_pct_yr30
-north_america,NA,170.0,5.577245569256269,4.45,5.01,5.18
-europe,EU,130.0,5.0889459168926034,8.65,9.91,10.25
-east_asia,EA,120.0,5.877913266411002,2.04,3.11,3.12
-south_asia,SA,200.0,3.076228711732302,6.62,8.12,8.42
-southeast_asia,SEA,90.0,4.1968906529714,5.47,6.34,6.71
-latin_america,LATAM,160.0,4.688334746773613,3.51,3.93,4.2
-sub_saharan_africa,SSA,230.0,1.4504527576989223,5.46,5.85,6.65
-fsu_central_asia,FSU,130.0,2.7800160133232836,9.21,11.08,11.98
-GLOBAL (production-weighted),GLOBAL,,,5.32,6.27,6.59
+north_america,NA,170.0,5.5,4.51,5.08,5.25
+europe,EU,130.0,4.9999999999999964,8.74,10.01,10.36
+east_asia,EA,120.0,6.0,2.01,3.06,3.08
+south_asia,SA,200.0,3.2,6.45,7.91,8.21
+southeast_asia,SEA,90.0,4.2,5.47,6.34,6.7
+latin_america,LATAM,160.0,4.500000000000002,3.67,4.11,4.4
+sub_saharan_africa,SSA,230.0,1.4999999999999971,5.35,5.76,6.57
+fsu_central_asia,FSU,130.0,2.799999999999999,9.16,11.03,11.93
+GLOBAL (production-weighted),GLOBAL,,,5.34,6.29,6.61

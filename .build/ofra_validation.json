@@ -1,0 +1,15 @@
+{
+  "generator": "code/repro/make_ofra_validation.py",
+  "generator_sha": "0a627bc2219e9af4ad79bb52c1b7dd6bb80949c6d93012d142b8bae057c2cd73",
+  "inputs": {
+    "data/crop_response_calibration_table.csv": "2040cada7f8336566ff7195a65ccc323af340c078064ed284202e986a481ecc9",
+    "data/ofra_maize_N_responsefunctions.csv": "14e2865bd72af8a41d5dd5c7f3c6fdd3a4b82dc4c771585f50fb5d5b8e9eb40f"
+  },
+  "node": "ofra_validation",
+  "outputs": {
+    "figures/Figure_S13_OFRA_SSA_validation.png": "624f4ae062b8296936e45020993ac908fd014b3d6cd829c2e8ebf52438ba0669"
+  },
+  "params_fingerprint": null,
+  "stamped_at": "2026-07-26T02:00:08Z",
+  "stamped_at_commit": "unknown"
+}

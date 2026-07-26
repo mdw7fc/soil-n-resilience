@@ -1,0 +1,14 @@
+{
+  "generator": "code/repro/make_figure_s8.py",
+  "generator_sha": "731cc0f1178d9ca397afe53b1a2542e8b94f891a2d711661911c926f48cf9e28",
+  "inputs": {
+    "data/figS8_curves.json": "88b8de227a4c2fda15ea4f3b5c1a6309e8ddb540d263cc81a95fc19b9b654e1f"
+  },
+  "node": "figure_s8",
+  "outputs": {
+    "figures/Figure_S8_elasticity_sensitivity.png": "7dd1c99fb1309746632d05941369aaa41dbd83d07c03514ee2c161d0b7f884f1"
+  },
+  "params_fingerprint": null,
+  "stamped_at": "2026-07-26T01:57:06Z",
+  "stamped_at_commit": "unknown"
+}

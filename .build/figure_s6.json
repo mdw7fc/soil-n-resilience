@@ -1,0 +1,14 @@
+{
+  "generator": "code/repro/make_figure_s6.py",
+  "generator_sha": "86b30218996f68e76f918cd86b967377d0486c2210f7e5f1a7b27570c37bc81c",
+  "inputs": {
+    "data/canonical_ERA5_y30.json": "0e78f475e7d97ab0ed19a75a831412b93a6e9e4abe07b0e8a3fd258dbe6cac5f"
+  },
+  "node": "figure_s6",
+  "outputs": {
+    "figures/Figure_S6_pairwise_diagnostics.png": "a41125d62d964be5ec994d12fd3345452113ca0d9874679eebf8c32430ab58cd"
+  },
+  "params_fingerprint": null,
+  "stamped_at": "2026-07-26T01:55:28Z",
+  "stamped_at_commit": "unknown"
+}

@@ -1,0 +1,20 @@
+north_america        yr10 gradient 10%/100%/200%:  -2.64  -1.80  -1.31
+europe               yr10 gradient 10%/100%/200%:  -4.69  -3.67  -2.99
+east_asia            yr10 gradient 10%/100%/200%:  -1.51  -1.21  -0.97
+south_asia           yr10 gradient 10%/100%/200%:  -6.37  -5.12  -4.22
+southeast_asia       yr10 gradient 10%/100%/200%:  -5.88  -3.84  -2.67
+latin_america        yr10 gradient 10%/100%/200%:  -3.83  -2.51  -1.73
+sub_saharan_africa   yr10 gradient 10%/100%/200%:  -6.17  -4.93  -3.95
+fsu_central_asia     yr10 gradient 10%/100%/200%:  -7.32  -5.55  -4.34
+
+region      total   direct      SOM
+Global       3.20     2.87     0.33
+FSU          5.55     4.75     0.81
+SA           5.12     4.82     0.30
+SSA          4.93     3.85     1.08
+SEA          3.84     3.42     0.43
+EU           3.67     3.41     0.26
+LATAM        2.51     2.19     0.32
+NA           1.80     1.66     0.14
+EA           1.21     1.19     0.02
+wrote figures/Figure_2_regional_vulnerability.png/.pdf

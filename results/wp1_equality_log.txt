@@ -1,6 +1,6 @@
 ========================================================================
-CHECK 1 -- canonical diff
-  123 fields compared, 0 numeric differences
+CHECK 1 -- canonical diff against a freshly regenerated artifact
+  123 fields compared, 50 moved, 50 pinned as expected
 ========================================================================
 CHECK 2 -- field-by-field equality over every regional field
   RegionParams: 152 fields over 8 regions, 0 moved
@@ -11,14 +11,14 @@ CHECK 2 -- field-by-field equality over every regional field
   REGIONAL_ECON_PARAMS: 64 fields, 0 moved
 ========================================================================
 CHECK 3 -- global S3 production-weighted yield loss
-  year 1  2.31 %
-  year 10 3.18 %
-  year 30 3.29 %
+  year 1  2.32 %
+  year 10 3.20 %
+  year 30 3.31 %
   NOTE: the reconstruction base (git 20defb2, pre-F-002) produces
-        2.31 / 3.18 / 3.29. The 2.32 / 3.03 recorded in HANDOFF section 5
-        is post-recalibration and is WP2's acceptance target, not WP1's.
-        WP1's requirement is that the rewiring moves nothing, which
-        CHECK 1 is the test of.
+        2.31 / 3.18 / 3.29. WP2's F-002 recalibration moved this to
+        2.32 / 3.20 / 3.31. The 3.03 year-10 figure quoted in HANDOFF
+        section 5 and in WP6's acceptance matches neither and is
+        owed a restatement -- see results/mutation_coverage_reconciliation.md.
 ========================================================================
 CHECK 4 -- registry load-time contract
   entries 54, mutable leaves 56
@@ -30,4 +30,5 @@ CHECK 4 -- registry load-time contract
   cre_allocation.cre_to_slow         refused at load
   soc_profile_depth_cm               refused at load
 ========================================================================
-WP1 PASSED -- the registry drives the model and no number moved.
+WP1 PASSED -- the registry drives the model; the canonical artifact moves
+              only the 50 fields WP2 pinned, by the pinned amounts.

@@ -1,0 +1,14 @@
+region                  yr10 frac  yr30 frac    max |dev|
+north_america             1.00000    0.99999     0.000011
+europe                    1.00000    0.99999     0.000006
+east_asia                 1.00000    0.99999     0.000010
+south_asia                1.00000    0.99999     0.000011
+southeast_asia            1.00000    0.99999     0.000013
+latin_america             1.00000    0.99999     0.000010
+sub_saharan_africa        0.99999    0.99998     0.000016
+fsu_central_asia          0.99999    0.99996     0.000036
+
+global weighted year-10 no-shock drift : +0.000 %
+maximum 30-year deviation from baseline: 3.64e-05
+
+ZERO-SHOCK INVARIANCE: PASS

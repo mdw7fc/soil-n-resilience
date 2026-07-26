@@ -1,0 +1,5 @@
+wrote /home/claude/v15/code/repro/../../results/calibration_production_path.csv
+legacy path missed FAOSTAT by up to 4.185 percent
+production path residual worst case 1.924e-13 percent
+YM_REGION_FIELDS: 13
+F-002 ACCEPTANCE (<= 8e-3 percent): PASS

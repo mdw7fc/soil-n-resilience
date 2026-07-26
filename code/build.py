@@ -172,6 +172,7 @@ class Node:
     minutes: float = 0.5
     note: str = ""
     argv: Tuple[str, ...] = ()
+    blocked: str = ""   # non-empty: running this node would destroy evidence
 
     def all_inputs(self) -> Tuple[str, ...]:
         extra = MODEL_SOURCES if self.uses_model else ()
@@ -195,7 +196,14 @@ NODES: List[Node] = [
     # -- trajectories -------------------------------------------------------
     Node("scenario_trajectories", "code/repro/make_scenario_trajectories.py",
          outputs=("data/scenario_trajectories.csv",),
-         inputs=(ERA5,), minutes=0.2),
+         inputs=(ERA5,), minutes=0.2,
+         blocked=("the deposited artifact carries a PULSE1_global column that "
+                  "this generator does not write. F-016 added the one-year "
+                  "pulse to the model and to this script; that work was lost "
+                  "with the crashed v15 tree and the surviving script is the "
+                  "pre-pulse one. Running it would delete the column C-061 "
+                  "reads and nothing here could rebuild it. Frozen copy: "
+                  "baseline/surviving_v15/scenario_trajectories.csv")),
     Node("sc_trajectories", "code/repro/make_sc_trajectories.py",
          outputs=("data/SC1_regional_trajectory.csv",
                   "data/SC2_regional_trajectory.csv"),
@@ -256,7 +264,15 @@ NODES: List[Node] = [
                   "data/mc_ensemble/mc_summary.txt",
                   "data/mc_ensemble/mc_priors.json"),
          inputs=(ERA5,), minutes=90.0,
-         note="1,000 joint-prior draws; the expensive node"),
+         note="1,000 joint-prior draws; the expensive node",
+         blocked=("the deposited ensemble is the only surviving v15 one, and "
+                  "it is what F-013's claim strength reproduces against (P3 "
+                  "0.998). Rerunning it under the present model would "
+                  "overwrite that evidence with draws from a configuration "
+                  "that is under decision: the tree runs S3 at eps_F_N = 0 "
+                  "and the deposited results require eps_F_N = -0.5 (see "
+                  "results/build_reconciliation.md). Rerun it once that is "
+                  "settled, not before. ~90 min.")),
     Node("figure_s9", "code/repro/make_figure_s9.py",
          outputs=("figures/Figure_S9_mc_ensemble.png",
                   "figures/Figure_S9_mc_ensemble.pdf"),
@@ -581,6 +597,10 @@ MISSING_OUTPUT = "MISSING_OUTPUT"
 MISSING_INPUT = "MISSING_INPUT"
 UNSTAMPED = "UNSTAMPED"
 UNSTAMPED_BASELINE = "UNSTAMPED_BASELINE"
+# A node whose generator is BEHIND its deposited artifact: running it would
+# destroy something the tree cannot rebuild. Reported on every status and
+# verify, with the reason, so it cannot become invisible.
+BLOCKED = "BLOCKED"
 
 DEFECT_STATES = {STALE, MISSING_GENERATOR, MISSING_OUTPUT, MISSING_INPUT,
                  UNSTAMPED}
@@ -612,6 +632,9 @@ def status_of(node: Node, baseline: Set[str]) -> Tuple[str, List[str]]:
     missing_lib = [p for p in node.libs if file_hash(p) is None]
     if missing_lib:
         return MISSING_GENERATOR, ["library absent: " + ", ".join(missing_lib)]
+
+    if node.blocked:
+        return BLOCKED, [node.blocked]
 
     now = node_state(node)
     missing_out = [p for p, h in now["outputs"].items() if h is None]
@@ -824,8 +847,12 @@ def cmd_verify(args) -> int:
     baseline = read_unstamped_baseline()
     failures: List[str] = []
     stamped_now: List[str] = []
+    tally: Dict[str, int] = {}
     for node in NODES:
         st, detail = status_of(node, baseline)
+        tally[st] = tally.get(st, 0) + 1
+        if st == BLOCKED:
+            print("BLOCKED  %s: %s" % (node.name, "; ".join(detail)))
         if st in DEFECT_STATES:
             failures.append("%s %s: %s" % (st, node.name, "; ".join(detail)))
         if st == OK and node.name in baseline:
@@ -857,7 +884,16 @@ def cmd_verify(args) -> int:
                 "pruned on a successful verify; a stamped node cannot regress")
             print("pruned %d node(s) from the unstamped baseline"
                   % (len(baseline) - len(remaining)))
-    print("build graph: %d nodes, all OK" % len(NODES))
+    # Report the tally, never "all OK". A gate that says all OK while a node
+    # is exempt is the defect this file exists to catch.
+    print("build graph: %d nodes -- %s" % (
+        len(NODES), ", ".join("%s %d" % (k, v) for k, v in sorted(tally.items()))))
+    if tally.get(UNSTAMPED_BASELINE):
+        print("  (%d node(s) still carry the pre-graph exemption; they have "
+              "never been regenerated under this graph)"
+              % tally[UNSTAMPED_BASELINE])
+    print("  %d orphan(s) and %d unsourced input(s) allowed by name on the "
+          "command line" % (len(orph), len(uns)))
     return 0
 
 
@@ -865,13 +901,20 @@ def cmd_run(args) -> int:
     baseline = read_unstamped_baseline()
     if args.all:
         names = [n.name for n in NODES
-                 if status_of(n, baseline)[0] != MISSING_GENERATOR]
+                 if status_of(n, baseline)[0] not in (MISSING_GENERATOR, BLOCKED)]
     elif args.stale:
         names = [n.name for n in NODES
                  if status_of(n, baseline)[0] not in (OK, UNSTAMPED_BASELINE,
-                                                      MISSING_GENERATOR)]
+                                                      MISSING_GENERATOR, BLOCKED)]
     else:
         names = list(args.nodes)
+    refused = [n for n in names
+               if NODE_BY_NAME.get(n) is not None and NODE_BY_NAME[n].blocked]
+    if refused and not args.force:
+        for n in refused:
+            print("REFUSING to run %s: %s" % (n, NODE_BY_NAME[n].blocked))
+        print("(--force overrides; the frozen copy is in baseline/surviving_v15/)")
+        names = [n for n in names if n not in set(refused)]
     unknown = [n for n in names if n not in NODE_BY_NAME]
     if unknown:
         print("unknown node(s): %s" % ", ".join(unknown))
@@ -961,6 +1004,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p.add_argument("--skip", action="append", default=[])
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--keep-going", action="store_true")
+    p.add_argument("--force", action="store_true",
+                   help="run nodes marked blocked; destroys evidence")
     p.add_argument("--log-dir", default=None)
     p.set_defaults(func=cmd_run)
 

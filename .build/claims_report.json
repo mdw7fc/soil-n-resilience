@@ -1,0 +1,34 @@
+{
+  "generator": "code/repro/make_claim_report.py",
+  "generator_sha": "524e3cc5ad94f83acd3e333be564679a1f0eb676d9a30f31c6a5bf40932f275e",
+  "inputs": {
+    "code/model/coupled_econ_biophysical.py": "2465e0dd141ea2b0747743e732d8577c9e1ebc41eab17b5dad28481ecc1b0afc",
+    "code/model/coupled_monthly.py": "f56c4a64c059f43302f25c38c3f80f9a96bd1507950bc04aa5b514e166a289ba",
+    "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
+    "code/model/parameter_registry.py": "0033a30e18a46cf7ab7cc8072e0ce4f85fa235fbac3d4c6977c0b7d81c7a6748",
+    "code/model/prices.py": "9685f40ece2f5659bae91f9ec980ea9a76a8595e85f6cc823759cd8db7f78250",
+    "code/model/registry.py": "0ad6974d63de654822aa0b456a1b92a57052bf0092efc1ab3863b4f1dd45546f",
+    "code/model/seams.py": "5203d7d1a0f8a88ce5b94b5394e1ecc6aea8dee9d95a2df76b023572a4ad85e2",
+    "code/model/soil_n_model.py": "692a68e58819707c99f0f4ff07d6abd289e878dccbbbd1382aa3d5fb4e9dac9f",
+    "data/figS11_severity_sweep.json": "73c4473e4539128ef5258d7d1db9701dbfdbf0708b1e7fa1b6b0ac8c0482916e",
+    "data/figS8_curves.json": "88b8de227a4c2fda15ea4f3b5c1a6309e8ddb540d263cc81a95fc19b9b654e1f",
+    "data/figure1_farm_gradient.json": "c57398ffba177a1f61aaa244f11a24232a031e345f86ecfa2692ccde08c54a25",
+    "data/figure2_panels.json": "9331535a6eae35789d0cf5111371964e4e13c780307e2f2ff1a1609814686cf3",
+    "data/food_price_response.csv": "8a758366499863c33546a0c18ec5343b2ad813dae54faa15641928819d1d543a",
+    "data/mc_ensemble/mc_probabilities.csv": "a758459fc60a1f37cbcc21048ca39cffe893cd2cc639577b15887ad56eaf8fbf",
+    "data/scenario_trajectories.csv": "c9e2bf4005d86ca7c8dcf6017693a745cfbb51636883f941433c8e24b4b2d6e0",
+    "data/soc_trajectories.json": "cb42c59b646b29cb994a95ae2e603650e8ef8f1506d50bfab8c4346b3e781c52",
+    "docs/claims.yaml": "e27037f8c43ef13f7692dffc8c22ae446ea3b27e6dd0f6aaddcbb6b9a50e921c",
+    "outputs/price_convention_sensitivity_sol.csv": "db3579519d2bcf9411bd75cf37070224dcad2196b2ebede22b7c714b6ac23521",
+    "results/calibration_production_path.csv": "4f445e4445e439ef857952a9e6a7a772ed0d4c9a1f6b683227cbeb422238d666",
+    "results/s3_shock_calibration.csv": "61db4c6577676abbcb83ca3461afe18957fe147f82057b29800a6960a5199945"
+  },
+  "node": "claims_report",
+  "outputs": {
+    "outputs/claims_status.csv": "c4aac074cb8a398f0d0d22dec2e86fd687787de6a73a5bcc1421a3850b69bc32",
+    "results/claims_report.md": "2f6bea86763709f3b62f236c3801add3525d95fa776b9c1d078333df5d91addd"
+  },
+  "params_fingerprint": "d382baf80d4b742f83ff56a42e1cac8375c755d176281416dd277c4a97dded37",
+  "stamped_at": "2026-07-26T02:01:05Z",
+  "stamped_at_commit": "unknown"
+}

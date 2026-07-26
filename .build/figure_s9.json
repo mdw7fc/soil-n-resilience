@@ -1,0 +1,15 @@
+{
+  "generator": "code/repro/make_figure_s9.py",
+  "generator_sha": "9940bb1368f17eb7f4ccf0968ce6ca06a43af2a5e7fc039b6aa4b3effd33a114",
+  "inputs": {
+    "data/mc_ensemble/mc_posterior.csv.gz": "8003922071edbbfdb79db351e72b7eb33e4bc1299bafdc99e6b4e322d1c73b00"
+  },
+  "node": "figure_s9",
+  "outputs": {
+    "figures/Figure_S9_mc_ensemble.pdf": "70caea79070c13c33163ceb250d5a4f6cd665c8359611efab405161c88feb4b3",
+    "figures/Figure_S9_mc_ensemble.png": "e8808d62f691bd4a9b706d11db6e1d2df8eced4f63b163e507d7f2955cbeb418"
+  },
+  "params_fingerprint": null,
+  "stamped_at": "2026-07-26T01:58:41Z",
+  "stamped_at_commit": "unknown"
+}
