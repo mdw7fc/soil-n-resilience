@@ -25,9 +25,9 @@ Each is one Cowork task. Do not combine them. Mark status here and commit this f
 |---|---|---|---|
 | WP1 | Parameter registry (`params.yaml`, `registry.py`) + wire it into the four model modules | F-001, F-006, F-007, F-011 | **done** — `9b2af15`; acceptance gate now red, see Log |
 | WP2 | Production-path calibration + seam contracts + `test_cap_market_clearing` rewrite | F-002, F-005, F-010 | **done** — `9b2af15`, `2b76b16` |
-| WP3 | Mutation coverage harness | F-011 | **done** — `3307523`, `f6f5672`, `8573179`, `44d0bc8`; suite repaired, COVERED 5 → 32 |
+| WP3 | Mutation coverage harness | F-011 | **done** — `3307523`; 44/56 leaves agree with F-011, see Log |
 | WP4 | Benchmark suite + `observed_values.yaml` + baseline verdicts | F-008 | **done** — `97ccc58`, `4733bc3`; 35 rows against the acceptance 41, see Log |
-| WP5 | Claim register (`claims.yaml`) + claim strength | F-012, F-013, F-015, F-016 | not started |
+| WP5 | Claim register (`claims.yaml`) + claim strength | F-012, F-013, F-015, F-016 | **done** — `86bf0b1`, `c143f2f`, `ae3dac9`; acceptance met exactly, see Log |
 | WP6 | Build graph + Makefile + full regeneration | F-009, F-014 | not started |
 | D1 | Main-text edits | HANDOFF §7 | not started |
 | D2 | SI edits + regenerated Table S1 + new limitations + benchmark section | HANDOFF §7 | not started |
@@ -83,19 +83,77 @@ Start a new Cowork task with the project folder connected and paste the matching
 
 ## Log
 
-- **2026-07-26 — WP3 follow-up: the suite the sweep was measuring got repaired.** Re-swept after fixing what the first sweep exposed: **COVERED 32, UNTESTED 0, DECLARED_NOT_WIRED 2, GUARDED_AT_LOAD 6, INERT 16** (`logs/run_68_mutation.log`), against the first sweep's 5 / 27 / 2 / 6 / 16 and the acceptance 12 / 22 / 3 / 6 / 13. Full account in `results/mutation_coverage_reconciliation.md`.
+- **2026-07-26 — WP5 done.** Claim register rebuilt: `docs/claims.yaml` plus
+  `code/repro/claim_resolvers.py` (`86bf0b1`), then `code/tests/test_claims.py`,
+  `code/repro/make_claim_report.py`, `docs/claims_baseline.json`,
+  `docs/claims_index_baseline.json`, `results/claims_report.md`,
+  `outputs/claims_status.csv` and the negative-control log (`c143f2f`), then
+  `code/repro/make_claim_strength.py`, `docs/claim_strength_baseline.json`,
+  `results/claim_strength.{md,csv}` and `results/claims_reconciliation.md`
+  (`ae3dac9`). The gate runs in about two seconds; claim strength in about eight.
 
-  **READ THAT HEADLINE SCEPTICALLY. UNTESTED 0 is thinner than it sounds.** `test_wp1_registry_wiring.py` now regenerates the canonical artifact and asserts a 123-field delta, which makes it a whole-artifact fingerprint: it objects to every reaching mutation by construction and catches all 32. **Twelve leaves are caught by nothing else** — alpha, cropland_mha, eps_F_PY, eps_LD_PL, eps_LD_PY, eps_LS_PL, eta, faostat_yield_target, both laub_tropical_ratios leaves, physical_feedback_strength, whc_sensitivity. Retire or rebaseline that one file and all twelve go straight back to UNTESTED. Real per-parameter coverage is 15 leaves from the spin-up test and 4 from dimensional consistency. F-011's worklist item — a test per uncovered leaf — is not discharged; it shrank from 22 leaves to 12. The COVERAGE DEPTH table in `mutation_coverage_summary.txt` is the number to read, not the verdict counts.
+  **The arithmetic half reproduces exactly, on the first run and with nothing
+  tuned: 19 claims, 70 checks, 42 AGREES, 28 DRIFTED, 0 unresolved, owed
+  generators 0, drifted set C-010, C-011, C-014, C-021, C-030, C-041, C-042,
+  C-060, C-061.** F-012's two signature numbers land on the nose as well — the
+  smallest drift is `C-060/east_asia_yr10` at 0.118 pp against a 0.1 pp
+  tolerance, the largest is `C-014/ssa_margin_half_pct` at 14.98 pp — as do
+  C-060's two surviving agreements (`global_yr1` and the cropland total),
+  C-031's four agreements at a 0.214 minimum spread, C-014's 0.27–0.99 pp
+  margin gaps, C-042's exactly four drifts, C-041's three, C-010's 2.145% SOC
+  decline and C-061's 0.009% year-5 pulse. Full table in
+  `results/claims_reconciliation.md` §1. Four things the next task should know:
 
-  1. **`test_spinup_partition_independence.py` rebuilt** (`44d0bc8`) from the two citations in `params.yaml`. No work package owned it, so the registry was citing a test that did not exist and pointing the SI at a characterisation file nothing wrote. Sweeps f_passive 0.45/0.58/0.73 across eight regions; asserts fast pools partition-independent, passive pool NOT (a floor, so a future convergence fails loudly instead of silently restoring a claim the registry records as false), true fixed point partition-independent, published quantities flat to 0.0133 pp against 0.1 pp reporting. Pins the spin-up equilibrium — that is where its coverage comes from.
-  2. **`test_wp1_registry_wiring.py` was green by being stale** (`8573179`). It read the deposit artifact off the tree, so on an un-regenerated checkout it compared 20defb2 against itself and reported "no number moved". It now re-runs the model and asserts the pinned 50-field delta (`baseline/canonical_expected_delta.json`) rather than zero. CHECK 3 had the same defect and still asserted the 20defb2 headline; it now expects the post-WP2 2.32/3.20/3.31.
-  3. **`test_parameter_extremes_sol.py` green** (`8573179`). It was failing on a correct run: the blanket finiteness check tripped on `ln_cap`, F-010's diagnostic column, which is NaN when the fertilizer ceiling does not bind. Now asserted finite exactly where `cap_binding` is true and NaN elsewhere.
-  4. **`test_parameter_consistency_sol.py` still red, deliberately.** WP2's decision to freeze EXPECTED_SHARES for WP5 stands. But its note said only SSA had drifted and the assertion stopped at the first region: **three of four have drifted**, and south_asia (0.153 → 0.147321) is both the largest and the one SI [163] and C-063/C-064 turn on. All four are now measured before anything is asserted.
+  1. **The register transcribes the v14 submission, not v14_sol, and v14_sol has
+     already made most of the edits the register says are owed.** F-012's C-060
+     quotes MS [56] as "East Asia 1.3, South Asia 6.0, FSU 5.5, SSA 5.4, global
+     3.4"; v14_sol's paragraph 56 reads 1.2 / 5.2 / 5.6 / 5.0 / 3.2. Anchoring
+     on `resumbission/v14/…_v14-clean.docx` resolves all fifteen cited
+     paragraph numbers at a single offset; anchoring on v14_sol resolves none.
+     C-021 (8.4 mm), C-030 (SSA $1.40) and C-014 (2.5–4.2 pp) are all already
+     corrected in v14_sol. **This needs Matthew's decision, not more code, and
+     it changes what D1 and D2 do:** either start those packages by diffing v14
+     against v14_sol rather than by applying HANDOFF §7's list, or re-point the
+     register at v14_sol (cheap — `document_basis` is a header field and the
+     checks, artifacts and tolerances are unaffected). The six other drifted
+     claims are numbers v14_sol also states and the model also disagrees with,
+     so the finding stands either way.
+  2. **P4 and P4b do not reproduce, exactly as `RECONSTRUCTION_GAPS` G-4
+     predicted.** P3 reproduces on the nose (fsu_central_asia 0.998, runner-up
+     southeast_asia 0.002). P4 and P4b are scored over four of eight regions,
+     because the surviving deposit prices four and `prices.n_price_usd_kg`
+     raises for the rest, so they read 0.961 and 1.000 against F-013's 0.542 and
+     0.958. **The verdicts are unaffected** — C-063 and C-064 still name a region
+     the ensemble does not put first, and both are carried in
+     `docs/claim_strength_baseline.json`. What is not recoverable is the number
+     the SI should print in place of 83.7%. Closing it is the eight-region wedge
+     and crop-price compilation named in G-4, then an ensemble rerun. **Do not
+     interpolate the four missing wedges from the registered range.**
+  3. **Eighteen of the nineteen claim identifiers are fixed by evidence, not
+     chosen.** `params.yaml`'s `affects_claims` names exactly eighteen, and
+     because the index is two-way all eighteen must exist or the gate fails. The
+     nineteenth declares no parameter and so leaves no trace in the forward
+     index; it is registered as **C-002** (the SI [167] ensemble claim). The
+     identifier is a reconstruction, the claim is not. C-062, C-063 and C-064
+     are deliberately outside `claims.yaml` — they are probabilities, scored by
+     `make_claim_strength.py`, not numbers scored against a tolerance.
+  4. **The register does not read `data/canonical_ERA5_y30.json`,** because that
+     artifact is the v14 one and does not reproduce. C-010, C-060 and C-061 read
+     `data/scenario_trajectories.csv` and `data/soc_trajectories.json` instead,
+     which are surviving v15 artifacts carrying F-014's and F-016's numbers
+     exactly. **When WP6 regenerates the canonical artifact these three claims
+     can be re-pointed at it and must not move** — that is a free acceptance
+     test for WP6. Conversely `figure2_panels.json`, `figS8_curves.json` and
+     `food_price_response.csv` ARE pre-regeneration, so C-011, C-041 and C-042
+     will keep drifting after WP6 (the document numbers are wrong either way)
+     but their model column will move, and `docs/claims_baseline.json` will need
+     regenerating with the WP6 FINDINGS entry.
 
-  **New for the manuscript worklist:** the `mc_exempt_reason` on `som_pool_fractions` says absolute SOC moves "more than 8 t C/ha in every temperate region". Measured: Europe 10.53, FSU 8.63, **North America 2.32**. The SI limitation cites that sentence. The licensing argument is unaffected — it rests on the published quantities being flat, not on the size of the SOC move.
-
-  **Process note:** `device_stage_files` returned a STALE cached copy of this file when re-staged after another session had rewritten it — fresh mtime, old contents. Edit this file in place on disk (device_bash + python) rather than staging, editing and committing it back, or you will silently revert a concurrent session's work.
-
+  The gate was watched failing before it was trusted to pass: eight negative
+  controls in `logs/run_130_claims_neg.log`, all fired. Two of the three
+  baselines are the ones FINDINGS names; the third,
+  `docs/claims_index_baseline.json`, freezes the claim/parameter index itself
+  and is reasoned about in `results/claims_reconciliation.md` §3.
 
 - **2026-07-26 — WP4 done.** Benchmark suite rebuilt: `data/benchmarks/observed_values.yaml` (`97ccc58`), then `code/repro/run_benchmarks.py`, `data/benchmarks/baseline_verdicts.json`, `outputs/benchmarks.csv` / `.json`, `results/benchmark_reconciliation.md`, `logs/run_36_benchmarks.log` (`4733bc3`). The suite runs in about 40 seconds.
 
@@ -106,7 +164,8 @@ Start a new Cowork task with the project folder connected and paste the matching
   3. **The research half found three things the manuscript owes.** The SSA response ratio of **0.572 could not be sourced at all** — and it has the exact signature of a log response ratio read as a linear one (ln 0.572 → 1.77, inside the published median band of 1.7–1.8). That needs a decision, not more code. The **7.7–20.0 SSA MPP envelope is not published either**, and it mixes marginal products with agronomic efficiencies. **No own-price elasticity of fertilizer demand exists for fsu_central_asia in any language**, so that row is scored against a range built entirely from other regions. Prague-Ruzyně, by contrast, verified exactly against Hlisnikovský et al. 2022 *Plants* 11:1825 Table 1, with four qualifications the SI must carry (ratios are derived not published; the table is 1 d.p. so they carry ±0.02; they are ratios of period means; the yields are winter wheat after potatoes only, 9 and 14 seasons).
   4. **`B1`'s MPP triple did not reproduce** — 24.72 / 26.10 / 112.18 against F-008's 24.8 / 25.9 / 109.2. Six finite-difference conventions were tested; the central difference is step-independent to five significant figures, so it is the model's true derivative and the deviation is not a step artifact. Recorded as a reconstruction gap.
 
-- **2026-07-26 — three things for whoever runs WP5 or WP6.**
+- **2026-07-26 — three things for whoever runs WP6.** (Written for WP5 or WP6; WP5
+  has since run and did not close any of them.)
   - **`test_benchmark_baseline.py` is still unwritten and WP4 did not write it.** It is F-009's artifact and belongs to WP6 with the build graph and `make verify`. `baseline_verdicts.json` is frozen and waiting for it, so the gate has something to compare against the moment it exists. Until then the benchmark suite does not gate.
   - **Someone rebuilt `test_spinup_partition_independence.py` in `44d0bc8`** — the hole WP3 flagged is closed — **but they did not update this file either.** That is the third package in a row to finish without touching the status table. Check `git log` against the table, not the table.
   - **The git lock problem is worse than recorded.** `.git/HEAD.lock` strands as often as `.git/index.lock`, and both must be moved aside *between* `git add` and `git commit`, not just once before. See [[icloud-git-locks]].
