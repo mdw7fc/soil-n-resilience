@@ -1,0 +1,47 @@
+{
+  "generated_by": "code/repro/make_claim_strength.py --freeze",
+  "spec": [
+    "F-013"
+  ],
+  "rule": "This list may only shrink, and a claim that comes into line without this file being regenerated also fails. Carried pending the v15 document edits.",
+  "thresholds": {
+    "state": 0.9,
+    "hedge": 0.6
+  },
+  "n_draws": 1000,
+  "overstated": [
+    {
+      "claim_id": "C-063",
+      "family": "P4",
+      "location": "SI [163]",
+      "reason": "names a region the ensemble does not put first",
+      "stated_region": "sub_saharan_africa",
+      "ensemble_leader": "south_asia",
+      "p_leader": 0.961,
+      "p_stated_region": 0.001,
+      "band": "state"
+    },
+    {
+      "claim_id": "C-064",
+      "family": "P4b",
+      "location": "SI [163]",
+      "reason": "names a region the ensemble does not put first",
+      "stated_region": "sub_saharan_africa",
+      "ensemble_leader": "south_asia",
+      "p_leader": 1.0,
+      "p_stated_region": 0.0,
+      "band": "state"
+    }
+  ],
+  "overstated_count": 2,
+  "probabilities": {
+    "P3": 0.998,
+    "P4": 0.961,
+    "P4b": 1.0
+  },
+  "leaders": {
+    "P3": "fsu_central_asia",
+    "P4": "south_asia",
+    "P4b": "south_asia"
+  }
+}
