@@ -1,0 +1,159 @@
+{
+  "note": "Frozen verdicts for the F-008 benchmark suite. This file is what lets a failure be TRACKED without having to be FIXED first: B3-europe-YR30 is recorded here as FAIL, and the build stops on any movement away from this state. code/tests/test_benchmark_baseline.py re-runs the suite rather than reading outputs/benchmarks.csv, because reading the committed CSV would only check that a file had not been edited. It fails on a regression, on a baselined row disappearing, on a new row arriving already failing, and on a row's informativeness being downgraded \u2014 which is the other way to make a failure go away: stop claiming the row proves anything. It also fails on an IMPROVEMENT until this baseline is regenerated with --write-baseline.",
+  "generated_by": "code/repro/run_benchmarks.py --write-baseline",
+  "spec": "FINDINGS.md F-008",
+  "git_commit": "unknown",
+  "params_sha256": "7a00dae0186c89f8682f36af9d78137b9a3b488040163d6c7570c51d63403171",
+  "observed_values_sha256": "2f094de971e1285ecc446b90f92dd3a4f5690742f18db60badc015c8ff55ef6f",
+  "n_rows": 35,
+  "tally": {
+    "MARGINAL": 3,
+    "INFORMATIVE": 14,
+    "PASS": 9,
+    "NOT_APPLICABLE": 1,
+    "FAIL": 1,
+    "OWED": 7
+  },
+  "verdicts": {
+    "B1-SSA-MPP": {
+      "verdict": "MARGINAL",
+      "informativeness": "WEAK"
+    },
+    "B1-SSA-IMPLIED-RATE-RANGE": {
+      "verdict": "INFORMATIVE",
+      "informativeness": "NONE"
+    },
+    "B2-BROADBALK-FERT-MINUS-NIL-YR96": {
+      "verdict": "MARGINAL",
+      "informativeness": "STRONG"
+    },
+    "B2-BROADBALK-FERT-MINUS-NIL-YR30": {
+      "verdict": "PASS",
+      "informativeness": "STRONG"
+    },
+    "B2-EUROPE-DRIFT-FERT": {
+      "verdict": "INFORMATIVE",
+      "informativeness": "WEAK"
+    },
+    "B2-EUROPE-DRIFT-NIL": {
+      "verdict": "INFORMATIVE",
+      "informativeness": "NONE"
+    },
+    "B2-BROADBALK-FYM": {
+      "verdict": "NOT_APPLICABLE",
+      "informativeness": "NONE"
+    },
+    "B3-europe-YR1": {
+      "verdict": "INFORMATIVE",
+      "informativeness": "NONE"
+    },
+    "B3-europe-YR30": {
+      "verdict": "FAIL",
+      "informativeness": "STRONG"
+    },
+    "B3-europe-YR96": {
+      "verdict": "INFORMATIVE",
+      "informativeness": "NONE"
+    },
+    "B3-north_america-YR30": {
+      "verdict": "INFORMATIVE",
+      "informativeness": "NONE"
+    },
+    "B3-east_asia-YR30": {
+      "verdict": "INFORMATIVE",
+      "informativeness": "NONE"
+    },
+    "B3-south_asia-YR30": {
+      "verdict": "INFORMATIVE",
+      "informativeness": "NONE"
+    },
+    "B3-southeast_asia-YR30": {
+      "verdict": "INFORMATIVE",
+      "informativeness": "NONE"
+    },
+    "B3-latin_america-YR30": {
+      "verdict": "INFORMATIVE",
+      "informativeness": "NONE"
+    },
+    "B3-sub_saharan_africa-YR30": {
+      "verdict": "INFORMATIVE",
+      "informativeness": "NONE"
+    },
+    "B3-fsu_central_asia-YR30": {
+      "verdict": "INFORMATIVE",
+      "informativeness": "NONE"
+    },
+    "B3-sub_saharan_africa-IMPLIED-RATE": {
+      "verdict": "INFORMATIVE",
+      "informativeness": "NONE"
+    },
+    "B4-WHC-SENSITIVITY": {
+      "verdict": "PASS",
+      "informativeness": "STRONG"
+    },
+    "B5-north_america-OWN-PRICE": {
+      "verdict": "MARGINAL",
+      "informativeness": "STRONG"
+    },
+    "B5-europe-OWN-PRICE": {
+      "verdict": "PASS",
+      "informativeness": "STRONG"
+    },
+    "B5-east_asia-OWN-PRICE": {
+      "verdict": "PASS",
+      "informativeness": "STRONG"
+    },
+    "B5-south_asia-OWN-PRICE": {
+      "verdict": "PASS",
+      "informativeness": "STRONG"
+    },
+    "B5-southeast_asia-OWN-PRICE": {
+      "verdict": "PASS",
+      "informativeness": "STRONG"
+    },
+    "B5-latin_america-OWN-PRICE": {
+      "verdict": "PASS",
+      "informativeness": "STRONG"
+    },
+    "B5-sub_saharan_africa-OWN-PRICE": {
+      "verdict": "PASS",
+      "informativeness": "STRONG"
+    },
+    "B5-fsu_central_asia-OWN-PRICE": {
+      "verdict": "PASS",
+      "informativeness": "WEAK"
+    },
+    "B5-TIGHT-RANGE-ALL": {
+      "verdict": "INFORMATIVE",
+      "informativeness": "WEAK"
+    },
+    "B1-OWED-SURVEY-RATE": {
+      "verdict": "OWED",
+      "informativeness": "NONE"
+    },
+    "B3-OWED-SSA-TRIAL-RATE": {
+      "verdict": "OWED",
+      "informativeness": "NONE"
+    },
+    "B3-OWED-BROADBALK-YIELD-RATIO": {
+      "verdict": "OWED",
+      "informativeness": "NONE"
+    },
+    "B5-EPS-F-N-NO-ANALOGUE": {
+      "verdict": "OWED",
+      "informativeness": "NONE"
+    },
+    "B5-OWED-FSU-ELASTICITY": {
+      "verdict": "OWED",
+      "informativeness": "NONE"
+    },
+    "B2-OWED-BROADBALK-NIL-2010": {
+      "verdict": "OWED",
+      "informativeness": "NONE"
+    },
+    "B1-OWED-MPP-QUANTITY-KIND": {
+      "verdict": "OWED",
+      "informativeness": "NONE"
+    }
+  }
+}
