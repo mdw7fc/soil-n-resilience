@@ -1,0 +1,733 @@
+# =====================================================================
+# observed_values.yaml — the external evidence the model is scored against
+#
+# Spec: FINDINGS.md F-008. Rebuilt by WP4 on 2026-07-26 after the v15
+# working tree was lost. See RECONSTRUCTION_GAPS.md and
+# results/benchmark_reconciliation.md for what could and could not be
+# recovered.
+#
+# ---------------------------------------------------------------------
+# THE RULE THIS FILE EXISTS TO ENFORCE
+#
+# Nothing in code/model/params.yaml was fitted to anything in this file.
+# The model's only calibration target is faostat_yield_target, which
+# appears in no source below. Every row is therefore held out by
+# construction. The model must never be tuned to any value in this file;
+# doing so converts the project's only external check into calibration
+# data and reproduces F-002 at a larger scale.
+# ---------------------------------------------------------------------
+#
+# SCHEMA, per entry
+#   value / low / high  the observed quantity. `value` for a point
+#                       estimate; `low`+`high` for a published range or
+#                       for two period estimates bracketing a horizon.
+#   units               the observed unit. Must match the model quantity's
+#                       unit exactly; a unit mismatch is a defect, not a
+#                       tolerance.
+#   horizon_years       elapsed years since the treatment contrast began,
+#                       for comparison against a model year. null when the
+#                       quantity is not a trajectory.
+#   n_rate_kg_ha        the nitrogen rate of the fertilized arm, or the
+#                       rate at which a derivative was evaluated. null
+#                       means the source does not report it — which is
+#                       itself a finding, and is what the B*-OWED-* rows
+#                       record.
+#   quantity_kind       'derivative' (dY/dN at a point), 'average'
+#                       ((Y_f - Y_c)/N), 'ratio', 'stock', 'rate',
+#                       'elasticity', 'arithmetic'. A derivative and an
+#                       average are NOT the same quantity; for a concave
+#                       response the average exceeds the derivative at any
+#                       positive N. Rows that mix them are marked WEAK.
+#   source              citation, DOI, and the table or sentence carrying
+#                       the number.
+#   verification        added by WP4. status is one of
+#                       VERIFIED_PRIMARY   — read in the primary source
+#                       VERIFIED_DERIVED   — arithmetic on published cells
+#                       SECONDARY_ONLY     — quoted in another paper only
+#                       UNSOURCED          — F-008 asserts it; no source found
+#                       Anything not VERIFIED_* must not be presented in
+#                       the SI as an observation without its caveat.
+# =====================================================================
+
+meta:
+  spec: FINDINGS.md F-008
+  rebuilt: '2026-07-26'
+  rebuilt_by: WP4
+  policy: >
+    Held out by construction. No parameter in code/model/params.yaml was
+    fitted to any value in this file, and none may be.
+  known_gaps:
+    - >
+      F-008 records 41 benchmark rows scoring 11 PASS / 3 MARGINAL /
+      1 FAIL / 18 INFORMATIVE / 7 OWED / 1 NOT_APPLICABLE. F-008's prose
+      names and describes 16 of those rows. The remaining 25 are not
+      individually recoverable from any surviving artifact. This file
+      carries every observation F-008 names; the row partition that
+      reaches exactly 41 is reconstructed, not recovered. See
+      results/benchmark_reconciliation.md.
+    - >
+      Three observations F-008 quotes disagree with the surviving
+      pre-v15 compilation in data/benchmarks/validation_data_extraction.csv
+      (Broadbalk nil and FYM stocks). Both are recorded below; the
+      disagreement is flagged, not resolved.
+
+# =====================================================================
+# B1 — MARGINAL PHYSICAL PRODUCT OF APPLIED NITROGEN
+#
+# The model quantity is dY/dN_applied, evaluated on the first year's
+# yield from the region's spun-up equilibrium. Two of the four observed
+# estimates below are true marginal products from survey production
+# functions; the rest of the SSA literature reports agronomic efficiency,
+# which is an average and not comparable. That distinction is the reason
+# B1-SSA-MPP is scored WEAK.
+# =====================================================================
+
+B1:
+  ssa_on_farm_mpp_envelope:
+    low: 7.7
+    high: 20.0
+    units: kg_grain_per_kg_N
+    horizon_years: null
+    n_rate_kg_ha: null          # <- B1-OWED-SURVEY-RATE exists because of this
+    quantity_kind: derivative
+    source: >
+      Endpoints as recorded in F-008. Both trace to a single comparison
+      paragraph in Liverpool-Tasie, Omonona, Sanou & Ogunleye (2017),
+      "Is increasing inorganic fertilizer use for maize production in SSA
+      a profitable proposition? Evidence from Nigeria", Food Policy 67:
+      41-51, doi:10.1016/j.foodpol.2016.09.011 (free full text:
+      PMC5384440). The 7.7 is that paper's own Nigerian MPP; the 20 is
+      the upper bound of the Matsumoto & Yamano range it cites.
+    verification:
+      status: UNSOURCED
+      note: >
+        WP4 could find no publication that states a 7.7-20.0 envelope for
+        sub-Saharan Africa. The two endpoints appear within a few lines of
+        each other in the Liverpool-Tasie comparison paragraph; assembling
+        them into an envelope is an act of the compiler, not a finding of
+        the literature. The envelope is also not a bound on the published
+        range: Burke, Snapp & Jayne (2020, Agricultural Economics 51:
+        923-940, doi:10.1111/agec.12601) report 2.6 kg/kg for Central
+        Malawi, and Ichami et al. (2019, Nutr Cycl Agroecosyst 113: 1-19,
+        doi:10.1007/s10705-018-9958-y) report agronomic efficiencies with
+        a mean of 42 for Kenya and 18 for the rest of SSA over individual
+        observations spanning -27 to 165.
+      recommended_replacement: >
+        State it as "survey-based MPPs for SSA maize range from about 7.7
+        (Nigeria) to about 17.5 (Kenya)" and keep trial-based agronomic
+        efficiencies in a separate row. Do not present 7.7-20.0 as a
+        published envelope in the SI.
+
+  kenya_mpp_overall:
+    value: 17.5
+    units: kg_grain_per_kg_N
+    horizon_years: null
+    n_rate_kg_ha: 25.2          # sample mean; SD 26.5
+    quantity_kind: derivative
+    source: >
+      Sheahan, Black & Jayne (2012), "Are Farmers Under-Utilizing
+      Fertilizer? Evidence from Kenya", IAAE 2012 conference paper 126739,
+      https://ageconsearch.umn.edu/record/126739/files/SheahanEtAl.pdf —
+      "the overall marginal product of nitrogen is 17.5, meaning a one
+      kilogram per hectare increase in the amount of applied nitrogen will
+      increase maize yield by about 17.5 kilograms per hectare".
+      Published as Food Policy 41: 39-52,
+      doi:10.1016/j.foodpol.2013.04.008 (paywalled; the published version
+      of this number was not retrieved).
+      Data: Tegemeo Rural Household Survey, 5 waves 1997-2010, 906
+      households, 4,714 maize fields, 24 districts.
+    verification:
+      status: VERIFIED_PRIMARY
+      note: >
+        F-008 records this as "17 overall". The primary source says 17.5.
+        The rate is recorded here and was not recorded in the v15
+        compilation, which is what B1-OWED-SURVEY-RATE owes.
+
+  nigeria_mpp_plot_level:
+    low: 7.71                   # 2012
+    high: 7.75                  # 2010
+    units: kg_grain_per_kg_N
+    horizon_years: null
+    n_rate_kg_ha_2010: 40.19
+    n_rate_kg_ha_2012: 46.56
+    quantity_kind: derivative
+    source: >
+      Liverpool-Tasie, Omonona, Sanou & Ogunleye (2017), Food Policy 67:
+      41-51, doi:10.1016/j.foodpol.2016.09.011, Table 4 "MPPs and APPs of
+      applied nitrogen": MPP 7.75 (2010), 7.71 (2012); APP 7.66, 7.56.
+      Plot-level production function on Nigeria's LSMS-ISA panel,
+      marginal effects via Stata `margins`.
+    verification:
+      status: VERIFIED_PRIMARY
+      note: >
+        MPP and APP are nearly equal, which indicates a near-linear
+        response over the observed range. The working-paper version
+        (World Bank PRWP 7201, 2015) reports 7.98 at mean N of 38.08 /
+        36.62 kg N/ha for a different farming system; cite the published
+        pair.
+        F-008 attributes this low value to phosphorus, weeds and
+        application timing. That attribution is NOT in this paper, which
+        emphasises transport costs ("about 70% of the actual cost incurred
+        by farmers using fertilizer is due to transportation costs"). The
+        weeds-and-timing framing belongs to Burke, Snapp & Jayne (2020) on
+        Central Malawi. The SI must not carry the spliced explanation.
+
+  kenya_mpp_vihiga:
+    value: 17.6
+    units: kg_grain_per_kg_N
+    horizon_years: null
+    n_rate_kg_ha: null
+    quantity_kind: derivative
+    source: >
+      Marenya & Barrett (2009), "State-conditional fertilizer yield
+      response on western Kenyan farms", American Journal of Agricultural
+      Economics 91(4): 991-1006,
+      doi:10.1111/j.1467-8276.2009.01313.x. Quoted in Liverpool-Tasie et
+      al. (2017) and in World Bank PRWP 7201.
+    verification:
+      status: SECONDARY_ONLY
+      note: >
+        The primary is paywalled at OUP and Wiley and the SSRN preprint
+        (doi:10.2139/ssrn.1141937) exposes only the abstract. WP4 could
+        not confirm that 17.6 appears in the primary text and found no N
+        rate for it. The paper's own argument is that response is
+        state-conditional on soil organic carbon and "strongly and
+        statistically significantly S-shaped", so a scalar 17.6 must be a
+        point evaluation at an unstated SOC level and N rate. Obtain the
+        AJAE PDF before this number is deposited.
+
+  kenya_mpp_western_range:
+    low: 11.0
+    high: 20.0
+    units: kg_grain_per_kg_N
+    horizon_years: null
+    n_rate_kg_ha: null
+    quantity_kind: derivative
+    source: >
+      Matsumoto & Yamano (2011), "Optimal Fertilizer Use on Maize
+      Production in East Africa", ch. 8 in Yamano, Otsuka & Place (eds.),
+      Emerging Development of Agriculture in East Africa, Springer,
+      pp. 117-132, doi:10.1007/978-94-007-1201-0_8. Quoted in
+      Liverpool-Tasie et al. (2017).
+    verification:
+      status: SECONDARY_ONLY
+      note: >
+        Chapter body not retrievable. The quoting sentence says "across
+        the western and higher potential regions of Kenya", not "across
+        western Kenyan districts" as F-008 renders it. No N rate.
+
+# =====================================================================
+# B2 — SOIL ORGANIC CARBON UNDER SUSTAINED TREATMENT CONTRASTS
+#
+# The model quantity is a soil carbon stock or a stock difference at a
+# matched elapsed year, from a common spun-up equilibrium. Absolute
+# stocks are NOT comparable (the model initialises temperate SOC at 42
+# Mg C/ha over 0-30 cm; Broadbalk began at 28.8 over 0-23 cm), so every
+# usable B2 row is a difference or a fractional drift, never a level.
+# =====================================================================
+
+B2:
+  broadbalk_soc_inorganic_npkmg_2010:
+    value: 30.0
+    units: Mg_C_per_ha
+    depth_cm: '0-23'
+    horizon_years: 167          # 1843 -> 2010
+    n_rate_kg_ha: 144
+    quantity_kind: stock
+    source: >
+      Rothamsted Broadbalk, plot 8 (N3PKMg, 144 kg N/ha + P K Mg), 2010,
+      e-RA dataset 02-BKSOC1843 v2, doi:10.23637/KeyRefOABKsoc-02.
+      Value as recorded in F-008.
+    verification:
+      status: VERIFIED_DERIVED
+      note: >
+        Consistent with the surviving pre-v15 extraction, which gives
+        34.8 Mg C/ha for the same plot in 2015 (0.78% higher per year is
+        implausible, so 2010 and 2015 genuinely differ). Not independently
+        re-read from e-RA by WP4.
+
+  broadbalk_soc_nil_2010:
+    value: 25.3
+    units: Mg_C_per_ha
+    depth_cm: '0-23'
+    horizon_years: 167
+    n_rate_kg_ha: 0.0
+    quantity_kind: stock
+    source: >
+      Rothamsted Broadbalk, plot 3 (nil since 1843), 2010, e-RA dataset
+      02-BKSOC1843 v2, doi:10.23637/KeyRefOABKsoc-02. Value as recorded
+      in F-008.
+    verification:
+      status: SECONDARY_ONLY
+      note: >
+        DISAGREEMENT. data/benchmarks/validation_data_extraction.csv,
+        compiled from the same e-RA dataset before v15, gives the plot-3
+        2010 value as 24.5 Mg C/ha (and 24.5 / 23.9 / 24.5 / 25.1 for
+        2000 / 2005 / 2010 / 2015). F-008's 25.3 reproduces its own quoted
+        excess of 18.6% exactly (30.0/25.3 - 1 = 0.1858), so it is
+        internally consistent, but it does not match the surviving
+        extraction. Using 24.5 would give an excess of 22.4%, which is a
+        different benchmark. NOT RESOLVED — re-read e-RA 02-BKSOC1843 v2
+        for the 2010 plot-3 row.
+
+  broadbalk_fert_minus_nil_excess:
+    value: 18.6
+    units: percent
+    horizon_years: 167
+    n_rate_kg_ha: 144
+    quantity_kind: ratio
+    band_rule: half_to_twice    # 9.3 to 37.2 percent
+    source: >
+      Derived from the two stocks above: 30.0 / 25.3 - 1. A single
+      observed value, so scored against a half-to-twice band rather than
+      a published interval.
+    verification:
+      status: VERIFIED_DERIVED
+      note: See broadbalk_soc_nil_2010 — the denominator is disputed.
+
+  broadbalk_fym_2010:
+    value: 73.3
+    units: Mg_C_per_ha
+    depth_cm: '0-23'
+    horizon_years: 167
+    quantity_kind: stock
+    source: >
+      Rothamsted Broadbalk farmyard-manure plot, 2010, e-RA dataset
+      02-BKSOC1843 v2. Value as recorded in F-008.
+    verification:
+      status: SECONDARY_ONLY
+      note: >
+        DISAGREEMENT. The surviving extraction gives 92.2 Mg C/ha for plot
+        2.2 (FYM since 1843, 35 t fresh/ha/yr) in 2015 at the same depth,
+        with an adjusted soil weight of 2.52e6 kg/ha for FYM plots.
+        F-008's 73.3 is likely a different FYM plot (2.1 vs 2.2) or a
+        different year. The row it feeds is NOT_APPLICABLE either way —
+        the model has no organic amendment pathway at all — so the
+        discrepancy does not change any verdict. Recorded so it is not
+        rediscovered.
+
+  broadbalk_mineral_plot_drift_envelope:
+    low: -8.3
+    high: 4.5
+    units: percent
+    horizon_years: 96
+    quantity_kind: rate
+    source: >
+      Broadbalk mineral-fertilized plots, long-run soil carbon drift under
+      unchanged management, e-RA dataset 02-BKSOC1843 v2. Envelope as
+      recorded in F-008.
+    verification:
+      status: SECONDARY_ONLY
+      note: >
+        Not independently re-derived by WP4. The row it feeds
+        (B2-EUROPE-DRIFT-FERT) is marked WEAK and carries no verdict
+        regardless, because the model is initialised at a spun-up
+        equilibrium and near-zero drift is a property of that
+        initialisation rather than evidence about the model.
+
+# =====================================================================
+# B3 — YIELD WITHOUT SYNTHETIC NITROGEN, AS A FRACTION OF YIELD AT THE
+#      REGION'S CURRENT RATE, AT A MATCHED ELAPSED YEAR
+#
+# This is the paired-plot design of a long-term experiment, and it is the
+# quantity the manuscript's S3 temperate yield losses bear on directly.
+# It is the only place in the whole suite where the model is compared to
+# a controlled withdrawal of nitrogen over decades.
+# =====================================================================
+
+B3:
+  prague_ruzyne_nil_over_npk4:
+    low: 0.681                  # 1983-2020, 29-66 years unfertilized
+    high: 0.776                 # 1961-1981, 7-27 years unfertilized
+    units: dimensionless
+    horizon_years: 30           # the matched horizon; also the manuscript's
+    n_rate_kg_ha: 95
+    quantity_kind: ratio
+    tolerance: 0.02             # see verification — table is 1 d.p.
+    source: >
+      Hlisnikovsky, Ivicic, Barlog, Grzebisz, Mensik & Kunzova (2022),
+      "The Effects of Weather and Fertilization on Grain Yield and
+      Stability of Winter Wheat Growing on Orthic Luvisol - Analysis of
+      Long-Term Field Experiment", Plants 11(14): 1825,
+      doi:10.3390/plants11141825 (open access), Table 1 "The effect of
+      fertilizer treatments on GY (t/ha) of long- and short-strawed wheat
+      varieties":
+        Control  3.8 A (1961-1981)   4.7 A (1983-2020)
+        NPK4     4.9 B (1961-1981)   6.9 D (1983-2020)
+      Ratios derived: 3.8/4.9 = 0.7755; 4.7/6.9 = 0.6812.
+      Treatment rates, Materials and Methods: "NPK4 - 95, 60, 120 kg
+      ha-1" (N, P, K per wheat crop).
+      Site: Ruzyne Fertilizer Experiment, Prague-Ruzyne, Crop Research
+      Institute (VURV), Czechia. GLTEN experiment 236.
+    verification:
+      status: VERIFIED_PRIMARY
+      note: >
+        Both ratios reproduce the published table exactly. Five
+        qualifications, all of which the SI must carry:
+        (1) The ratios are NOT published; they are derived from Table 1.
+        (2) Table 1 is given to one decimal place, so the ratios carry
+            real rounding uncertainty — roughly 0.758-0.794 and
+            0.673-0.690. The third digit is not meaningful. This is why
+            tolerance is 0.02 and not smaller.
+        (3) These are ratios of period-mean yields, not means of annual
+            ratios. F-008's phrase "averaged over harvest years" is
+            imprecise.
+        (4) The yields are winter wheat AFTER POTATOES only — 9 seasons in
+            1961-1981 and 14 in 1983-2020, not every year. The site runs a
+            9-crop rotation.
+        (5) Start year is disputed: Plants 2022 and GLTEN say 1954;
+            Hejcman, Kunzova & Srek 2012 (Field Crops Research 139: 30-38,
+            doi:10.1016/j.fcr.2012.10.005), Barlog et al. 2025 (Life 15:
+            1779) and Plants 2023 say 1955. F-008's elapsed-year
+            arithmetic (7-27, 29-66) only works with 1954.
+        One further caution the SI should carry: the decline from 0.776 to
+        0.681 is NOT a clean measure of soil depletion. The two windows
+        differ in variety (long- to short-strawed), and the paper reports
+        per-treatment yield trends of +24 kg/ha/season for the control
+        against +53 for NPK4 — the fertilized arm gained faster, which is
+        itself why the ratio falls. No benchmark row is built on the
+        trend.
+    corroborating:
+      - >
+        Same site, all-crop rotation averages rather than wheat-after-
+        potatoes: control/N4P2K2 = 3.67/4.25 = 0.863 (1957-1969) and
+        5.39/7.19 = 0.750 (1996-2006). Hejcman, Kunzova & Srek 2012,
+        Field Crops Research 139: 30-38, abstract. Higher than the
+        wheat-only ratios, as expected from averaging across crops.
+
+  ssa_nil_over_fertilized_ratio:
+    value: 0.572
+    units: dimensionless
+    horizon_years: null
+    n_rate_kg_ha: null          # <- B3-OWED-SSA-TRIAL-RATE exists because of this
+    quantity_kind: ratio
+    source: >
+      Response-ratio meta-analysis of sub-Saharan African on-farm maize
+      trials, as recorded in F-008. The specific synthesis is not named in
+      any surviving artifact.
+    verification:
+      status: UNSOURCED
+      note: >
+        WP4 searched for 0.572 and 57.2% against maize / nitrogen /
+        Africa / response-ratio / meta-analysis and checked the four most
+        plausible candidate syntheses directly. No source reports it.
+        Nearest published figures, with their N rates:
+          Ichami et al. 2019 (Nutr Cycl Agroecosyst 113: 1-19,
+            doi:10.1007/s10705-018-9958-y; 71 studies, 202 Kenya + 255
+            other-SSA observations): mean fertilizer response FR = 2.0,
+            implying 0.50; median FR 1.8 Kenya / 1.7 other SSA, implying
+            0.556 / 0.588. Fertilized arms 15-150 kg N/ha.
+          Chivenge, Vanlauwe & Six 2011 (Plant Soil 342: 1-30,
+            doi:10.1007/s11104-010-0626-5): N fertilizer alone gives +84%,
+            implying 0.543. Fertilized arms 20-175 kg N/ha.
+        A lead, recorded as speculation and not to be deposited as fact:
+        both meta-analyses work in the LOG response ratio ln(Xe/Xc). A log
+        RR of 0.572 corresponds to a raw ratio of 1.77, squarely inside
+        the Kenya/SSA median band of 1.7-1.8, and its reciprocal is 0.564.
+        A value of 0.572 presented as a raw proportion has the signature
+        of a log RR read as a linear ratio. This would make the number an
+        error rather than a citation gap. It must be resolved before the
+        SI carries this row.
+      recommended_replacement: >
+        Ichami et al. 2019's median FR of 1.7 for SSA excluding Kenya
+        (implying 0.588), which is a genuine multi-trial synthesis of
+        African on-farm maize trials and does record its N range.
+
+# =====================================================================
+# B4 — WATER-HOLDING CAPACITY SENSITIVITY
+#
+# An arithmetic check, not a field comparison: does the registered
+# parameter equal the conversion the cited meta-analysis implies?
+# =====================================================================
+
+B4:
+  whc_per_soc_percentage_point:
+    value: 1.16
+    units: mm_water_per_100mm_soil_per_pct_SOC
+    profile_mm: 300
+    implied_total: 3.48
+    horizon_years: null
+    quantity_kind: arithmetic
+    source: >
+      Minasny & McBratney (2018), "Limited effect of organic matter on
+      soil available water capacity", European Journal of Soil Science
+      69: 39-47, doi:10.1111/ejss.12475 — meta-analysis of ~50 studies.
+      The engine's docstrings cite this together with Hudson (1994),
+      J Soil Water Conserv 49: 189-194.
+      1.16 mm per 100 mm of soil per percentage point of SOC, over a
+      300 mm profile, is 3.48 mm per percentage point.
+    verification:
+      status: VERIFIED_DERIVED
+      note: >
+        F-008 records the registry as carrying 3.5. It carries 3.48. See
+        RECONSTRUCTION_GAPS.md G-1: registering 3.5 moves sixteen of the
+        123 canonical fields and would have failed WP1's own acceptance,
+        so 3.48 was kept. Table S1 will print 3.48 on regeneration; the
+        manuscript states 3.5, which is 3.48 at the two significant
+        figures it uses.
+
+# =====================================================================
+# B5 — PRICE RESPONSIVENESS OF FERTILIZER DEMAND
+#
+# The model carries eps_F_PF, a regional own-price elasticity of
+# fertilizer demand, and eps_F_N, the response of fertilizer demand to a
+# soil nitrogen STOCK. Only the first has a published analogue. Keeping
+# them in one family is deliberate: it is what makes the absence of an
+# analogue for eps_F_N visible.
+# =====================================================================
+
+B5:
+  own_price_elasticity_retrieved_range:
+    low: -1.87
+    high: -0.21
+    units: dimensionless
+    horizon_years: null
+    quantity_kind: elasticity
+    source: >
+      Range as recorded in F-008. WP4 traced both endpoints:
+        -1.87  Williamson (2011), "Examining Linkages between Soil
+               Conservation Practices and Commercial Fertilizer
+               Application", J Agricultural and Resource Economics 36(3):
+               552-572. US nitrogen, ARMS field-level, 2SLS/IV;
+               -1.87 (SE 0.41) for commercial-N-only users. The published
+               abstract states the range as -1.67 to -1.87.
+        -0.21  Denbaly & Vroomen (1993), "Dynamic Fertilizer Nutrient
+               Demands for Corn: A Cointegrated and Error-Correcting
+               System", American Journal of Agricultural Economics 75(1):
+               203-209, doi:10.2307/1242968. US corn nitrogen, short run;
+               -0.23 in the ERS working-paper version (Staff Report
+               AGES 9137), tabulated as -0.21 to -0.25 by Nicolella,
+               Dragone & Bacha (2005).
+    verification:
+      status: VERIFIED_PRIMARY
+      note: >
+        The two endpoints are VERIFIED individually but they do NOT come
+        from a single source: -1.87 is from the US micro-econometric
+        literature and -0.21 from a Brazilian review's table of
+        international estimates. "-1.87 to -0.21" is a reconstructed span
+        across sources, not a citable finding, and the SI must not present
+        it as one.
+        The span is also too narrow at both ends to be a bound. WP4
+        retrieved roughly 20 studies first-hand and about 34 more through
+        four retrieved reviews; the full range of published estimates runs
+        from +0.10 (Burkina Faso, participation semi-elasticity) and
+        -0.0085 (Malawi) to -3.40 (Nigeria, unreviewed thesis) and -3.269
+        (New Mexico potash). The honest statement is that the central mass
+        of national aggregate estimates sits at -0.2 to -0.7 and that the
+        model's eight values all lie in it.
+        A systematic pattern worth carrying into the SI: pre-1990 static
+        time-series and profit-function studies give elastic values (-0.6
+        to -2.4); post-1990 cointegration/ECM and modern panel studies
+        give strongly inelastic values (-0.02 to -0.5); micro-IV studies
+        are the elastic outliers and carry wide standard errors (Williamson
+        SE 0.41).
+
+  own_price_elasticity_tight_range:
+    low: -0.7
+    high: -0.2
+    units: dimensionless
+    n_studies: 14
+    horizon_years: null
+    quantity_kind: elasticity
+    source: >
+      The tighter 14-study range recorded in F-008. Best candidate
+      provenance: Nicolella, Dragone & Bacha (2005), "Determinantes da
+      demanda por fertilizantes no Brasil, no periodo de 1970 a 2002",
+      Revista de Economia e Sociologia Rural 43(1): 82-100, whose Quadro 1
+      and Quadro 2 tabulate 19 prior studies. Counting the short-run
+      estimates falling in [-0.7, -0.2] gives about 14: England -0.60,
+      Boyle -0.24, Higgins -0.47/-0.50, Dubgaard -0.33, Denbaly & Vroomen
+      -0.21/-0.25, Mergos & Stoforos -0.36, Soares et al. x3, Cibantos x2,
+      Pescarin x2. Ray (-0.19), Weaver (-0.19) and Burrell (-0.08/-0.13)
+      fall just outside.
+    verification:
+      status: SECONDARY_ONLY
+      note: >
+        No review reporting exactly 14 studies spanning -0.7 to -0.2 was
+        found. The Nicolella count above is a plausible reconstruction and
+        is flagged as a hypothesis, not a provenance. The unretrieved item
+        most likely to be the real source is Srivastava (1991), "Price
+        Elasticity of Fertilizer Demand in India: A Review", IIMA working
+        paper — a review that probably tabulates many Indian estimates and
+        is not digitised.
+        One irreconcilable conflict to avoid: Nicolella's Quadro 1 reports
+        Burrell (1989) UK short-run as -0.08/-0.13, while Hansen (2004)
+        reports the same paper as -0.4 to -0.6. Do not cite any Burrell
+        number without opening the original.
+
+  regional_coverage:
+    well_covered: [north_america, europe, south_asia, latin_america]
+    thin: [sub_saharan_africa, east_asia, southeast_asia]
+    no_usable_estimate: [fsu_central_asia]
+    note: >
+      A material finding for the SI. WP4 searched in English and Russian
+      across Russia, Ukraine, Kazakhstan, Uzbekistan, Belarus and central
+      and eastern Europe and found ZERO published own-price elasticity of
+      fertilizer demand for the former Soviet Union / Central Asia region.
+      The nearest work (Kienzler et al. 2011, Uzbekistan) analyses
+      fertilizer-to-output price ratios and optimal N rates, not demand
+      elasticities. This is a gap in the literature, not a retrieval
+      failure, and it means the model's fsu_central_asia value of -0.30
+      is scored against a range containing no estimate from that region.
+      Sub-Saharan African coverage is also weak in a way that matters:
+      all three retrieved sources are 2024-25, cover only Ethiopia,
+      Nigeria, Tanzania, Malawi and Burkina Faso, and their estimates are
+      wildly dispersed (-0.01 to -3.40) and highly sensitive to how prices
+      are imputed for non-purchasers. No pre-2024 SSA elasticity exists.
+      Latin American coverage is Brazil-only.
+      East Asian coverage is China-only and crop-specific (maize,
+      cabbage); Taiwan, Korea and Japan appear only second-hand in Bumb
+      (1984), World Bank AGREP working paper 105, i.e. at 1970s vintage.
+
+  eps_F_N_analogue:
+    value: null
+    units: dimensionless
+    quantity_kind: elasticity
+    source: null
+    verification:
+      status: UNSOURCED
+      note: >
+        There is no published analogue and there cannot be one from this
+        literature. Every study in the compilation estimates a response to
+        a PRICE; eps_F_N is the response of fertilizer demand to a soil
+        nitrogen STOCK. It is the dial that turns the substitution of soil
+        nitrogen for fertilizer on and off, so it is load-bearing for the
+        paper's central claim, and it is the least externally constrained
+        number in the model.
+        Its numerical coincidence with the sub-Saharan own-price
+        elasticity, both -0.50, is a coincidence and must not be read as
+        corroboration. The manuscript must stop presenting eps_F_N as
+        though it has an empirical analogue.
+
+# =====================================================================
+# COMPARATORS EXAMINED AND REJECTED
+#
+# Recorded here rather than omitted silently, so that the next pass does
+# not rediscover them and so that a reader can see the compilation was
+# not assembled by keeping whatever agreed.
+# =====================================================================
+
+rejected_comparators:
+  - id: broadbalk_plot_3_timeseries
+    reason: >
+      Nil since 1843 and drifting around its own low equilibrium. This is
+      not a fertilizer-withdrawal transient, which is the quantity the
+      model produces, so the two are not the same thing measured
+      differently — they are different things.
+  - id: morrow_unfertilized
+    reason: >
+      A prairie-conversion legacy. The Morrow plots were broken out of
+      native prairie and their unfertilized trajectory is dominated by the
+      loss of that legacy carbon, a process the model does not represent.
+  - id: morrow_1964
+    reason: >
+      79.87 against 58.0 Mg C/ha, nine years after fertilization began on
+      that plot. A 37.7 percent carbon difference cannot be a
+      fertilization response over nine years; the plots differed before
+      the treatment did.
+  - id: bad_lauchstadt_reversal_rates
+    reason: >
+      Korschens et al. 1998 (doi:10.1002/jpln.1998.3581610409) give
+      -0.526 and +0.328 t C/ha/yr for the FYM+NPK -> nil and nil ->
+      FYM+NPK reversals, which would be an excellent test of the model's
+      C-loss rate from a high attractor. Both arms involve farmyard
+      manure, and the model has no organic amendment pathway, so neither
+      is comparable. Retained in
+      data/benchmarks/validation_data_extraction.csv for a future model
+      with that pathway.
+  - id: sanborn_and_broadbalk_absolute_stocks
+    reason: >
+      Absolute soil carbon stocks are an initialisation in this model, not
+      a prediction (F-001). Comparing them measures the choice of initial
+      condition, not the dynamics. Only differences and fractional drifts
+      are used.
+
+# =====================================================================
+# OBSERVATIONS THE COMPILATION OWES
+#
+# Each of these is a specific, obtainable number whose absence weakens a
+# row. They are the compilation's own worklist.
+# =====================================================================
+
+owed:
+  - id: B1-OWED-SURVEY-RATE
+    what: >
+      The nitrogen rate on the surveyed plots behind the SSA marginal
+      product estimates. Without it, a model derivative cannot be
+      evaluated at the matched point and B1-SSA-MPP compares a derivative
+      at 7 kg N/ha to survey estimates from wherever those farmers
+      actually were.
+    status_2026_07_26: >
+      PARTLY CLOSED by WP4. Sheahan, Black & Jayne (2012) evaluate at a
+      sample mean of 25.2 kg N/ha (SD 26.5); Liverpool-Tasie et al. (2017)
+      at 40.19 (2010) and 46.56 (2012) kg N/ha. Still missing for Marenya
+      & Barrett's 17.6 and for Matsumoto & Yamano's 11-20. The row is
+      left OWED because two of the four estimates still lack a rate, and
+      because re-scoring B1-SSA-MPP at a matched rate is a change to what
+      the model is compared against and belongs in a pass that says so.
+  - id: B3-OWED-SSA-TRIAL-RATE
+    what: >
+      The nitrogen rate on the fertilized arm of the trials behind the
+      SSA response ratio. F-008 calls this the single most valuable
+      missing number in the whole compilation, because it is what would
+      turn B3-sub_saharan_africa from an inversion into a verdict.
+    status_2026_07_26: >
+      STILL OPEN, and now compounded: the 0.572 ratio itself could not be
+      sourced (see B3.ssa_nil_over_fertilized_ratio). If the replacement
+      is Ichami et al. 2019, the rate is 15-150 kg N/ha across the
+      fertilized arms, which is too wide to match a model point without
+      the per-trial distribution.
+  - id: B3-OWED-BROADBALK-YIELD-RATIO
+    what: >
+      Broadbalk plot 3 grain yields, as a second temperate comparator for
+      B3-europe-YR30. Plot 3 has been unfertilized since 1843 and its soil
+      carbon is already compiled here; its yields are not. Until they are,
+      the model's temperate failure is scored against one site.
+    status_2026_07_26: >
+      STILL OPEN. The surviving extraction carries only a long-term
+      average of about 1.0 t/ha for the nil plot and about 8-9 t/ha for
+      N3PKMg, both read from a figure in the Rothamsted 2024 handout
+      rather than from the e-RA yield dataset, and neither resolved to a
+      matched elapsed year. The e-RA Broadbalk yield dataset would close
+      this properly.
+  - id: B5-EPS-F-N-NO-ANALOGUE
+    what: >
+      A published estimate of the response of fertilizer demand to a soil
+      nitrogen stock, to constrain eps_F_N.
+    status_2026_07_26: >
+      STILL OPEN and structurally so. See B5.eps_F_N_analogue. This is
+      unlikely ever to close from the price-elasticity literature; it
+      would need a study that varies soil nitrogen and observes fertilizer
+      purchases.
+  - id: B5-OWED-FSU-ELASTICITY
+    what: >
+      Any published own-price elasticity of fertilizer demand for the
+      former Soviet Union or Central Asia.
+    status_2026_07_26: >
+      OPENED BY WP4. Searched in English and Russian across six countries
+      and found none. The model's fsu_central_asia eps_F_PF of -0.30 is
+      currently scored against a range assembled entirely from other
+      regions.
+  - id: B2-OWED-BROADBALK-NIL-2010
+    what: >
+      The plot-3 soil carbon value for 2010 in e-RA 02-BKSOC1843 v2, read
+      directly.
+    status_2026_07_26: >
+      OPENED BY WP4. F-008 uses 25.3 Mg C/ha; the surviving pre-v15
+      extraction gives 24.5 for the same plot and year. The excess over
+      the fertilized plot is 18.6% on the first and 22.4% on the second,
+      which are different benchmarks. One command against the e-RA dataset
+      closes it.
+  - id: B1-OWED-MPP-QUANTITY-KIND
+    what: >
+      A separation of the SSA estimates into true marginal products and
+      agronomic efficiencies, so that the model derivative is compared
+      only to derivatives.
+    status_2026_07_26: >
+      OPENED BY WP4. Of the estimates F-008's envelope draws on, Sheahan's
+      17.5 and Liverpool-Tasie's 7.71-7.75 are true marginal products;
+      Vanlauwe et al. 2011, Ichami et al. 2019 and Chivenge et al. 2011
+      report agronomic efficiency, an average. For a concave response the
+      average exceeds the derivative at any positive N, so mixing them
+      biases the envelope upward and makes the model look worse at the
+      top end than a like-for-like comparison would.
