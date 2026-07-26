@@ -26,7 +26,7 @@ Each is one Cowork task. Do not combine them. Mark status here and commit this f
 | WP1 | Parameter registry (`params.yaml`, `registry.py`) + wire it into the four model modules | F-001, F-006, F-007, F-011 | **done** — `9b2af15`; acceptance gate now red, see Log |
 | WP2 | Production-path calibration + seam contracts + `test_cap_market_clearing` rewrite | F-002, F-005, F-010 | **done** — `9b2af15`, `2b76b16` |
 | WP3 | Mutation coverage harness | F-011 | **done** — `3307523`; 44/56 leaves agree with F-011, see Log |
-| WP4 | Benchmark suite + `observed_values.yaml` + baseline verdicts | F-008 | not started |
+| WP4 | Benchmark suite + `observed_values.yaml` + baseline verdicts | F-008 | **done** — `97ccc58`, `4733bc3`; 35 rows against the acceptance 41, see Log |
 | WP5 | Claim register (`claims.yaml`) + claim strength | F-012, F-013, F-015, F-016 | not started |
 | WP6 | Build graph + Makefile + full regeneration | F-009, F-014 | not started |
 | D1 | Main-text edits | HANDOFF §7 | not started |
@@ -82,6 +82,20 @@ Start a new Cowork task with the project folder connected and paste the matching
 ---
 
 ## Log
+
+- **2026-07-26 — WP4 done.** Benchmark suite rebuilt: `data/benchmarks/observed_values.yaml` (`97ccc58`), then `code/repro/run_benchmarks.py`, `data/benchmarks/baseline_verdicts.json`, `outputs/benchmarks.csv` / `.json`, `results/benchmark_reconciliation.md`, `logs/run_36_benchmarks.log` (`4733bc3`). The suite runs in about 40 seconds.
+
+  **Result 35 rows at 9 / 3 / 1 / 14 / 7 / 1 against the acceptance 41 rows at 11 / 3 / 1 / 18 / 7 / 1.** MARGINAL, FAIL, OWED and NOT_APPLICABLE reproduce exactly, and so do the row identities behind them. **`B3-europe-YR30` fails at 0.4063 against F-008's 0.406.** Nothing was tuned. Full account in `results/benchmark_reconciliation.md`. Four things the next task should know:
+
+  1. **The model still produces F-008's numbers.** Eight quantities were checked before any row was defined. Six reproduce exactly — the europe nil-N ratio at 30 years (0.4063), the 96-year fertilized and nil SOC drifts (-0.2098 %, -27.95 %), the fert-minus-nil SOC excess at 30 years (21.0 %), and the SSA implied rate (47.59) — and two to three decimal places. Only the year-1 europe ratio moved by more than rounding, 0.763 to 0.768, which is consistent with WP2's recalibration. So WP1 and WP2 did not break what F-008 measured.
+  2. **The six missing rows are 2 PASS and 4 INFORMATIVE, and their identities are not recoverable.** F-008's prose names sixteen rows; the suite implements all sixteen plus the per-region extensions its naming convention implies plus three owed observations this pass opened. Every candidate partition reaching 41 was tested against the six-way tally and rejected, including folding in the 2022 price hindcast, which would have added failures F-008 does not record. Rows were not invented to close the count. Only a surviving `outputs/benchmarks.csv` from the crashed session closes this, and it is confirmed absent everywhere.
+  3. **The research half found three things the manuscript owes.** The SSA response ratio of **0.572 could not be sourced at all** — and it has the exact signature of a log response ratio read as a linear one (ln 0.572 → 1.77, inside the published median band of 1.7–1.8). That needs a decision, not more code. The **7.7–20.0 SSA MPP envelope is not published either**, and it mixes marginal products with agronomic efficiencies. **No own-price elasticity of fertilizer demand exists for fsu_central_asia in any language**, so that row is scored against a range built entirely from other regions. Prague-Ruzyně, by contrast, verified exactly against Hlisnikovský et al. 2022 *Plants* 11:1825 Table 1, with four qualifications the SI must carry (ratios are derived not published; the table is 1 d.p. so they carry ±0.02; they are ratios of period means; the yields are winter wheat after potatoes only, 9 and 14 seasons).
+  4. **`B1`'s MPP triple did not reproduce** — 24.72 / 26.10 / 112.18 against F-008's 24.8 / 25.9 / 109.2. Six finite-difference conventions were tested; the central difference is step-independent to five significant figures, so it is the model's true derivative and the deviation is not a step artifact. Recorded as a reconstruction gap.
+
+- **2026-07-26 — three things for whoever runs WP5 or WP6.**
+  - **`test_benchmark_baseline.py` is still unwritten and WP4 did not write it.** It is F-009's artifact and belongs to WP6 with the build graph and `make verify`. `baseline_verdicts.json` is frozen and waiting for it, so the gate has something to compare against the moment it exists. Until then the benchmark suite does not gate.
+  - **Someone rebuilt `test_spinup_partition_independence.py` in `44d0bc8`** — the hole WP3 flagged is closed — **but they did not update this file either.** That is the third package in a row to finish without touching the status table. Check `git log` against the table, not the table.
+  - **The git lock problem is worse than recorded.** `.git/HEAD.lock` strands as often as `.git/index.lock`, and both must be moved aside *between* `git add` and `git commit`, not just once before. See [[icloud-git-locks]].
 
 - **2026-07-25 — WP3 done.** Mutation harness rebuilt: `code/tests/run_mutation_coverage.py` plus `_mutation_state_probe.py`. Sweep is 20 min on 2 cores. Outputs `results/mutation_coverage.csv`, `results/mutation_coverage_summary.txt`, `results/mutation_coverage_reconciliation.md`, `logs/run_67_mutation.log`.
 
