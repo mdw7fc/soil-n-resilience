@@ -249,9 +249,11 @@ NODES: List[Node] = [
     # -- calibration table and the crop-response curves ---------------------
     Node("table_s4", "code/repro/make_table_s4_sol.py",
          outputs=("outputs/Table_S4_calibration_sol.csv",
-                  "data/figS12_curves.json"),
+                  "data/figS12_curves.json",
+                  "data/crop_response_calibration_table.csv"),
          inputs=(ERA5,), minutes=3.0,
-         note="writes TWO outputs; the second is Figure S12's input (F-009)"),
+         note="writes THREE outputs; the second is Figure S12's input (F-009) "
+              "and the third is Figure S13's, added by D3"),
     Node("figure_s12", "code/repro/make_figure_s12.py",
          outputs=("figures/Figure_S12_crop_response_calibration.png",),
          inputs=("data/figS12_curves.json",), uses_model=False, minutes=0.1),
@@ -313,7 +315,8 @@ NODES: List[Node] = [
          inputs=("data/ofra_maize_N_responsefunctions.csv",
                  "data/crop_response_calibration_table.csv"),
          uses_model=False, minutes=0.1,
-         note="reads crop_response_calibration_table.csv, which nothing writes"),
+         note="both inputs are now sourced; the calibration table is written "
+              "by make_table_s4_sol.py"),
     Node("benchmarks", "code/repro/run_benchmarks.py",
          outputs=("outputs/benchmarks.csv", "outputs/benchmarks.json"),
          inputs=("data/benchmarks/observed_values.yaml",

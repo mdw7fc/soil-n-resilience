@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 """Climate-input robustness: expert (representative) vs ERA5 data-based climate,
-comparing year-1 and year-10 S3 losses. Reproduces climate_swap_comparison.csv
-(max year-10 shift 0.54 pp; Spearman rank rho = 0.98)."""
+comparing year-1 and year-10 S3 losses.
+
+Writes outputs/climate_swap_comparison.csv and results/climate_swap_stats.txt.
+The two headline numbers are deposited rather than printed: F-009 records what
+happens when a number reaches a document by being read off a console, and the
+0.74 pp that MANIFEST.md carried for three generations of this analysis is the
+example. Read the current values out of the stats file, not out of this
+docstring and not out of a run log."""
 import os, sys, json, csv, warnings
 warnings.filterwarnings("ignore")
 HERE=os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(HERE,'..','model'))
@@ -31,5 +37,13 @@ os.makedirs(os.path.join(HERE,'..','..','outputs'),exist_ok=True)
 with open(os.path.join(HERE,'..','..','outputs','climate_swap_comparison.csv'),'w',newline='') as fh:
     w=csv.writer(fh); w.writerow(['region','Ybase_expert','Ybase_ERA5','yr1_loss_expert','yr1_loss_ERA5','yr10_loss_expert','yr10_loss_ERA5','d_yr10_pp'])
     for k in RO: w.writerow([k,round(old[k]['ybase'],2),round(new[k]['ybase'],2),round(old[k]['l1'],2),round(new[k]['l1'],2),round(old[k]['l10'],2),round(new[k]['l10'],2),round(new[k]['l10']-old[k]['l10'],2)])
-print('max |year-10 shift| = %.2f pp ; Spearman rho (ranking) = %.2f'%(max(abs(x) for x in d10),
-      stats.spearmanr([old[k]['l10'] for k in RO],[new[k]['l10'] for k in RO]).correlation))
+shift = max(abs(x) for x in d10)
+rho = stats.spearmanr([old[k]['l10'] for k in RO],
+                      [new[k]['l10'] for k in RO]).correlation
+os.makedirs(os.path.join(HERE,'..','..','results'),exist_ok=True)
+stats_path = os.path.join(HERE,'..','..','results','climate_swap_stats.txt')
+with open(stats_path,'w') as fh:
+    fh.write('max_abs_year10_shift_pp\t%.2f\n' % shift)
+    fh.write('spearman_rho_year10_ranking\t%.2f\n' % rho)
+print('max |year-10 shift| = %.2f pp ; Spearman rho (ranking) = %.2f' % (shift, rho))
+print('wrote %s' % stats_path)
