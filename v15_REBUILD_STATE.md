@@ -28,7 +28,7 @@ Each is one Cowork task. Do not combine them. Mark status here and commit this f
 | WP3 | Mutation coverage harness | F-011 | **done** — `3307523`; 44/56 leaves agree with F-011, see Log |
 | WP4 | Benchmark suite + `observed_values.yaml` + baseline verdicts | F-008 | **done** — `97ccc58`, `4733bc3`; 35 rows against the acceptance 41, see Log |
 | WP5 | Claim register (`claims.yaml`) + claim strength | F-012, F-013, F-015, F-016 | **done** — `86bf0b1`, `c143f2f`, `ae3dac9`; acceptance met exactly, see Log |
-| WP6 | Build graph + Makefile + full regeneration | F-009, F-014 | not started |
+| WP6 | Build graph + Makefile + full regeneration | F-009, F-014 | **done** — `fa83999`, `4de0d19`, `+reconciliation`; 30 nodes, 28 OK, 2 blocked; **the canonical does not reproduce after year 2 and one parameter explains it — see Log** |
 | D1 | Main-text edits | HANDOFF §7 | not started |
 | D2 | SI edits + regenerated Table S1 + new limitations + benchmark section | HANDOFF §7 | not started |
 | D3 | Deposit docs: MANIFEST.md, `make_figure_s5.py`, `figS12_curves.json` generator | F-009 | not started |
@@ -82,6 +82,75 @@ Start a new Cowork task with the project folder connected and paste the matching
 ---
 
 ## Log
+
+- **2026-07-26 — WP6 done, and it found something bigger than a build graph.**
+  `code/build.py` (30 declared nodes), `Makefile`, `code/tests/test_benchmark_baseline.py`,
+  `.build/` sidecars and the unstamped baseline landed in `fa83999`; the
+  regenerated chain in `4de0d19`. `make verify` runs thirteen suites plus the
+  graph and exits 0. `params_fingerprint()` hashes `params.yaml` with
+  `DOCUMENTARY_KEYS` removed, so a comment no longer restales twenty-eight
+  nodes. Full account in `results/build_reconciliation.md`.
+
+  **THE THING THAT NEEDS MATTHEW'S DECISION BEFORE D1 AND D2 RUN. The
+  deposited v15 results require `eps_F_N = -0.5` in S3, and this tree runs S3
+  at `eps_F_N = 0`.** The rebuilt model reproduces the v15 year-1 losses to
+  five decimals in all eight regions and then diverges monotonically from year
+  3 (global year-10 3.198% against the deposited 3.032%, year-30 3.309%
+  against 3.081%). Setting `eps_F_N = -0.5` and changing nothing else lands
+  every one of the eight regional year-10 losses on the deposited value —
+  0.0002 pp mean absolute error, against 0.19 pp at zero. The code is explicit
+  that S3 runs at zero (`SOIL_N_RESPONSE_ELASTICITY_CENTRAL`, the S3 docstring,
+  and the comment on which F-011's DECLARED_NOT_WIRED verdict rests). F-015 is
+  equally explicit that the S3 numbers were produced "with `eps_F_N` active",
+  `params.yaml` gives `eps_F_N` `affects_claims: [C-040, C-050]` — and C-050 is
+  the S3 calibration claim — and the surviving `s3_shock_calibration.csv` shows
+  the buy-back only a nonzero value produces. Both cannot be true. Every
+  multi-year number in the paper moves with the answer; year 1 does not. Note
+  the direction: switching the feedback **off makes the losses larger**, so the
+  published pair is the more conservative one. And note what it costs: at -0.5
+  the paper's multi-year result leans on the registry's weakest parameter, one
+  whose own source field reads "No clean regional estimates exist" and which
+  F-008 says "must stop being presented as though it has one."
+
+  Four more things the next task should know:
+
+  1. **Two nodes refused to run and the refusal is the point.** `build.py` has a
+     `BLOCKED` state for a node whose generator is behind its artifact.
+     `scenario_trajectories` would have dropped the `PULSE1_global` column that
+     C-061 reads and that no surviving script writes (F-016's pulse work died
+     with the tree). `mc_ensemble` would have overwritten the only surviving
+     v15 ensemble — F-013's P3 = 0.998 evidence — with ninety minutes of draws
+     from the configuration now in question. Both are reported with their
+     reason on every status and verify; `--force` overrides.
+  2. **F-009 named the wrong file.** `data/figS12_curves.json` is *not*
+     unsourced: `make_table_s4_sol.py` writes it at line 63 and has since before
+     the reconstruction base, and README line 60 says so. The v15 graph must
+     have declared one of that script's two outputs — the same defect F-014
+     found in the `prices` node. The file that really is unsourced is
+     `data/crop_response_calibration_table.csv`: `make_ofra_validation.py` reads
+     it for Figure S13, `MANIFEST.md` credits `make_table_s4_sol.py` with
+     writing it, and nothing in the deposit ever has. **D3's owed item should be
+     re-pointed at that file.** The stale duplicate F-009 deleted is confirmed
+     and deleted again here (SSA year-10 14.0% against 4.92%).
+  3. **`make_soc_trajectories.py` (F-016) and `make_s3_shock_calibration.py`
+     (F-015) did not survive the crash and no work package rebuilds them.**
+     Their outputs did survive, which is why they show as one orphan and two
+     unsourced inputs. F-016's "nothing is left that the register admits it
+     cannot check" is no longer true of this tree. Write them *after* the
+     `eps_F_N` decision, not before.
+  4. **The claim gate did not move** — 42 AGREES, 28 DRIFTED, same set, smallest
+     drift still 0.118 pp — so `docs/claims_baseline.json` did **not** need
+     regenerating as WP5 expected. But WP5's "free acceptance test for WP6"
+     (C-010, C-060, C-061 must not move when re-pointed at the regenerated
+     canonical) was not run rather than passed: those three read the two
+     artifacts this package refused to regenerate. Under the present model they
+     would have moved, for the reason above.
+
+  Housekeeping: `test_wp1_registry_wiring.py` is **green** (rebaselined in
+  `8573179`), against what this file records — the fourth package running where
+  the git log and the status table disagree. `_transfer/` and
+  `_stale_git_locks/` are now gitignored. `tar` cannot unlink on this volume,
+  so extractions into the repo need `--overwrite`.
 
 - **2026-07-26 — WP5 done.** Claim register rebuilt: `docs/claims.yaml` plus
   `code/repro/claim_resolvers.py` (`86bf0b1`), then `code/tests/test_claims.py`,
