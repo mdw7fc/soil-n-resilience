@@ -187,3 +187,83 @@ after regeneration, and its caption claim still holds at the regenerated ceiling
 Once you answer 1, I can rewrite the D1 and D2 prompts. Both are marked
 SUPERSEDED in `v15_REBUILD_STATE.md` with the reason, so nobody pastes them in
 the meantime.
+
+---
+
+## Appendix — Latin America closed, and the verified edit list (WP6 follow-up, 2026-07-26)
+
+**Latin America is not a crack in the argument. It is a real edit, and there are
+three more like it that this report missed.**
+
+`git show 8b36c38:data/canonical_ERA5_y30.json` is the v14 canonical, the run
+`v14_sol` was written from. Its year-10 losses round to exactly what the
+manuscript prints, in all eight regions:
+
+| region | v14 canonical | rounds to | v14_sol prints | regenerated | rounds to |
+|---|---|---|---|---|---|
+| east_asia | 1.226 | 1.2 | 1.2 | 1.210 | 1.2 |
+| north_america | 1.778 | 1.8 | 1.8 | 1.800 | 1.8 |
+| latin_america | 2.405 | 2.4 | 2.4 | 2.508 | **2.5** |
+| europe | 3.636 | 3.6 | 3.6 | 3.668 | **3.7** |
+| southeast_asia | 3.847 | 3.8 | 3.8 | 3.844 | 3.8 |
+| sub_saharan_africa | 4.992 | 5.0 | 5.0 | 4.926 | **4.9** |
+| south_asia | 5.225 | 5.2 | 5.2 | 5.121 | **5.1** |
+| fsu_central_asia | 5.574 | 5.6 | 5.6 | 5.553 | 5.6 |
+
+So there is no transcription slip. `v14_sol` was written from the v14 canonical,
+which ran at `eps_F_N = 0`, and the movement is WP2's F-002 production-path
+recalibration, not `eps_F_N`. That is one more independent confirmation of zero:
+the printed numbers are the zero family one recalibration ago.
+
+Latin America looked singular only because it moved furthest (+0.102). Three
+other regions cross a rounding boundary on smaller movements — sub-Saharan
+Africa needs only −0.066 to fall from 5.0 to 4.9. **Comparing rounded values, not
+differences, is what finds these.**
+
+### The D1 edit list, verified against the regenerated artifacts
+
+**Regional year-10 sentence (MS results).** Four numbers: Latin America 2.4 →
+**2.5**, Europe 3.6 → **3.7**, sub-Saharan Africa 5.0 → **4.9**, South Asia 5.2 →
+**5.1**. The sentence's framing survives: East Asia is still the floor (1.21) and
+FSU/Central Asia still the ceiling (5.55), so "range from 1.2% in East Asia to
+5.6% in FSU/Central Asia" stands as written.
+
+**Year-30 sentence.** One number: South Asia 5.3 → **5.2**. FSU 5.8 and SSA 5.4
+are unchanged, and the three regions are still the three largest.
+
+**Globals and abstract.** No edit. 2.3 / 3.2 / 3.3 hold at year 1 / 10 / 30
+(model 2.32 / 3.198 / 3.309).
+
+**Figure 2 panel a.** Four numbers: South Asia's 200% endpoint 4.3 → **4.2**,
+Latin America **3.8** → **1.7** (from 3.7 → 1.6), FSU's endpoint 4.4 → **4.3**.
+The other twelve are unchanged.
+
+**Supplementary Fig. S10 sentence.** Five numbers: SSA year-10 at NUE 0.45
+5.55 → **5.50** and at 0.65 5.13 → **5.07** (the stated 8% reduction still holds,
+7.8%); the sweep endpoints 4.13 → **4.15** and 2.90 → **2.92**; the central 0.75
+case 3.18 → **3.20**.
+
+**SC1/SC2 sentence.** No edit — but see below. Regenerating gives SC1 3.758 /
+3.898 and SC2 1.919 / 0.045, which print as the 3.7 / 3.9 / 1.9 / 0.04 already
+there, and SC1 − S3 at year 10 is 0.56, which prints as the stated 0.6.
+
+### One thing to fix before D1 runs
+
+**`data/scenario_trajectories.csv` still holds the `eps_F_N = -0.5` family.** It
+is a BLOCKED node, so the regeneration skipped it, and it reads S3 year-10 3.032
+where `data/canonical_ERA5_y30.json` now reads 3.198. C-060 and C-061 are scored
+against it. That is the last place in the deposit where the two families
+disagree, and it means the claim register is currently checking the manuscript
+against superseded numbers.
+
+It cannot simply be unblocked: regenerating with the surviving generator would
+drop the `PULSE1_global` column C-061 reads, because F-016's pulse capability
+died with the v15 tree. The order is: restore the pulse capability
+(`get_pulse_scenario`, `EconParams.fert_price_shock_years`, and the `t >` rather
+than `t >=` condition), then regenerate, then unblock. The SC1/SC2 numbers above
+come from a scratch run, not from the deposited file, and should be re-derived
+from the regenerated artifact once that lands.
+
+`build.py` now reports a blocked node's underlying status alongside the block, so
+a blocked node that is also out of date says so instead of hiding behind the
+block.

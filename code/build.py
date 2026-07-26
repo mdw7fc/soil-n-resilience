@@ -197,12 +197,20 @@ NODES: List[Node] = [
     Node("scenario_trajectories", "code/repro/make_scenario_trajectories.py",
          outputs=("data/scenario_trajectories.csv",),
          inputs=(ERA5,), minutes=0.2,
-         blocked=("the deposited artifact carries a PULSE1_global column that "
-                  "this generator does not write. F-016 added the one-year "
-                  "pulse to the model and to this script; that work was lost "
-                  "with the crashed v15 tree and the surviving script is the "
-                  "pre-pulse one. Running it would delete the column C-061 "
-                  "reads and nothing here could rebuild it. Frozen copy: "
+         blocked=("TWO problems, and the second is worse than the first. (a) "
+                  "The deposited artifact carries a PULSE1_global column this "
+                  "generator does not write: F-016 added the one-year pulse to "
+                  "the model and to this script and that work died with the "
+                  "v15 tree, so running it would delete the column C-061 reads "
+                  "and nothing here could rebuild it. (b) The deposited CSV "
+                  "was produced at eps_F_N = -0.5 and so carries the SUPERSEDED "
+                  "family for S3, SC1 and SC2 -- S3 year-10 3.032 against the "
+                  "regenerated canonical's 3.198. C-060 and C-061 are scored "
+                  "against it, so the register currently reads the old family "
+                  "while data/canonical_ERA5_y30.json reads the new one. This "
+                  "node is the last place in the deposit where the two "
+                  "disagree. Unblocking it means restoring the pulse "
+                  "capability first, then regenerating. Frozen copy: "
                   "baseline/surviving_v15/scenario_trajectories.csv")),
     Node("sc_trajectories", "code/repro/make_sc_trajectories.py",
          outputs=("data/SC1_regional_trajectory.csv",
@@ -633,6 +641,34 @@ def write_unstamped_baseline(names: Iterable[str], reason: str) -> None:
         fh.write("\n")
 
 
+def _plain_status(node: Node, baseline: Set[str]) -> Tuple[str, List[str]]:
+    """The verdict a node would get if it were not blocked."""
+    detail: List[str] = []
+    now = node_state(node)
+    missing_out = [p for p, h in now["outputs"].items() if h is None]
+    missing_in = [p for p, h in now["inputs"].items() if h is None]
+    if missing_in:
+        return MISSING_INPUT, ["input absent: " + ", ".join(sorted(missing_in))]
+    if missing_out:
+        return MISSING_OUTPUT, ["output absent: " + ", ".join(sorted(missing_out))]
+    old = read_sidecar(node.name)
+    if old is None:
+        if node.name in baseline:
+            return UNSTAMPED_BASELINE, ["never regenerated under this graph"]
+        return UNSTAMPED, ["no provenance sidecar and not in the baseline"]
+    if old.get("generator_sha") != now["generator_sha"]:
+        detail.append("generator changed")
+    if old.get("params_fingerprint") != now["params_fingerprint"]:
+        detail.append("params fingerprint changed")
+    for p_, h in sorted(now["inputs"].items()):
+        if old.get("inputs", {}).get(p_) != h:
+            detail.append("input changed: %s" % p_)
+    for p_, h in sorted(now["outputs"].items()):
+        if old.get("outputs", {}).get(p_) != h:
+            detail.append("output changed since stamp: %s" % p_)
+    return (STALE, detail) if detail else (OK, [])
+
+
 def status_of(node: Node, baseline: Set[str]) -> Tuple[str, List[str]]:
     detail: List[str] = []
     if file_hash(node.generator) is None:
@@ -642,7 +678,14 @@ def status_of(node: Node, baseline: Set[str]) -> Tuple[str, List[str]]:
         return MISSING_GENERATOR, ["library absent: " + ", ".join(missing_lib)]
 
     if node.blocked:
-        return BLOCKED, [node.blocked]
+        # A blocked node still gets its ordinary verdict computed and reported.
+        # A state that hides another state is the defect this file exists to
+        # catch: BLOCKED alone would have said nothing about whether the frozen
+        # artifact is also out of date.
+        under, under_detail = _plain_status(node, baseline)
+        detail = [node.blocked, "underlying status: %s%s" % (
+            under, (" -- " + "; ".join(under_detail)) if under_detail else "")]
+        return BLOCKED, detail
 
     now = node_state(node)
     missing_out = [p for p, h in now["outputs"].items() if h is None]
