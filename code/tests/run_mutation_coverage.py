@@ -85,6 +85,7 @@ REACH_TOL = 1e-9
 TEST_FILES = [
     "code/tests/test_calibration_fingerprint.py",
     "code/tests/test_seam_contracts.py",
+    "code/tests/test_spinup_partition_independence.py",
     "code/tests/test_wp1_registry_wiring.py",
     "code/repro/test_cap_market_clearing.py",
     "code/repro/test_cross_document_consistency_sol.py",
