@@ -1,132 +1,182 @@
 # Mutation coverage: WP3 rebuild against F-011
 
-Rebuilt sweep, 2026-07-25, on the WP1+WP2 tree (`2b76b16`).
+Two sweeps, 2026-07-25/26. The first scored the suite as WP3 found it; the
+second scored it after the repairs that sweep exposed.
 
-|                     | F-011 | WP3 rebuild |
-|---------------------|------:|------------:|
-| COVERED             |    12 |           5 |
-| UNTESTED            |    22 |          27 |
-| DECLARED_NOT_WIRED  |     3 |           2 |
-| GUARDED_AT_LOAD     |     6 |           6 |
-| INERT               |    13 |          16 |
-| **total**           |    56 |          56 |
+|                     | F-011 | as found | after repairs |
+|---------------------|------:|---------:|--------------:|
+| COVERED             |    12 |        5 |        **32** |
+| UNTESTED            |    22 |       27 |         **0** |
+| DECLARED_NOT_WIRED  |     3 |        2 |             2 |
+| GUARDED_AT_LOAD     |     6 |        6 |             6 |
+| INERT               |    13 |       16 |            16 |
+| **total**           |    56 |       56 |            56 |
 
-**44 of 56 leaves agree.** The leaf list is identical — `registry.leaves()`
-returns the same 56 names — and `GUARDED_AT_LOAD` reproduces exactly, both in
-count and in membership. Every one of the twelve disagreements has an
-identified cause. None of them was tuned away.
+The leaf list is identical throughout — `registry.leaves()` returns the same 56
+names — and `GUARDED_AT_LOAD` reproduces F-011 exactly, in count and in
+membership. Nothing was tuned toward any acceptance figure.
 
-## 1. Eight COVERED leaves fell to UNTESTED: the catching test does not exist
+## Read the headline sceptically
 
-`cre_regional`, `faostat_yield_target`, `residue_c_to_active_fraction`,
-`residue_retention`, `root_shoot_c_ratio`, `soc_initial`,
-`som_decay_rates.k_passive`, `som_humification.h_active_to_slow`.
+**UNTESTED 0 is not as good as it looks, and the depth table in
+`mutation_coverage_summary.txt` is the number to read instead.**
 
-F-011: *"Eight of the twelve COVERED leaves are caught by a single test,
-`test_spinup_partition_independence.py`."* That file is not in the tree. It was
-lost with the v15 working tree and no work package in `v15_REBUILD_STATE.md`
-rebuilds it. The eight leaves are exactly the eight F-011 names — the match is
-by construction, not by coincidence.
+`test_wp1_registry_wiring.py` now regenerates the canonical artifact and
+asserts a 123-field delta. That makes it a whole-artifact fingerprint, so it
+objects to *every* mutation that moves a published number, by construction.
+It catches all 32 COVERED leaves. Twelve of them — `alpha`, `cropland_mha`,
+`eps_F_PY`, `eps_LD_PL`, `eps_LD_PY`, `eps_LS_PL`, `eta`,
+`faostat_yield_target`, both `laub_tropical_ratios` leaves,
+`physical_feedback_strength`, `whc_sensitivity` — are caught by nothing else.
+Retire or rebaseline that one file and those twelve return to UNTESTED
+immediately.
 
-This is a live documentation defect, not only a coverage one.
-`code/model/params.yaml` cites the test twice as an authority:
+This is F-011's own criticism in a new form. It wrote that "a suite whose
+catching power sits in one behavioural test and two mirror tests is thin". The
+current suite's catching power sits in one fingerprint test and one
+behavioural test. Genuine per-parameter coverage is what
+`test_spinup_partition_independence.py` provides for 15 leaves and
+`test_dimensional_consistency_sol.py` for 4. The remaining 12 have a tripwire,
+not a test. F-011's standing worklist item — write a test for each leaf that
+nothing specific catches — is not discharged; it has moved from 22 leaves to
+12.
 
-- under `som_pool_fractions`, as the test that *falsified* an earlier claim
-  about the dynamic spin-up overwriting the initial partition;
-- as the writer of `results/spinup_partition_characterisation.yaml`
-  "on every run", from which the SI is told to cite measured values.
+## What the repairs were
 
-So the registry currently cites a test that does not exist for a file that is
-never written. Rebuilding it would restore eight COVERED verdicts and close the
-dangling citation. It is the single highest-value item on the test worklist.
+Four problems, all surfaced by reconciling the first sweep against F-011
+rather than by any test.
 
-## 2. One UNTESTED leaf rose to COVERED
+### 1. `test_spinup_partition_independence.py` did not exist
 
-`eps_F_PF`, caught by `test_seam_contracts.py` — written by WP2 under F-005,
-after F-011 was recorded. A real gain, not a discrepancy.
+F-011 records it as catching eight of twelve COVERED leaves. It was written
+during the v15 pass, lost with the working tree, and owned by no work package.
+`code/model/params.yaml` cited it twice — as the test that falsified the claim
+that the spin-up overwrites the initial pool partition, and as the writer of
+`results/spinup_partition_characterisation.yaml`, which the SI limitation
+cites. So the registry documented a test that was not there and pointed the SI
+at a file nothing wrote.
 
-## 3. Two UNTESTED leaves fell to INERT
+Rebuilt from those citations. Sweeping `f_passive` over 0.45 / 0.58 / 0.73 in
+all eight regions, it establishes: the fast pools are partition-independent;
+the passive pool is not, and must not be (asserted as a floor, so that if it
+ever starts converging the test fails loudly instead of silently restoring a
+claim the registry records as false); the true fixed point is
+partition-independent; and the published quantities are flat, worst-case
+0.0133 pp against 0.1 pp reporting precision, which is what actually licenses
+the ensemble exemption. It also pins the spin-up equilibrium, which is what
+gives the 15 leaves their coverage — checks A–D are structural and would hold
+across a range of parameter values.
 
-`bnf_potential` and `yield_min_regional` move no field of the canonical
-artifact. This follows from WP2's F-002 production-path recalibration, which
-solves `y_max` against the FAOSTAT target rather than reading a static value.
-F-011 already recorded `yield_max_regional` as INERT for precisely this reason
-and cited SI [65]: *"the static values are legacy fallbacks, not the reported
-calibration."* `yield_min_regional` has now joined it, and the same SI sentence
-covers both.
+**One prose number did not survive.** The `mc_exempt_reason` states absolute
+SOC moves "more than 8 t C/ha in every temperate region". Measured: Europe
+10.53 and FSU 8.63 clear it, North America is 2.32. The SI limitation cites
+that sentence and needs restating. The licensing argument is unaffected — it
+rests on the published quantities being flat, not on the size of the SOC move.
 
-## 4. `texture_class`: DECLARED_NOT_WIRED or INERT
+### 2. `test_wp1_registry_wiring.py` was green by being stale
 
-F-011 scores it DECLARED_NOT_WIRED. This sweep scores it INERT.
+It read `data/canonical_ERA5_y30.json` off the tree. That is a deposit
+artifact, only rewritten when someone runs the model, so on an un-regenerated
+checkout it compared the 20defb2 baseline against the 20defb2 artifact and
+reported "no number moved" — passing because the file was stale, not because
+the code agreed. It went red only inside the mutation sandboxes, which run the
+model first. That is why the first sweep excluded it.
 
-The boundary F-011 drew between these two verdicts could not be recovered from
-the finding text, and three candidate rules were tested and rejected before
-this one was adopted:
+Both halves had to change: it now re-runs the model into a throwaway copy, and
+asserts the *delta* rather than zero — exactly these 50 fields moved, to these
+values, and nothing else did, pinned in
+`baseline/canonical_expected_delta.json`. Rebaselining to post-WP2 figures
+would have erased the evidence that WP2 moved anything. CHECK 3 had the same
+staleness defect and was still asserting the 20defb2 headline; it now reads
+the fresh run and expects 2.32 / 3.20 / 3.31.
 
-- *never requested from the registry* — separates `eps_F_N` and
-  `fert_reduction_target` correctly but not `texture_class`, which **is**
-  requested, into `RegionParams`;
-- *the entry's `used_by` key is empty* — `eps_F_N` (DNW) and `bnf_ramp_years`
-  (INERT) both declare `[]`, so it separates nothing;
-- *static AST check for a consuming read* — too coarse; values fetched inline
-  as `registry.value(...)` are never bound to a name and so read as unwired.
+### 3. `test_parameter_extremes_sol.py` failed on a correct run
 
-The rule adopted is dynamic and is stated in the harness docstring:
-**DECLARED_NOT_WIRED** means the mutation moved no model state at all;
-**INERT** means model state moved but no published number did. Under it,
-`texture_class` reaches `RegionParams.texture_class` and stops there, which is
-model state, so it scores INERT. `cre_base` scores INERT on the same grounds,
-which is what F-011 says it should.
+Its blanket finiteness assertion over every numeric column tripped on
+`ln_cap`, the diagnostic column F-010 added, which is NaN whenever the
+fertilizer ceiling does not bind. NaN is the correct encoding of "not
+applicable". `ln_cap` is now asserted finite exactly where `cap_binding` is
+true and NaN everywhere else — stronger than the assertion it replaces, not an
+exemption.
 
-This is recorded as a reconstruction gap in the sense of
-`RECONSTRUCTION_GAPS.md` rather than resolved by choosing a rule that happens
-to reproduce 3 and 13. The totals for these two verdicts are therefore off by
-one against F-011 in compensating directions.
+### 4. `test_parameter_consistency_sol.py` is still red, deliberately
 
-## Two defects found in this harness and fixed before the reported run
+WP2 froze `EXPECTED_SHARES` at pre-F-002 figures on purpose and owes them to
+WP5's claim register; rebaselining would lose the evidence that a published
+number moved. That decision stands. But its note claimed only sub-Saharan
+Africa had drifted, and the assertion stopped at the first region, so it never
+evaluated the rest. Three of four have drifted:
 
-Both were caught by reconciling against F-011 rather than by a test, which is
-itself worth noting.
+| region | pinned | model | delta |
+|---|---:|---:|---:|
+| sub_saharan_africa | 0.037 | 0.035778 | −1.22e-3 |
+| south_asia | 0.153 | 0.147321 | −5.68e-3 |
+| latin_america | 0.047 | 0.049145 | +2.15e-3 |
+| north_america | 0.060 | 0.060800 | +8.00e-4 (within tolerance) |
+
+South Asia is the largest mover and the one that matters: SI [163] and claims
+C-063 / C-064 turn on which region carries the highest derived nitrogen cost
+share. WP5 should carry all three, not one. All four are now measured before
+anything is asserted, and reported together.
+
+## Leaf-level disagreements with F-011 that remain
+
+Both are unchanged by the repairs and both are accounted for.
+
+**`bnf_potential` and `yield_min_regional` fell UNTESTED → INERT.** They move
+no field of the canonical artifact now that WP2 solves `y_max` against the
+FAOSTAT target. F-011 already recorded `yield_max_regional` as INERT for
+exactly this reason and cited SI [65]: "the static values are legacy
+fallbacks, not the reported calibration." The same sentence now covers all
+three.
+
+**`texture_class` scores INERT, not DECLARED_NOT_WIRED.** F-011's boundary
+between those two verdicts could not be recovered from the finding text. Three
+candidate rules were tested and rejected: *never requested from the registry*
+(separates `eps_F_N` and `fert_reduction_target` correctly but not
+`texture_class`, which is requested, into `RegionParams`); *empty `used_by`*
+(`eps_F_N` and `bnf_ramp_years` both declare `[]`, so it separates nothing);
+and a *static AST check for a consuming read* (too coarse — values fetched
+inline as `registry.value(...)` are never bound to a name and read as
+unwired). The rule adopted is dynamic and stated in the harness docstring:
+DECLARED_NOT_WIRED means the mutation moved no model state at all, INERT means
+model state moved but no published number did. Under it `texture_class`
+reaches `RegionParams.texture_class` and stops there, so it scores INERT — and
+`cre_base` scores INERT on the same grounds, which is what F-011 says it
+should. Recorded as a reconstruction gap rather than resolved by picking the
+rule that reproduces 3 and 13.
+
+## Two defects in this harness, found by reconciliation and fixed
 
 1. **The canonical run was conditional.** The first revision short-circuited to
    DECLARED_NOT_WIRED whenever the model-state snapshot did not move, without
-   ever running the model. Any parameter consumed *inside* the run rather than
-   stored on a parameter object was mis-scored:
+   running the model at all. Any parameter consumed *inside* the run rather
+   than stored on a parameter object was mis-scored:
    `residue_c_to_active_fraction` and both `laub_tropical_ratios` leaves move
-   43, 27 and 27 published fields respectively and were being reported as
-   reaching nothing. REACH is now always measured; the state snapshot only ever
-   breaks the INERT / DECLARED_NOT_WIRED tie.
-
+   43, 27 and 27 published fields and were reported as reaching nothing.
 2. **The state probe missed the price seam and the tropical SOM variant.**
    `SOMPoolParams()` built with defaults does not read `laub_tropical_ratios`,
    and three price constants are consumed only inside validators. Six leaves
    scored DECLARED_NOT_WIRED for want of a probe rather than for want of
-   wiring. The probe now exercises the tropical constructor, `check_price_bounds`,
-   and the module-level price constants.
+   wiring.
 
-The first defect is the same class of error F-011 recorded against its own
-probe — *"the fingerprint is too narrow"* — one layer further in. A narrow
-fingerprint does not report uncertainty; it reports a confident negative.
+The first is the same class of error F-011 recorded against its own probe —
+"the fingerprint is too narrow" — one layer further in. A narrow fingerprint
+does not report uncertainty; it reports a confident negative.
 
-## Four tests excluded from CATCH because they are already red
+## Still owed
 
-A permanently-red test cannot catch a mutation: it fails either way. Counting
-one would inflate COVERED. The harness runs the suite once at baseline, keeps
-the green set, and names the excluded:
-
-| test | why |
-|---|---|
-| `code/tests/test_wp1_registry_wiring.py` | **Real.** WP1's own acceptance gate: 50 numeric differences against the `20defb2` base. WP2's F-002 recalibration deliberately moved those numbers, so this gate is red and will stay red until it is rebaselined to post-WP2 values or retired. It needs a decision. |
-| `code/repro/test_parameter_consistency_sol.py` | **Real.** SSA fertilizer cost share 0.03578 against a hardcoded 0.037. Post-WP2 drift; the literal is the thing to fix. |
-| `code/repro/test_parameter_extremes_sol.py` | **Real.** Non-finite values in `structural_cases`. Not yet diagnosed. |
-| `code/repro/test_cross_document_consistency_sol.py` | Environmental. Wants the v14 manuscript `.docx` at an absolute path outside the repo. |
-
-## Also observed
-
-The committed `data/canonical_ERA5_y30.json` no longer reproduces from this
-tree: 50 of 107 numeric fields differ, and `y_base` is now pinned to the
-FAOSTAT target. Global production-weighted S3 loss runs 2.32 / 3.20 / 3.31 %
-for years 1 / 10 / 30, against the 3.03 % year-10 figure WP6's acceptance
-quotes. That is WP6's regeneration debt and is flagged here only because this
-harness had to fingerprint a freshly-run baseline rather than the committed
-artifact to avoid scoring all 56 leaves as reaching.
+- Real per-parameter tests for the 12 leaves that only the canonical
+  fingerprint catches.
+- WP5 to carry the three drifted cost shares.
+- The `mc_exempt_reason` SOC sentence, and the SI limitation citing it.
+- WP6 owns the stale deposit artifact: the committed
+  `canonical_ERA5_y30.json` is the 20defb2 file. A live run gives global S3
+  losses of 2.32 / 3.20 / 3.31 % for years 1 / 10 / 30, against the 3.03 %
+  year-10 figure quoted in HANDOFF §5 and in WP6's acceptance. That acceptance
+  number may itself need restating.
+- `n_price_usd_kg_farmer_paid`, `price_benchmark_max_factor` and
+  `urea_n_fraction` join the three F-011 already listed as `not_probed`: they
+  move gross margins, prices or cost shares, none of which the canonical
+  artifact carries. Widening the published set to the margin outcomes is
+  F-011's own outstanding item.

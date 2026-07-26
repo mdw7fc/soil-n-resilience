@@ -25,7 +25,7 @@ Each is one Cowork task. Do not combine them. Mark status here and commit this f
 |---|---|---|---|
 | WP1 | Parameter registry (`params.yaml`, `registry.py`) + wire it into the four model modules | F-001, F-006, F-007, F-011 | **done** — `9b2af15`; acceptance gate now red, see Log |
 | WP2 | Production-path calibration + seam contracts + `test_cap_market_clearing` rewrite | F-002, F-005, F-010 | **done** — `9b2af15`, `2b76b16` |
-| WP3 | Mutation coverage harness | F-011 | **done** — `3307523`; 44/56 leaves agree with F-011, see Log |
+| WP3 | Mutation coverage harness | F-011 | **done** — `3307523`, `f6f5672`, `8573179`, `44d0bc8`; suite repaired, COVERED 5 → 32 |
 | WP4 | Benchmark suite + `observed_values.yaml` + baseline verdicts | F-008 | **done** — `97ccc58`, `4733bc3`; 35 rows against the acceptance 41, see Log |
 | WP5 | Claim register (`claims.yaml`) + claim strength | F-012, F-013, F-015, F-016 | not started |
 | WP6 | Build graph + Makefile + full regeneration | F-009, F-014 | not started |
@@ -82,6 +82,20 @@ Start a new Cowork task with the project folder connected and paste the matching
 ---
 
 ## Log
+
+- **2026-07-26 — WP3 follow-up: the suite the sweep was measuring got repaired.** Re-swept after fixing what the first sweep exposed: **COVERED 32, UNTESTED 0, DECLARED_NOT_WIRED 2, GUARDED_AT_LOAD 6, INERT 16** (`logs/run_68_mutation.log`), against the first sweep's 5 / 27 / 2 / 6 / 16 and the acceptance 12 / 22 / 3 / 6 / 13. Full account in `results/mutation_coverage_reconciliation.md`.
+
+  **READ THAT HEADLINE SCEPTICALLY. UNTESTED 0 is thinner than it sounds.** `test_wp1_registry_wiring.py` now regenerates the canonical artifact and asserts a 123-field delta, which makes it a whole-artifact fingerprint: it objects to every reaching mutation by construction and catches all 32. **Twelve leaves are caught by nothing else** — alpha, cropland_mha, eps_F_PY, eps_LD_PL, eps_LD_PY, eps_LS_PL, eta, faostat_yield_target, both laub_tropical_ratios leaves, physical_feedback_strength, whc_sensitivity. Retire or rebaseline that one file and all twelve go straight back to UNTESTED. Real per-parameter coverage is 15 leaves from the spin-up test and 4 from dimensional consistency. F-011's worklist item — a test per uncovered leaf — is not discharged; it shrank from 22 leaves to 12. The COVERAGE DEPTH table in `mutation_coverage_summary.txt` is the number to read, not the verdict counts.
+
+  1. **`test_spinup_partition_independence.py` rebuilt** (`44d0bc8`) from the two citations in `params.yaml`. No work package owned it, so the registry was citing a test that did not exist and pointing the SI at a characterisation file nothing wrote. Sweeps f_passive 0.45/0.58/0.73 across eight regions; asserts fast pools partition-independent, passive pool NOT (a floor, so a future convergence fails loudly instead of silently restoring a claim the registry records as false), true fixed point partition-independent, published quantities flat to 0.0133 pp against 0.1 pp reporting. Pins the spin-up equilibrium — that is where its coverage comes from.
+  2. **`test_wp1_registry_wiring.py` was green by being stale** (`8573179`). It read the deposit artifact off the tree, so on an un-regenerated checkout it compared 20defb2 against itself and reported "no number moved". It now re-runs the model and asserts the pinned 50-field delta (`baseline/canonical_expected_delta.json`) rather than zero. CHECK 3 had the same defect and still asserted the 20defb2 headline; it now expects the post-WP2 2.32/3.20/3.31.
+  3. **`test_parameter_extremes_sol.py` green** (`8573179`). It was failing on a correct run: the blanket finiteness check tripped on `ln_cap`, F-010's diagnostic column, which is NaN when the fertilizer ceiling does not bind. Now asserted finite exactly where `cap_binding` is true and NaN elsewhere.
+  4. **`test_parameter_consistency_sol.py` still red, deliberately.** WP2's decision to freeze EXPECTED_SHARES for WP5 stands. But its note said only SSA had drifted and the assertion stopped at the first region: **three of four have drifted**, and south_asia (0.153 → 0.147321) is both the largest and the one SI [163] and C-063/C-064 turn on. All four are now measured before anything is asserted.
+
+  **New for the manuscript worklist:** the `mc_exempt_reason` on `som_pool_fractions` says absolute SOC moves "more than 8 t C/ha in every temperate region". Measured: Europe 10.53, FSU 8.63, **North America 2.32**. The SI limitation cites that sentence. The licensing argument is unaffected — it rests on the published quantities being flat, not on the size of the SOC move.
+
+  **Process note:** `device_stage_files` returned a STALE cached copy of this file when re-staged after another session had rewritten it — fresh mtime, old contents. Edit this file in place on disk (device_bash + python) rather than staging, editing and committing it back, or you will silently revert a concurrent session's work.
+
 
 - **2026-07-26 — WP4 done.** Benchmark suite rebuilt: `data/benchmarks/observed_values.yaml` (`97ccc58`), then `code/repro/run_benchmarks.py`, `data/benchmarks/baseline_verdicts.json`, `outputs/benchmarks.csv` / `.json`, `results/benchmark_reconciliation.md`, `logs/run_36_benchmarks.log` (`4733bc3`). The suite runs in about 40 seconds.
 

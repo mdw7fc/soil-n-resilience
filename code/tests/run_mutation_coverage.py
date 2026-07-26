@@ -403,10 +403,42 @@ def main() -> int:
         if r["not_probed"]:
             lines.append(f"    {r['leaf']}  ({r['verdict']})")
     lines += ["", "UNTESTED -- a published number moves and nothing objects."]
-    for r in rows:
-        if r["verdict"] == "UNTESTED":
+    untested = [r for r in rows if r["verdict"] == "UNTESTED"]
+    if untested:
+        for r in untested:
             lines.append(f"    {r['leaf']}  ({r['published_fields_moved']} fields, "
                          f"worst {r['worst_field']} {r['worst_delta']:.4g})")
+    else:
+        lines.append("    none")
+
+    # ------------------------------------------------------------------
+    # COVERED counts a leaf once for any test that objects, which flatters a
+    # suite containing a whole-artifact fingerprint: such a test trips on
+    # every reaching mutation by construction, so it drives UNTESTED to zero
+    # without saying anything about the parameter. Depth is the honest metric.
+    # F-011 made this criticism of the pre-v15 suite -- "a suite whose
+    # catching power sits in one behavioural test and two mirror tests is
+    # thin" -- and it has to be applied to the current one too.
+    # ------------------------------------------------------------------
+    covered = [r for r in rows if r["verdict"] == "COVERED"]
+    per_test, sole = {}, {}
+    for r in covered:
+        t = [x for x in r["caught_by"].split(";") if x]
+        for x in t:
+            per_test[x] = per_test.get(x, 0) + 1
+        if len(t) == 1:
+            sole.setdefault(t[0], []).append(r["leaf"])
+    lines += ["", "COVERAGE DEPTH -- how many tests object, not whether any does.",
+              f"    {sum(1 for r in covered if r['caught_by'].count(';') == 0)} of "
+              f"{len(covered)} COVERED leaves rest on a single test.", ""]
+    for t, c in sorted(per_test.items(), key=lambda kv: -kv[1]):
+        lines.append(f"    {c:3d}  {t}")
+    for t, leaves_ in sorted(sole.items(), key=lambda kv: -len(kv[1])):
+        lines += ["", f"    Caught ONLY by {t} ({len(leaves_)}). If that test is "
+                      f"ever retired or", "    rebaselined away, these return to "
+                      "UNTESTED:"]
+        for lf in leaves_:
+            lines.append(f"        {lf}")
 
     txt = "\n".join(lines) + "\n"
     open(os.path.join(RESULTS, "mutation_coverage_summary.txt"), "w").write(txt)

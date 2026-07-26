@@ -4,10 +4,10 @@ leaves          56
 delta           +10% relative, additive on a zero-valued leaf
 published set   107 numeric fields of data/canonical_ERA5_y30.json
 model state     267 numeric fields
-elapsed         20.7 min
+elapsed         32.6 min
 
-    COVERED                5
-    UNTESTED              27
+    COVERED               32
+    UNTESTED               0
     DECLARED_NOT_WIRED     2
     GUARDED_AT_LOAD        6
     INERT                 16
@@ -15,10 +15,8 @@ elapsed         20.7 min
                           56
 
 TESTS EXCLUDED FROM CATCH (already red on the unmutated tree)
-    code/tests/test_wp1_registry_wiring.py  rc=1
     code/repro/test_cross_document_consistency_sol.py  rc=1
     code/repro/test_parameter_consistency_sol.py  rc=1
-    code/repro/test_parameter_extremes_sol.py  rc=1
 
 NOT PROBED. These are wired and move gross margins, prices or
 cost shares, none of which the canonical artifact carries. Read
@@ -31,30 +29,27 @@ their INERT verdict as 'not probed', not as 'irrelevant'.
     urea_n_fraction  (INERT)
 
 UNTESTED -- a published number moves and nothing objects.
-    alpha  (24 fields, worst regions[7].loss_yr30 0.0009491)
-    atm_n_deposition  (43 fields, worst regions[6].buffer_ratio_pct 0.5)
-    baseline_water_deficit  (32 fields, worst regions[6].water_deficit 1.5)
-    cn_bulk  (43 fields, worst regions[4].buffer_ratio_pct 2.4)
-    cre_regional  (43 fields, worst regions[6].buffer_ratio_pct 2.4)
-    cropland_mha  (8 fields, worst regions[6].cropland_mha 23)
-    eps_F_PY  (27 fields, worst regions[7].loss_yr30 0.02937)
-    eps_LD_PL  (24 fields, worst regions[7].loss_yr30 0.0003445)
-    eps_LD_PY  (24 fields, worst regions[7].loss_yr30 0.0009491)
-    eps_LS_PL  (24 fields, worst regions[7].loss_yr30 0.0003356)
-    eta  (34 fields, worst regions[6].eta 0.07)
-    faostat_yield_target  (51 fields, worst regions[6].buffer_ratio_pct 2.4)
-    laub_tropical_ratios.k_passive_ratio  (16 fields, worst regions[6].loss_yr30 0.000198)
-    laub_tropical_ratios.k_slow_ratio  (16 fields, worst regions[6].loss_yr30 0.02627)
-    physical_feedback_strength  (16 fields, worst regions[7].loss_yr30 0.002579)
-    residue_c_to_active_fraction  (43 fields, worst regions[5].buffer_ratio_pct 0.7)
-    residue_retention  (43 fields, worst regions[0].buffer_ratio_pct 1.3)
-    root_shoot_c_ratio  (43 fields, worst regions[6].buffer_ratio_pct 1.5)
-    soc_initial  (41 fields, worst regions[0].soc 5)
-    som_decay_rates.k_active  (32 fields, worst regions[6].loss_yr10 0.02699)
-    som_decay_rates.k_passive  (32 fields, worst regions[7].loss_yr30 0.002218)
-    som_decay_rates.k_slow  (33 fields, worst regions[6].loss_yr30 0.02627)
-    som_humification.h_active_to_slow  (43 fields, worst regions[5].buffer_ratio_pct 0.7)
-    som_humification.h_slow_to_passive  (34 fields, worst regions[5].buffer_ratio_pct 0.1)
-    synth_n_current  (51 fields, worst regions[2].synth_n 25)
-    water_stress_coeff  (24 fields, worst regions[6].y_max 0.03278)
-    whc_sensitivity  (16 fields, worst regions[7].loss_yr30 0.002579)
+    none
+
+COVERAGE DEPTH -- how many tests object, not whether any does.
+    12 of 32 COVERED leaves rest on a single test.
+
+     32  test_wp1_registry_wiring.py
+     15  test_spinup_partition_independence.py
+      4  test_dimensional_consistency_sol.py
+      1  test_seam_contracts.py
+
+    Caught ONLY by test_wp1_registry_wiring.py (12). If that test is ever retired or
+    rebaselined away, these return to UNTESTED:
+        alpha
+        cropland_mha
+        eps_F_PY
+        eps_LD_PL
+        eps_LD_PY
+        eps_LS_PL
+        eta
+        faostat_yield_target
+        laub_tropical_ratios.k_passive_ratio
+        laub_tropical_ratios.k_slow_ratio
+        physical_feedback_strength
+        whc_sensitivity
