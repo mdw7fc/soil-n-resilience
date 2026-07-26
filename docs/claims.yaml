@@ -1,0 +1,467 @@
+# Claim register — ERFS-100341 "soil resilience"
+#
+# Spec: FINDINGS F-012, F-013, F-015, F-016. Rebuilt under WP5 of the v15 rebuild.
+#
+# WHAT THIS FILE IS
+#   Every quantitative claim the manuscript, the SI or the author response makes,
+#   with the sentence that states it, the artifact that should produce it, and one
+#   or more arithmetic checks over that artifact.
+#
+# WHAT THIS FILE IS NOT
+#   `text` and `location` are transcribed verbatim from the submitted documents.
+#   They record what has been claimed. They are NOT a target the model may be
+#   tuned toward. When a check disagrees, the default repair is to the document.
+#   Tolerances come from each sentence's own stated precision and may not be
+#   widened to make a claim agree.
+#
+# THE INDEX IS TWO-WAY
+#   `depends_on_params` here is the reverse index of `affects_claims` in
+#   `code/model/params.yaml`. `test_claims.py` checks both directions. A claim
+#   that names a parameter which does not name it back stops the build, and so
+#   does a parameter that names a claim which does not exist here.
+#
+# DOCUMENT BASIS
+#   Unless a claim says otherwise, `location` refers to the v14 submission set
+#   (`resumbission/v14/Wallenstein-Manning_ERFS_{manuscript,SI}_v14-clean.docx`,
+#   `Author_Response_ERFS-100341_v14-clean.docx`). Paragraph numbers are the
+#   1-based index over all paragraphs minus one, which is the numbering used
+#   throughout FINDINGS.md. C-033 is the one exception and says so.
+
+schema_version: 1
+register_version: "v15-wp5"
+document_basis: v14
+claim_count: 19
+check_count: 70
+
+claims:
+
+  # ---------------------------------------------------------------- 00x: core
+  - id: C-001
+    text: >-
+      Farms with higher soil organic matter (SOM) have smaller yield losses.
+    location: "MS [6]; MS [46]; figure 2a"
+    status: current
+    artifact: data/figure2_panels.json
+    depends_on_params: [soc_tha_per_pct, soc_initial]
+    note: >-
+      The central mechanism claim. Checked as a direction, not a magnitude: the
+      shock-induced year-10 loss must fall monotonically as farm SOC rises, in
+      every one of the eight modelled regions. A magnitude check here would make
+      the paper's central claim a calibration target.
+    checks:
+      - {id: gradient_monotone_north_america,      stated: 1, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: north_america}}}
+      - {id: gradient_monotone_europe,             stated: 1, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: europe}}}
+      - {id: gradient_monotone_east_asia,          stated: 1, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: east_asia}}}
+      - {id: gradient_monotone_south_asia,         stated: 1, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: south_asia}}}
+      - {id: gradient_monotone_southeast_asia,     stated: 1, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: southeast_asia}}}
+      - {id: gradient_monotone_latin_america,      stated: 1, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: latin_america}}}
+      - {id: gradient_monotone_sub_saharan_africa, stated: 1, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: sub_saharan_africa}}}
+      - {id: gradient_monotone_fsu_central_asia,   stated: 1, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: fsu_central_asia}}}
+
+  - id: C-002
+    text: >-
+      Low-SOC bars (red) lie above high-SOC bars (blue) in every region in all
+      1,000 draws. ... Distribution is positive in every region in all 1,000
+      draws, with a cross-region median of 0.88 ppt.
+    location: "SI [167] (Supplementary Figure S9 caption)"
+    status: current
+    artifact: data/mc_ensemble/mc_probabilities.csv
+    depends_on_params: []
+    note: >-
+      The only claim in the register that declares no registry parameter, because
+      it is a statement about the ensemble rather than about any one parameter.
+      Its identifier could not be recovered from `affects_claims` for exactly that
+      reason; see `results/claims_reconciliation.md`.
+    checks:
+      - {id: buffer_positive_every_region,   stated: 1.000, tol: 0.0,  units: probability, select: {kind: derived, name: mc_min_buffer_probability}}
+      - {id: cross_region_median_buffer_ppt, stated: 0.88,  tol: 0.01, units: "percentage points", select: {kind: csv_cell, where: {statement: "Median across-region buffer (ppt yield, low - high SOC), median across draws"}, column: value}}
+
+  # -------------------------------------------------- 01x: long-run SOM erosion
+  - id: C-010
+    text: >-
+      Under 30 years of sustained disruption, Sub-Saharan Africa's SOC declines
+      by 2.5% and year-30 loss reaches 5.9%, among the largest modeled long-run
+      losses (South Asia 6.3%, FSU/Central Asia 6.0%).
+    location: "MS [64]"
+    status: current
+    artifact: data/scenario_trajectories.csv
+    secondary_artifact: data/soc_trajectories.json
+    depends_on_params: [som_decay_rates, som_humification, residue_c_to_active_fraction, cre_base, cre_regional, residue_retention, root_shoot_c_ratio]
+    document_edit_owed: >-
+      SSA 30-year SOC decline 2.5% -> 2.145%; the three year-30 losses are all
+      overstated. F-016.
+    note: >-
+      The SOC-decline check is the one F-016 found carrying an `owed:` note while
+      `status` said `current`, so `write_baseline`'s owed counter never counted it.
+      It is an ordinary check now, and `make_soc_trajectories.py` is its generator.
+      Tolerance 0.15 is taken from the sentence's own precision, not widened to fit.
+    checks:
+      - {id: ssa_soc_decline_30yr,   stated: 2.5, tol: 0.15, units: "% of year-0 stock", select: {kind: json, path: "regions[region=sub_saharan_africa].soc_decline_pct_yr30", artifact: data/soc_trajectories.json}}
+      - {id: ssa_loss_yr30,          stated: 5.9, tol: 0.1,  units: "% yield loss", select: {kind: csv_cell, where: {year: 30}, column: "S3_Sub-Saharan_Africa"}}
+      - {id: south_asia_loss_yr30,   stated: 6.3, tol: 0.1,  units: "% yield loss", select: {kind: csv_cell, where: {year: 30}, column: "S3_South_Asia"}}
+      - {id: fsu_loss_yr30,          stated: 6.0, tol: 0.1,  units: "% yield loss", select: {kind: csv_cell, where: {year: 30}, column: "S3_Former_Soviet_Union_&_Central_Asia"}}
+
+  - id: C-011
+    text: >-
+      Regional year-10 losses range from 1.3% (East Asia) to 6.0% (South Asia)
+      ... [attributed to figure 2].
+    location: "MS [56]; figure 2b"
+    status: current
+    artifact: data/figure2_panels.json
+    depends_on_params: [som_decay_rates, som_humification, residue_c_to_active_fraction, cre_regional, residue_retention]
+    document_edit_owed: >-
+      Regenerate `data/figure2_panels.json` and re-read MS [56] against it. F-012, F-014.
+    note: >-
+      The same published numbers C-060 checks against the canonical trajectory,
+      checked here against the figure the sentence cites. A claim stated once but
+      sourced twice can drift apart in one source only, which is what happened:
+      this is the register entry that carried `pending_regeneration` until F-016.
+    checks:
+      - {id: figure2_global_total_yr10,     stated: 3.4, tol: 0.1, units: "% yield loss", select: {kind: json, path: "global_.total"}}
+      - {id: figure2_south_asia_total_yr10, stated: 6.0, tol: 0.1, units: "% yield loss", select: {kind: json, path: "regions[region=south_asia].total"}}
+
+  - id: C-014
+    text: >-
+      Farms with higher soil organic matter (SOM) have smaller yield losses and
+      up to 2.5-4.2 percentage points smaller gross margin losses, with the
+      largest contrast in Sub-Saharan Africa. ... In Sub-Saharan Africa, a farm
+      at half the regional mean SOC loses 15.6% of gross margin versus 11.4% at
+      the mean.
+    location: "MS [6] (abstract); MS [47]; MS [73]"
+    status: current
+    artifact: data/figure1_farm_gradient.json
+    depends_on_params: [soc_tha_per_pct, soc_initial, whc_sensitivity, water_stress_coeff, baseline_water_deficit]
+    document_edit_owed: >-
+      2.5-4.2 pp -> 0.27-0.99 pp (state as ~0.3-1.0). The SSA pair goes to
+      +0.31% at the mean against -0.62% at half the mean. F-012.
+    note: >-
+      The v14 numbers were computed with a hardcoded 25% fertilizer cost share.
+      With regional nitrogen and crop prices derived from price, application rate
+      and modelled baseline yield, the gaps collapse by roughly a factor of four
+      and the SSA levels change sign. `ssa_margin_half_pct` carries the largest
+      drift in the register, 14.98 pp.
+    checks:
+      - {id: margin_gap_min_pp,     stated: 2.5,   tol: 0.1, units: "percentage points", select: {kind: derived, name: figure1_margin_gap, args: {agg: min}}}
+      - {id: margin_gap_max_pp,     stated: 4.2,   tol: 0.1, units: "percentage points", select: {kind: derived, name: figure1_margin_gap, args: {agg: max}}}
+      - {id: ssa_margin_mean_pct,   stated: -11.4, tol: 0.5, units: "% change in margin", select: {kind: derived, name: figure1_margin_at, args: {region: sub_saharan_africa, soc_pct: 100}}}
+      - {id: ssa_margin_half_pct,   stated: -15.6, tol: 0.5, units: "% change in margin", select: {kind: derived, name: figure1_margin_at, args: {region: sub_saharan_africa, soc_pct: 50}}}
+
+  # ------------------------------------------------------ 02x: soil water / WHC
+  - id: C-021
+    text: >-
+      Soil water-holding capacity enters through a SOC-mediated coupling with
+      sensitivity 8.4 mm per percentage point of SOC (Minasny and McBratney).
+    location: "MS [28]; MS [31]; AR [40]"
+    status: current
+    artifact: code/model/params.yaml
+    depends_on_params: [whc_sensitivity]
+    document_edit_owed: >-
+      8.4 -> 3.48 mm per percentage point SOC in all three locations. 8.4 is the
+      upper sensitivity bound, not the central value. F-012.
+    note: >-
+      Registered once per location rather than once per number. The code change
+      landed and the prose did not follow it in any of the three places, and a
+      register that reads the registry rather than a document is the only thing
+      that notices.
+    checks:
+      - {id: whc_sensitivity_ms28, stated: 8.4, tol: 0.1, units: "mm per pp SOC", select: {kind: registry, name: whc_sensitivity}}
+      - {id: whc_sensitivity_ms31, stated: 8.4, tol: 0.1, units: "mm per pp SOC", select: {kind: registry, name: whc_sensitivity}}
+      - {id: whc_sensitivity_ar40, stated: 8.4, tol: 0.1, units: "mm per pp SOC", select: {kind: registry, name: whc_sensitivity}}
+
+  # --------------------------------------------------- 03x: prices and margins
+  - id: C-030
+    text: >-
+      Regional fertilizer prices are 2019-2023 averages ... Sub-Saharan Africa
+      $1.40/kg N, South Asia $1.20/kg N, Latin America $1.15/kg N, North America
+      $1.10/kg N. Regional crop prices ... Sub-Saharan Africa $300/t, South Asia
+      $280/t, Latin America $260/t, North America $250/t.
+    location: "SI [80]"
+    status: current
+    artifact: code/model/params.yaml
+    depends_on_params: [synth_n_current, n_price_wedge, n_price_usd_kg, crop_price_usd_t, fert_cost_frac]
+    document_edit_owed: >-
+      SSA nitrogen price $1.40 -> $2.30/kg N (non-subsidised retail). The other
+      seven prices stand. F-012.
+    note: >-
+      Seven of eight numbers in this sentence are right. Registering them
+      individually is what makes that visible; a single "the price table is
+      correct" check would have failed as one opaque unit.
+    checks:
+      - {id: n_price_sub_saharan_africa, stated: 1.40, tol: 0.02, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: sub_saharan_africa}}}
+      - {id: n_price_south_asia,         stated: 1.20, tol: 0.02, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: south_asia}}}
+      - {id: n_price_latin_america,      stated: 1.15, tol: 0.02, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: latin_america}}}
+      - {id: n_price_north_america,      stated: 1.10, tol: 0.02, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: north_america}}}
+      - {id: crop_price_sub_saharan_africa, stated: 300.0, tol: 1.0, units: "USD per t", select: {kind: registry, name: crop_price_usd_t, key: sub_saharan_africa}}
+      - {id: crop_price_south_asia,         stated: 280.0, tol: 1.0, units: "USD per t", select: {kind: registry, name: crop_price_usd_t, key: south_asia}}
+      - {id: crop_price_latin_america,      stated: 260.0, tol: 1.0, units: "USD per t", select: {kind: registry, name: crop_price_usd_t, key: latin_america}}
+      - {id: crop_price_north_america,      stated: 250.0, tol: 1.0, units: "USD per t", select: {kind: registry, name: crop_price_usd_t, key: north_america}}
+
+  - id: C-031
+    text: >-
+      The spread between SOC at 25% and 100% of regional mean is 0.2-1.5
+      percentage points of yield loss at price increases of 100-150%, widening
+      to 0.4-2.2 percentage points at 300%.
+    location: "MS [53]"
+    conflicting_statement:
+      location: "SI [197]"
+      text: "The spread between SOC 25% and 100% is 0.1-1.5 percentage points across the typical crisis range."
+    status: current
+    artifact: data/figS11_severity_sweep.json
+    depends_on_params: [synth_n_current, n_price_wedge, n_price_usd_kg, crop_price_usd_t, fert_cost_frac]
+    document_edit_owed: >-
+      SI [197] 0.1-1.5 -> 0.2-1.5, to agree with MS [53], which the model
+      supports. The minimum spread across regions in the crisis range is 0.214.
+      F-012.
+    note: >-
+      A claim stated twice is a claim that can drift apart. All four checks agree
+      with the model; the register's contribution here is making the two
+      statements comparable instead of merely coexisting, and settling the
+      conflict in the main text's favour. `depends_on_params` mirrors
+      `params.yaml`, which routes the price entries here; that routing is
+      inherited from the reconstructed forward index and is noted in
+      `results/claims_reconciliation.md`.
+    checks:
+      - {id: spread_min_crisis, stated: 0.2, tol: 0.1, units: "percentage points", select: {kind: derived, name: figS11_spread, args: {shocks: [1.0, 1.25, 1.5], agg: min}}}
+      - {id: spread_max_crisis, stated: 1.5, tol: 0.1, units: "percentage points", select: {kind: derived, name: figS11_spread, args: {shocks: [1.0, 1.25, 1.5], agg: max}}}
+      - {id: spread_min_300,    stated: 0.4, tol: 0.1, units: "percentage points", select: {kind: derived, name: figS11_spread, args: {shocks: [3.0], agg: min}}}
+      - {id: spread_max_300,    stated: 2.2, tol: 0.1, units: "percentage points", select: {kind: derived, name: figS11_spread, args: {shocks: [3.0], agg: max}}}
+
+  - id: C-032
+    text: >-
+      Regional fertilizer- and crop-price values used in the model are reported
+      for only four regions (NA, SA, LATAM, SSA), so we do not include cost share
+      in the cross-regional diagnostic.
+    location: "SI [126]"
+    status: current
+    artifact: code/model/params.yaml
+    depends_on_params: [n_price_wedge, n_price_usd_kg, crop_price_usd_t, fert_cost_frac]
+    note: >-
+      A scope claim, and the one the register can most cheaply keep honest: if a
+      fifth region is ever priced, this sentence stops being true and the build
+      says so. `prices.n_price_usd_kg` raises for the four unpriced regions
+      rather than guessing (RECONSTRUCTION_GAPS G-4).
+    checks:
+      - {id: priced_region_count,  stated: 4, tol: 0, units: count,   select: {kind: derived, name: priced_region_count}}
+      - {id: priced_regions_match, stated: 1, tol: 0, units: boolean, select: {kind: derived, name: priced_regions_match, args: {expected: [north_america, south_asia, latin_america, sub_saharan_africa]}}}
+
+  - id: C-033
+    text: >-
+      At regional mean SOC, the South Asian net-revenue result changes from
+      -5.36% under market replacement cost to +0.95% at a farmer-paid N price of
+      $0.39/kg, demonstrating that the cross-region financial ordering is
+      price-convention dependent.
+    location: "SI-sol [81]"
+    document_basis: v14_sol
+    status: current
+    artifact: outputs/price_convention_sensitivity_sol.csv
+    depends_on_params: [n_price_usd_kg_farmer_paid]
+    note: >-
+      The one claim in the register whose sentence exists only in the v14_sol
+      revision and not in the v14 submission set. `n_price_usd_kg_farmer_paid`
+      declares C-033 in `params.yaml`, so the claim must exist here for the
+      two-way index to close; registering it against the sentence that does state
+      it is preferable to registering it against no sentence at all.
+    checks:
+      - {id: south_asia_net_revenue_farmer_paid_pct, stated: 0.95, tol: 0.05, units: "% change in net revenue", select: {kind: csv_cell, where: {region: south_asia, price_convention: farmer_paid, soc_pct: 100}, column: net_revenue_change_pct}}
+
+  # -------------------------------------------- 04x: demand response and prices
+  - id: C-040
+    text: >-
+      S3 additionally allows fertilizer demand to respond to declining soil-N
+      supply during sustained disruption through the depletion feedback
+      (eps_F,N = -0.50) ... a region with eps_F,PF = -0.50 (Sub-Saharan Africa)
+      reduces purchases by approximately 29%.
+    location: "MS [35]; SI [76]"
+    status: current
+    artifact: code/model/params.yaml
+    depends_on_params: [eps_F_PF, eps_F_N]
+    checks:
+      - {id: eps_F_N_central,                 stated: -0.50, tol: 0.0, units: elasticity, select: {kind: registry, name: eps_F_N}}
+      - {id: eps_F_PF_sub_saharan_africa,     stated: -0.50, tol: 0.0, units: elasticity, select: {kind: registry, name: eps_F_PF, key: sub_saharan_africa}}
+
+  - id: C-041
+    text: >-
+      Global year-10 loss: 3.4% under baseline, ~1.9% under halved elasticities
+      (~46% reduction in predicted impact).
+    location: "SI [151] (Supplementary Figure S8 caption)"
+    status: current
+    artifact: data/figS8_curves.json
+    depends_on_params: [eps_F_PF]
+    document_edit_owed: >-
+      Figure S8 caption: 3.4 / 1.9 / 46% -> the regenerated triple. F-015.
+    note: >-
+      These three numbers only became checkable once `compute_figS8_curves.py`
+      deposited its `summary` block. They are not new errors, they are newly
+      visible ones.
+    checks:
+      - {id: global_yr10_baseline, stated: 3.4,  tol: 0.1, units: "% yield loss", select: {kind: json, path: "gbase[10]"}}
+      - {id: global_yr10_halved,   stated: 1.9,  tol: 0.1, units: "% yield loss", select: {kind: json, path: "ghalf[10]"}}
+      - {id: reduction_pct,        stated: 46.0, tol: 1.0, units: "% reduction",  select: {kind: derived, name: figS8_reduction_pct}}
+
+  - id: C-042
+    text: >-
+      Regional output-price indices rise by 2.0-9.2% in year 1, a
+      production-weighted global increase of 5.5%, and by year 10 span 1.0%
+      (Latin America) to 10.3% (FSU/Central Asia), a production-weighted global
+      increase of 5.0%.
+    location: "SI [152]"
+    status: current
+    artifact: data/food_price_response.csv
+    depends_on_params: [eta]
+    document_edit_owed: >-
+      Year-1 global 5.5 and year-10 global 5.0 both move, and Latin America's
+      year-10 index goes from 1.0% to roughly four times that. The Latin American
+      figure changes the claim about how wide the regional spread is, not only
+      the number. F-014.
+    note: >-
+      The two year-1 range endpoints still agree. The drift is concentrated in
+      the year-10 statement and in the global aggregate.
+    checks:
+      - {id: global_yr1,          stated: 5.5,  tol: 0.1, units: "% price index", select: {kind: csv_cell, where: {abbr: GLOBAL}, column: food_price_pct_yr1}}
+      - {id: global_yr10,         stated: 5.0,  tol: 0.1, units: "% price index", select: {kind: csv_cell, where: {abbr: GLOBAL}, column: food_price_pct_yr10}}
+      - {id: latin_america_yr10,  stated: 1.0,  tol: 0.1, units: "% price index", select: {kind: csv_cell, where: {region: latin_america}, column: food_price_pct_yr10}}
+      - {id: fsu_yr10,            stated: 10.3, tol: 0.1, units: "% price index", select: {kind: csv_cell, where: {region: fsu_central_asia}, column: food_price_pct_yr10}}
+      - {id: regional_yr1_min,    stated: 2.0,  tol: 0.1, units: "% price index", select: {kind: derived, name: food_price_regional_extreme, args: {column: food_price_pct_yr1, agg: min}}}
+      - {id: regional_yr1_max,    stated: 9.2,  tol: 0.1, units: "% price index", select: {kind: derived, name: food_price_regional_extreme, args: {column: food_price_pct_yr1, agg: max}}}
+
+  # ------------------------------------------------------ 05x: shock calibration
+  - id: C-050
+    text: >-
+      Under a sustained fertilizer price scenario calibrated to reduce regional
+      fertilizer use by approximately 20% under S1 (a +104% price shock ...), the
+      depletion-driven compensation channel active in S3 partially offsets the
+      response, so the realized S3 reduction averages approximately 20% over the
+      sustained-disruption period.
+    location: "MS [56]; MS [65]; SI [78]; SI [151]"
+    status: current
+    artifact: results/s3_shock_calibration.csv
+    depends_on_params: [eps_F_N, fert_reduction_target]
+    document_edit_owed: >-
+      State the aggregation basis, and report the S3 figure as 19%, not 20%. The
+      gap between the calibrated reduction and the realized one IS the depletion
+      feedback, and rounding it away erases the mechanism S3 exists to
+      demonstrate. F-015.
+    note: >-
+      All three numbers agree inside the precision the sentence itself states.
+      The defect F-015 found is not in either number; it is that the sentence does
+      not say on what basis the reduction is averaged, and the two available bases
+      are not close (0.1911 on nitrogen tonnage against 0.1872 on production).
+      The sustained-disruption period is declared as years 1-10 in the generator
+      rather than chosen once the numbers were visible.
+    checks:
+      - {id: shock_pct,             stated: 104.0, tol: 1.0, units: "% price increase",   select: {kind: derived, name: s3_solved_shock_pct}}
+      - {id: s1_reduction_pct,      stated: 20.0,  tol: 1.0, units: "% N-tonnage cut",    select: {kind: derived, name: s3_global_reduction, args: {column: s1_reduction_yr1}}}
+      - {id: s3_sustained_mean_pct, stated: 20.0,  tol: 1.0, units: "% N-tonnage cut",    select: {kind: derived, name: s3_global_reduction, args: {column: s3_reduction_mean}}}
+
+  # ------------------------------------ 06x: headline losses, pulse and rankings
+  - id: C-060
+    text: >-
+      Production-weighted global yield loss reaches 2.3% in year 1 and rises to
+      3.4% by year 10 ... Regional year-10 losses range from 1.3% (East Asia) to
+      6.0% (South Asia), with FSU/Central Asia at 5.5% and Sub-Saharan Africa at
+      5.4%. Latin America shows a modest modelled loss of 2.9% in year 10. ...
+      The model is parameterized across eight regions covering 1,230 Mha cropland.
+    location: "MS [56]; MS [32]"
+    status: current
+    artifact: data/scenario_trajectories.csv
+    depends_on_params: [cropland_mha, global_aggregation_weights]
+    document_edit_owed: >-
+      Every year-10 regional figure and the year-10 global figure are stale.
+      F-012, F-014.
+    note: >-
+      The single largest block in the register, and it has one cause: the
+      paragraph's numbers were correct when written and were never re-read
+      against a rerun. Two checks still agree, and they are the ones that did not
+      move with the recalibration - the year-1 global loss and the cropland total.
+      `east_asia_yr10` carries the smallest drift in the register, 0.118 pp
+      against a 0.1 pp tolerance, which is the case for tolerances coming from a
+      sentence's own precision rather than from what would pass.
+    checks:
+      - {id: global_yr1,           stated: 2.3,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 1},  column: S3_global}}
+      - {id: global_yr10,          stated: 3.4,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: S3_global}}
+      - {id: east_asia_yr10,       stated: 1.3,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: S3_East_Asia}}
+      - {id: south_asia_yr10,      stated: 6.0,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: S3_South_Asia}}
+      - {id: fsu_yr10,             stated: 5.5,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: "S3_Former_Soviet_Union_&_Central_Asia"}}
+      - {id: ssa_yr10,             stated: 5.4,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: "S3_Sub-Saharan_Africa"}}
+      - {id: latin_america_yr10,   stated: 2.9,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: S3_Latin_America}}
+      - {id: total_cropland_mha,   stated: 1230.0, tol: 1.0, units: Mha,            select: {kind: derived, name: total_cropland_mha}}
+
+  - id: C-061
+    text: >-
+      A 1-year pulse produces 2.3% global yield loss in year 1, with
+      near-complete recovery to 0.3% by year 5 as soils re-equilibrate and food
+      prices normalize.
+    location: "MS [64]"
+    status: current
+    artifact: data/scenario_trajectories.csv
+    depends_on_params: [som_decay_rates, eps_F_PF]
+    document_edit_owed: >-
+      Year-5 residual 0.3% -> 0.009%, and drop the food-price half of the
+      attribution: the price has already returned to baseline before year 5, so
+      it cannot be what is still normalizing. F-016.
+    note: >-
+      The pulse recovers about thirty times faster than the sentence says. It
+      crosses 0.3% between years 2 and 3. This claim was `owed_generator` until
+      `data/scenario_trajectories.csv` gained its `PULSE1_global` column; a `>=`
+      bug had zeroed the pulse entirely before that, which presented as a clean
+      column of zeros.
+    checks:
+      - {id: pulse_yr1, stated: 2.3, tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 1}, column: PULSE1_global}}
+      - {id: pulse_yr5, stated: 0.3, tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 5}, column: PULSE1_global}}
+
+  # ------------------------------------------ 07x: calibration and fixed inputs
+  - id: C-070
+    text: >-
+      The ceiling y_max is calibrated per region so that, at current total
+      nitrogen availability, the response reproduces the observed
+      production-weighted FAOSTAT cereal yield.
+    location: "MS [27]"
+    status: current
+    artifact: results/calibration_production_path.csv
+    depends_on_params: [synth_n_current, atm_n_deposition, faostat_yield_target, yield_max_regional]
+    note: >-
+      F-002 found this claim was true of a code path nobody published: the
+      calibration rooted on `run_model` while every published run went through
+      `century_dynamic_spinup`. `calibration_production_path.csv` is the artifact
+      that makes the sentence checkable on the path that actually runs.
+    checks:
+      - {id: worst_faostat_gap_pct,        stated: 0.0, tol: 0.01, units: "% deviation", select: {kind: derived, name: worst_faostat_gap_pct}}
+      - {id: faostat_target_north_america, stated: 5.5, tol: 0.05, units: "t/ha", select: {kind: registry, name: faostat_yield_target, key: north_america}}
+      - {id: faostat_target_east_asia,     stated: 6.0, tol: 0.05, units: "t/ha", select: {kind: registry, name: faostat_yield_target, key: east_asia}}
+      - {id: faostat_target_ssa,           stated: 1.5, tol: 0.05, units: "t/ha", select: {kind: registry, name: faostat_yield_target, key: sub_saharan_africa}}
+
+  - id: C-071
+    text: >-
+      ... and biological nitrogen fixation is treated as static.
+    location: "MS [78]"
+    status: current
+    artifact: code/model/params.yaml
+    depends_on_params: [bnf_potential, bnf_ramp_years]
+    note: >-
+      The limitation sentence is correct and the parameter table was not: F-007
+      found `bnf_ramp_years` declared with an 8-15 year ramp that the model never
+      applies. Registered so the two stay consistent - if a ramp is ever wired in,
+      this sentence stops being true and the build says so. SI Table S1 still owes
+      the declared-but-fixed marking.
+    checks:
+      - {id: bnf_ramp_not_wired,      stated: 1,    tol: 0,    units: boolean, select: {kind: derived, name: bnf_ramp_not_wired}}
+      - {id: bnf_constant_ssa_kg_n,   stated: 15.0, tol: 0.05, units: "kg N/ha/yr", select: {kind: registry, name: bnf_potential, key: sub_saharan_africa}}
+
+  - id: C-072
+    text: >-
+      ... at zero total available nitrogen the response tends to a minimum-biomass
+      floor ... the water-stress factor scales potential yield by one minus the
+      product of a regional baseline water deficit and the SOC-mediated
+      adjustment, floored at 30% of baseline.
+    location: "MS [27]; MS [28]"
+    status: current
+    artifact: code/model/parameter_registry.py
+    depends_on_params: [yield_min_regional]
+    note: >-
+      `WATER_STRESS_MIN_FACTOR` is still an unregistered literal
+      (RECONSTRUCTION_GAPS G-6). Registering it changes the mutation-harness leaf
+      count, so it is deliberately deferred; checking it from here keeps the
+      published sentence honest in the meantime.
+    checks:
+      - {id: water_stress_min_factor,       stated: 0.30, tol: 0.005, units: fraction, select: {kind: derived, name: water_stress_min_factor}}
+      - {id: yield_min_regional_all_positive, stated: 1,  tol: 0,     units: boolean,  select: {kind: derived, name: yield_min_regional_all_positive}}
