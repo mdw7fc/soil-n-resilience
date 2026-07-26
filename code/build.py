@@ -265,14 +265,15 @@ NODES: List[Node] = [
                   "data/mc_ensemble/mc_priors.json"),
          inputs=(ERA5,), minutes=90.0,
          note="1,000 joint-prior draws; the expensive node",
-         blocked=("the deposited ensemble is the only surviving v15 one, and "
-                  "it is what F-013's claim strength reproduces against (P3 "
-                  "0.998). Rerunning it under the present model would "
-                  "overwrite that evidence with draws from a configuration "
-                  "that is under decision: the tree runs S3 at eps_F_N = 0 "
-                  "and the deposited results require eps_F_N = -0.5 (see "
-                  "results/build_reconciliation.md). Rerun it once that is "
-                  "settled, not before. ~90 min.")),
+         blocked=("the deposited ensemble is the only surviving v15 one and is "
+                  "what F-013's claim strength reproduces against (P3 0.998); "
+                  "rerunning costs ~90 min and overwrites it. It is a "
+                  "year-1 ensemble, so the eps_F_N question does not reach it "
+                  "-- year 1 is identical at 0 and at -0.5 to five decimals. "
+                  "What it IS owed is a rerun as a CHECK, because WP2's "
+                  "recalibration moved year 1 by 0.01 pp and F-014's "
+                  "bit-for-bit reproduction predates that. Snapshot it first. "
+                  "See results/build_reconciliation.md sec 6.")),
     Node("figure_s9", "code/repro/make_figure_s9.py",
          outputs=("figures/Figure_S9_mc_ensemble.png",
                   "figures/Figure_S9_mc_ensemble.pdf"),

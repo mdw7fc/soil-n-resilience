@@ -104,13 +104,37 @@ Start a new Cowork task with the project folder connected and paste the matching
   equally explicit that the S3 numbers were produced "with `eps_F_N` active",
   `params.yaml` gives `eps_F_N` `affects_claims: [C-040, C-050]` — and C-050 is
   the S3 calibration claim — and the surviving `s3_shock_calibration.csv` shows
-  the buy-back only a nonzero value produces. Both cannot be true. Every
-  multi-year number in the paper moves with the answer; year 1 does not. Note
-  the direction: switching the feedback **off makes the losses larger**, so the
-  published pair is the more conservative one. And note what it costs: at -0.5
-  the paper's multi-year result leans on the registry's weakest parameter, one
-  whose own source field reads "No clean regional estimates exist" and which
-  F-008 says "must stop being presented as though it has one."
+  the buy-back only a nonzero value produces. Both cannot be true.
+
+  **RESOLVED, and the answer is `eps_F_N = 0`.** `v14_sol`'s results section
+  reads: "production-weighted global yield loss is 2.3% in year 1, 3.2% in year
+  10 and 3.3% in year 30. Regional year-10 losses range from 1.2% in East Asia
+  to 5.6% in FSU/Central Asia; South Asia is 5.2%, Sub-Saharan Africa 5.0%,
+  Southeast Asia 3.8%, Europe 3.6%, Latin America 2.4% and North America 1.8%."
+  The regenerated chain gives 1.21 / 1.80 / 2.51 / 3.67 / 3.84 / 4.93 / 5.12 /
+  5.55 and 3.20 / 3.31 — eight of eight regions and all three globals, to the
+  precision the manuscript states. At -0.5, six of the eight regions and both
+  multi-year globals miss. The manuscript's SC1/SC2 figures (3.7 / 3.9 / 1.9 /
+  0.04) match the regenerated 3.758 / 3.898 / 1.919 / 0.045 and not the v15
+  artifact's 3.69 / 1.869, and the same sentence ends "without relying on an
+  unestimated soil-N demand response." `run_canonical.py` line 97 prints
+  "(SOL manuscript: 2.3 / 3.2 / 3.3)".
+
+  **So the tree is right, the regenerated artifacts are the paper's numbers,
+  and the 3.03 family is an unrecorded configuration change the v15 session
+  made.** F-014's own headline is where it should have been caught: "
+  `canonical_ERA5_y30.json` did not move" sits beside a quoted 2.32 / 3.03
+  while the committed artifact reads 2.31 / 3.18 / 3.29. It moved by 0.15 pp at
+  year 10 and was recorded as unchanged. **Nothing in the tree needs changing;
+  D1 and D2 should carry the regenerated numbers.**
+
+  Two consequences that need a human, not a test: `params.yaml` gives `eps_F_N`
+  `affects_claims: [C-040, C-050]`, and a parameter held at zero in S3 cannot
+  affect C-050, the S3 shock-calibration claim (the two-way index test passes
+  either way — it only checks mutual declaration). And F-016's owed edit "SSA
+  30-year SOC decline 2.5% -> 2.14%" was computed at -0.5; **at zero it is
+  2.24%**. F-015's 0.1911 sustained mean is on the same footing and needs
+  recomputing when `make_s3_shock_calibration.py` is rewritten.
 
   Four more things the next task should know:
 

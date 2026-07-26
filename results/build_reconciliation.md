@@ -162,6 +162,55 @@ The experiment is one line and takes ten seconds: set `s3.eps_F_N = -0.5` after
 in the tree to make it come out either way; this package regenerated the chain
 with the model exactly as WP1 and WP2 left it.
 
+### 3a. The manuscript answers it: `eps_F_N = 0`
+
+`resumbission/v14_sol/Wallenstein-Manning_ERFS_manuscript_v14_sol.docx`, the
+version under revision, states in the results:
+
+> *"Under the sustained S3 price scenario, production-weighted global yield loss
+> is 2.3% in year 1, 3.2% in year 10 and 3.3% in year 30. Regional year-10 losses
+> range from 1.2% in East Asia to 5.6% in FSU/Central Asia; South Asia is 5.2%,
+> Sub-Saharan Africa 5.0%, Southeast Asia 3.8%, Europe 3.6%, Latin America 2.4%
+> and North America 1.8%."*
+
+| | EA | NA | LATAM | EU | SEA | SSA | SA | FSU | global yr10 | yr30 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **v14_sol manuscript** | 1.2 | 1.8 | 2.4 | 3.6 | 3.8 | 5.0 | 5.2 | 5.6 | **3.2** | **3.3** |
+| regenerated, `eps_F_N = 0` | 1.21 | 1.80 | 2.51 | 3.67 | 3.84 | 4.93 | 5.12 | 5.55 | **3.20** | **3.31** |
+| deposited v15, `eps_F_N = -0.5` | 1.18 | 1.73 | 2.42 | 3.43 | 3.68 | 4.75 | 4.81 | 5.13 | **3.03** | **3.08** |
+
+Eight of eight regions and all three global figures match the regenerated
+`eps_F_N = 0` chain to the precision the manuscript states. The `-0.5` family
+misses six of the eight regions and both multi-year globals. Three further
+independent checks agree:
+
+- `run_canonical.py` line 97 prints `(SOL manuscript: 2.3 / 3.2 / 3.3)`.
+- The manuscript's SC1 and SC2 figures — *"SC1 … reaches 3.7% at year 10 and
+  3.9% at year 30. SC2 … reaches 1.9% at year 10 and 0.04% at year 30"* — match
+  the regenerated 3.758 / 3.898 / 1.919 / 0.045 and not the deposited v15
+  3.69 / 1.869.
+- The same sentence ends *"…without relying on an unestimated soil-N demand
+  response."* That is `eps_F_N`, named and disclaimed in the results text.
+
+**So the recommendation is to keep `eps_F_N = 0` and treat the regenerated chain
+as the correct one.** The published manuscript, the module docstrings,
+`SOIL_N_RESPONSE_ELASTICITY_CENTRAL`, F-011's DECLARED_NOT_WIRED verdict and the
+regenerated artifacts all agree; the `3.03` family exists only in artifacts the
+v15 session wrote. The place that should have caught it is F-014's own headline,
+*"`data/canonical_ERA5_y30.json` did not move"* — the committed artifact reads
+2.31 / 3.18 / 3.29 and F-014 quotes 2.32 / 3.03 alongside that claim. It moved by
+0.15 pp at year 10 and was recorded as unchanged.
+
+Two register entries follow from this and need a human, not a test:
+
+1. `params.yaml` gives `eps_F_N` `affects_claims: [C-040, C-050]`. If it is zero
+   in S3 it cannot affect C-050, the S3 shock-calibration claim. The two-way
+   index test passes either way, because it only checks mutual declaration.
+2. F-016's owed edit "SSA 30-year SOC decline 2.5% → 2.14%" was computed at
+   `-0.5`. At zero the figure is **2.24%**. F-015's S3 sustained mean of 0.1911
+   is on the same footing and needs recomputing once
+   `make_s3_shock_calibration.py` is rewritten.
+
 **Consequence for the regenerated artifacts.** Everything regenerated in
 `4de0d19` carries the `eps_F_N = 0` numbers. The chain is internally consistent
 and the graph is green, but **the regenerated artifacts should not be treated as
@@ -247,9 +296,13 @@ difference between a build graph and a script that overwrites things.
 
 **`mc_ensemble`.** The deposited ensemble is the only surviving v15 one and is
 what F-013's claim strength reproduces against (P3 = 0.998 on the nose).
-Rerunning it costs about ninety minutes and would overwrite that evidence with
-draws from the configuration §3 puts in question. It should be rerun once
-`eps_F_N` is settled, and not before.
+Rerunning it costs about ninety minutes and overwrites it. **The `eps_F_N`
+question does not reach it**: every quantity in the ensemble is year-1
+(`mc_summary.txt`, `mc_probabilities.csv` and the P1–P6 statements are all
+"year-1"), and year 1 is identical at 0 and at −0.5 to five decimals. What it is
+owed is a rerun as a *check* rather than a repair, because WP2's recalibration
+moved year 1 by 0.01 pp and F-014's bit-for-bit reproduction predates that.
+Snapshot the deposited copy first.
 
 ---
 
