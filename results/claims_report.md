@@ -38,7 +38,7 @@ Every drift is an edit owed to the document, not a tolerance artefact. Tolerance
 
 | check | stated | model | delta | tol | verdict |
 |---|---:|---:|---:|---:|---|
-| `ssa_soc_decline_30yr` | 2.5 | 2.1446 | -0.3554 | 0.15 | DRIFTED |
+| `ssa_soc_decline_30yr` | 2.5 | 2.2404 | -0.2596 | 0.15 | DRIFTED |
 | `ssa_loss_yr30` | 5.9 | 5.0800 | -0.8200 | 0.1 | DRIFTED |
 | `south_asia_loss_yr30` | 6.3 | 4.8050 | -1.4950 | 0.1 | DRIFTED |
 | `fsu_loss_yr30` | 6 | 5.2210 | -0.7790 | 0.1 | DRIFTED |

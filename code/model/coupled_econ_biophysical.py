@@ -39,7 +39,7 @@ from typing import Dict, List, Tuple, Optional
 # Import the biophysical model components
 from soil_n_model import (
     SOMPoolParams, CropParams, RegionParams, FeedbackParams,
-    get_default_regions,
+    get_default_regions, region_cre,
 )
 import registry as _reg
 from parameter_registry import (
@@ -216,8 +216,8 @@ class BiophysicalSOMEngine:
         self.n_eff = self.crop.nue_apparent
         self.y_floor = region.yield_min_regional if region.yield_min_regional > 0 else 0.0
 
-        # Regional CRE (use region-specific if available, else default)
-        self.cre = region.cre_regional if region.cre_regional > 0 else self.fb.cre_base
+        # Regional CRE. Required per region; see soil_n_model.region_cre.
+        self.cre = region_cre(region)
 
         # Compute baseline yield (with full synthetic N, including immobilization)
         n_min_0 = self._total_n_mineralization()

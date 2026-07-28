@@ -34,4 +34,4 @@ PARAMETER EXTREME AUDIT: COMPLETE (232 region-case checks)
     WHC_2.3_epsFN_-1 sub_saharan_africa: 3.859938 < 4.738289
     WHC_3.48_epsFN_-1 sub_saharan_africa: 3.862229 < 4.737814
     WHC_8.4_epsFN_-1 sub_saharan_africa: 3.871802 < 4.735837
-wrote /home/claude/v15/outputs/parameter_extreme_acceptance_sol.csv
+wrote /tmp/repo16/outputs/parameter_extreme_acceptance_sol.csv

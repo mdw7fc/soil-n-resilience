@@ -1,0 +1,40 @@
+code/tests/test_seam_contracts.py                         ok
+code/tests/test_calibration_fingerprint.py                ok
+code/tests/test_claims.py                                 ok
+code/repro/test_parameter_boundaries_sol.py               ok
+code/repro/test_dimensional_consistency_sol.py            ok
+code/repro/test_zero_shock_invariance.py                  ok
+code/repro/test_full_zero_shock_sol.py                    ok
+code/repro/test_cap_market_clearing.py                    ok
+code/repro/test_mc_robustness_sol.py                      ok
+code/tests/test_benchmark_baseline.py                     ok
+code/tests/test_spinup_partition_independence.py          ok
+code/tests/test_wp1_registry_wiring.py                    ok
+code/repro/test_parameter_extremes_sol.py                 ok
+
+BLOCKED  scenario_trajectories: TWO problems, and the second is worse than the first. (a) The deposited artifact carries a PULSE1_global column this generator does not write: F-016 added the one-year pulse to the model and to this script and that work died with the v15 tree, so running it would delete the column C-061 reads and nothing here could rebuild it. (b) The deposited CSV was produced at eps_F_N = -0.5 and so carries the SUPERSEDED family for S3, SC1 and SC2 -- S3 year-10 3.032 against the regenerated canonical's 3.198. C-060 and C-061 are scored against it, so the register currently reads the old family while data/canonical_ERA5_y30.json reads the new one. This node is the last place in the deposit where the two disagree. Unblocking it means restoring the pulse capability first, then regenerating. Frozen copy: baseline/surviving_v15/scenario_trajectories.csv; underlying status: UNSTAMPED_BASELINE -- never regenerated under this graph
+BLOCKED  mc_ensemble: the deposited ensemble is the only surviving v15 one and is what F-013's claim strength reproduces against (P3 0.998); rerunning costs ~90 min and overwrites it. It is a year-1 ensemble, so the eps_F_N question does not reach it -- year 1 is identical at 0 and at -0.5 to five decimals. What it IS owed is a rerun as a CHECK, because WP2's recalibration moved year 1 by 0.01 pp and F-014's bit-for-bit reproduction predates that. Snapshot it first. See results/build_reconciliation.md sec 6.; underlying status: UNSTAMPED_BASELINE -- never regenerated under this graph
+FAIL  STALE canonical: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE sc_trajectories: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE climate_swap: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE price_shock: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE figure_2: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE figS8_curves: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE figure_s7: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE table_s4: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE figure_s10: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE figure_s11: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE food_price_table: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE broadbalk_benchmark: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE hindcast_benchmark: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE benchmarks: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE zero_shock_invariance: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE structural_sensitivity: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE parameter_extremes: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE calibration_production_path: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE parameter_ledger: generator changed; params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py
+FAIL  STALE claims_report: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py; input changed: data/soc_trajectories.json; input changed: docs/claims.yaml; output changed since stamp: outputs/claims_status.csv; output changed since stamp: results/claims_report.md
+FAIL  STALE claim_strength: params fingerprint changed; input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/soil_n_model.py; input changed: docs/claims.yaml
+
+build graph: 21 defects
+make: *** [Makefile:120: verify] Error 1

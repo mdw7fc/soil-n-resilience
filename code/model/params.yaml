@@ -277,22 +277,6 @@ parameters:
       its measured reach is small against the reported interval, but it is
       unsampled and the next ensemble should draw it.
 
-  cre_base:
-    value: 0.11
-    units: dimensionless
-    category: measured
-    source: Lehtinen et al. (2014) Soil Use and Management 30:524-538; doi:10.1111/sum.12134
-    used_by: [soil_n_model.FeedbackParams]
-    affects_claims: [C-010]
-    mc: declared_fixed
-    mc_exempt_reason: >-
-      The ensemble perturbs the regional carbon-response efficiency
-      (cre_regional_mult), and cre_base is the global fallback those regional
-      values override in every region the paper reports. Sampling both would
-      double-count the same uncertainty. F-011 scores this leaf INERT and the
-      repair is to delete the fallback rather than to widen the probe; the
-      deletion is owed and not yet made.
-
   cre_allocation:
     value:
       cre_to_active: 0.60

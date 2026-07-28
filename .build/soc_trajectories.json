@@ -1,6 +1,6 @@
 {
-  "generator": "code/repro/make_table_s4_sol.py",
-  "generator_sha": "73a35ca9be43e207fae5a839e1486c5c1952b0ba803f255833440eef99a01e6d",
+  "generator": "code/repro/make_soc_trajectories.py",
+  "generator_sha": "d1e7152cb28b6c2a2a1ac29f41e6beb3ad42fe6267e544907c4a377fb841b084",
   "inputs": {
     "code/model/coupled_econ_biophysical.py": "2b572fa0369e551e30f1f23736774e18e5986724bcc37ace491e4a1a0e5367fe",
     "code/model/coupled_monthly.py": "f56c4a64c059f43302f25c38c3f80f9a96bd1507950bc04aa5b514e166a289ba",
@@ -12,13 +12,12 @@
     "code/model/soil_n_model.py": "ea7ffb4e0db8a4ce2dbc921006819db711dad382f759f5da22399ac28d003aa8",
     "data/era5_regional_climates.json": "d2caf2eade29e2b6d32ea42d9bfcf0385f63fd2f530c3692f801df64040c43f5"
   },
-  "node": "table_s4",
+  "node": "soc_trajectories",
   "outputs": {
-    "data/crop_response_calibration_table.csv": "c8f6ccccd349e15d45e334c95027ea69ef6fdf6312e8a00793f70641293e737b",
-    "data/figS12_curves.json": "fb232610db2e8eb2a5c69c101b10d1695574ffc15af2f5b6a91226b1bf3fe009",
-    "outputs/Table_S4_calibration_sol.csv": "2899f7a573ec3fbb5dc9aed859e7e6ea40fa244b59313c67c27b95ddc8055c89"
+    "data/soc_trajectories.csv": "4953f4f1507beaf828589cc899faea95b7667525e3bb6100f8d7fc809973b2a7",
+    "data/soc_trajectories.json": "817ed15811c071aca5a5574637a6640b150e3d9eff0c3df37775bb026cc49d7e"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-07-28T15:14:15Z",
+  "stamped_at": "2026-07-28T15:10:20Z",
   "stamped_at_commit": "f2e7583"
 }

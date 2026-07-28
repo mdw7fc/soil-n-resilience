@@ -309,8 +309,35 @@ class RegionParams:
     # Literature range (total-input basis): 0.10-0.30
     # Variation driven by clay content (MAOM stabilization), temperature,
     # and tillage system.
-    # If 0, uses FeedbackParams.cre_base as default.
+    # Required. There is no global fallback; see region_cre().
     cre_regional: float = 0.0
+
+
+def region_cre(region):
+    """The carbon retention efficiency a region runs at. No fallback.
+
+    Until v15 every call site read
+    `region.cre_regional if region.cre_regional > 0 else fb.cre_base`, and
+    `cre_base` was a registered, provenanced, Monte-Carlo-excluded parameter
+    sitting behind that guard. F-011's mutation sweep scored it INERT: all
+    eight regions set `cre_regional`, so the branch was reached by nothing and
+    perturbing the value moved no published number. A registered parameter the
+    model can never read is a documented assumption that is not in the model,
+    which is one of the shapes this rebuild exists to remove.
+
+    So the fallback is deleted and an unset value is an error. The old
+    behaviour substituted a pooled cross-site mean for a regional one and left
+    no trace of having done so: nothing in any output distinguishes a region
+    running at its own measured efficiency from a region running at 0.11
+    because its entry was blank.
+    """
+    cre = float(region.cre_regional)
+    if cre <= 0:
+        raise ValueError(
+            'region %r has cre_regional=%r; it is required and there is no '
+            'global fallback. Register the regional value in params.yaml '
+            'under cre_regional.' % (getattr(region, 'name', region), cre))
+    return cre
 
 
 @dataclass
@@ -354,11 +381,6 @@ class FeedbackParams:
 
     # C-N coupling feedback: enabled
     cn_coupling_feedback: bool = True
-
-    # Carbon retention efficiency of residue (fraction of residue C entering SOM)
-    # F-011 scores this leaf INERT: cre_regional overrides it in all eight
-    # regions, so the fallback is dead code. Deleting it is owed work.
-    cre_base: float = _reg.value('cre_base')  # Lehtinen et al. 2014
 
     # Fraction of CRE going to active vs. slow pool. Guarded at load: sums to 1.
     cre_to_active: float = _CRE_ALLOC['cre_to_active']
@@ -639,7 +661,7 @@ class SoilNCarryingCapacityModel:
             Parton et al. 1987 (Century model); Manzoni & Porporato 2009
             (stoichiometric constraints); Robertson et al. 2019 (MEMS).
         """
-        cre = self.region.cre_regional if self.region.cre_regional > 0 else self.fb.cre_base
+        cre = region_cre(self.region)
 
         # N required to maintain pool C:N ratios as residue C enters SOM
         c_to_active = residue_c * cre * self.fb.cre_to_active
@@ -817,8 +839,7 @@ class SoilNCarryingCapacityModel:
                 h_s_to_p = d_slow * self.som.h_slow_to_passive
 
                 # Residue input allocation
-                # Use region-specific CRE if provided, else fall back to global
-                cre = self.region.cre_regional if self.region.cre_regional > 0 else self.fb.cre_base
+                cre = region_cre(self.region)
 
                 if self.fb.residue_feedback:
                     c_in_active = res_c * cre * self.fb.cre_to_active * self.dt

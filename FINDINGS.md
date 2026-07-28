@@ -1393,3 +1393,74 @@ are not separable from each other.
 
 `document_edit_owed` for C-010 accordingly becomes: correct 2.5% to 2.24%, and
 replace the sub-Saharan-Africa-highest phrasing with the two-region statement.
+
+## F-019 — 2026-07-28 — The global carbon-retention fallback is deleted; it moved no number because the model could never reach it, and that was the problem
+
+`FeedbackParams.cre_base` was a registered parameter: value 0.11, provenance
+Lehtinen et al. (2014) *Soil Use and Management* 30:524-538,
+doi:10.1111/sum.12134, `used_by: [soil_n_model.FeedbackParams]`,
+`affects_claims: [C-010]`, `mc: declared_fixed` with a written exemption
+reason. It appeared in `params.yaml`, in the registry's entry count, in the
+parameter ledger, in Table S1, and in C-010's `depends_on_params`. By every
+signal this repository emits, it was part of the model.
+
+It was not. All three call sites read
+`region.cre_regional if region.cre_regional > 0 else fb.cre_base`, and all
+eight regions set `cre_regional` (0.28, 0.259, 0.226, 0.341, 0.307, 0.308,
+0.20, 0.35). The branch was reached by nothing. F-011's mutation sweep scored
+the leaf INERT, which was correct and was not a clean bill of health: it meant
+the documentation described an assumption the model does not make.
+
+v15 deletes it. `soil_n_model.region_cre()` replaces the guard and raises on an
+unset regional value. Six files changed: `soil_n_model.py` (field, two call
+sites, one comment, the new helper), `coupled_econ_biophysical.py` (import and
+call site), `params.yaml` (the entry, saved to `/tmp/cre_base_block.txt`),
+`make_parameter_ledger_sol.py` (two dictionary entries), `run_mc_ensemble.py`
+(docstring), `docs/claims.yaml` (C-010's `depends_on_params`).
+
+The verification is the point. `logs/run_203_canon.log` regenerates the
+canonical artifact after the deletion and it diffs to **zero over all 125
+fields** against the pre-deletion copy: no field moved, none appeared, none
+went missing. That is what an unreachable parameter looks like when you remove
+it, and it is why the deletion is safe. It is also why the deletion matters.
+The old code silently substituted a pooled cross-site mean for a regional one
+and left no trace of having done so; nothing in any output distinguished a
+region running at its own measured efficiency from a region running at 0.11
+because its entry was blank. A registered parameter the model can never read is
+a documented assumption that is not in the model.
+
+Three gates fired, and each fired correctly rather than needing to be
+persuaded.
+
+`test_wp1_registry_wiring.py` crashed with `AttributeError: 'FeedbackParams'
+object has no attribute 'cre_base'`, because it compares the live model against
+a frozen field snapshot. The repair is not to make a missing attribute pass.
+The test now carries a `DELETED_FIELDS` map: a field that has left the model
+must be named there with the finding that authorised it, and an undeclared
+disappearance is counted as a move and fails. "The field is gone" and "the
+field never mattered" must not produce the same result. Its three registry
+counts drop with the deletion: 54 entries to 53, 56 leaves to 55, 17
+declared-fixed uncertainties to 16.
+
+`test_claims.py` failed G5: the claim/parameter reverse index changed without
+`docs/claims_index_baseline.json` being regenerated. Refreezing it removes
+exactly one line, `"cre_base"`, and `docs/claims_baseline.json` is byte
+identical, so no claim drifted. The index baseline shrank, which is the
+permitted direction.
+
+The build graph restaled 21 nodes on the params fingerprint, none on a changed
+number. They are being regenerated rather than stamped
+(`logs/run_208_stale.log`): the fingerprint is the mechanism that notices a
+parameter set has changed, and stamping around it on the strength of one node's
+zero-diff would teach the graph to trust an argument instead of an artifact.
+
+Also in this pass, `soc_trajectories` becomes a build node and its two
+`--allow-orphan` / `--allow-unsourced` lines leave the Makefile. One debt line
+remains there: `results/s3_shock_calibration.csv`, owed
+`make_s3_shock_calibration.py` (F-015).
+
+Profiling, which was asked for and is recorded here so it is written before it
+is reported: a canonical run is 6.4 s wall against 6.6 s CPU, 103% of one core,
+single-threaded, peak RSS 108 MB, no major faults. The work is CPU-bound and
+this container has two cores, so the parallelism ceiling on any sweep is 2x
+regardless of how many workers are scheduled.

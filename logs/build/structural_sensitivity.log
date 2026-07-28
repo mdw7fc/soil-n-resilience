@@ -10,5 +10,5 @@
 8.4 -0.25 3.119 3.204
 8.4 -0.5 3.038 3.093
 8.4 -1.0 2.884 2.893
-wrote /home/claude/v15/outputs/structural_sensitivity_sol.csv
-wrote /home/claude/v15/outputs/price_convention_sensitivity_sol.csv
+wrote /tmp/repo16/outputs/structural_sensitivity_sol.csv
+wrote /tmp/repo16/outputs/price_convention_sensitivity_sol.csv

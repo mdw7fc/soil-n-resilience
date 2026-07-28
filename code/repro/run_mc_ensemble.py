@@ -19,9 +19,10 @@ Eight perturbed parameters (truncated-normal multipliers unless noted):
   2. mitscherlich_c (regional, multiplier)      priors: 1.00 ± 0.15,  [0.70, 1.30]
   3. k_slow (SOMPoolParams, multiplier)         priors: 1.00 ± 0.20,  [0.60, 1.40]
   4. cre_regional (regional, multiplier)        priors: 1.00 ± 0.30,  [0.40, 1.80]
-     (per-region carbon retention efficiency from RegionParams.cre_regional;
-      replaces the unused FeedbackParams.cre_base since all default regions
-      override that fallback with their own calibrated cre_regional)
+     (per-region carbon retention efficiency from RegionParams.cre_regional.
+      A global FeedbackParams.cre_base used to sit behind an `if unset`
+      fallback; F-011 found it unreachable and v15 deleted it, so this is
+      now the only CRE the model has)
   5. residue_retention (regional, multiplier)   priors: 1.00 ± 0.10,  [0.80, 1.15]
 
   Economic

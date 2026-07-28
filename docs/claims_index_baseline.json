@@ -6,7 +6,6 @@
       "soc_tha_per_pct"
     ],
     "C-010": [
-      "cre_base",
       "cre_regional",
       "residue_c_to_active_fraction",
       "residue_retention",

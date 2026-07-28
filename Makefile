@@ -118,8 +118,6 @@ tests:
 verify: tests
 	@echo ""
 	@$(BUILD) verify \
-		--allow-orphan data/soc_trajectories.csv \
-		--allow-unsourced data/soc_trajectories.json \
 		--allow-unsourced results/s3_shock_calibration.csv
 	@echo ""
 	@echo "verify: $(words $(TESTS)) suites and the build graph, exit 0"
@@ -127,8 +125,12 @@ verify: tests
 # The two allowances above are debts, not exemptions. Each is an artifact the
 # manuscript cites whose generator does not exist in this tree:
 #
-#   data/soc_trajectories.csv|.json      make_soc_trajectories.py (F-016)
 #   results/s3_shock_calibration.csv     make_s3_shock_calibration.py (F-015)
+#
+# data/soc_trajectories.csv|.json was the second line. The generator was written
+# in the lost v15 tree, recovered verbatim from the session transcript and
+# replayed here (F-018), so the debt is paid and the line is gone rather than
+# exempted; soc_trajectories is now a build node.
 #
 # data/crop_response_calibration_table.csv was the third line. D3 made
 # make_table_s4_sol.py write it, which is what MANIFEST.md had claimed since the

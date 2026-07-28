@@ -86,7 +86,7 @@ claims:
     status: current
     artifact: data/scenario_trajectories.csv
     secondary_artifact: data/soc_trajectories.json
-    depends_on_params: [som_decay_rates, som_humification, residue_c_to_active_fraction, cre_base, cre_regional, residue_retention, root_shoot_c_ratio]
+    depends_on_params: [som_decay_rates, som_humification, residue_c_to_active_fraction, cre_regional, residue_retention, root_shoot_c_ratio]
     document_edit_owed: >-
       SSA 30-year SOC decline 2.5% -> 2.145%; the three year-30 losses are all
       overstated. F-016.

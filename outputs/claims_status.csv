@@ -9,7 +9,7 @@ C-001,MS [6]; MS [46]; figure 2a,gradient_monotone_sub_saharan_africa,1,1.000000
 C-001,MS [6]; MS [46]; figure 2a,gradient_monotone_fsu_central_asia,1,1.000000,+0.000000,0,boolean,AGREES
 C-002,SI [167] (Supplementary Figure S9 caption),buffer_positive_every_region,1,1.000000,+0.000000,0,probability,AGREES
 C-002,SI [167] (Supplementary Figure S9 caption),cross_region_median_buffer_ppt,0.88,0.884510,+0.004510,0.01,percentage points,AGREES
-C-010,MS [64],ssa_soc_decline_30yr,2.5,2.144600,-0.355400,0.15,% of year-0 stock,DRIFTED
+C-010,MS [64],ssa_soc_decline_30yr,2.5,2.240400,-0.259600,0.15,% of year-0 stock,DRIFTED
 C-010,MS [64],ssa_loss_yr30,5.9,5.080000,-0.820000,0.1,% yield loss,DRIFTED
 C-010,MS [64],south_asia_loss_yr30,6.3,4.805000,-1.495000,0.1,% yield loss,DRIFTED
 C-010,MS [64],fsu_loss_yr30,6,5.221000,-0.779000,0.1,% yield loss,DRIFTED

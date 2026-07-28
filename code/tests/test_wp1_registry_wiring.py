@@ -27,7 +27,7 @@ This script runs the three checks that showing takes:
   3. The global S3 production-weighted yield loss, reported so the run's
      headline number is on the record next to the diff.
 
-  4. Plus the registry's own load-time contract: 54 entries, 56 mutable leaves,
+  4. Plus the registry's own load-time contract: 53 entries, 55 mutable leaves,
      and exactly six leaves refused at load by the two sum-to-one blocks and
      the profile-depth unit check.
 
@@ -193,6 +193,19 @@ from soil_n_model import (  # noqa: E402
 import coupled_econ_biophysical as econ  # noqa: E402
 import monthly_model_v3 as mm  # noqa: E402
 
+# Fields that existed when `baseline/regional_fields_before.json` was frozen and
+# have since been deliberately deleted. A deletion is not a drift, but it is not
+# nothing either: it must be named here, with the finding that authorised it,
+# or the comparison below raises. Silently skipping a missing attribute would
+# turn "the field is gone" and "the field never mattered" into the same result.
+DELETED_FIELDS = {
+    ("FeedbackParams", "cre_base"):
+        "F-011 scored it INERT and v15 deleted the fallback it guarded; "
+        "soil_n_model.region_cre() now raises instead of substituting 0.11. "
+        "Verified to move no number: logs/run_203_canon.log diffs to zero "
+        "against the pre-deletion canonical over all 125 fields.",
+}
+
 snap = json.load(open(os.path.join(BASELINE, "regional_fields_before.json")))
 econ_snap = json.load(open(os.path.join(BASELINE, "econ_targets_before.json")))
 
@@ -219,6 +232,14 @@ for label, obj in (
 ):
     moved = 0
     for f in sorted(snap[label]):
+        if not hasattr(obj, f):
+            if (label, f) in DELETED_FIELDS:
+                log("  deleted %-23s %-24s %s" % (label, f, DELETED_FIELDS[(label, f)]))
+                continue
+            moved += 1
+            log("  MISSING %-23s %-24s gone from the model and not declared "
+                "in DELETED_FIELDS" % (label, f))
+            continue
         b, a = snap[label][f], getattr(obj, f)
         if a != b:
             moved += 1
@@ -289,16 +310,18 @@ import yaml  # noqa: E402
 import registry as reg  # noqa: E402
 
 log("  entries %d, mutable leaves %d" % (len(reg.names()), len(reg.leaves())))
-check(len(reg.names()) == 54, "registry has %d entries, expected 54" % len(reg.names()))
-check(len(reg.leaves()) == 56, "registry has %d leaves, expected 56" % len(reg.leaves()))
+# 54 -> 53 and 56 -> 55 when v15 deleted cre_base (F-011 INERT, F-018).
+check(len(reg.names()) == 53, "registry has %d entries, expected 53" % len(reg.names()))
+check(len(reg.leaves()) == 55, "registry has %d leaves, expected 55" % len(reg.leaves()))
 
 mc = {}
 for n in reg.names():
     mc[reg.mc_status(n)] = mc.get(reg.mc_status(n), 0) + 1
 log("  mc status: %s" % sorted(mc.items()))
 check(mc.get("drawn") == 8, "expected 8 drawn priors, got %s" % mc.get("drawn"))
-check(mc.get("declared_fixed") == 17,
-      "expected 17 declared-but-fixed uncertainties (F-007), got %s"
+# 17 -> 16: cre_base was declared_fixed and is deleted, not reclassified.
+check(mc.get("declared_fixed") == 16,
+      "expected 16 declared-but-fixed uncertainties (F-007), got %s"
       % mc.get("declared_fixed"))
 
 

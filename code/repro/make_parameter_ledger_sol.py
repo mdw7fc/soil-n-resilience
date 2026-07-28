@@ -116,7 +116,7 @@ UNITS = {
     "nue_apparent": "fraction", "residue_feedback": "boolean",
     "physical_feedback": "boolean", "physical_strength": "multiplier",
     "expansion_feedback": "boolean", "cn_coupling_feedback": "boolean",
-    "cre_base": "fraction", "cre_to_active": "fraction",
+    "cre_to_active": "fraction",
     "cre_to_slow": "fraction",
     # Monthly N
     "q10": "ratio per 10 deg C", "t_ref": "deg C", "t_min": "deg C",
@@ -183,7 +183,6 @@ SOURCES = {
     "immob_frac": "monthly N-balance parameterization",
     "max_uptake_frac": "calibrated in-season capture component",
     "min_n_pool": "numerical/biophysical mineral-N floor",
-    "cre_base": "Lehtinen et al. 2014 fallback",
     "cre_to_active": "Century-style allocation assumption",
     "cre_to_slow": "Century-style allocation assumption",
 }

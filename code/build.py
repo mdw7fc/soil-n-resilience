@@ -212,6 +212,12 @@ NODES: List[Node] = [
                   "disagree. Unblocking it means restoring the pulse "
                   "capability first, then regenerating. Frozen copy: "
                   "baseline/surviving_v15/scenario_trajectories.csv")),
+    Node("soc_trajectories", "code/repro/make_soc_trajectories.py",
+         outputs=("data/soc_trajectories.csv", "data/soc_trajectories.json"),
+         inputs=(ERA5,), minutes=2.0,
+         note="the 30-year carbon series the SOC-decline sentence is read "
+              "from; recovered from the session transcript after the v15 tree "
+              "was lost and regenerated under the current eps_F_N (F-018)"),
     Node("sc_trajectories", "code/repro/make_sc_trajectories.py",
          outputs=("data/SC1_regional_trajectory.csv",
                   "data/SC2_regional_trajectory.csv"),

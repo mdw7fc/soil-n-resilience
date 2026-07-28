@@ -69,6 +69,8 @@ sys.path.insert(0, os.path.join(REPO, "code", "model"))
 
 RESULTS = os.path.join(REPO, "results")
 CANONICAL = os.path.join("data", "canonical_ERA5_y30.json")
+MARGIN = os.path.join("data", "figure1_farm_gradient.json")
+PRICE_GEN = "run_price_shock_analysis.py"
 
 #: Relative perturbation applied to a leaf. Large enough to clear solver
 #: tolerance, small enough to stay inside every declared parameter bound so a
@@ -98,12 +100,17 @@ TEST_FILES = [
     "code/repro/test_zero_shock_invariance.py",
 ]
 
-#: Registry entries whose effect is real but lands outside the canonical
-#: artifact. F-011: "those six rows should be read as 'not probed'."
-NOT_PROBED = frozenset({
-    "crop_price_usd_t", "n_price_wedge", "n_price_usd_kg_farmer_paid",
-    "n_benchmark_usd_kg", "urea_n_fraction", "price_benchmark_max_factor",
-})
+#: Registry entries whose effect lands outside the probe's fingerprint. F-011
+#: recorded six price parameters here and read their INERT verdicts as "not
+#: probed" rather than as "does not matter", which was the right reading of a
+#: wrong probe: the fingerprint was `canonical_ERA5_y30.json` alone, which
+#: carries yields and losses and no money at all, so those six could not have
+#: come out any other way. A verdict that can only come out one way is not a
+#: verdict. F-019 widens the fingerprint to the published Figure 1 margin
+#: curves and the derived per-region nitrogen cost shares, which every one of
+#: the six moves, so the set is now empty. It is kept rather than deleted so
+#: that adding a name to it stays a deliberate act with a reason attached.
+NOT_PROBED = frozenset()
 
 TEST_TIMEOUT = 600
 RUN_TIMEOUT = 900
@@ -130,6 +137,29 @@ def _flatten_canonical(doc) -> dict:
                 walk(v, f"{p}[{i}]")
 
     walk(doc, "")
+    return out
+
+
+def _flatten_margins(doc: dict) -> dict:
+    """The farm-margin half of the published-number set.
+
+    Point by point along each curve rather than at the three SOC levels the
+    abstract quotes, because the whole curve is the published object: a
+    mutation that bends the gradient without moving its endpoints has still
+    moved a published number.
+    """
+    out = {}
+    for rk, rec in (doc.get("regions") or {}).items():
+        pcts = rec.get("soc_pct") or []
+        for series in ("yield_pen", "fert_red", "margin_chg"):
+            for pct, v in zip(pcts, rec.get(series) or []):
+                out["margin.%s.%s@%s" % (rk, series, pct)] = float(v)
+    for rk, v in (doc.get("derived_n_cost_share") or {}).items():
+        out["price.%s.n_cost_share" % rk] = float(v)
+    for rk, d in (doc.get("regional_prices") or {}).items():
+        for k in ("nitrogen_usd_per_kg_n", "crop_usd_per_t"):
+            if isinstance(d.get(k), (int, float)):
+                out["price.%s.%s" % (rk, k)] = float(d[k])
     return out
 
 
@@ -226,7 +256,19 @@ def _canonical(sandbox: str):
     path = os.path.join(sandbox, CANONICAL)
     if rc != 0 or not os.path.exists(path):
         return None, log
-    return _flatten_canonical(json.load(open(path))), log
+    fp = _flatten_canonical(json.load(open(path)))
+
+    # The margin half. Run unconditionally, for every leaf, rather than only
+    # for the leaves judged likely to reach money: a probe that decides in
+    # advance which parameters could matter is the assumption-as-constant
+    # pattern this whole sweep exists to find.
+    rc2, log2 = _run([sys.executable, PRICE_GEN],
+                     os.path.join(sandbox, "code", "repro"), RUN_TIMEOUT)
+    mpath = os.path.join(sandbox, MARGIN)
+    if rc2 != 0 or not os.path.exists(mpath):
+        return None, "price analysis failed: " + log2
+    fp.update(_flatten_margins(json.load(open(mpath))))
+    return fp, log
 
 
 def _suite(sandbox: str, tests):

@@ -13,7 +13,6 @@ code/model/coupled_econ_biophysical.py,133,[0.0],fert_capacity_recovery_years: f
 code/model/coupled_econ_biophysical.py,214,"[0, 5.0]",self.y_max = region.yield_max_regional if region.yield_max_regional > 0 else crop_params.yield_max if crop_params else 5.0,reviewed result-affecting/algebraic literal
 code/model/coupled_econ_biophysical.py,215,"[0, 0.015]",self.mit_c = region.mitscherlich_c_regional if region.mitscherlich_c_regional > 0 else crop_params.mitscherlich_c if crop_params else 0.015,reviewed result-affecting/algebraic literal
 code/model/coupled_econ_biophysical.py,217,"[0.0, 0]",self.y_floor = region.yield_min_regional if region.yield_min_regional > 0 else 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_econ_biophysical.py,220,[0],self.cre = region.cre_regional if region.cre_regional > 0 else self.fb.cre_base,reviewed result-affecting/algebraic literal
 code/model/coupled_econ_biophysical.py,228,[3],for _ in range(3):,reviewed result-affecting/algebraic literal
 code/model/coupled_econ_biophysical.py,249,[1000.0],self.som.k_active * self.C_active / self.som.cn_active * 1000.0 +,reviewed result-affecting/algebraic literal
 code/model/coupled_econ_biophysical.py,250,[1000.0],self.som.k_slow * self.C_slow / self.som.cn_slow * 1000.0 +,reviewed result-affecting/algebraic literal
@@ -465,74 +464,73 @@ code/model/soil_n_model.py,290,[0.0],mitscherlich_c_regional: float = 0.0  # 0 =
 code/model/soil_n_model.py,296,[0.0],yield_min_regional: float = 0.0     # 0 = use CropParams.yield_min (0.0),reviewed result-affecting/algebraic literal
 code/model/soil_n_model.py,303,[0.8],root_shoot_c_ratio: float = 0.80,reviewed result-affecting/algebraic literal
 code/model/soil_n_model.py,313,[0.0],cre_regional: float = 0.0,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,322,[0.0],withdrawal_years: float = 0.0   # 0 = abrupt,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,334,[0.0],legume_fraction_target: float = 0.0,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,337,[10.0],legume_ramp_years: float = 10.0,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,399,[0.0],"withdrawal_years=0.0,",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,406,[20.0],"withdrawal_years=20.0,",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,413,[20.0],"withdrawal_years=20.0,",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,417,[0.25],"legume_fraction_target=0.25,",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,418,[15.0],"legume_ramp_years=15.0,",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,451,[1.0],"dt: float = 1.0,          # Time step (years)",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,452,[100.0],"t_max: float = 100.0,     # Simulation length (years)",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,493,[1000.0],return k * C_pool / cn_ratio * 1000.0,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,497,[0],if self.scenario.withdrawal_years <= 0:,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,499,"[0.0, 0]",return self.region.synth_n_current if t < 0 else 0.0,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,502,"[0.0, 1.0]","frac = max(0.0, 1.0 - t / self.scenario.withdrawal_years)",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,517,[0],if t <= 0:,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,520,[1.0],"ramp_frac = min(1.0, t / self.region.bnf_ramp_years)",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,529,[1.0],"legume_ramp = min(1.0, t / self.scenario.legume_ramp_years)",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,530,[30.0],legume_n = legume_ramp * self.scenario.legume_fraction_target * 30.0,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,535,[1.0],"def _yield_from_n(self, n_available: float, water_stress_factor: float = 1.0) -> float:",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,550,[0],y_max = self.region.yield_max_regional if self.region.yield_max_regional > 0 else self.crop.yield_max,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,551,[0],mit_c = self.region.mitscherlich_c_regional if self.region.mitscherlich_c_regional > 0 else self.crop.mitscherlich_c,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,553,[0.0],"n_eff = max(0.0, n_available)",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,554,[1.0],y = y_max * (1.0 - np.exp(-mit_c * n_eff)),reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,563,[1000],n_grain_per_tonne = self.crop.grain_n_fraction * 1000  # kg N / t grain,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,564,[0],y_n_limited = n_eff / n_grain_per_tonne if n_grain_per_tonne > 0 else y,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,568,[0],y_floor = self.region.yield_min_regional if self.region.yield_min_regional > 0 else self.crop.yield_min,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,581,[1.0],return 1.0,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,589,[0.0],if delta_soc_pct >= 0.0:,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,594,[1.0],1.0 - np.exp(delta_soc_pct / whc_gain_sat_pct),reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,601,[0.5],total_deficit = 0.5 * (raw + np.sqrt(raw * raw + eps_mm * eps_mm)),reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,602,[1.0],stress = 1.0 - self.region.water_stress_coeff * total_deficit,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,603,[1.0],"return max(WATER_STRESS_MIN_FACTOR, min(1.0, stress))",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,617,"[1.0, 1.1]","above_ground *= min(1.0, 1.1)  # 10% improvement in retention",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,642,[0],cre = self.region.cre_regional if self.region.cre_regional > 0 else self.fb.cre_base,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,648,[1000],c_to_slow / self.som.cn_slow) * 1000  # kg N/ha,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,651,[1000],n_supply = residue_c / self.crop.residue_cn * 1000  # kg N/ha,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,654,[0.0],"return max(0.0, n_demand - n_supply)",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,667,[0],if not self.scenario.legume_expansion or self.scenario.legume_fraction_target <= 0:,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,668,[1.0],return 1.0,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,670,"[1.0, 0.0]","legume_ramp = min(1.0, max(0.0, t) / self.scenario.legume_ramp_years)",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,674,[0.2],legume_calorie_fraction = 0.20  # blended: 50% grain legumes at 40% caloric equiv,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,675,[1.0],effective = (1.0 - current_legume_frac) + current_legume_frac * legume_calorie_fraction,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,685,[1.0],return 1.0,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,691,[0.6],if frac_remaining > 0.60:,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,692,[1.0],return 1.0,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,693,[0.3],elif frac_remaining < 0.30:,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,694,[0.6],return 0.6  # 40% reduction at severe depletion,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,697,"[1.0, 0.3, 0.4, 0.6]",return 1.0 - 0.4 * (0.60 - frac_remaining) / 0.30,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,701,[1],n_steps = int(self.t_max / self.dt) + 1,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,702,"[0, 2]","times = np.arange(0, self.t_max + self.dt/2, self.dt)",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,787,"[0, 0]",cc_frac = (y / yield_0 * legume_disp) if yield_0 > 0 else 0,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,802,"[0, 0]",results['yield_fraction'][i] = y / yield_0 if yield_0 > 0 else 0,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,809,[1],if i < n_steps - 1:,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,821,[0],cre = self.region.cre_regional if self.region.cre_regional > 0 else self.fb.cre_base,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,833,"[1.0, 0]",C_a += (-d_active + c_in_active + 0) * 1.0  # No input to active from other pools,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,834,[1.0],C_s += (-d_slow + h_a_to_s + c_in_slow) * 1.0,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,835,[1.0],C_p += (-d_passive + h_s_to_p) * 1.0,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,838,[0.0],"C_a = max(0.0, C_a)",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,839,[0.0],"C_s = max(0.0, C_s)",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,840,[0.0],"C_p = max(0.0, C_p)",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,861,[100.0],"t_max: float = 100.0,",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,898,[100.0],"def run_global_scenarios(t_max: float = 100.0) -> Dict[str, Dict[str, pd.DataFrame]]:",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,919,[0],agg = dfs[0][['year']].copy(),reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,920,[0.0],agg['pop_total_millions'] = 0.0,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,930,[0.0],agg['yield_fraction_weighted'] = 0.0,reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,952,[2],"json.dump(params, f, indent=2)",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,964,[100.0],"t_max=100.0,",reviewed result-affecting/algebraic literal
-code/model/soil_n_model.py,970,"[0, 10, 50, 100]","for yr in [0, 10, 50, 100]:",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,335,[0],if cre <= 0:,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,349,[0.0],withdrawal_years: float = 0.0   # 0 = abrupt,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,361,[0.0],legume_fraction_target: float = 0.0,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,364,[10.0],legume_ramp_years: float = 10.0,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,421,[0.0],"withdrawal_years=0.0,",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,428,[20.0],"withdrawal_years=20.0,",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,435,[20.0],"withdrawal_years=20.0,",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,439,[0.25],"legume_fraction_target=0.25,",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,440,[15.0],"legume_ramp_years=15.0,",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,473,[1.0],"dt: float = 1.0,          # Time step (years)",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,474,[100.0],"t_max: float = 100.0,     # Simulation length (years)",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,515,[1000.0],return k * C_pool / cn_ratio * 1000.0,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,519,[0],if self.scenario.withdrawal_years <= 0:,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,521,"[0.0, 0]",return self.region.synth_n_current if t < 0 else 0.0,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,524,"[0.0, 1.0]","frac = max(0.0, 1.0 - t / self.scenario.withdrawal_years)",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,539,[0],if t <= 0:,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,542,[1.0],"ramp_frac = min(1.0, t / self.region.bnf_ramp_years)",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,551,[1.0],"legume_ramp = min(1.0, t / self.scenario.legume_ramp_years)",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,552,[30.0],legume_n = legume_ramp * self.scenario.legume_fraction_target * 30.0,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,557,[1.0],"def _yield_from_n(self, n_available: float, water_stress_factor: float = 1.0) -> float:",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,572,[0],y_max = self.region.yield_max_regional if self.region.yield_max_regional > 0 else self.crop.yield_max,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,573,[0],mit_c = self.region.mitscherlich_c_regional if self.region.mitscherlich_c_regional > 0 else self.crop.mitscherlich_c,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,575,[0.0],"n_eff = max(0.0, n_available)",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,576,[1.0],y = y_max * (1.0 - np.exp(-mit_c * n_eff)),reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,585,[1000],n_grain_per_tonne = self.crop.grain_n_fraction * 1000  # kg N / t grain,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,586,[0],y_n_limited = n_eff / n_grain_per_tonne if n_grain_per_tonne > 0 else y,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,590,[0],y_floor = self.region.yield_min_regional if self.region.yield_min_regional > 0 else self.crop.yield_min,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,603,[1.0],return 1.0,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,611,[0.0],if delta_soc_pct >= 0.0:,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,616,[1.0],1.0 - np.exp(delta_soc_pct / whc_gain_sat_pct),reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,623,[0.5],total_deficit = 0.5 * (raw + np.sqrt(raw * raw + eps_mm * eps_mm)),reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,624,[1.0],stress = 1.0 - self.region.water_stress_coeff * total_deficit,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,625,[1.0],"return max(WATER_STRESS_MIN_FACTOR, min(1.0, stress))",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,639,"[1.0, 1.1]","above_ground *= min(1.0, 1.1)  # 10% improvement in retention",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,670,[1000],c_to_slow / self.som.cn_slow) * 1000  # kg N/ha,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,673,[1000],n_supply = residue_c / self.crop.residue_cn * 1000  # kg N/ha,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,676,[0.0],"return max(0.0, n_demand - n_supply)",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,689,[0],if not self.scenario.legume_expansion or self.scenario.legume_fraction_target <= 0:,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,690,[1.0],return 1.0,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,692,"[1.0, 0.0]","legume_ramp = min(1.0, max(0.0, t) / self.scenario.legume_ramp_years)",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,696,[0.2],legume_calorie_fraction = 0.20  # blended: 50% grain legumes at 40% caloric equiv,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,697,[1.0],effective = (1.0 - current_legume_frac) + current_legume_frac * legume_calorie_fraction,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,707,[1.0],return 1.0,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,713,[0.6],if frac_remaining > 0.60:,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,714,[1.0],return 1.0,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,715,[0.3],elif frac_remaining < 0.30:,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,716,[0.6],return 0.6  # 40% reduction at severe depletion,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,719,"[1.0, 0.3, 0.4, 0.6]",return 1.0 - 0.4 * (0.60 - frac_remaining) / 0.30,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,723,[1],n_steps = int(self.t_max / self.dt) + 1,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,724,"[0, 2]","times = np.arange(0, self.t_max + self.dt/2, self.dt)",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,809,"[0, 0]",cc_frac = (y / yield_0 * legume_disp) if yield_0 > 0 else 0,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,824,"[0, 0]",results['yield_fraction'][i] = y / yield_0 if yield_0 > 0 else 0,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,831,[1],if i < n_steps - 1:,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,854,"[1.0, 0]",C_a += (-d_active + c_in_active + 0) * 1.0  # No input to active from other pools,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,855,[1.0],C_s += (-d_slow + h_a_to_s + c_in_slow) * 1.0,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,856,[1.0],C_p += (-d_passive + h_s_to_p) * 1.0,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,859,[0.0],"C_a = max(0.0, C_a)",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,860,[0.0],"C_s = max(0.0, C_s)",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,861,[0.0],"C_p = max(0.0, C_p)",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,882,[100.0],"t_max: float = 100.0,",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,919,[100.0],"def run_global_scenarios(t_max: float = 100.0) -> Dict[str, Dict[str, pd.DataFrame]]:",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,940,[0],agg = dfs[0][['year']].copy(),reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,941,[0.0],agg['pop_total_millions'] = 0.0,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,951,[0.0],agg['yield_fraction_weighted'] = 0.0,reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,973,[2],"json.dump(params, f, indent=2)",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,985,[100.0],"t_max=100.0,",reviewed result-affecting/algebraic literal
+code/model/soil_n_model.py,991,"[0, 10, 50, 100]","for yr in [0, 10, 50, 100]:",reviewed result-affecting/algebraic literal
 code/repro/claim_resolvers.py,51,[0],"sys.path.insert(0, MODEL)",reviewed result-affecting/algebraic literal
 code/repro/claim_resolvers.py,107,"[1.0, 0.0]",return 1.0 if x else 0.0,reviewed result-affecting/algebraic literal
 code/repro/claim_resolvers.py,129,[1e-09],ok = ok and abs(float(got) - float(want)) < 1e-9,reviewed result-affecting/algebraic literal
@@ -562,12 +560,12 @@ code/repro/claim_resolvers.py,405,[0.0],"tol = float(check.get(""tol"", 0.0))",r
 code/repro/claim_resolvers.py,416,[1e-12],"""verdict"": ""AGREES"" if abs(delta) <= tol + 1e-12 else ""DRIFTED"",",reviewed result-affecting/algebraic literal
 code/repro/claim_resolvers.py,426,[1],"""n_agrees"": sum(1 for r in results if r[""verdict""] == ""AGREES""),",reviewed result-affecting/algebraic literal
 code/repro/claim_resolvers.py,427,[1],"""n_drifted"": sum(1 for r in results if r[""verdict""] == ""DRIFTED""),",reviewed result-affecting/algebraic literal
-code/repro/climate_comparison.py,7,[0],"HERE=os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(HERE,'..','model'))",reviewed result-affecting/algebraic literal
-code/repro/climate_comparison.py,15,[10.0],def run(t_max=10.0):,reviewed result-affecting/algebraic literal
-code/repro/climate_comparison.py,17,[0.2],s3=get_scenario_params()['S3']; s3.fert_price_shock=calibrate_price_shock(0.20),reviewed result-affecting/algebraic literal
-code/repro/climate_comparison.py,22,"[100, 1, 0]",f=lambda yr:(1-df[df['year']==yr]['yield_fraction'].iloc[0])*100,reviewed result-affecting/algebraic literal
-code/repro/climate_comparison.py,23,"[0, 1, 10, 0]","out[rk]=dict(ybase=float(df[df['year']==0]['yield_tha'].iloc[0]),l1=float(f(1)),l10=float(f(10)))",reviewed result-affecting/algebraic literal
-code/repro/climate_comparison.py,33,"[2, 2, 2, 2, 2, 2, 2]","for k in RO: w.writerow([k,round(old[k]['ybase'],2),round(new[k]['ybase'],2),round(old[k]['l1'],2),round(new[k]['l1'],2),round(old[k]['l10'],2),round(new[k]['l10'],2),round(new[k]['l10']-old[k]['l10'],2)])",reviewed result-affecting/algebraic literal
+code/repro/climate_comparison.py,13,[0],"HERE=os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(HERE,'..','model'))",reviewed result-affecting/algebraic literal
+code/repro/climate_comparison.py,21,[10.0],def run(t_max=10.0):,reviewed result-affecting/algebraic literal
+code/repro/climate_comparison.py,23,[0.2],s3=get_scenario_params()['S3']; s3.fert_price_shock=calibrate_price_shock(0.20),reviewed result-affecting/algebraic literal
+code/repro/climate_comparison.py,28,"[100, 1, 0]",f=lambda yr:(1-df[df['year']==yr]['yield_fraction'].iloc[0])*100,reviewed result-affecting/algebraic literal
+code/repro/climate_comparison.py,29,"[0, 1, 10, 0]","out[rk]=dict(ybase=float(df[df['year']==0]['yield_tha'].iloc[0]),l1=float(f(1)),l10=float(f(10)))",reviewed result-affecting/algebraic literal
+code/repro/climate_comparison.py,39,"[2, 2, 2, 2, 2, 2, 2]","for k in RO: w.writerow([k,round(old[k]['ybase'],2),round(new[k]['ybase'],2),round(old[k]['l1'],2),round(new[k]['l1'],2),round(old[k]['l10'],2),round(new[k]['l10'],2),round(new[k]['l10']-old[k]['l10'],2)])",reviewed result-affecting/algebraic literal
 code/repro/compute_figS8_curves.py,16,[0],"sys.path.insert(0, os.path.join(HERE, '..', 'model'))",reviewed result-affecting/algebraic literal
 code/repro/compute_figS8_curves.py,44,[0.5],REGIONAL_ECON_PARAMS[k]['eps_F_PF'] = saved[k] * 0.5,reviewed result-affecting/algebraic literal
 code/repro/compute_figS8_curves.py,49,[30.0],"t_max=30.0,",reviewed result-affecting/algebraic literal
@@ -1022,84 +1020,84 @@ code/repro/make_ofra_validation.py,35,"[0, 1, 1, 1]","print('n=%d  median[0]=%.2
 code/repro/make_ofra_validation.py,37,"[1, 1, 1, 1, 1]","%(YMAX,med[-1],p25[-1],p75[-1],p25[-1]<=YMAX<=p75[-1]))",reviewed result-affecting/algebraic literal
 code/repro/make_parameter_ledger_sol.py,22,[0],"sys.path.insert(0, str(MODEL))",reviewed result-affecting/algebraic literal
 code/repro/make_parameter_ledger_sol.py,87,[1],"""parameter_id"": f""P{len(rows) + 1:04d}"",",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,506,[0.3],"(""SOC layer depth"", 0.30, ""m"", ""physical conversion""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,507,[1.3],"(""SOC conversion bulk density"", 1.30, ""Mg m-3"", ""physical conversion""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,508,[1000.0],"(""kg_per_t"", 1000.0, ""kg t-1"", ""unit conversion""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,509,[0.33],"(""fertilizer split at planting"", 0.33, ""fraction"", ""fertilizer timing""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,510,[0.67],"(""fertilizer split midseason"", 0.67, ""fraction"", ""fertilizer timing""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,511,[0.6],"(""crop demand peak position"", 0.60, ""fraction of season"", ""demand profile""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,512,[0.15],"(""crop demand profile width"", 0.15, ""fraction of season"", ""demand profile""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,513,[0.9],"(""SOM input to active"", 0.90, ""fraction"", ""pool update""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,514,[0.1],"(""SOM input to slow"", 0.10, ""fraction"", ""pool update""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,515,[12.0],"(""initial mineral N"", 12.0, ""kg N ha-1"", ""initial condition""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,516,[2000],"(""spinup maximum"", 2000, ""yr"", ""solver""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,517,[50],"(""spinup convergence window"", 50, ""yr"", ""solver""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,518,[100],"(""spinup minimum before convergence"", 100, ""yr"", ""solver""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,519,[0.002],"(""spinup fractional tolerance"", 0.002, ""fraction over 50 yr"", ""solver""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,520,[1.0],"(""y_max Brent lower bound"", 1.0, ""t ha-1"", ""calibration solver""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,521,[50.0],"(""y_max Brent upper bound"", 50.0, ""t ha-1"", ""calibration solver""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,522,[0.01],"(""y_max Brent xtol"", 0.01, ""t ha-1"", ""calibration solver""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,523,[0.01],"(""price-shock search lower bound"", 0.01, ""proportional change"", ""calibration solver""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,524,[20.0],"(""price-shock search upper bound"", 20.0, ""proportional change"", ""calibration solver""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,525,[50],"(""price-shock bisection iterations"", 50, ""iterations"", ""calibration solver""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,526,[0.2],"(""global fertilizer-reduction target"", 0.20, ""fraction"", ""scenario calibration""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,527,[1e-10],"(""equilibrium denominator epsilon"", 1e-10, ""dimensionless"", ""numerical tolerance""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,528,[1e-06],"(""mineralization log floor"", 1e-6, ""kg N ha-1 yr-1"", ""numerical tolerance""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,529,[1e-09],"(""cap binding relative tolerance"", 1e-9, ""fraction"", ""numerical tolerance""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,541,"[10, 205, 5]","(""farm SOC grid"", list(range(10, 205, 5)), ""% regional equilibrium SOC"",",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,543,"[10, 205, 10]","(""sustained SOC grid"", list(range(10, 205, 10)), ""% regional equilibrium SOC"",",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,545,"[50, 100, 150]","(""MC SOC levels"", [50, 100, 150], ""% regional equilibrium SOC"", ""MC""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,546,[1.0],"(""farm price shock"", 1.0, ""proportional change"", ""Figure 1""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,547,"[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3]","(""severity shocks"", [0, .25, .5, .75, 1, 1.25, 1.5, 2, 2.5, 3],",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,549,"[0.45, 0.55, 0.65, 0.75, 0.85, 0.95]","(""N capture sweep"", [.45, .55, .65, .75, .85, .95], ""fraction"",",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,551,[30],"(""central run horizon"", 30, ""yr"", ""main trajectories""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,552,[10],"(""farm sustained-gradient horizon"", 10, ""yr"", ""Figure 2a""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,553,[1000],"(""MC ensemble size"", 1000, ""draws"", ""Figure S9""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,554,[20260424],"(""MC random seed"", 20260424, ""integer seed"", ""Figure S9""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,555,"[5, 25, 50, 75, 95]","(""summary percentiles"", [5, 25, 50, 75, 95], ""percentile"", ""MC""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,567,"[0.75, 0.075, 0.6, 0.9]","""max_uptake_frac"": (""absolute"", .75, .075, .60, .90),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,568,"[1, 0.15, 0.7, 1.3]","""mitscherlich_c_mult"": (""multiplier"", 1, .15, .70, 1.30),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,569,"[1, 0.2, 0.6, 1.4]","""k_slow_mult"": (""multiplier"", 1, .20, .60, 1.40),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,570,"[1, 0.3, 0.4, 1.8]","""cre_regional_mult"": (""multiplier"", 1, .30, .40, 1.80),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,571,"[1, 0.1, 0.8, 1.15]","""residue_retention_mult"": (""multiplier"", 1, .10, .80, 1.15),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,572,"[1, 0.3, 0.5, 1.5]","""eps_F_PF_mult"": (""multiplier"", 1, .30, .50, 1.50),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,573,"[1, 0.25, 0.6, 1.4]","""eta_mult"": (""multiplier"", 1, .25, .60, 1.40),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,574,"[1, 0.25, 0.5, 1.5]","""fert_price_shock_mult"": (""multiplier"", 1, .25, .50, 1.50),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,592,[0.05],"(""cross-document numeric tolerance"", .05, ""percentage points""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,593,[0.001],"(""zero-shock max drift"", .001, ""yield fraction over 30 yr""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,594,[1e-10],"(""market-clearing residual"", 1e-10, ""log points""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,595,[0.95],"(""MC robustness frequency"", .95, ""fraction of relevant draws""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,596,[50],"(""monotonic SOC low level"", 50, ""% regional mean SOC""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,597,[150],"(""monotonic SOC high level"", 150, ""% regional mean SOC""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,612,[1.0],"(""Broadbalk Nil observed yield"", 1.00, ""t grain ha-1"",",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,615,[8.5],"(""Broadbalk N3PKMg observed yield"", 8.50, ""t grain ha-1"",",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,618,[1.48],"(""Broadbalk Nil modeled yield"", 1.48, ""t grain ha-1"",",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,621,[10.65],"(""Broadbalk N3PKMg modeled yield"", 10.65, ""t grain ha-1"",",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,624,[0.15],"(""hindcast target global N reduction"", .15, ""fraction"",",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,628,"[0.5, 1.0, 2.0]","(""hindcast elasticity multipliers"", [.5, 1.0, 2.0], ""multipliers"",",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,641,[2018],"(""year_start"", 2018, ""calendar year"", ""input averaging window""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,642,[2020],"(""year_end"", 2020, ""calendar year"", ""input averaging window""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,643,[300.0],"(""n_intensity_cap"", 300.0, ""kg N ha-1"", ""continuous exposure scaling""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,644,[0.5],"(""combined_weight_intensity"", .5, ""fraction"", ""sensitivity-only index""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,645,[0.5],"(""combined_weight_reliance"", .5, ""fraction"", ""sensitivity-only index""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,646,[0.33],"(""combined_low_threshold"", .33, ""index"", ""sensitivity-only index""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,647,[0.66],"(""combined_high_threshold"", .66, ""index"", ""sensitivity-only index""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,648,[150.0],"(""high_intensity_pathway"", 150.0, ""kg N ha-1"", ""default classification""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,649,[0.7],"(""high_import_reliance"", .70, ""fraction"", ""default classification""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,650,[25.0],"(""material_stake_floor"", 25.0, ""kg N ha-1"", ""default classification""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,651,[50.0],"(""low_intensity_threshold"", 50.0, ""kg N ha-1"", ""default classification""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,652,[0.3],"(""low_import_reliance"", .30, ""fraction"", ""default classification""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,653,"[10.0, 25.0, 50.0]","(""stake_floor_sensitivity"", [10.0, 25.0, 50.0], ""kg N ha-1"",",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,655,[3.0],"(""reexport_ratio_flag"", 3.0, ""ratio"", ""re-export QA flag""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,656,[50000.0],"(""reexport_trade_floor"", 50000.0, ""t N"", ""re-export QA flag""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,657,[10000.0],"(""reexport_consumption_floor"", 10000.0, ""t N"", ""re-export QA flag""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,658,[1000.0],"(""FAOSTAT land-unit conversion"", 1000.0, ""ha per 1000 ha"",",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,660,[0.1],"(""buffer country minimum cropland"", .1, ""Mha"", ""country eligibility""),",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,661,"[1, 3, 2, 3]","(""buffer quantile cutoffs"", [1/3, 2/3], ""country quantiles"",",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,663,"[0.3, 0.4, 1, 3]","(""buffer quantile sensitivity"", [.30, 1/3, .40], ""country quantiles"",",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,700,[1],source_line = lines[line_no - 1].strip(),reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,719,[0],"handle, fieldnames=list(records[0]), lineterminator=""\n""",reviewed result-affecting/algebraic literal
-code/repro/make_parameter_ledger_sol.py,746,"[1, 0]","counts[record[""group""]] = counts.get(record[""group""], 0) + 1",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,505,[0.3],"(""SOC layer depth"", 0.30, ""m"", ""physical conversion""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,506,[1.3],"(""SOC conversion bulk density"", 1.30, ""Mg m-3"", ""physical conversion""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,507,[1000.0],"(""kg_per_t"", 1000.0, ""kg t-1"", ""unit conversion""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,508,[0.33],"(""fertilizer split at planting"", 0.33, ""fraction"", ""fertilizer timing""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,509,[0.67],"(""fertilizer split midseason"", 0.67, ""fraction"", ""fertilizer timing""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,510,[0.6],"(""crop demand peak position"", 0.60, ""fraction of season"", ""demand profile""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,511,[0.15],"(""crop demand profile width"", 0.15, ""fraction of season"", ""demand profile""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,512,[0.9],"(""SOM input to active"", 0.90, ""fraction"", ""pool update""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,513,[0.1],"(""SOM input to slow"", 0.10, ""fraction"", ""pool update""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,514,[12.0],"(""initial mineral N"", 12.0, ""kg N ha-1"", ""initial condition""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,515,[2000],"(""spinup maximum"", 2000, ""yr"", ""solver""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,516,[50],"(""spinup convergence window"", 50, ""yr"", ""solver""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,517,[100],"(""spinup minimum before convergence"", 100, ""yr"", ""solver""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,518,[0.002],"(""spinup fractional tolerance"", 0.002, ""fraction over 50 yr"", ""solver""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,519,[1.0],"(""y_max Brent lower bound"", 1.0, ""t ha-1"", ""calibration solver""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,520,[50.0],"(""y_max Brent upper bound"", 50.0, ""t ha-1"", ""calibration solver""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,521,[0.01],"(""y_max Brent xtol"", 0.01, ""t ha-1"", ""calibration solver""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,522,[0.01],"(""price-shock search lower bound"", 0.01, ""proportional change"", ""calibration solver""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,523,[20.0],"(""price-shock search upper bound"", 20.0, ""proportional change"", ""calibration solver""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,524,[50],"(""price-shock bisection iterations"", 50, ""iterations"", ""calibration solver""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,525,[0.2],"(""global fertilizer-reduction target"", 0.20, ""fraction"", ""scenario calibration""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,526,[1e-10],"(""equilibrium denominator epsilon"", 1e-10, ""dimensionless"", ""numerical tolerance""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,527,[1e-06],"(""mineralization log floor"", 1e-6, ""kg N ha-1 yr-1"", ""numerical tolerance""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,528,[1e-09],"(""cap binding relative tolerance"", 1e-9, ""fraction"", ""numerical tolerance""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,540,"[10, 205, 5]","(""farm SOC grid"", list(range(10, 205, 5)), ""% regional equilibrium SOC"",",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,542,"[10, 205, 10]","(""sustained SOC grid"", list(range(10, 205, 10)), ""% regional equilibrium SOC"",",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,544,"[50, 100, 150]","(""MC SOC levels"", [50, 100, 150], ""% regional equilibrium SOC"", ""MC""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,545,[1.0],"(""farm price shock"", 1.0, ""proportional change"", ""Figure 1""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,546,"[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3]","(""severity shocks"", [0, .25, .5, .75, 1, 1.25, 1.5, 2, 2.5, 3],",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,548,"[0.45, 0.55, 0.65, 0.75, 0.85, 0.95]","(""N capture sweep"", [.45, .55, .65, .75, .85, .95], ""fraction"",",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,550,[30],"(""central run horizon"", 30, ""yr"", ""main trajectories""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,551,[10],"(""farm sustained-gradient horizon"", 10, ""yr"", ""Figure 2a""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,552,[1000],"(""MC ensemble size"", 1000, ""draws"", ""Figure S9""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,553,[20260424],"(""MC random seed"", 20260424, ""integer seed"", ""Figure S9""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,554,"[5, 25, 50, 75, 95]","(""summary percentiles"", [5, 25, 50, 75, 95], ""percentile"", ""MC""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,566,"[0.75, 0.075, 0.6, 0.9]","""max_uptake_frac"": (""absolute"", .75, .075, .60, .90),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,567,"[1, 0.15, 0.7, 1.3]","""mitscherlich_c_mult"": (""multiplier"", 1, .15, .70, 1.30),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,568,"[1, 0.2, 0.6, 1.4]","""k_slow_mult"": (""multiplier"", 1, .20, .60, 1.40),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,569,"[1, 0.3, 0.4, 1.8]","""cre_regional_mult"": (""multiplier"", 1, .30, .40, 1.80),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,570,"[1, 0.1, 0.8, 1.15]","""residue_retention_mult"": (""multiplier"", 1, .10, .80, 1.15),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,571,"[1, 0.3, 0.5, 1.5]","""eps_F_PF_mult"": (""multiplier"", 1, .30, .50, 1.50),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,572,"[1, 0.25, 0.6, 1.4]","""eta_mult"": (""multiplier"", 1, .25, .60, 1.40),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,573,"[1, 0.25, 0.5, 1.5]","""fert_price_shock_mult"": (""multiplier"", 1, .25, .50, 1.50),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,591,[0.05],"(""cross-document numeric tolerance"", .05, ""percentage points""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,592,[0.001],"(""zero-shock max drift"", .001, ""yield fraction over 30 yr""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,593,[1e-10],"(""market-clearing residual"", 1e-10, ""log points""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,594,[0.95],"(""MC robustness frequency"", .95, ""fraction of relevant draws""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,595,[50],"(""monotonic SOC low level"", 50, ""% regional mean SOC""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,596,[150],"(""monotonic SOC high level"", 150, ""% regional mean SOC""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,611,[1.0],"(""Broadbalk Nil observed yield"", 1.00, ""t grain ha-1"",",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,614,[8.5],"(""Broadbalk N3PKMg observed yield"", 8.50, ""t grain ha-1"",",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,617,[1.48],"(""Broadbalk Nil modeled yield"", 1.48, ""t grain ha-1"",",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,620,[10.65],"(""Broadbalk N3PKMg modeled yield"", 10.65, ""t grain ha-1"",",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,623,[0.15],"(""hindcast target global N reduction"", .15, ""fraction"",",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,627,"[0.5, 1.0, 2.0]","(""hindcast elasticity multipliers"", [.5, 1.0, 2.0], ""multipliers"",",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,640,[2018],"(""year_start"", 2018, ""calendar year"", ""input averaging window""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,641,[2020],"(""year_end"", 2020, ""calendar year"", ""input averaging window""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,642,[300.0],"(""n_intensity_cap"", 300.0, ""kg N ha-1"", ""continuous exposure scaling""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,643,[0.5],"(""combined_weight_intensity"", .5, ""fraction"", ""sensitivity-only index""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,644,[0.5],"(""combined_weight_reliance"", .5, ""fraction"", ""sensitivity-only index""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,645,[0.33],"(""combined_low_threshold"", .33, ""index"", ""sensitivity-only index""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,646,[0.66],"(""combined_high_threshold"", .66, ""index"", ""sensitivity-only index""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,647,[150.0],"(""high_intensity_pathway"", 150.0, ""kg N ha-1"", ""default classification""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,648,[0.7],"(""high_import_reliance"", .70, ""fraction"", ""default classification""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,649,[25.0],"(""material_stake_floor"", 25.0, ""kg N ha-1"", ""default classification""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,650,[50.0],"(""low_intensity_threshold"", 50.0, ""kg N ha-1"", ""default classification""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,651,[0.3],"(""low_import_reliance"", .30, ""fraction"", ""default classification""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,652,"[10.0, 25.0, 50.0]","(""stake_floor_sensitivity"", [10.0, 25.0, 50.0], ""kg N ha-1"",",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,654,[3.0],"(""reexport_ratio_flag"", 3.0, ""ratio"", ""re-export QA flag""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,655,[50000.0],"(""reexport_trade_floor"", 50000.0, ""t N"", ""re-export QA flag""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,656,[10000.0],"(""reexport_consumption_floor"", 10000.0, ""t N"", ""re-export QA flag""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,657,[1000.0],"(""FAOSTAT land-unit conversion"", 1000.0, ""ha per 1000 ha"",",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,659,[0.1],"(""buffer country minimum cropland"", .1, ""Mha"", ""country eligibility""),",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,660,"[1, 3, 2, 3]","(""buffer quantile cutoffs"", [1/3, 2/3], ""country quantiles"",",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,662,"[0.3, 0.4, 1, 3]","(""buffer quantile sensitivity"", [.30, 1/3, .40], ""country quantiles"",",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,699,[1],source_line = lines[line_no - 1].strip(),reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,718,[0],"handle, fieldnames=list(records[0]), lineterminator=""\n""",reviewed result-affecting/algebraic literal
+code/repro/make_parameter_ledger_sol.py,745,"[1, 0]","counts[record[""group""]] = counts.get(record[""group""], 0) + 1",reviewed result-affecting/algebraic literal
 code/repro/make_sc_trajectories.py,8,[0],"HERE=os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(HERE,'..','model'))",reviewed result-affecting/algebraic literal
 code/repro/make_sc_trajectories.py,21,"[0, 31]","years=list(range(0,31)); traj={}",reviewed result-affecting/algebraic literal
 code/repro/make_sc_trajectories.py,24,[30.0],"df=CoupledMonthlyModel(region=regions[rk],econ=econ,region_key=rk,t_max=30.0,",reviewed result-affecting/algebraic literal
@@ -1116,21 +1114,45 @@ code/repro/make_scenario_trajectories.py,27,[0.2],s3=get_scenario_params()['S3']
 code/repro/make_scenario_trajectories.py,33,[31],for y in range(31):,reviewed result-affecting/algebraic literal
 code/repro/make_scenario_trajectories.py,34,"[3, 3, 3, 3]","w.writerow([y,round(g3[y],3),round(g1[y],3),round(g2[y],3)]+[round(p3[k][y],3) for k in RO])",reviewed result-affecting/algebraic literal
 code/repro/make_scenario_trajectories.py,35,"[10, 30, 10, 10]","print('scenario_trajectories.csv: S3 yr10/30 = %.2f / %.2f ; SC1 yr10 = %.2f ; SC2 yr10 = %.2f'%(g3[10],g3[30],g1[10],g2[10]))",reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,37,[0],"sys.path.insert(0, os.path.join(HERE, '..', 'model'))",reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,54,[0.2],TARGET_REDUCTION = 0.20,reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,56,[30],HORIZON_YEARS = 30,reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,82,[0],soc = [float(df[df['year'] == y]['soc_total'].iloc[0]),reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,83,[1],for y in range(HORIZON_YEARS + 1)],reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,85,"[1, 0]",loss = {y: float((1 - df[df['year'] == y]['yield_fraction'].iloc[0]),reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,86,"[100, 1, 10, 30]","* 100) for y in (1, 10, 30)}",reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,92,"[100.0, 0, 0]",decline = 100.0 * (soc[0] - soc[HORIZON_YEARS]) / soc[0],reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,95,"[4, 0]","soc_yr0_tha=round(soc[0], 4),",reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,96,[4],"soc_yr30_tha=round(soc[HORIZON_YEARS], 4),",reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,97,[4],"soc_decline_pct_yr30=round(decline, 4),",reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,99,"[4, 100.0, 0, 0, 10]","100.0 * (soc[0] - soc[10]) / soc[0], 4),",reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,100,"[4, 1]","loss_yr1=round(loss[1], 4),",reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,101,"[4, 10]","loss_yr10=round(loss[10], 4),",reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,102,"[4, 30]","loss_yr30=round(loss[30], 4)))",reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,112,[1],for y in range(HORIZON_YEARS + 1):,reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,113,[4],"w.writerow([y] + [round(series[rk][y], 4) for rk in REGIONS])",reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,116,[1],"'horizon_years': HORIZON_YEARS}, fh, indent=1)",reviewed result-affecting/algebraic literal
+code/repro/make_soc_trajectories.py,123,[0],return 0,reviewed result-affecting/algebraic literal
 code/repro/make_table_s3.py,8,[0],"import sys; sys.path.insert(0, os.path.join(HERE,'..','model'))",reviewed result-affecting/algebraic literal
 code/repro/make_table_s3.py,21,[0],"sp=lambda x,y: stats.spearmanr(x,y)[0]",reviewed result-affecting/algebraic literal
 code/repro/make_table_s3.py,26,"[2, 2]","print('%-34s %+8.2f %+8.2f'%(name,r1,r10)); out.append((name,round(r1,2),round(r10,2)))",reviewed result-affecting/algebraic literal
-code/repro/make_table_s4_sol.py,10,[0],"sys.path.insert(0, str(HERE.parent / ""model""))",reviewed result-affecting/algebraic literal
-code/repro/make_table_s4_sol.py,36,[5],"current = run_model(key, n_years=5, yield_max_override=ym, p=mp)",reviewed result-affecting/algebraic literal
-code/repro/make_table_s4_sol.py,37,"[0.0, 5]","no_n = run_model(key, synth_n=0.0, n_years=5,",reviewed result-affecting/algebraic literal
-code/repro/make_table_s4_sol.py,39,[2],"y0 = float(no_n[""yield_tha""][2])",reviewed result-affecting/algebraic literal
-code/repro/make_table_s4_sol.py,40,[2],"ycur = float(current[""yield_tha""][2])",reviewed result-affecting/algebraic literal
-code/repro/make_table_s4_sol.py,41,[2],"n_no = float(no_n[""n_uptake""][2])",reviewed result-affecting/algebraic literal
-code/repro/make_table_s4_sol.py,43,"[17, 18, 400.0]",x = [n_no + (400.0 - n_no) * i / 17 for i in range(18)],reviewed result-affecting/algebraic literal
-code/repro/make_table_s4_sol.py,47,"[5, 0.0]","key, synth_n=max(0.0, total_n - n_no), n_years=5,",reviewed result-affecting/algebraic literal
-code/repro/make_table_s4_sol.py,49,[2],"ys.append(float(sim[""yield_tha""][2]))",reviewed result-affecting/algebraic literal
-code/repro/make_table_s4_sol.py,64,[1],"json.dumps(curves, indent=1) + ""\n"")",reviewed result-affecting/algebraic literal
-code/repro/make_table_s4_sol.py,68,[0],"writer = csv.DictWriter(handle, fieldnames=list(rows[0]))",reviewed result-affecting/algebraic literal
-code/repro/make_table_s4_sol.py,72,[0],return 0,reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,24,[0],"sys.path.insert(0, str(HERE.parent / ""model""))",reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,66,[5],"current = run_model(key, n_years=5, yield_max_override=ym, p=mp)",reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,67,"[0.0, 5]","no_n = run_model(key, synth_n=0.0, n_years=5,",reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,69,[2],"y0 = float(no_n[""yield_tha""][2])",reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,70,[2],"ycur = float(current[""yield_tha""][2])",reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,71,[2],"n_no = float(no_n[""n_uptake""][2])",reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,73,"[17, 18, 400.0]",x = [n_no + (400.0 - n_no) * i / 17 for i in range(18)],reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,77,"[5, 0.0]","key, synth_n=max(0.0, total_n - n_no), n_years=5,",reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,79,[2],"ys.append(float(sim[""yield_tha""][2]))",reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,89,[1],"""N_current_kgha"": round(n_cur, 1),",reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,90,[1],"""N_no_synth_kgha"": round(n_no, 1),",reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,91,[3],"""ymax_calibrated_tha"": round(ym, 3),",reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,94,[2],"""y_no_synth_sim_tha"": round(y0, 2),",reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,105,[1],"json.dumps(curves, indent=1) + ""\n"")",reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,108,[0],"writer = csv.DictWriter(handle, fieldnames=list(calib_rows[0]))",reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,116,[0],"writer = csv.DictWriter(handle, fieldnames=list(rows[0]))",reviewed result-affecting/algebraic literal
+code/repro/make_table_s4_sol.py,120,[0],return 0,reviewed result-affecting/algebraic literal
 code/repro/run_benchmarks.py,102,[0],"sys.path.insert(0, os.path.join(ROOT, 'code', 'model'))",reviewed result-affecting/algebraic literal
 code/repro/run_benchmarks.py,123,"[1, 30, 96]","HORIZONS = (1, 30, 96)",reviewed result-affecting/algebraic literal
 code/repro/run_benchmarks.py,133,[1.5],MARGINAL_FACTOR = 1.5,reviewed result-affecting/algebraic literal
@@ -1210,93 +1232,93 @@ code/repro/run_canonical.py,88,"[2, 1, 10, 30]","gl = {y: round(float((np.array(
 code/repro/run_canonical.py,92,[1],"open(os.path.join(DATA, 'canonical_ERA5_y30.json'), 'w'), indent=1)",reviewed result-affecting/algebraic literal
 code/repro/run_canonical.py,95,"[1, 10, 30]","f.write(""year 1 : %.2f\nyear 10: %.2f\nyear 30: %.2f\n"" % (gl[1], gl[10], gl[30]))",reviewed result-affecting/algebraic literal
 code/repro/run_canonical.py,96,"[1, 10, 30]","print(""Global production-weighted S3 loss  yr1/yr10/yr30 = %.2f / %.2f / %.2f %%"" % (gl[1], gl[10], gl[30]))",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,82,[0],"sys.path.insert(0, str(MODEL_DIR))",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,83,[0],"sys.path.insert(0, str(MODEL_DIR / 'scripts'))",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,124,"[50, 100, 150]","SOC_LEVELS = [50, 100, 150]",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,127,[1.0],PRICE_SHOCK_FRAC_BASE = 1.0,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,132,"[0.75, 0.075]","'max_uptake_frac':      dict(kind='truncnorm', mean=0.75, sd=0.075,",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,133,"[0.6, 0.9]","lo=0.60, hi=0.90, mode='absolute'),",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,135,"[1.0, 0.15]","'mitscherlich_c_mult':  dict(kind='truncnorm', mean=1.0,  sd=0.15,",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,136,"[0.7, 1.3]","lo=0.70, hi=1.30, mode='multiplier'),",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,137,"[1.0, 0.2]","'k_slow_mult':          dict(kind='truncnorm', mean=1.0,  sd=0.20,",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,138,"[0.6, 1.4]","lo=0.60, hi=1.40, mode='multiplier'),",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,139,"[1.0, 0.3]","'cre_regional_mult':    dict(kind='truncnorm', mean=1.0,  sd=0.30,",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,140,"[0.4, 1.8]","lo=0.40, hi=1.80, mode='multiplier'),",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,141,"[1.0, 0.1]","'residue_retention_mult':dict(kind='truncnorm', mean=1.0,  sd=0.10,",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,142,"[0.8, 1.15]","lo=0.80, hi=1.15, mode='multiplier'),",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,143,"[1.0, 0.3]","'eps_F_PF_mult':        dict(kind='truncnorm', mean=1.0,  sd=0.30,",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,144,"[0.5, 1.5]","lo=0.50, hi=1.50, mode='multiplier'),",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,145,"[1.0, 0.25]","'eta_mult':             dict(kind='truncnorm', mean=1.0,  sd=0.25,",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,146,"[0.6, 1.4]","lo=0.60, hi=1.40, mode='multiplier'),",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,147,"[1.0, 0.25]","'fert_price_shock_mult':dict(kind='truncnorm', mean=1.0,  sd=0.25,",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,148,"[0.5, 1.5]","lo=0.50, hi=1.50, mode='multiplier'),",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,198,"[1, 1e-06]","PF_hat = np.log(1 + max(shock, 1e-6))",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,213,"[0.0, 1.0]","region_central.residue_retention * res_ret_mult, 0.0, 1.0))",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,214,[0],if region.mitscherlich_c_regional > 0:,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,218,[0],if region.cre_regional > 0:,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,220,"[0.01, 0.99]","region_central.cre_regional * cre_mult, 0.01, 0.99))",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,265,[0.3],"eps_F_PF = rp.get('eps_F_PF', -0.30) * eps_F_PF_mult",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,266,[0.1],"eps_F_PY = rp.get('eps_F_PY', 0.10)",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,267,[0.45],"eta = rp.get('eta', -0.45) * eta_mult",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,271,"[0.0, 1e-10]",if abs(denom) > 1e-10 else 0.0),reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,273,[0.0],"F_shocked = max(0.0, region.synth_n_current * np.exp(F_hat))",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,281,[100.0],scale = soc_pct / 100.0,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,308,"[0.0, 0, 100, 1]",yield_pen = (1 - y_shock / y_base) * 100 if y_base > 0 else 0.0,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,314,[1],- F_shocked * pf_per_unit * (1 + shock)),reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,315,"[100, 1]",profit_chg = ((profit_s / profit_b - 1) * 100,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,316,[1e-10],if abs(profit_b) > 1e-10 else np.nan),reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,354,[2],"json.dump(ym, f, indent=2)",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,379,[0],"start: int = 0, end: int = None,",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,380,[1],n_workers: int = 1) -> pd.DataFrame:,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,394,[0],n_done = 0,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,396,[1],if n_workers <= 1:,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,411,[1],n_done += 1,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,412,"[0, 1, 10]","if n_done % max(1, len(tasks) // 10) == 0:",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,420,[1],"_worker_eval, tasks, chunksize=1):",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,425,[1],n_done += 1,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,426,"[0, 1, 10]","if n_done % max(1, len(tasks) // 10) == 0:",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,433,[1],"f'({elapsed/max(n_done,1):.2f}s/draw).')",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,451,[0],if len(sub) == 0:,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,455,"[5, 25, 50, 75, 95]","q = np.percentile(vals, [5, 25, 50, 75, 95])",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,459,"[2, 1, 3]","median=q[2], q25=q[1], q75=q[3],",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,460,"[0, 4]","p5=q[0], p95=q[4], mean=vals.mean(), sd=vals.std(),",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,471,[50],s50 = df[(df['region'] == rn) & (df['soc_pct'] == 50)].set_index('draw')['yield_pen'],reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,472,[150],s150 = df[(df['region'] == rn) & (df['soc_pct'] == 150)].set_index('draw')['yield_pen'],reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,474,[0],if len(common) == 0:,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,477,[0],p_yield = float((diff > 0).mean()),reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,485,[50],s50 = df[(df['region'] == rn) & (df['soc_pct'] == 50)].set_index('draw')['profit_chg'],reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,486,[150],s150 = df[(df['region'] == rn) & (df['soc_pct'] == 150)].set_index('draw')['profit_chg'],reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,488,[0],if len(common) == 0:,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,491,[0],p_margin = float((diff > 0).mean()),reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,498,[100],by_draw_region = (df[df['soc_pct'] == 100],reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,501,[1],ssa_top = (by_draw_region.idxmax(axis=1) == 'sub_saharan_africa').mean(),reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,508,[100],by_draw_region_p = (df[df['soc_pct'] == 100],reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,511,[1],ssa_worst = (by_draw_region_p.idxmin(axis=1) == 'sub_saharan_africa').mean(),reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,520,[50],s50 = df[(df['region'] == rn) & (df['soc_pct'] == 50)].set_index('draw')['yield_pen'],reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,521,[150],s150 = df[(df['region'] == rn) & (df['soc_pct'] == 150)].set_index('draw')['yield_pen'],reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,523,[0],if len(common) == 0:,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,528,[1],"bufs_df = pd.concat(bufs, axis=1)",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,529,"[1, 1.0]",all_pos = (bufs_df > 1.0).all(axis=1).mean(),reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,535,[1],median_buf_per_draw = bufs_df.median(axis=1),reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,544,[100],pivot100 = (df[df['soc_pct'] == 100],reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,548,"[5, 25, 50, 75, 95]","q = np.percentile(glob, [5, 25, 50, 75, 95])",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,551,[2],"value=float(q[2]), n=len(glob),",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,555,"[4, 0]","value=float(q[4] - q[0]), n=len(glob),",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,563,[70],lines.append('=' * 70),reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,566,[70],lines.append('-' * 70),reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,572,[0],if len(r) == 0:,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,574,[0],r = r.iloc[0],reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,579,[70],lines.append('-' * 70),reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,581,[100],r = summary[(summary['region'] == rn) & (summary['soc_pct'] == 100),reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,583,[0],if len(r) == 0:,reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,585,[0],r = r.iloc[0],reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,590,[70],lines.append('-' * 70),reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,602,[1000],"ap.add_argument('--n', type=int, default=1000, help='total number of MC draws (defines the prior sample)')",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,603,[20260424],"ap.add_argument('--seed', type=int, default=20260424, help='RNG seed')",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,605,[0],"ap.add_argument('--start', type=int, default=0, help='inclusive start index for chunked runs')",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,609,[1],"ap.add_argument('--workers', type=int, default=1, help='multiprocessing workers')",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,630,[1],"n_workers=max(1, args.workers))",reviewed result-affecting/algebraic literal
-code/repro/run_mc_ensemble.py,650,[2],"f, indent=2)",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,83,[0],"sys.path.insert(0, str(MODEL_DIR))",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,84,[0],"sys.path.insert(0, str(MODEL_DIR / 'scripts'))",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,125,"[50, 100, 150]","SOC_LEVELS = [50, 100, 150]",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,128,[1.0],PRICE_SHOCK_FRAC_BASE = 1.0,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,133,"[0.75, 0.075]","'max_uptake_frac':      dict(kind='truncnorm', mean=0.75, sd=0.075,",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,134,"[0.6, 0.9]","lo=0.60, hi=0.90, mode='absolute'),",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,136,"[1.0, 0.15]","'mitscherlich_c_mult':  dict(kind='truncnorm', mean=1.0,  sd=0.15,",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,137,"[0.7, 1.3]","lo=0.70, hi=1.30, mode='multiplier'),",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,138,"[1.0, 0.2]","'k_slow_mult':          dict(kind='truncnorm', mean=1.0,  sd=0.20,",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,139,"[0.6, 1.4]","lo=0.60, hi=1.40, mode='multiplier'),",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,140,"[1.0, 0.3]","'cre_regional_mult':    dict(kind='truncnorm', mean=1.0,  sd=0.30,",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,141,"[0.4, 1.8]","lo=0.40, hi=1.80, mode='multiplier'),",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,142,"[1.0, 0.1]","'residue_retention_mult':dict(kind='truncnorm', mean=1.0,  sd=0.10,",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,143,"[0.8, 1.15]","lo=0.80, hi=1.15, mode='multiplier'),",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,144,"[1.0, 0.3]","'eps_F_PF_mult':        dict(kind='truncnorm', mean=1.0,  sd=0.30,",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,145,"[0.5, 1.5]","lo=0.50, hi=1.50, mode='multiplier'),",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,146,"[1.0, 0.25]","'eta_mult':             dict(kind='truncnorm', mean=1.0,  sd=0.25,",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,147,"[0.6, 1.4]","lo=0.60, hi=1.40, mode='multiplier'),",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,148,"[1.0, 0.25]","'fert_price_shock_mult':dict(kind='truncnorm', mean=1.0,  sd=0.25,",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,149,"[0.5, 1.5]","lo=0.50, hi=1.50, mode='multiplier'),",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,199,"[1, 1e-06]","PF_hat = np.log(1 + max(shock, 1e-6))",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,214,"[0.0, 1.0]","region_central.residue_retention * res_ret_mult, 0.0, 1.0))",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,215,[0],if region.mitscherlich_c_regional > 0:,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,219,[0],if region.cre_regional > 0:,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,221,"[0.01, 0.99]","region_central.cre_regional * cre_mult, 0.01, 0.99))",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,266,[0.3],"eps_F_PF = rp.get('eps_F_PF', -0.30) * eps_F_PF_mult",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,267,[0.1],"eps_F_PY = rp.get('eps_F_PY', 0.10)",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,268,[0.45],"eta = rp.get('eta', -0.45) * eta_mult",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,272,"[0.0, 1e-10]",if abs(denom) > 1e-10 else 0.0),reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,274,[0.0],"F_shocked = max(0.0, region.synth_n_current * np.exp(F_hat))",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,282,[100.0],scale = soc_pct / 100.0,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,309,"[0.0, 0, 100, 1]",yield_pen = (1 - y_shock / y_base) * 100 if y_base > 0 else 0.0,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,315,[1],- F_shocked * pf_per_unit * (1 + shock)),reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,316,"[100, 1]",profit_chg = ((profit_s / profit_b - 1) * 100,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,317,[1e-10],if abs(profit_b) > 1e-10 else np.nan),reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,355,[2],"json.dump(ym, f, indent=2)",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,380,[0],"start: int = 0, end: int = None,",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,381,[1],n_workers: int = 1) -> pd.DataFrame:,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,395,[0],n_done = 0,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,397,[1],if n_workers <= 1:,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,412,[1],n_done += 1,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,413,"[0, 1, 10]","if n_done % max(1, len(tasks) // 10) == 0:",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,421,[1],"_worker_eval, tasks, chunksize=1):",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,426,[1],n_done += 1,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,427,"[0, 1, 10]","if n_done % max(1, len(tasks) // 10) == 0:",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,434,[1],"f'({elapsed/max(n_done,1):.2f}s/draw).')",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,452,[0],if len(sub) == 0:,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,456,"[5, 25, 50, 75, 95]","q = np.percentile(vals, [5, 25, 50, 75, 95])",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,460,"[2, 1, 3]","median=q[2], q25=q[1], q75=q[3],",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,461,"[0, 4]","p5=q[0], p95=q[4], mean=vals.mean(), sd=vals.std(),",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,472,[50],s50 = df[(df['region'] == rn) & (df['soc_pct'] == 50)].set_index('draw')['yield_pen'],reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,473,[150],s150 = df[(df['region'] == rn) & (df['soc_pct'] == 150)].set_index('draw')['yield_pen'],reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,475,[0],if len(common) == 0:,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,478,[0],p_yield = float((diff > 0).mean()),reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,486,[50],s50 = df[(df['region'] == rn) & (df['soc_pct'] == 50)].set_index('draw')['profit_chg'],reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,487,[150],s150 = df[(df['region'] == rn) & (df['soc_pct'] == 150)].set_index('draw')['profit_chg'],reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,489,[0],if len(common) == 0:,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,492,[0],p_margin = float((diff > 0).mean()),reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,499,[100],by_draw_region = (df[df['soc_pct'] == 100],reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,502,[1],ssa_top = (by_draw_region.idxmax(axis=1) == 'sub_saharan_africa').mean(),reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,509,[100],by_draw_region_p = (df[df['soc_pct'] == 100],reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,512,[1],ssa_worst = (by_draw_region_p.idxmin(axis=1) == 'sub_saharan_africa').mean(),reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,521,[50],s50 = df[(df['region'] == rn) & (df['soc_pct'] == 50)].set_index('draw')['yield_pen'],reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,522,[150],s150 = df[(df['region'] == rn) & (df['soc_pct'] == 150)].set_index('draw')['yield_pen'],reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,524,[0],if len(common) == 0:,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,529,[1],"bufs_df = pd.concat(bufs, axis=1)",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,530,"[1, 1.0]",all_pos = (bufs_df > 1.0).all(axis=1).mean(),reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,536,[1],median_buf_per_draw = bufs_df.median(axis=1),reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,545,[100],pivot100 = (df[df['soc_pct'] == 100],reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,549,"[5, 25, 50, 75, 95]","q = np.percentile(glob, [5, 25, 50, 75, 95])",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,552,[2],"value=float(q[2]), n=len(glob),",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,556,"[4, 0]","value=float(q[4] - q[0]), n=len(glob),",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,564,[70],lines.append('=' * 70),reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,567,[70],lines.append('-' * 70),reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,573,[0],if len(r) == 0:,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,575,[0],r = r.iloc[0],reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,580,[70],lines.append('-' * 70),reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,582,[100],r = summary[(summary['region'] == rn) & (summary['soc_pct'] == 100),reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,584,[0],if len(r) == 0:,reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,586,[0],r = r.iloc[0],reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,591,[70],lines.append('-' * 70),reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,603,[1000],"ap.add_argument('--n', type=int, default=1000, help='total number of MC draws (defines the prior sample)')",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,604,[20260424],"ap.add_argument('--seed', type=int, default=20260424, help='RNG seed')",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,606,[0],"ap.add_argument('--start', type=int, default=0, help='inclusive start index for chunked runs')",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,610,[1],"ap.add_argument('--workers', type=int, default=1, help='multiprocessing workers')",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,631,[1],"n_workers=max(1, args.workers))",reviewed result-affecting/algebraic literal
+code/repro/run_mc_ensemble.py,651,[2],"f, indent=2)",reviewed result-affecting/algebraic literal
 code/repro/run_price_shock_analysis.py,43,[0],"sys.path.insert(0, os.path.join(HERE, '..', 'model'))",reviewed result-affecting/algebraic literal
 code/repro/run_price_shock_analysis.py,77,"[10, 205, 5]","FINE_SOC_PCTS = list(range(10, 205, 5))       # Figure 1, step 5",reviewed result-affecting/algebraic literal
 code/repro/run_price_shock_analysis.py,78,"[10, 205, 10]","GRADIENT_SOC_PCTS = list(range(10, 205, 10))  # Figure 2a, step 10",reviewed result-affecting/algebraic literal
@@ -1532,3 +1554,560 @@ code/repro/test_zero_shock_invariance.py,92,[0],"w = csv.DictWriter(f, fieldname
 code/repro/test_zero_shock_invariance.py,101,[1],ok = (max(abs(r['yr10_yield_fraction'] - 1) for r in rows) < TOL_YR10 and,reviewed result-affecting/algebraic literal
 code/repro/test_zero_shock_invariance.py,102,[1],max(abs(r['yr30_yield_fraction'] - 1) for r in rows) < TOL_YR30),reviewed result-affecting/algebraic literal
 code/repro/test_zero_shock_invariance.py,104,"[0, 1]",return 0 if ok else 1,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/01_download_faostat.py,20,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/01_download_faostat.py,31,[1000000.0],"print(f""  [skip] {dest.name} already present ({dest.stat().st_size/1e6:.1f} MB)"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/01_download_faostat.py,35,[120],"with requests.get(url, stream=True, timeout=120) as r:",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/01_download_faostat.py,38,"[1, 20]",for chunk in r.iter_content(chunk_size=1 << 20):,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/01_download_faostat.py,40,[1000000.0],"print(f""  [done] {dest.name}  {dest.stat().st_size/1e6:.1f} MB  ({time.time()-t0:.1f}s)"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/01_download_faostat.py,48,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/02_build_countries_master.py,27,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/02_build_countries_master.py,56,[5000],AGGREGATE_FAO_AREA_MIN = 5000,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/02_build_countries_master.py,65,[3],return M49_TO_ISO3.get(str(m49).zfill(3)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/02_build_countries_master.py,129,[3],"raw[""m49_code""] = raw[""m49_raw""].astype(str).str.replace(""'"", """", regex=False).str.zfill(3)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/02_build_countries_master.py,177,[0],if n_unassigned - n_unmap - n_hist > 0:,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/02_build_countries_master.py,182,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/03_build_exposure.py,25,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/03_build_exposure.py,124,[0],"df[""data_missing_cropland""]= df[""cropland_ha""].isna() | (df[""cropland_ha""] <= 0)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/03_build_exposure.py,129,[0.0],df[col] = df[col].fillna(0.0),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/03_build_exposure.py,134,[0],"(df[""cropland_ha""] > 0) & df[""n_use_t""].notna(),",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/03_build_exposure.py,135,[1000.0],"(df[""n_use_t""] * 1000.0) / df[""cropland_ha""],",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/03_build_exposure.py,142,[0.0],"df[""net_imports_t""] = np.maximum(0.0, df[""n_imp_t""] - df[""n_exp_t""])",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/03_build_exposure.py,145,"[0.0, 1.0]","df[""import_reliance""] = np.clip(ir, 0.0, 1.0)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/03_build_exposure.py,146,[0],"df.loc[df[""apparent_consumption_t""] <= 0, ""import_reliance""] = np.nan",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/03_build_exposure.py,150,[0],"flow = (df[""n_imp_t""] + df[""n_exp_t""]) / df[""apparent_consumption_t""].abs().replace(0, np.nan)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/03_build_exposure.py,199,[10],".head(10)[[""iso3"", ""fao_name"", ""n_intensity_raw"",",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/03_build_exposure.py,206,[1000000.0],"show[""cropland_Mha""] = show[""cropland_ha""] / 1e6",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/03_build_exposure.py,208,[10],".head(10)[[""iso3"", ""fao_name"", ""cropland_Mha"",",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/03_build_exposure.py,213,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,22,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,44,[1000000.0],"df[""cropland_Mha""] = df[""cropland_ha""] / 1e6",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,51,[15],.head(15)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,52,"[1, 1]","sub = sub.assign(rank_in_class=range(1, len(sub) + 1))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,84,"[100, 0]","100 * cov[""cropland_Mha_with_exposure""] / cov[""cropland_Mha""].replace(0, np.nan)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,90,"[0, 10, 20, 30, 30, 20, 10]","for shift_pct in [-30, -20, -10, 0, 10, 20, 30]:",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,91,"[1, 100]",lo = EXPOSURE_LOW * (1 + shift_pct / 100),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,92,"[1, 100]",hi = EXPOSURE_HIGH * (1 + shift_pct / 100),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,101,[4],"""low_threshold"": round(lo, 4),",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,102,[4],"""high_threshold"": round(hi, 4),",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,112,"[10, 20, 30, 30, 20, 10]","for shift_pct in [-30, -20, -10, 10, 20, 30]:",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,113,"[1, 100]",lo = EXPOSURE_LOW * (1 + shift_pct / 100),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,114,"[1, 100]",hi = EXPOSURE_HIGH * (1 + shift_pct / 100),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,138,[68],"print(""="" * 68)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,141,[68],"print(""="" * 68)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,152,[100],"print(f""  {k:14s}  {v:8.1f} Mha   {100*v/total:5.1f} %"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,161,[80],"flagged = cov[cov[""pct_cropland_covered""] < 80][[""region_grp"", ""pct_cropland_covered""]]",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,162,[0],if len(flagged) == 0:,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,169,"[20, 20]","crit = rec_df[rec_df[""shift_pct""].isin([-20, 20])][",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,173,[100],"print(f""  worst-case ±20% reclassification: {100*worst:.1f}% of cropland"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,174,[0.25],"print(""  PASS"" if worst <= 0.25 else ""  FAIL"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,183,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,190,[50],.head(50),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,192,[1],sub = sub.iloc[::-1]  # so largest is at top,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,194,"[8, 12]","fig, ax = plt.subplots(figsize=(8, 12))",excluded visual formatting
+spatial_screen/scripts/04_exposure_diagnostics.py,196,[25],"ax.barh(sub[""iso3""] + ""  "" + sub[""fao_name""].str[:25],",excluded visual formatting
+spatial_screen/scripts/04_exposure_diagnostics.py,199,[0.6],"ax.axvline(EXPOSURE_LOW, ls=""--"", lw=0.6, color=""grey"")",excluded visual formatting
+spatial_screen/scripts/04_exposure_diagnostics.py,200,[0.6],"ax.axvline(EXPOSURE_HIGH, ls=""--"", lw=0.6, color=""grey"")",excluded visual formatting
+spatial_screen/scripts/04_exposure_diagnostics.py,201,"[0, 1]","ax.set_xlim(0, 1)",excluded visual formatting
+spatial_screen/scripts/04_exposure_diagnostics.py,205,[10],fontsize=10),excluded visual formatting
+spatial_screen/scripts/04_exposure_diagnostics.py,208,[8],"ax.legend(title=""Exposure class"", loc=""lower right"", fontsize=8)",excluded visual formatting
+spatial_screen/scripts/04_exposure_diagnostics.py,211,[160],"fig.savefig(out, dpi=160)",excluded visual formatting
+spatial_screen/scripts/04_exposure_diagnostics.py,225,[0],.fillna(0),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/04_exposure_diagnostics.py,229,"[8, 5]","fig, ax = plt.subplots(figsize=(8, 5))",excluded visual formatting
+spatial_screen/scripts/04_exposure_diagnostics.py,235,[10],"label=region, color=cmap(i % 10), edgecolor=""white"")",excluded visual formatting
+spatial_screen/scripts/04_exposure_diagnostics.py,239,[10],"f""Cropland area by exposure class · {YEAR_LABEL}"", fontsize=10)",excluded visual formatting
+spatial_screen/scripts/04_exposure_diagnostics.py,240,"[8, 1.02, 1]","ax.legend(loc=""upper left"", bbox_to_anchor=(1.02, 1), fontsize=8,",excluded visual formatting
+spatial_screen/scripts/04_exposure_diagnostics.py,244,[160],"fig.savefig(out, dpi=160)",excluded visual formatting
+spatial_screen/scripts/05_download_soilgrids_5km.py,22,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/05_download_soilgrids_5km.py,52,[1000000.0],"print(f""  [skip] {dest.name}  ({dest.stat().st_size/1e6:.1f} MB)"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/05_download_soilgrids_5km.py,56,[300],"with requests.get(url, stream=True, timeout=300) as r:",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/05_download_soilgrids_5km.py,59,"[1, 20]",for chunk in r.iter_content(chunk_size=1 << 20):,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/05_download_soilgrids_5km.py,61,[1000000.0],"print(f""  [done] {dest.name}  {dest.stat().st_size/1e6:.1f} MB  """,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/05_download_soilgrids_5km.py,70,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/06_download_naturalearth.py,15,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/06_download_naturalearth.py,28,[120],"with requests.get(URL, stream=True, timeout=120) as r:",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/06_download_naturalearth.py,31,"[1, 20]",for chunk in r.iter_content(chunk_size=1 << 20):,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/06_download_naturalearth.py,34,[1000000.0],"f""{ZIP_PATH.stat().st_size/1e6:.1f} MB  """,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/06_download_naturalearth.py,44,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,30,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,43,[0.01],"""nitrogen"": 0.01,   # cg/kg → g/kg",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,44,[0.01],"""bdod"":     0.01,   # cg/cm³ → g/cm³",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,45,[0.1],"""soc"":      0.1,    # dg/kg → g/kg",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,46,[1.0],"""ocs"":      1.0,    # already in t/ha",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,49,"[0.05, 0.1, 0.15]","DEPTHS = [(""0-5cm"", 0.05), (""5-15cm"", 0.10), (""15-30cm"", 0.15)]",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,58,[1],"arr = src.read(1, masked=False).astype(np.float32)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,59,[32768],nodata = src.nodata if src.nodata is not None else -32768,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,86,"[1, 1]","ne_proj[""country_id""] = np.arange(1, len(ne_proj) + 1, dtype=np.int32)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,96,[0],"fill=0,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,100,[0],n_assigned = int((country_id_raster > 0).sum()),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,130,[10.0],slab = n_arr * bd_arr * thickness * 10.0   # t N / ha,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,132,[0.0],"slab = np.where(slab_valid, slab, 0.0)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,146,[10.0],slab = s_arr * bd_arr * thickness * 10.0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,148,[0.0],"slab = np.where(slab_valid, slab, 0.0)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,161,[0],ok = (ids > 0) & ~np.isnan(vals),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,164,[1],"sums = np.bincount(ids_ok, weights=vals_ok, minlength=n_countries + 1)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,165,[1],"cnts = np.bincount(ids_ok, minlength=n_countries + 1)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,167,[0],"means = np.where(cnts > 0, sums / cnts, np.nan)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,168,"[1, 1]","return means[1:], cnts[1:]   # skip id=0",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,178,[0],ok = (ids > 0) & ~np.isnan(vals),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,186,"[1, 1]","np.arange(1, n_countries + 1),",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,189,"[1, 1]","np.arange(1, n_countries + 1),",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,227,[5],"out[""enough_pixels""] = out[""n_pixels""] >= 5",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,243,[0],"print(f""  global mean C:N: {np.nanmean(ocs/np.where(n_stock>0, n_stock, np.nan)):.1f}"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,246,[10],"show = out[out[""enough_pixels""]].head(10)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,252,[10],"show = out[out[""enough_pixels""]].tail(10)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/07_build_buffer_country.py,258,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/08_build_vulnerability.py,38,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/08_build_vulnerability.py,100,[0],"imp = df[""n_imp_t""].fillna(0)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/08_build_vulnerability.py,101,[0],"exp = df[""n_exp_t""].fillna(0)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/08_build_vulnerability.py,102,[0],"ac  = df[""apparent_consumption_t""].abs().replace(0, np.nan)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/08_build_vulnerability.py,126,[1000000.0],"df[""cropland_Mha""] = df[""cropland_ha""] / 1e6",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/08_build_vulnerability.py,137,[100000.0],"& (df[""cropland_ha""] >= 1e5)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/08_build_vulnerability.py,139,"[1, 3, 2, 3]","cuts = df.loc[eligible_buffer, ""buffer_proxy_t_ha""].quantile([1/3, 2/3]).values",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/08_build_vulnerability.py,141,"[0, 1]","f""low<{cuts[0]:.2f}, high≥{cuts[1]:.2f}"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/08_build_vulnerability.py,145,"[0, 1]","cuts[0], cuts[1], eligible_buffer)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/08_build_vulnerability.py,179,[15],.head(15)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/08_build_vulnerability.py,180,"[1, 1]","sub = sub.assign(rank_in_class=range(1, len(sub) + 1))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/08_build_vulnerability.py,194,[100],"print(f""  {cls:30s}  {v:8.1f} Mha   {100*v/total:5.1f} %"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/08_build_vulnerability.py,198,[0],"if df[""reexport_flag""].sum() > 0:",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/08_build_vulnerability.py,209,[15],.head(15)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/08_build_vulnerability.py,218,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/09_phase0_panels.py,24,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/09_phase0_panels.py,64,"[11, 5.2]","fig, ax = plt.subplots(figsize=(11, 5.2))",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,66,"[0, 1]","cmap=""YlOrRd"", vmin=0, vmax=1,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/09_phase0_panels.py,67,[0.2],"edgecolor=""white"", linewidth=0.2,",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,71,"[0.6, 0.04]","""shrink"": 0.6, ""pad"": 0.04})",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/09_phase0_panels.py,73,[11],"fontsize=11, loc=""left"")",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,76,[180],"fig.savefig(out, dpi=180, bbox_inches=""tight"")",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,86,"[11, 5.2]","fig, ax = plt.subplots(figsize=(11, 5.2))",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,87,[0.2],"g.plot(ax=ax, color=g[""color""], edgecolor=""white"", linewidth=0.2)",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,95,"[0.02, 0.02]","ax.legend(handles=handles, loc=""lower left"", bbox_to_anchor=(0.02, 0.02),",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,96,[7],"fontsize=7, frameon=False)",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,99,[11],"fontsize=11, loc=""left"")",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,102,[180],"fig.savefig(out, dpi=180, bbox_inches=""tight"")",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,115,[0],.fillna(0).reindex(class_order)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/09_phase0_panels.py,119,"[9, 5]","fig, ax = plt.subplots(figsize=(9, 5))",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,126,[10],"label=region, color=cmap(i % 10), edgecolor=""white"")",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,130,[11],"fontsize=11, loc=""left"")",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,131,"[20, 8]","plt.setp(ax.get_xticklabels(), rotation=20, ha=""right"", fontsize=8)",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,132,"[7, 1.02, 1]","ax.legend(loc=""upper left"", bbox_to_anchor=(1.02, 1), fontsize=7,",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,135,[180],"fig.savefig(out, dpi=180, bbox_inches=""tight"")",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,142,"[2, 2, 14, 8]","fig, axes = plt.subplots(2, 2, figsize=(14, 8))",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,153,[10],"ax.set_title(lbl, fontsize=10, loc=""left"")",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,155,"[0.5, 0.5, 12]","ax.text(0.5, 0.5, lbl, ha=""center"", va=""center"", fontsize=12,",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,159,[12],"f""{YEAR_LABEL}"", fontsize=12)",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,161,[120],"fig.savefig(out, dpi=120, bbox_inches=""tight"")",excluded visual formatting
+spatial_screen/scripts/09_phase0_panels.py,175,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/09_phase1_panels.py,24,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/09_phase1_panels.py,64,"[11, 5.2]","fig, ax = plt.subplots(figsize=(11, 5.2))",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,66,"[0, 1]","cmap=""YlOrRd"", vmin=0, vmax=1,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/09_phase1_panels.py,67,[0.2],"edgecolor=""white"", linewidth=0.2,",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,71,"[0.6, 0.04]","""shrink"": 0.6, ""pad"": 0.04})",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/09_phase1_panels.py,73,[11],"fontsize=11, loc=""left"")",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,76,[180],"fig.savefig(out, dpi=180, bbox_inches=""tight"")",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,86,"[11, 5.2]","fig, ax = plt.subplots(figsize=(11, 5.2))",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,87,[0.2],"g.plot(ax=ax, color=g[""color""], edgecolor=""white"", linewidth=0.2)",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,95,"[0.02, 0.02]","ax.legend(handles=handles, loc=""lower left"", bbox_to_anchor=(0.02, 0.02),",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,96,[7],"fontsize=7, frameon=False)",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,99,[11],"fontsize=11, loc=""left"")",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,102,[180],"fig.savefig(out, dpi=180, bbox_inches=""tight"")",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,115,[0],.fillna(0).reindex(class_order)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/09_phase1_panels.py,119,"[9, 5]","fig, ax = plt.subplots(figsize=(9, 5))",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,126,[10],"label=region, color=cmap(i % 10), edgecolor=""white"")",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,130,[11],"fontsize=11, loc=""left"")",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,131,"[20, 8]","plt.setp(ax.get_xticklabels(), rotation=20, ha=""right"", fontsize=8)",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,132,"[7, 1.02, 1]","ax.legend(loc=""upper left"", bbox_to_anchor=(1.02, 1), fontsize=7,",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,135,[180],"fig.savefig(out, dpi=180, bbox_inches=""tight"")",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,142,"[2, 2, 14, 8]","fig, axes = plt.subplots(2, 2, figsize=(14, 8))",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,153,[10],"ax.set_title(lbl, fontsize=10, loc=""left"")",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,155,"[0.5, 0.5, 12]","ax.text(0.5, 0.5, lbl, ha=""center"", va=""center"", fontsize=12,",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,159,[12],"f""{YEAR_LABEL}"", fontsize=12)",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,161,[120],"fig.savefig(out, dpi=120, bbox_inches=""tight"")",excluded visual formatting
+spatial_screen/scripts/09_phase1_panels.py,175,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,33,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,73,[0.25],"out[df[""exposure_combined""] < 0.25] = ""low""",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,74,[0.5],"out[df[""exposure_combined""] >= 0.50] = ""high""",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,75,"[0.25, 0.5]","mid = (df[""exposure_combined""] >= 0.25) & (df[""exposure_combined""] < 0.50)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,84,"[150, 0.7]",high = (intensity >= 150) | (reliance >= 0.7),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,85,"[50, 0.3]",low  = (intensity < 50)   & (reliance < 0.3),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,93,[0.1],"def alt3_tercile(df: pd.DataFrame, cropland_min_Mha: float = 0.1) -> pd.Series:",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,96,"[1, 3, 2, 3]","cuts = df.loc[eligible, ""exposure_combined""].quantile([1/3, 2/3]).values",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,98,[0],"out[df[""exposure_combined""] < cuts[0]] = ""low""",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,99,[1],"out[df[""exposure_combined""] >= cuts[1]] = ""high""",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,100,[0],"out[(df[""exposure_combined""] >= cuts[0])",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,101,[1],"& (df[""exposure_combined""] < cuts[1])] = ""moderate""",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,104,"[0, 1]","f""low<{cuts[0]:.3f}, high≥{cuts[1]:.3f}"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,131,[100],".assign(pct=lambda x: 100 * x[""cropland_Mha""] / x[""cropland_Mha""].sum()))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,136,"[1, 11, 4.5]","fig, axes = plt.subplots(len(alts), 1, figsize=(11, 4.5*len(alts)))",excluded visual formatting
+spatial_screen/scripts/10_alt_threshold_exploration.py,137,[1],if len(alts) == 1:,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,144,[0.2],"g.plot(ax=ax, color=g[""color""], edgecolor=""white"", linewidth=0.2)",excluded visual formatting
+spatial_screen/scripts/10_alt_threshold_exploration.py,145,[10],"ax.set_title(name, fontsize=10, loc=""left"")",excluded visual formatting
+spatial_screen/scripts/10_alt_threshold_exploration.py,153,"[6, 7]","fig.legend(handles=handles, loc=""lower center"", ncol=6, fontsize=7,",excluded visual formatting
+spatial_screen/scripts/10_alt_threshold_exploration.py,154,"[0.5, 0.02]","frameon=False, bbox_to_anchor=(0.5, -0.02))",excluded visual formatting
+spatial_screen/scripts/10_alt_threshold_exploration.py,156,[170],"fig.savefig(out, dpi=170, bbox_inches=""tight"")",excluded visual formatting
+spatial_screen/scripts/10_alt_threshold_exploration.py,167,[0],"df[""cropland_Mha""] = df[""cropland_Mha""].fillna(0)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,171,[0.1],"& (df[""cropland_Mha""] >= 0.1))   # ≥ 100,000 ha",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,172,"[1, 3, 2, 3]","bcuts = df.loc[eligible_b, ""buffer_proxy_t_ha""].quantile([1/3, 2/3]).values",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,173,"[0, 1]","print(f""  buffer terciles: low<{bcuts[0]:.2f}, high≥{bcuts[1]:.2f} t N/ha"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,174,"[0, 1]","df[""buffer_class""] = buffer_class(df[""buffer_proxy_t_ha""], bcuts[0], bcuts[1])",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,197,[100],"pct=lambda x: 100 * x[""cropland_Mha""]",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,203,"[1, 0]",.fillna(0).round(1)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,212,[15],.head(15)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,224,[15],.head(15)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_alt_threshold_exploration.py,250,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,22,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,80,"[150, 0.7]",high = (intensity >= 150) | (reliance >= 0.70),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,81,"[50, 0.3]",low  = (intensity < 50)   & (reliance < 0.30),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,100,[0.1],"eligible = df[""exposure_combined""].notna() & (df[""cropland_Mha""] >= 0.1)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,101,"[1, 3, 2, 3]","cuts = df.loc[eligible, ""exposure_combined""].quantile([1/3, 2/3]).values",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,104,[0],"out[e < cuts[0]] = ""low""",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,105,[1],"out[e >= cuts[1]] = ""high""",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,106,"[0, 1]","out[(e >= cuts[0]) & (e < cuts[1])] = ""moderate""",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,117,[100],"pct=lambda x: 100 * x[""cropland_Mha""]",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,129,[0.1],"& (df[""cropland_Mha""] >= 0.1))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,130,"[1, 3, 2, 3]","bcuts = df.loc[eligible_b, ""buffer_proxy_t_ha""].quantile([1/3, 2/3]).values",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,131,"[0, 1]","bcls = buffer_class(df[""buffer_proxy_t_ha""], bcuts[0], bcuts[1], eligible_b)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,137,[25],if stake == 25:,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,142,"[0.66, 0.33]","rules[""combined index ≥ 0.66 (original)""] = panel_c(bcls, exp_combined(df, 0.66, 0.33))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,143,"[0.5, 0.25]","rules[""combined index ≥ 0.50""]            = panel_c(bcls, exp_combined(df, 0.50, 0.25))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,150,"[1, 0]",.fillna(0).round(1)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,165,[100],"focal_pct = 100 * focal_Mha / df[""cropland_Mha""].sum()",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,170,[25],"base = panel_c(bcls, exp_modified_maxrule(df, 25))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,172,[25],if stake == 25:,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,177,[100],"pct_changed = 100 * Mha_changed / df[""cropland_Mha""].sum()",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/10_sensitivity_locked.py,181,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/11_methods_summary.py,14,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/11_methods_summary.py,41,[0.1],"eligible = vul[""buffer_proxy_t_ha""].notna() & (vul[""cropland_Mha""] >= 0.1)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/11_methods_summary.py,42,"[1, 3, 2, 3]","bcuts = vul.loc[eligible, ""buffer_proxy_t_ha""].quantile([1/3, 2/3]).values",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/11_methods_summary.py,82,[0],"p(f""    Low   buffer: < {bcuts[0]:.2f} t N/ha"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/11_methods_summary.py,83,[1],"p(f""    High  buffer: ≥ {bcuts[1]:.2f} t N/ha"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/11_methods_summary.py,135,[100],"p(f""    {cls:30s}  {v:8.1f} Mha   {100*v/total:5.1f} %"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/11_methods_summary.py,141,[0],"sens2 = sens2.rename(columns={sens2.columns[0]: ""rule""})",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/11_methods_summary.py,177,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/12_download_mirca2000.py,22,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/12_download_mirca2000.py,37,[1000000.0],"print(f""  [skip] {dest.name} ({dest.stat().st_size/1e6:.1f} MB)"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/12_download_mirca2000.py,41,[300],"with requests.get(url, stream=True, timeout=300) as r:",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/12_download_mirca2000.py,44,"[1, 20]",for chunk in r.iter_content(chunk_size=1 << 20):,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/12_download_mirca2000.py,46,[1000000.0],"print(f""  [done] {dest.name} {dest.stat().st_size/1e6:.1f} MB """,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/12_download_mirca2000.py,63,[1000000.0],"print(f""    {p.name}  ({p.stat().st_size/1e6:.1f} MB)"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/12_download_mirca2000.py,64,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,38,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,44,"[0.01, 0.01, 0.1, 1.0]","SCALE = {""nitrogen"": 0.01, ""bdod"": 0.01, ""soc"": 0.1, ""ocs"": 1.0}",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,45,"[0.05, 0.1, 0.15]","DEPTHS = [(""0-5cm"", 0.05), (""5-15cm"", 0.10), (""15-30cm"", 0.15)]",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,52,[6],for _ in range(6):,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,54,"[1, 0]",header[line[0].lower()] = float(line[1]),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,60,[9999.0],"nodata = header.get(""nodata_value"", -9999.0)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,67,[0.0],arr[arr == nodata] = 0.0  # zero cropland for missing cells,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,68,"[0, 0]","transform = Affine(cs, 0, xll, 0, -cs, yll + nrows * cs)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,91,[0],"src_nodata=0,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,92,[0],"dst_nodata=0,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,100,[1],arr = src.read(1).astype(np.float32),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,126,[1000000.0],"f""{mirca_arr.sum()/1e6:.0f} Mha"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,135,[1000000.0],"f""{mirca_homolosine.sum()/1e6:.0f} Mha """,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,143,"[1, 1]","ne_proj[""country_id""] = np.arange(1, len(ne_proj) + 1, dtype=np.int32)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,149,[0],"fill=0, dtype=np.int32, all_touched=False,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,165,[10.0],slab = n_arr * bd_arr * thickness * 10.0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,167,[0.0],"slab = np.where(slab_valid, slab, 0.0)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,184,"[0, 0]",base = (ids > 0) & (crop > 0),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,188,[1],"sum_w  = np.bincount(ids[v], weights=crop[v],             minlength=n_countries+1)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,189,[1],"sum_wx = np.bincount(ids[v], weights=crop[v] * values[v], minlength=n_countries+1)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,191,[0],"return np.where(sum_w > 0, sum_wx / sum_w, np.nan)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,198,[1],minlength=n_countries+1),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,199,[1],"cnt     = np.bincount(ids[base & ~np.isnan(bvals)], minlength=n_countries+1)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,219,[1],"""n_pixels_cropland"":   cnt[1:],",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,220,[1],"""cropped_ha_total"":    sum_w[1:],     # total MIRCA-allocated cropped ha",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,221,[1],"""soc_stock_cwm_t_ha"":  soc_cwm[1:],",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,222,[1],"""n_stock_cwm_t_ha"":    n_cwm[1:],",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,223,[1],"""buffer_proxy_cwm_t_ha"": b_cwm[1:],",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,228,[5],"out[""enough_pixels""] = out[""n_pixels_cropland""] >= 5",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,239,[5],"f""{int((out['n_pixels_cropland'] >= 5).sum())}"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,241,[5],"f""{int((out['n_pixels_cropland'] < 5).sum())}"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,242,[1000000.0],"print(f""  global cropped area total: {out['cropped_ha_total'].sum()/1e6:.0f} Mha"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,245,[10],"show = out[out[""enough_pixels""]].head(10)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,252,[10],"show = out[out[""enough_pixels""]].tail(10)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,259,[5000000.0],"big = out[(out[""enough_pixels""]) & (out[""cropped_ha_total""] > 5e6)]",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,265,[15],.head(15),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/13_build_buffer_country_cwm.py,268,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,21,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,76,"[150, 0.7]",high = (intensity >= 150) | (reliance >= 0.70),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,77,"[50, 0.3]",low  = (intensity < 50)   & (reliance < 0.30),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,93,[0.1],"eligible = df[""exposure_combined""].notna() & (df[""cropland_Mha""] >= 0.1)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,94,"[1, 3, 2, 3]","cuts = df.loc[eligible, ""exposure_combined""].quantile([1/3, 2/3]).values",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,97,"[0, 1]","out[e < cuts[0]] = ""low""; out[e >= cuts[1]] = ""high""",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,98,"[0, 1]","out[(e >= cuts[0]) & (e < cuts[1])] = ""moderate""",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,104,[0.1],"eligible = buf_col.notna() & (df[""cropland_Mha""] >= 0.1)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,105,"[1, 3, 2, 3]","cuts = buf_col[eligible].quantile([1/3, 2/3]).values",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,106,"[0, 1]","return buffer_class(buf_col, cuts[0], cuts[1], eligible), tuple(cuts)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,113,[100],".assign(pct=lambda x: 100 * x[""cropland_Mha""]",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,118,[72],"print(""="" * 72)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,120,[72],"print(""="" * 72)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,133,[25],"ecls = exp_modified_maxrule(df, stake=25)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,145,"[1, 0]",.fillna(0).round(1)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,153,[0],"print(f""\nBuffer terciles (CWM):    low<{cuts_cwm[0]:.2f}, """,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,154,[1],"f""high≥{cuts_cwm[1]:.2f} t N/ha"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,155,[0],"print(f""Buffer terciles (median): low<{cuts_med[0]:.2f}, """,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,156,[1],"f""high≥{cuts_med[1]:.2f} t N/ha"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,174,[100],"f""({100*moved_Mha/df['cropland_Mha'].sum():.1f}%)"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,177,[15],".head(15)[[""iso3"", ""fao_name"", ""cropland_Mha"",",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,188,[25],"if stake == 25: label += "" *LOCKED*""",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,191,"[0.66, 0.33]","rules[""combined index ≥ 0.66 (original)""] = panel_c(bcls, exp_combined(df, 0.66, 0.33))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,192,"[0.5, 0.25]","rules[""combined index ≥ 0.50""]             = panel_c(bcls, exp_combined(df, 0.50, 0.25))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,199,"[1, 0]",.fillna(0).round(1)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,206,[25],"base = panel_c(bcls, exp_modified_maxrule(df, 25))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,209,[100],"f""({100*base_focal/df['cropland_Mha'].sum():.1f}%)"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,211,[25],if stake == 25: continue,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,217,[100],"f""({100*f/df['cropland_Mha'].sum():5.1f}%)  | """,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,219,[100],"f""({100*ch_Mha/df['cropland_Mha'].sum():.1f}%)"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/14_phase2_sensitivity.py,220,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/15_phase2_panels.py,28,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/15_phase2_panels.py,64,"[0.1, 0]","g.loc[g[""cropland_Mha""].fillna(0) < 0.1, ""buffer_proxy_t_ha""] = np.nan",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/15_phase2_panels.py,66,"[11, 5.2]","fig, ax = plt.subplots(figsize=(11, 5.2))",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,68,"[2, 15]","cmap=""YlGn"", vmin=2, vmax=15,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/15_phase2_panels.py,69,[0.2],"edgecolor=""white"", linewidth=0.2,",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,74,[0.6],"""orientation"": ""horizontal"", ""shrink"": 0.6,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/15_phase2_panels.py,75,[0.04],"""pad"": 0.04})",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/15_phase2_panels.py,77,[11],"fontsize=11, loc=""left"")",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,80,[180],"fig.savefig(out, dpi=180, bbox_inches=""tight"")",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,87,"[11, 5.2]","fig, ax = plt.subplots(figsize=(11, 5.2))",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,89,"[0, 1]","cmap=""YlOrRd"", vmin=0, vmax=1,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/15_phase2_panels.py,90,[0.2],"edgecolor=""white"", linewidth=0.2,",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,95,[0.6],"""orientation"": ""horizontal"", ""shrink"": 0.6,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/15_phase2_panels.py,96,[0.04],"""pad"": 0.04})",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/15_phase2_panels.py,98,[11],"fontsize=11, loc=""left"")",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,101,[180],"fig.savefig(out, dpi=180, bbox_inches=""tight"")",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,110,"[11, 5.2]","fig, ax = plt.subplots(figsize=(11, 5.2))",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,111,[0.2],"g.plot(ax=ax, color=g[""color""], edgecolor=""white"", linewidth=0.2)",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,118,"[0.02, 0.02]","ax.legend(handles=handles, loc=""lower left"", bbox_to_anchor=(0.02, 0.02),",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,119,[7],"fontsize=7, frameon=False)",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,121,[11],"fontsize=11, loc=""left"")",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,124,[180],"fig.savefig(out, dpi=180, bbox_inches=""tight"")",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,136,[0],.fillna(0).reindex(class_order)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/15_phase2_panels.py,140,"[9, 5]","fig, ax = plt.subplots(figsize=(9, 5))",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,147,[10],"label=region, color=cmap(i % 10), edgecolor=""white"")",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,151,[11],"fontsize=11, loc=""left"")",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,152,"[20, 8]","plt.setp(ax.get_xticklabels(), rotation=20, ha=""right"", fontsize=8)",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,153,"[7, 1.02, 1]","ax.legend(loc=""upper left"", bbox_to_anchor=(1.02, 1), fontsize=7,",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,156,[180],"fig.savefig(out, dpi=180, bbox_inches=""tight"")",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,163,"[16, 10]","fig = plt.figure(figsize=(16, 10))",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,164,"[2, 2, 0.1, 0.05]","gs = GridSpec(2, 2, figure=fig, hspace=0.10, wspace=0.05)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/15_phase2_panels.py,179,"[13, 0.995]","fontsize=13, y=0.995,",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,181,[140],"fig.savefig(out, dpi=140, bbox_inches=""tight"")",excluded visual formatting
+spatial_screen/scripts/15_phase2_panels.py,196,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,35,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,67,[2],vx  = (w * (x - mx) ** 2).sum(),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,68,[2],vy  = (w * (y - my) ** 2).sum(),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,82,[0],"df = df[df[""cropland_Mha""] > 0]",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,115,[0],ok = ~np.isnan(values) & (weights > 0),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,122,[1],"idx = min(idx, len(v) - 1)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,163,[0.1],"eligible = (vul[""cropland_Mha""] >= 0.1) & buffer_field[""values""].notna()",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,169,"[0.3, 0.4, 1, 3]","for low_q in (0.30, 1/3, 0.40):",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,171,[1],high_q = 1 - low_q   # symmetric: top fraction of same size,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,173,[0],"w = vul[""cropland_Mha""].fillna(0).values",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,187,[100],"f""{buffer_field['name']}_{weighting}_low{int(low_q*100)}""",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,193,[0],"chn_cls   = cls[vul[""iso3""] == ""CHN""].iloc[0] if (vul[""iso3""] == ""CHN"").any() else ""n/a""",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,197,[10],".head(10)[""iso3""]",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,207,[100],"""focal_pct"":         100 * focal_Mha",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,222,[0.1],"eligible = vul[""cropland_Mha""] >= 0.1",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,224,[100],rank = sub.rank(pct=True) * 100,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,252,[1],"pathway = vul.apply(exposure_pathway, axis=1)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,259,[0],i = vul.index[m][0],reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,276,[0],"""class_phase1"":    p1.iloc[0] if len(p1) else ""n/a"",",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,277,[0],"""class_phase2"":    p2.iloc[0] if len(p2) else ""n/a"",",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,379,[1000000.0],"cropped_total = buf[""cropped_ha_total""].sum() / 1e6 if ""cropped_ha_total"" in buf.columns else float(""nan"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/16_phase2_final_audit.py,392,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,33,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,40,[9],"""font.size"":        9,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,41,[10],"""axes.titlesize"":   10,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,42,[9],"""axes.labelsize"":   9,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,43,[8],"""xtick.labelsize"":  8,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,44,[8],"""ytick.labelsize"":  8,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,45,[8],"""legend.fontsize"":  8,",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,46,[150],"""figure.dpi"":       150,   # screen preview only",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,47,[300],"""savefig.dpi"":      300,   # production raster",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,48,[42],"""pdf.fonttype"":     42,    # embed TrueType (editable in Illustrator)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,49,[42],"""ps.fonttype"":      42,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,77,[300],"dpi=300 if fmt == ""png"" else None,",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,79,[1024],size_kb = out.stat().st_size / 1024,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,94,"[0.1, 0]","g.loc[g[""cropland_Mha""].fillna(0) < 0.1, ""buffer_proxy_t_ha""] = np.nan",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,96,"[2, 15]","cmap=""YlGn"", vmin=2, vmax=15,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,97,[0.15],"edgecolor=""white"", linewidth=0.15,",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,99,[0.15],"""linewidth"": 0.15},",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,104,"[0.6, 0.04, 30]","""shrink"": 0.6, ""pad"": 0.04, ""aspect"": 30})",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,111,"[0, 1]","cmap=""YlOrRd"", vmin=0, vmax=1,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,112,[0.15],"edgecolor=""white"", linewidth=0.15,",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,114,[0.15],"""linewidth"": 0.15},",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,118,"[0.6, 0.04, 30]","""shrink"": 0.6, ""pad"": 0.04, ""aspect"": 30})",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,126,[0.15],"g.plot(ax=ax, color=g[""color""], edgecolor=""white"", linewidth=0.15)",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,133,"[0.0, 0.05]","ax.legend(handles=handles, loc=""lower left"", bbox_to_anchor=(0.0, -0.05),",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,134,"[7, 2]","fontsize=7, frameon=False, ncol=2,",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,135,"[1.0, 0.8, 0.2]","handlelength=1.0, handleheight=0.8, borderpad=0.2)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,146,[0],.fillna(0).reindex(class_order)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,156,"[0.5, 10]","color=cmap(i % 10), edgecolor=""white"", linewidth=0.5)",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,159,"[20, 8]","plt.setp(ax.get_xticklabels(), rotation=20, ha=""right"", fontsize=8)",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,160,"[1.02, 1.0]","ax.legend(loc=""upper left"", bbox_to_anchor=(1.02, 1.0),",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,161,[7],"fontsize=7, title=""Region"", frameon=False)",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,169,"[7.0, 3.4]","fig, ax = plt.subplots(figsize=(7.0, 3.4))",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,172,[10],"fontsize=10, loc=""left"", weight=""bold"")",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,175,"[7.0, 3.4]","fig, ax = plt.subplots(figsize=(7.0, 3.4))",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,178,[10],"fontsize=10, loc=""left"", weight=""bold"")",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,181,"[7.0, 3.6]","fig, ax = plt.subplots(figsize=(7.0, 3.6))",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,184,[10],"fontsize=10, loc=""left"", weight=""bold"")",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,187,"[7.0, 4.0]","fig, ax = plt.subplots(figsize=(7.0, 4.0))",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,190,[10],"fontsize=10, loc=""left"", weight=""bold"")",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,196,"[14, 8.4]","fig = plt.figure(figsize=(14, 8.4), constrained_layout=False)",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,197,"[2, 2, 0.03, 0.97, 0.93, 0.06]","gs = fig.add_gridspec(2, 2, left=0.03, right=0.97, top=0.93, bottom=0.06,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,198,"[0.3, 0.1]","hspace=0.30, wspace=0.10)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,200,"[0, 0]","ax_a = fig.add_subplot(gs[0, 0]); _draw_panel_a(ax_a, world, vul)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,202,[10],"fontsize=10, loc=""left"", weight=""bold"")",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,204,"[0, 1]","ax_b = fig.add_subplot(gs[0, 1]); _draw_panel_b(ax_b, world, vul)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,206,[10],"fontsize=10, loc=""left"", weight=""bold"")",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,208,"[1, 0]","ax_c = fig.add_subplot(gs[1, 0]); _draw_panel_c(ax_c, world, vul)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,210,[10],"fontsize=10, loc=""left"", weight=""bold"")",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,212,"[1, 1]","ax_d = fig.add_subplot(gs[1, 1]); _draw_panel_d(ax_d)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,214,[10],"fontsize=10, loc=""left"", weight=""bold"")",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,219,"[12, 0.985]","fontsize=12, weight=""bold"", y=0.985,",excluded visual formatting
+spatial_screen/scripts/17_phase2_panels_production.py,232,[60],"lines.append(""="" * 60)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/17_phase2_panels_production.py,262,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,39,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,48,[9],"""font.size"":        9,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,49,[9.5],"""axes.titlesize"":   9.5,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,50,[9],"""axes.labelsize"":   9,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,51,[8],"""xtick.labelsize"":  8,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,52,[8],"""ytick.labelsize"":  8,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,53,[7.5],"""legend.fontsize"":  7.5,",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,54,[150],"""figure.dpi"":       150,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,55,[300],"""savefig.dpi"":      300,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,56,[42],"""pdf.fonttype"":     42,    # embed TrueType (Illustrator-editable)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,57,[42],"""ps.fonttype"":      42,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,111,"[4, 9.5]","def titled(ax, letter: str, title: str, pad: int = 4, fontsize: float = 9.5):",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,126,[300],"dpi=300 if fmt == ""png"" else None)",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,127,[1024],kb = out.stat().st_size / 1024,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,147,"[0.1, 0]","g.loc[g[""cropland_Mha""].fillna(0) < 0.1, ""buffer_proxy_t_ha""] = np.nan",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,149,"[2, 15]","cmap=""YlGn"", vmin=2, vmax=15,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,150,[0.15],"edgecolor=""white"", linewidth=0.15,",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,152,[0.15],"""linewidth"": 0.15},",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,157,[0.55],"""orientation"": ""horizontal"", ""shrink"": 0.55,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,158,"[0.01, 32]","""pad"": 0.01, ""aspect"": 32,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,169,"[0, 1]","cmap=""YlOrRd"", vmin=0, vmax=1,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,170,[0.15],"edgecolor=""white"", linewidth=0.15,",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,172,[0.15],"""linewidth"": 0.15},",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,176,[0.55],"""orientation"": ""horizontal"", ""shrink"": 0.55,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,177,"[0.01, 32]","""pad"": 0.01, ""aspect"": 32,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,189,[0.15],"g.plot(ax=ax, color=g[""color""], edgecolor=""white"", linewidth=0.15)",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,193,[0.4],"edgecolor=""0.4"", linewidth=0.4,",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,197,"[0.5, 0.18]","bbox_to_anchor=(0.5, -0.18),",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,198,"[3, 8.0]","ncol=3, fontsize=8.0, frameon=False,",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,199,"[1.3, 1.0]","handlelength=1.3, handleheight=1.0,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,200,"[0.8, 0.4, 0.2]","columnspacing=0.8, labelspacing=0.4, borderpad=0.2)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,208,[0],.fillna(0).reindex(CLASS_ORDER)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,213,[1],y_pos = np.arange(len(pivot))[::-1]   # top-to-bottom: class 1 at top,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,219,"[0.5, 10]","color=cmap(i % 10), edgecolor=""white"", linewidth=0.5,",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,220,[0.78],height=0.78),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,226,[10],"titled(ax, ""d"", ""FAOSTAT cropland area by class and region"", pad=10)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,227,[3],"ax.tick_params(axis=""x"", direction=""out"", length=3)",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,228,[2],"ax.tick_params(axis=""y"", direction=""out"", length=2)",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,231,"[0, 1.06]","ax.set_xlim(0, xmax * 1.06)",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,232,"[1.02, 1.0]","ax.legend(loc=""upper left"", bbox_to_anchor=(1.02, 1.0),",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,233,"[6.2, 6.8]","fontsize=6.2, title=""Region"", title_fontsize=6.8,",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,234,"[0.9, 0.8]","frameon=False, handlelength=0.9, handleheight=0.8,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,235,"[0.5, 0.35, 0.15]","columnspacing=0.5, labelspacing=0.35, borderpad=0.15)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,243,[0],.fillna(0).reindex(CLASS_ORDER)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,252,"[0.5, 10]","color=cmap(i % 10), edgecolor=""white"", linewidth=0.5)",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,256,"[1.02, 1.0]","ax.legend(loc=""upper left"", bbox_to_anchor=(1.02, 1.0),",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,257,"[6.2, 6.8]","fontsize=6.2, title=""Region"", title_fontsize=6.8,",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,268,"[13.8, 8.6]","fig = plt.figure(figsize=(13.8, 8.6))",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,269,"[2, 2]","gs = fig.add_gridspec(2, 2,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,270,"[0.03, 0.84]","left=0.03, right=0.84,    # leave room on right",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,272,"[0.92, 0.06]","top=0.92, bottom=0.06,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,273,"[0.28, 0.1]","hspace=0.28, wspace=0.10,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,274,"[1.0, 1.0]","width_ratios=[1.0, 1.0])",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,276,"[0, 0]","ax_a = fig.add_subplot(gs[0, 0]); draw_panel_a(ax_a, world, vul)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,277,"[0, 1]","ax_b = fig.add_subplot(gs[0, 1]); draw_panel_b(ax_b, world, vul)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,278,"[1, 0]","ax_c = fig.add_subplot(gs[1, 0]); draw_panel_c(ax_c, world, vul)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,279,"[1, 1]","ax_d = fig.add_subplot(gs[1, 1]); draw_panel_d_horizontal(ax_d)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,284,"[11.5, 0.972]","fontsize=11.5, weight=""bold"", y=0.972,",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,292,"[8.5, 4.0]","fig, ax = plt.subplots(figsize=(8.5, 4.0))",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,296,[300],"fig.savefig(out, dpi=300, bbox_inches=""tight"")",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,299,[1024],"f""({out.stat().st_size/1024:,.0f} KB)"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,304,"[8.0, 4.5]","fig, ax = plt.subplots(figsize=(8.0, 4.5))",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,308,[300],"fig.savefig(out, dpi=300, bbox_inches=""tight"")",excluded visual formatting
+spatial_screen/scripts/18_phase2_publication_ready.py,311,[1024],"f""({out.stat().st_size/1024:,.0f} KB)"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/18_phase2_publication_ready.py,340,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,46,[0],"sys.path.insert(0, str(Path(__file__).parent))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,52,[9],"""font.size"":        9,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,53,[9.5],"""axes.titlesize"":   9.5,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,54,[9],"""axes.labelsize"":   9,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,55,[8],"""xtick.labelsize"":  8,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,56,[8],"""ytick.labelsize"":  8,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,57,[7.5],"""legend.fontsize"":  7.5,",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,58,[300],"""savefig.dpi"":      300,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,59,[42],"""pdf.fonttype"":     42,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,60,[42],"""ps.fonttype"":      42,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,103,"[4, 9.5]","def titled(ax, letter, title, pad=4, fontsize=9.5):",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,113,[300],"dpi=300 if fmt == ""png"" else None)",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,115,[1024],"print(f""  wrote {out.name}  ({out.stat().st_size/1024:,.0f} KB)"")",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,135,"[0.1, 0]","g.loc[g[""cropland_Mha""].fillna(0) < 0.1, ""buffer_proxy_t_ha""] = np.nan",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,137,"[2, 15]","cmap=""viridis"", vmin=2, vmax=15,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,138,[0.15],"edgecolor=""white"", linewidth=0.15,",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,140,[0.15],"""linewidth"": 0.15},",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,145,[0.55],"""orientation"": ""horizontal"", ""shrink"": 0.55,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,146,"[0.01, 32]","""pad"": 0.01, ""aspect"": 32,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,157,"[0, 1]","cmap=""magma"", vmin=0, vmax=1,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,158,[0.15],"edgecolor=""white"", linewidth=0.15,",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,160,[0.15],"""linewidth"": 0.15},",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,164,[0.55],"""orientation"": ""horizontal"", ""shrink"": 0.55,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,165,"[0.01, 32]","""pad"": 0.01, ""aspect"": 32,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,177,[0.15],"g.plot(ax=ax, color=g[""color""], edgecolor=""white"", linewidth=0.15)",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,182,[0.4],"edgecolor=""0.4"", linewidth=0.4,",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,186,"[0.5, 0.18]","bbox_to_anchor=(0.5, -0.18),",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,187,"[3, 8.0]","ncol=3, fontsize=8.0, frameon=False,",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,188,"[1.3, 1.0]","handlelength=1.3, handleheight=1.0,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,189,"[0.8, 0.4, 0.2]","columnspacing=0.8, labelspacing=0.4, borderpad=0.2)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,197,[0],.fillna(0).reindex(CLASS_ORDER)),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,202,[1],y_pos = np.arange(len(pivot))[::-1],reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,207,"[0.5, 10]","color=cmap(i % 10), edgecolor=""white"", linewidth=0.5,",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,208,[0.78],height=0.78),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,215,[10],pad=10),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,216,[3],"ax.tick_params(axis=""x"", direction=""out"", length=3)",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,217,[2],"ax.tick_params(axis=""y"", direction=""out"", length=2)",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,219,"[0, 1.06]","ax.set_xlim(0, xmax * 1.06)",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,228,"[0.985, 0.18]","ax.text(0.985, 0.18, annotation,",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,231,[6.8],"fontsize=6.8, color=""#333333"",",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,233,[0.5],"linewidth=0.5, boxstyle=""round,pad=0.4""),",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,236,"[1.02, 1.0]","ax.legend(loc=""upper left"", bbox_to_anchor=(1.02, 1.0),",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,237,"[6.2, 6.8]","fontsize=6.2, title=""Region"", title_fontsize=6.8,",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,238,"[0.9, 0.8]","frameon=False, handlelength=0.9, handleheight=0.8,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,239,"[0.5, 0.35, 0.15]","columnspacing=0.5, labelspacing=0.35, borderpad=0.15)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,248,"[13.8, 8.6]","fig = plt.figure(figsize=(13.8, 8.6))",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,249,"[2, 2]","gs = fig.add_gridspec(2, 2,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,250,"[0.03, 0.84]","left=0.03, right=0.84,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,251,"[0.9, 0.06]","top=0.90, bottom=0.06,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,252,"[0.28, 0.1]","hspace=0.28, wspace=0.10,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,253,"[1.0, 1.0]","width_ratios=[1.0, 1.0])",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,255,"[0, 0]","ax_a = fig.add_subplot(gs[0, 0]); draw_panel_a(ax_a, world, vul)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,256,"[0, 1]","ax_b = fig.add_subplot(gs[0, 1]); draw_panel_b(ax_b, world, vul)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,257,"[1, 0]","ax_c = fig.add_subplot(gs[1, 0]); draw_panel_c(ax_c, world, vul)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,258,"[1, 1]","ax_d = fig.add_subplot(gs[1, 1]); draw_panel_d(ax_d)",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,260,"[0.5, 0.965]","fig.text(0.5, 0.965,",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,264,[11.5],"fontsize=11.5, weight=""bold"")",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,265,"[0.5, 0.945]","fig.text(0.5, 0.945, ""Mechanism-specific resilience screen"",",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,267,[9.5],"fontsize=9.5, style=""italic"", color=""#333333"")",excluded visual formatting
+spatial_screen/scripts/19_fig4_mechanism_screen_v10.py,278,[0],return 0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,12,[1],PROJECT_ROOT = Path(__file__).resolve().parents[1],reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,26,[2018],YEAR_START = 2018,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,27,[2020],YEAR_END   = 2020,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,28,[1],"YEARS      = list(range(YEAR_START, YEAR_END + 1))",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,34,[300.0],N_INTENSITY_CAP       = 300.0  # kg N / ha; values above this are scaled to 1.0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,37,[0.5],EXPOSURE_W_INTENSITY  = 0.5,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,38,[0.5],EXPOSURE_W_RELIANCE   = 0.5,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,39,[0.33],EXPOSURE_LOW          = 0.33   # baseline combined-index thresholds; used,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,40,[0.66],EXPOSURE_HIGH         = 0.66   # only by sensitivity scripts now,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,43,[150.0],HIGH_INTENSITY_KG_HA      = 150.0   # pathway A floor,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,44,[0.7],HIGH_RELIANCE             = 0.70    # pathway B reliance floor,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,45,[25.0],MATERIAL_STAKE_KG_HA      = 25.0    # pathway B intensity floor (Phase 1 lock),reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,46,[50.0],LOW_INTENSITY_KG_HA       = 50.0    # AND-rule for low exposure,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,47,[0.3],LOW_RELIANCE              = 0.30,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,48,"[10.0, 25.0, 50.0]","STAKE_FLOOR_SENSITIVITY   = (10.0, 25.0, 50.0)  # SI sensitivity sweep",reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,51,[3.0],REEXPORT_RATIO_FLAG       = 3.0,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,52,[50000.0],REEXPORT_TRADE_FLOOR_T    = 50_000.0   # Imports + Exports > 50 kt N,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,53,[10000.0],REEXPORT_AC_FLOOR_T       = 10_000.0   # Apparent_consumption > 10 kt N,reviewed result-affecting/algebraic literal
+spatial_screen/scripts/_config.py,87,[1000.0],"LANDUSE_CROPLAND_UNIT_FACTOR = 1000.0  # FAO unit ""1000 ha"" → multiply to get hectares",reviewed result-affecting/algebraic literal

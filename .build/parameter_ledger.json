@@ -1,24 +1,24 @@
 {
   "generator": "code/repro/make_parameter_ledger_sol.py",
-  "generator_sha": "b8901b28b09dd206262541d7cb7c2938c853e46efc8f4c35d83f004227e6f135",
+  "generator_sha": "b2a7653bca172647b5a5c1b80297e09de823ee0079f450b052039092ad4faeb0",
   "inputs": {
-    "code/model/coupled_econ_biophysical.py": "2465e0dd141ea2b0747743e732d8577c9e1ebc41eab17b5dad28481ecc1b0afc",
+    "code/model/coupled_econ_biophysical.py": "2b572fa0369e551e30f1f23736774e18e5986724bcc37ace491e4a1a0e5367fe",
     "code/model/coupled_monthly.py": "f56c4a64c059f43302f25c38c3f80f9a96bd1507950bc04aa5b514e166a289ba",
     "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
     "code/model/parameter_registry.py": "0033a30e18a46cf7ab7cc8072e0ce4f85fa235fbac3d4c6977c0b7d81c7a6748",
     "code/model/prices.py": "9685f40ece2f5659bae91f9ec980ea9a76a8595e85f6cc823759cd8db7f78250",
     "code/model/registry.py": "0ad6974d63de654822aa0b456a1b92a57052bf0092efc1ab3863b4f1dd45546f",
     "code/model/seams.py": "5203d7d1a0f8a88ce5b94b5394e1ecc6aea8dee9d95a2df76b023572a4ad85e2",
-    "code/model/soil_n_model.py": "692a68e58819707c99f0f4ff07d6abd289e878dccbbbd1382aa3d5fb4e9dac9f",
+    "code/model/soil_n_model.py": "ea7ffb4e0db8a4ce2dbc921006819db711dad382f759f5da22399ac28d003aa8",
     "data/era5_regional_climates.json": "d2caf2eade29e2b6d32ea42d9bfcf0385f63fd2f530c3692f801df64040c43f5"
   },
   "node": "parameter_ledger",
   "outputs": {
-    "NUMERIC_LITERAL_AUDIT_sol.csv": "d3d85d862572dd32d3cdb0dff390def0a9f6dabc62f4f2ee5685cbfbcda1abce",
-    "PARAMETER_LEDGER_sol.csv": "3a105169e5d3fa82d6bcc0c899f1488715b07e5136851d36833fae7b9d63a4cf",
-    "PARAMETER_LEDGER_sol.md": "578d5dc0aa791e8ada3cb1c60bccf00ca36a50af38d550e12bd946f34c052383"
+    "NUMERIC_LITERAL_AUDIT_sol.csv": "d35aab13714bbdbbe40039508aae20d3a104aee10d2b726bde0760c1f7a823a3",
+    "PARAMETER_LEDGER_sol.csv": "b8c7c11314798499495ac777304a2207416a0612e83cb685e7e45cc617afedf6",
+    "PARAMETER_LEDGER_sol.md": "c63de81e47a322b13b10138029f732dcb4a63b0c2ba4e4cf652988f21ff71dd4"
   },
-  "params_fingerprint": "d382baf80d4b742f83ff56a42e1cac8375c755d176281416dd277c4a97dded37",
-  "stamped_at": "2026-07-26T02:01:05Z",
-  "stamped_at_commit": "unknown"
+  "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
+  "stamped_at": "2026-07-28T15:16:33Z",
+  "stamped_at_commit": "f2e7583"
 }

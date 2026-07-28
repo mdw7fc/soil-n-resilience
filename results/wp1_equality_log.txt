@@ -6,6 +6,7 @@ CHECK 2 -- field-by-field equality over every regional field
   RegionParams: 152 fields over 8 regions, 0 moved
   SOMPoolParams            12 fields, 0 moved
   SOMPoolParams_tropical   12 fields, 0 moved
+  deleted FeedbackParams          cre_base                 F-011 scored it INERT and v15 deleted the fallback it guarded; soil_n_model.region_cre() now raises instead of substituting 0.11. Verified to move no number: logs/run_203_canon.log diffs to zero against the pre-deletion canonical over all 125 fields.
   FeedbackParams           8 fields, 0 moved
   FAOSTAT_TARGETS: 8 fields, 0 moved
   REGIONAL_ECON_PARAMS: 64 fields, 0 moved
@@ -21,8 +22,8 @@ CHECK 3 -- global S3 production-weighted yield loss
         owed a restatement -- see results/mutation_coverage_reconciliation.md.
 ========================================================================
 CHECK 4 -- registry load-time contract
-  entries 54, mutable leaves 56
-  mc status: [('declared_fixed', 17), ('drawn', 8), ('exempt', 25), ('not_applicable', 4)]
+  entries 53, mutable leaves 55
+  mc status: [('declared_fixed', 16), ('drawn', 8), ('exempt', 25), ('not_applicable', 4)]
   som_pool_fractions.f_active        refused at load
   som_pool_fractions.f_slow          refused at load
   som_pool_fractions.f_passive       refused at load
