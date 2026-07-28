@@ -1,0 +1,6 @@
+SUPPLY STATE (the disruption timeline)
+  [1] PULSE1 holds full strength through t = 1 inclusive and is gone past it
+  [2] SC1 and SC2 reproduce the pre-refactor ceiling and price paths
+  [3] a contradictory scenario and an out-of-range state both raise
+  [4] both assertion shapes were watched failing before being trusted
+SUPPLY STATE: PASS

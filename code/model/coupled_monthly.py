@@ -51,6 +51,7 @@ from scipy.optimize import brentq
 from coupled_econ_biophysical import (
     EconParams, REGIONAL_ECON_PARAMS,
     calibrate_price_shock, get_scenario_params, get_supply_constrained_scenarios,
+    supply_state,
 )
 from parameter_registry import (
     SOC_T_C_HA_PER_PERCENT_30CM,
@@ -576,13 +577,10 @@ class CoupledMonthlyModel:
             else:
                 self.N_hat = 0.0
 
-            # Update PF_hat with recovery
-            if (self.econ.price_relaxes_with_recovery and
-                    self.econ.fert_capacity_recovery_years > 0 and t > 0):
-                recovery_frac = min(1.0, t / self.econ.fert_capacity_recovery_years)
-                self.PF_hat = self.PF_hat_base * (1.0 - recovery_frac)
-            else:
-                self.PF_hat = self.PF_hat_base
+            # Disruption timeline. One definition, in soil-side
+            # coupled_econ_biophysical.supply_state; see its docstring.
+            supply = supply_state(self.econ, t)
+            self.PF_hat = self.PF_hat_base * supply.price_frac
 
             # Get elasticities from previous step
             beta = results['beta'][i-1]
@@ -601,11 +599,8 @@ class CoupledMonthlyModel:
             # food price and land clear the market for the fertilizer actually
             # available (constrained-cap fix); otherwise keep the unconstrained
             # solution.
-            if self.econ.fert_supply_ceiling < 1.0:
-                ceiling = self.econ.fert_supply_ceiling
-                if self.econ.fert_capacity_recovery_years > 0 and t > 0:
-                    recovery_frac = min(1.0, t / self.econ.fert_capacity_recovery_years)
-                    ceiling = ceiling + (1.0 - ceiling) * recovery_frac
+            if supply.ceiling < 1.0:
+                ceiling = supply.ceiling
                 F_max = self.F_baseline * self.L_baseline * ceiling / max(L_level, 1e-6)
                 if F_level > F_max * (1.0 + 1e-9):
                     PY_hat, F_hat, L_hat = self._solve_equilibrium_capped(

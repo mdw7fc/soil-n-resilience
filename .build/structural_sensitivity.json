@@ -2,8 +2,8 @@
   "generator": "code/repro/run_structural_sensitivity_sol.py",
   "generator_sha": "a3c5f8ef02b27dac4063ea720911c7a329f446680a0a63a50695c6ff1ae44c5c",
   "inputs": {
-    "code/model/coupled_econ_biophysical.py": "2b572fa0369e551e30f1f23736774e18e5986724bcc37ace491e4a1a0e5367fe",
-    "code/model/coupled_monthly.py": "f56c4a64c059f43302f25c38c3f80f9a96bd1507950bc04aa5b514e166a289ba",
+    "code/model/coupled_econ_biophysical.py": "123bb16cf7148c9f84b544ee7107dc497f94baeeced8804ea83d324e44fc8c63",
+    "code/model/coupled_monthly.py": "bc4b1ae1560a41d5da69df29622c16af723d86dcf814a14c65aead5f367d43ad",
     "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
     "code/model/parameter_registry.py": "0033a30e18a46cf7ab7cc8072e0ce4f85fa235fbac3d4c6977c0b7d81c7a6748",
     "code/model/prices.py": "9685f40ece2f5659bae91f9ec980ea9a76a8595e85f6cc823759cd8db7f78250",
@@ -18,6 +18,6 @@
     "outputs/structural_sensitivity_sol.csv": "d859d2def720d7e3b9fe804b86e696537a37a60c51d0ac1af8590c5aab6eb97d"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-07-28T15:16:06Z",
-  "stamped_at_commit": "f2e7583"
+  "stamped_at": "2026-07-28T16:48:32Z",
+  "stamped_at_commit": "1a0d009"
 }

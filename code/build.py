@@ -197,21 +197,21 @@ NODES: List[Node] = [
     Node("scenario_trajectories", "code/repro/make_scenario_trajectories.py",
          outputs=("data/scenario_trajectories.csv",),
          inputs=(ERA5,), minutes=0.2,
-         blocked=("TWO problems, and the second is worse than the first. (a) "
-                  "The deposited artifact carries a PULSE1_global column this "
-                  "generator does not write: F-016 added the one-year pulse to "
-                  "the model and to this script and that work died with the "
-                  "v15 tree, so running it would delete the column C-061 reads "
-                  "and nothing here could rebuild it. (b) The deposited CSV "
-                  "was produced at eps_F_N = -0.5 and so carries the SUPERSEDED "
-                  "family for S3, SC1 and SC2 -- S3 year-10 3.032 against the "
-                  "regenerated canonical's 3.198. C-060 and C-061 are scored "
-                  "against it, so the register currently reads the old family "
-                  "while data/canonical_ERA5_y30.json reads the new one. This "
-                  "node is the last place in the deposit where the two "
-                  "disagree. Unblocking it means restoring the pulse "
-                  "capability first, then regenerating. Frozen copy: "
-                  "baseline/surviving_v15/scenario_trajectories.csv")),
+         note="S3, SC1, SC2 and PULSE1 global loss by year. Was BLOCKED on two "
+              "counts and both are now paid. (a) The PULSE1 capability died "
+              "with the v15 tree; it is rebuilt on the coupled_econ_biophysical"
+              ".supply_state seam, which also removed the four copies of the "
+              "disruption timeline the two coupled models each carried. The "
+              "rebuild reproduces the lost column's years 1 and 2 to three "
+              "decimals (2.316, 0.492) and diverges from year 3, which is the "
+              "eps_F_N signature and is the evidence that it is the same "
+              "scenario rather than a plausible new one. (b) The deposited CSV "
+              "was the last place in the deposit still reading the superseded "
+              "eps_F_N = -0.5 family; regenerating moved S3 year-10 from 3.032 "
+              "to 3.198, in agreement with the canonical. C-060 and C-061 are "
+              "now scored against the same family as everything else (F-021). "
+              "Frozen pre-regeneration copy: "
+              "baseline/surviving_v15/scenario_trajectories.csv"),
     Node("soc_trajectories", "code/repro/make_soc_trajectories.py",
          outputs=("data/soc_trajectories.csv", "data/soc_trajectories.json"),
          inputs=(ERA5,), minutes=2.0,

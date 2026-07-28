@@ -39,6 +39,8 @@ TESTS := \
 	code/tests/test_benchmark_baseline.py \
 	code/tests/test_spinup_partition_independence.py \
 	code/tests/test_wp1_registry_wiring.py \
+	code/tests/test_soc_trajectories.py \
+	code/tests/test_supply_state.py \
 	code/repro/test_parameter_extremes_sol.py
 
 # Excluded from the gate, by name and with the reason. A test excluded without

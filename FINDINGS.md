@@ -1514,3 +1514,62 @@ state, and they move nothing in either the canonical artifact or the farm
 margins. That is no longer a limitation of the probe. It is a statement about
 the parameters, and each of them is now a candidate for the same treatment
 `cre_base` received.
+
+## F-021 - 2026-07-28 - The pulse is rebuilt on a seam rather than restored as a copy, and regenerating it brought two manuscript numbers back into agreement
+
+The one-year pulse scenario PULSE1, which C-061 reads, was written in the v15
+tree that was lost and had no surviving generator (F-018). The obvious rebuild
+is a one-year capacity recovery, since the model already carried a recovery
+ramp. That would have been wrong in a way that is hard to see: a ramp decays
+the shock linearly across the year it is supposed to hold at full strength, so
+year 1 would have come out near half of S3's year 1 and the curve would still
+have looked entirely reasonable. What the pulse needs is a square shape, and
+the model had no way to express one.
+
+Adding a field for it would have meant writing the disruption timeline a fifth
+time. The ceiling ramp and the price relaxation each existed twice, once in
+`coupled_econ_biophysical` and once in `coupled_monthly`, and those two models
+are coupled at different resolutions, which is precisely the interface where a
+drift would land and go unnoticed. The four copies agreed, which is why they had
+survived, and agreement is not a reason to keep a claim written down four times.
+So the timeline now exists once, as `coupled_econ_biophysical.supply_state()`,
+returning a frozen self-validating `SupplyState` of a ceiling and a price
+fraction; both models call it and neither computes a recovery fraction any more.
+The refactor was required to move no number and did not: the canonical artifact
+diffs to zero across all 125 fields.
+
+Two gates fired. The generator asserts that PULSE1's year 1 equals S3's year 1,
+which is true by construction because they are the same shock, and the first
+implementation failed it at 2.4e-05 against 2.3162
+(`logs/run_212_scenario.log`). The cause was a boundary convention: row `y` is
+the state at `t = y` with the forcing applied across the step that reached it,
+so an exclusive end at `t >= 1` removes the shock from the only year the pulse
+contains. The boundary is inclusive and the docstring now says why. That
+assertion is worth more than it looks, because it is the one check on the
+rebuild that does not depend on remembering what the lost code did.
+
+The rebuild reproduces the lost column exactly where it should. Years 1 and 2
+come out at 2.316 and 0.492 against the lost artifact's 2.316 and 0.492, and
+they diverge from year 3 onward. That pattern is the eps_F_N signature: year 1
+is identical at -0.5 and at 0 to five decimals and the later years are not. So
+the agreement is evidence that this is the same scenario, and the divergence is
+evidence that it is now running in the current family, which is what the node
+was blocked on. The year-5 residual moves from 0.009% to 0.037%, so the owed
+correction to C-061 is 0.3% to 0.037% and not to 0.009%.
+
+`data/scenario_trajectories.csv` was the last artifact in the deposit still
+carrying the superseded family. Regenerating it moved S3 year-10 from 3.032 to
+3.198, into agreement with the canonical, and the claim register no longer reads
+two families at once.
+
+That regeneration then stopped the build on the improvement gate, which is what
+that gate is for. `C-060/east_asia_yr10` and `C-060/fsu_yr10` came into line
+without the baseline being touched: East Asia's year-10 loss moved from 1.182 to
+1.210 against a stated 1.3 at a 0.1 pp tolerance, and the FSU's from 5.126 to
+5.553 against a stated 5.5. Both now agree. The reading to resist is that two
+manuscript numbers have been vindicated. What actually happened is that these
+two sentences were written under a model state closer to the current family than
+to the one the lost deposit was computed in, so the deposit was the anomaly and
+not the paper. Twenty-four checks remain DRIFTED and none of them moved.
+`docs/claims_baseline.json` is regenerated on the strength of this entry
+(`logs/run_217_freeze.log`).

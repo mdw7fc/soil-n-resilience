@@ -2,8 +2,8 @@
   "generator": "code/repro/make_broadbalk_benchmark.py",
   "generator_sha": "daf97404b8eb1047d6822eccafbe705d82783451e2be2bdde2128ce39b653036",
   "inputs": {
-    "code/model/coupled_econ_biophysical.py": "2b572fa0369e551e30f1f23736774e18e5986724bcc37ace491e4a1a0e5367fe",
-    "code/model/coupled_monthly.py": "f56c4a64c059f43302f25c38c3f80f9a96bd1507950bc04aa5b514e166a289ba",
+    "code/model/coupled_econ_biophysical.py": "123bb16cf7148c9f84b544ee7107dc497f94baeeced8804ea83d324e44fc8c63",
+    "code/model/coupled_monthly.py": "bc4b1ae1560a41d5da69df29622c16af723d86dcf814a14c65aead5f367d43ad",
     "code/model/data/benchmark_broadbalk/soc_trajectories_broadbalk.csv": "7f375cb70bcce31946ad1f4b7a0330d295336550bc2a4c8c6b594c807e25f26f",
     "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
     "code/model/parameter_registry.py": "0033a30e18a46cf7ab7cc8072e0ce4f85fa235fbac3d4c6977c0b7d81c7a6748",
@@ -15,10 +15,10 @@
   "node": "broadbalk_benchmark",
   "outputs": {
     "data/benchmarks/broadbalk_yield_benchmark_sol.csv": "45688928489466eb0e19d70c35144450367d92bdfca91fdee9259ca2247b529d",
-    "figures/Figure_S2_broadbalk_benchmark.pdf": "cf494c2164280bc9b1af6c9d35df4fe324b3531fe94be48d98eece0a5d7cc83f",
+    "figures/Figure_S2_broadbalk_benchmark.pdf": "5909544d001050bb7a085bac620923705e6cfa57abe349d4a3c1c027961bbdaa",
     "figures/Figure_S2_broadbalk_benchmark.png": "58c5b98182951c1b7282b400a90e1e6222dd63031d5c5f011aee38debf21bf75"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-07-28T15:15:20Z",
-  "stamped_at_commit": "f2e7583"
+  "stamped_at": "2026-07-28T16:47:46Z",
+  "stamped_at_commit": "1a0d009"
 }

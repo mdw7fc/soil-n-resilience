@@ -1,6 +1,6 @@
 # Parameter ledger (completed SOL audit)
 
-The authoritative CSV contains **576 semantic entries**. The companion numeric-literal audit contains **2112 code-line entries**.
+The authoritative CSV contains **582 semantic entries**. The companion numeric-literal audit contains **2117 code-line entries**.
 
 ## Scope and completeness rule
 
@@ -20,7 +20,7 @@ Plot colors, fonts, line widths, dimensions and label positions are excluded as 
 ## Audit summary
 
 - Derived/calibrated entries explicitly marked: 30
-- Entries explicitly fixed and not varied: 211
+- Entries explicitly fixed and not varied: 212
 - Fixed-but-unvaried entries are limitations, not silently implied sources of certainty.
 
 ## Entry counts
@@ -35,8 +35,8 @@ Plot colors, fonts, line widths, dimensions and label positions are excluded as 
 - climate forcing: 48
 - crop calendar: 16
 - crop default: 9
-- economic default: 12
-- economic scenario: 60
+- economic default: 13
+- economic scenario: 65
 - feedback default: 7
 - monthly N default: 14
 - regional biophysical: 144

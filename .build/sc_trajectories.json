@@ -2,8 +2,8 @@
   "generator": "code/repro/make_sc_trajectories.py",
   "generator_sha": "a625f03c3bf2afb806af3f3d7bccbb43d2d60c131e909547d48441f46a9b72bc",
   "inputs": {
-    "code/model/coupled_econ_biophysical.py": "2b572fa0369e551e30f1f23736774e18e5986724bcc37ace491e4a1a0e5367fe",
-    "code/model/coupled_monthly.py": "f56c4a64c059f43302f25c38c3f80f9a96bd1507950bc04aa5b514e166a289ba",
+    "code/model/coupled_econ_biophysical.py": "123bb16cf7148c9f84b544ee7107dc497f94baeeced8804ea83d324e44fc8c63",
+    "code/model/coupled_monthly.py": "bc4b1ae1560a41d5da69df29622c16af723d86dcf814a14c65aead5f367d43ad",
     "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
     "code/model/parameter_registry.py": "0033a30e18a46cf7ab7cc8072e0ce4f85fa235fbac3d4c6977c0b7d81c7a6748",
     "code/model/prices.py": "9685f40ece2f5659bae91f9ec980ea9a76a8595e85f6cc823759cd8db7f78250",
@@ -15,9 +15,9 @@
   "node": "sc_trajectories",
   "outputs": {
     "data/SC1_regional_trajectory.csv": "37dd9dab011b8a83fbaffe78f68f4c098b5da64283b69e06de4ea712c0f857e9",
-    "data/SC2_regional_trajectory.csv": "4f7ea02f4ab0a78a2ebd991d101e7f23124fa7c29c36ecdd4f6db8a111c931aa"
+    "data/SC2_regional_trajectory.csv": "223aaecec233a491dc651d98127c73f053d228e75c2b1ccce18d9d12c973127f"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-07-28T15:11:18Z",
-  "stamped_at_commit": "f2e7583"
+  "stamped_at": "2026-07-28T16:43:44Z",
+  "stamped_at_commit": "1a0d009"
 }

@@ -136,6 +136,14 @@ class EconParams:
     # If True, PF_hat scales down as the ceiling recovers toward 1.0.
     price_relaxes_with_recovery: bool = True
 
+    # Duration of the disruption, in years, for a square pulse: the ceiling and
+    # the price shock hold at full strength until t reaches this value and then
+    # stop entirely. 0.0 means the disruption is open-ended and its time path is
+    # governed by fert_capacity_recovery_years instead. The two are mutually
+    # exclusive: a shock cannot both end abruptly and recover gradually, and
+    # supply_state() raises rather than silently picking one.
+    fert_disruption_years: float = 0.0
+
 
 # ============================================================
 # REGIONAL ECONOMIC PARAMETERS
@@ -480,6 +488,82 @@ def calibrate_price_shock(target_reduction: float = 0.20) -> float:
     return (lo + hi) / 2
 
 
+@dataclass(frozen=True)
+class SupplyState:
+    """What the fertilizer disruption looks like at one instant.
+
+    Two numbers: the fraction of baseline nitrogen physically available, and
+    the fraction of the calibrated price shock still in force. Frozen and
+    self-validating, because a ceiling above 1.0 or a negative price fraction
+    is not a value the rest of the model should be asked to cope with.
+    """
+    ceiling: float
+    price_frac: float
+
+    def __post_init__(self):
+        self.validate()
+
+    def validate(self):
+        if not (0.0 <= self.ceiling <= 1.0):
+            raise ValueError('fertilizer ceiling %r is outside [0, 1]' % (self.ceiling,))
+        if not (0.0 <= self.price_frac <= 1.0):
+            raise ValueError('price fraction %r is outside [0, 1]' % (self.price_frac,))
+
+
+def supply_state(econ, t: float) -> SupplyState:
+    """The disruption timeline. The only place it is written down.
+
+    Until v15 this arithmetic existed in four places: the ceiling ramp and the
+    price relaxation, each copied into coupled_econ_biophysical and into
+    coupled_monthly. The four copies agreed, which is the reason the
+    duplication survived, and it is not a reason to keep it: a claim stated
+    four times is a claim that can drift apart four ways, and the monthly and
+    annual models are exactly the pair whose interface errors this rebuild
+    exists to remove. Both now call this.
+
+    Two shapes are supported. An open-ended disruption (fert_disruption_years
+    = 0) holds the ceiling at fert_supply_ceiling and ramps it linearly back to
+    1.0 over fert_capacity_recovery_years, with the price relaxing in step if
+    price_relaxes_with_recovery. A square pulse (fert_disruption_years = D > 0)
+    holds both at full strength for t <= D and then ends: past D supply is
+    unconstrained and the price shock is gone. The pulse is what C-061 reads.
+    It is deliberately not expressed as a one-year recovery ramp, which would
+    decay the shock linearly through the year it is supposed to be at full
+    strength and would understate year 1 by roughly half.
+
+    The boundary is inclusive, and that is a decision rather than an accident.
+    t is years since the shock, and the reported year y is the state at t = y
+    with the forcing applied across the step that reached it: row 0 is the
+    undisturbed baseline and row 1 is the outcome of one shocked year. An
+    exclusive boundary at D = 1 therefore removes the shock from the only year
+    the pulse is meant to contain, and PULSE1's year 1 comes out at 2.4e-05
+    instead of S3's 2.3162. The generator asserts that equality for exactly
+    this reason and it is what caught the exclusive form
+    (logs/run_212_scenario.log).
+    """
+    pulse = float(getattr(econ, 'fert_disruption_years', 0.0) or 0.0)
+    recov = float(econ.fert_capacity_recovery_years or 0.0)
+    if pulse > 0.0 and recov > 0.0:
+        raise ValueError(
+            'fert_disruption_years=%r and fert_capacity_recovery_years=%r are '
+            'both set; a square pulse and a recovery ramp are two different '
+            'disruptions and the model will not guess which one you meant.'
+            % (pulse, recov))
+
+    if pulse > 0.0 and t > pulse:
+        return SupplyState(ceiling=1.0, price_frac=0.0)
+
+    ceiling = float(econ.fert_supply_ceiling)
+    price_frac = 1.0
+    if recov > 0.0 and t > 0:
+        recovery_frac = min(1.0, t / recov)
+        if ceiling < 1.0:
+            ceiling = ceiling + (1.0 - ceiling) * recovery_frac
+        if econ.price_relaxes_with_recovery:
+            price_frac = 1.0 - recovery_frac
+    return SupplyState(ceiling=ceiling, price_frac=price_frac)
+
+
 def get_scenario_params() -> Dict[str, EconParams]:
     """Return the three Manning scenarios with appropriate elasticities.
 
@@ -543,6 +627,28 @@ def get_scenario_params() -> Dict[str, EconParams]:
     )
 
     return {'S1': s1, 'S2': s2, 'S3': s3}
+
+
+def get_pulse_scenario() -> EconParams:
+    """PULSE1: the S3 price shock, held for one year and then gone.
+
+    C-061 reads this. The question it answers is how much of the disruption is
+    the shock and how much is the soil: a permanent shock cannot separate the
+    two, because the forcing is still present in year 5 alongside whatever the
+    soil is doing. Removing the forcing after one year leaves only the legacy,
+    so the residual loss in later years is attributable to soil state and not
+    to a continuing price.
+
+    Same calibrated shock and same elasticities as S3, so year 1 is S3's year 1
+    by construction; the trajectories separate from year 2 onward. Supply is
+    not capped, because S3 is a price scenario and the pulse is the same
+    scenario with a duration attached.
+    """
+    return EconParams(
+        fert_price_shock=calibrate_price_shock(0.20),
+        eps_F_N=SOIL_N_RESPONSE_ELASTICITY_CENTRAL,
+        fert_disruption_years=1.0,
+    )
 
 
 def get_supply_constrained_scenarios() -> Dict[str, EconParams]:
@@ -820,13 +926,10 @@ class CoupledEconBiophysicalModel:
             else:
                 self.N_hat = 0.0
 
-            # Update PF_hat: relax price proportionally with supply recovery
-            if (self.econ.price_relaxes_with_recovery and
-                    self.econ.fert_capacity_recovery_years > 0 and t > 0):
-                recovery_frac = min(1.0, t / self.econ.fert_capacity_recovery_years)
-                self.PF_hat = self.PF_hat_base * (1.0 - recovery_frac)
-            else:
-                self.PF_hat = self.PF_hat_base
+            # Disruption timeline. One definition, in soil-side
+            # coupled_econ_biophysical.supply_state; see its docstring.
+            supply = supply_state(self.econ, t)
+            self.PF_hat = self.PF_hat_base * supply.price_frac
 
             # Get current elasticities from biophysical model
             # (use last step's values as approximation)
@@ -849,12 +952,8 @@ class CoupledEconBiophysicalModel:
 
             # Apply supply ceiling (physical constraint on fertilizer availability)
             # The ceiling constrains TOTAL regional N supply, not per-hectare rate.
-            if self.econ.fert_supply_ceiling < 1.0:
-                ceiling = self.econ.fert_supply_ceiling
-                # Allow capacity recovery over time if specified
-                if self.econ.fert_capacity_recovery_years > 0 and t > 0:
-                    recovery_frac = min(1.0, t / self.econ.fert_capacity_recovery_years)
-                    ceiling = ceiling + (1.0 - ceiling) * recovery_frac
+            if supply.ceiling < 1.0:
+                ceiling = supply.ceiling
                 # Total N available = baseline total * ceiling
                 total_n_available = self.F_baseline * self.L_baseline * ceiling
                 # Per-hectare max given current land area
