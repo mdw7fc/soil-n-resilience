@@ -1,0 +1,6 @@
+SOC TRAJECTORIES
+  [3] SOC falls monotonically in all 8 regions; largest 30-yr decline south_asia 2.2411%
+  [4] a tampered loss and a tampered series are both detected
+  [1] 8 regions: both deposits agree on every yield loss
+  [2] every summary field recomputes from the series
+SOC TRAJECTORIES: PASS

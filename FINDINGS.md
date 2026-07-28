@@ -1332,3 +1332,64 @@ Table S4 must be reprinted from the regenerated
 `data/crop_response_calibration_table.csv`. Supplementary paragraph 200's claim
 that "the deposit now includes generators for every reported numeric table" was
 false when written and is true as of this commit.
+
+## F-018 — 2026-07-28 — The v15 tree was lost and rebuilt from your Mac; the SOC deposit it carried was computed at the superseded eps_F_N and every year-10 and year-30 number in it is low
+
+The working tree at `/tmp/repo14` was destroyed between two consecutive
+commands. Nothing in this container survived it. What did survive was the git
+repository in the `v15` folder on the author's machine: 29 commits, clean
+working tree, HEAD `d979a0c` of 2026-07-26. It was bundled on that machine,
+staged, and cloned to `/tmp/repo16`, where `make verify` returns exit 0 with
+thirteen suites passing and the build graph at 30 nodes, 28 OK and the two
+documented BLOCKED. The rebuild is therefore intact. What was lost is the two
+days of work standing on it, and the lesson is the obvious one: a tree that
+exists in exactly one place is a tree that can stop existing.
+
+`code/repro/make_soc_trajectories.py` and `code/tests/test_soc_trajectories.py`
+were recovered verbatim from the session transcript and replayed onto this tree
+(`logs/run_201_soc.log`, `logs/run_202_soc_test.log`). The test passes here,
+including its property that both deposits agree on every yield loss.
+
+That agreement is what exposed the error. `data/soc_trajectories.json` as
+deposited by the lost tree does NOT match what the generator produces here, and
+the pattern of the mismatch names its cause: year-1 losses agree to five
+decimals and every year-10 and year-30 loss is higher in the regenerated file.
+That is the eps_F_N signature described in the `scenario_trajectories` block
+note. The deposit was made at eps_F_N = -0.5, the superseded family. So the SOC
+numbers reported in F-016 belong to the family this repository has already
+retired, and F-016 should be read with that correction in front of it.
+
+Under the current family, 30-year SOC decline, largest first:
+
+| region | yr0 t/ha | yr30 t/ha | yr10 decline | yr30 decline |
+|---|---|---|---|---|
+| south_asia | 17.37 | 16.98 | 1.1888% | 2.2411% |
+| sub_saharan_africa | 6.18 | 6.04 | 1.1151% | 2.2404% |
+| fsu_central_asia | 35.31 | 34.67 | 0.8963% | 1.8247% |
+| southeast_asia | 22.24 | 21.85 | 0.9101% | 1.7295% |
+| europe | 42.60 | 42.09 | 0.6030% | 1.2062% |
+| latin_america | 31.26 | 30.90 | 0.5974% | 1.1713% |
+| north_america | 50.69 | 50.37 | 0.3133% | 0.6325% |
+| east_asia | 35.47 | 35.31 | 0.2232% | 0.4508% |
+
+Three things follow for the manuscript, and the third is the one that matters.
+
+First, C-010's number changes again. The paper says sub-Saharan Africa's SOC
+declines 2.5% over thirty years; F-016 corrected that to 2.14%; the current
+family gives 2.2404%. The correction owed to the text is 2.5% to 2.24%.
+
+Second, the year-10 figures move with it, so any sentence quoting a decade
+decline needs re-reading against this table rather than against F-016's.
+
+Third, and this is not a number correction: South Asia at 2.2411% and
+sub-Saharan Africa at 2.2404% are separated by 0.0007 percentage points. Any
+sentence naming sub-Saharan Africa as the region whose carbon falls furthest is
+asserting an ordering the model does not resolve. Seven ten-thousandths of a
+percentage point is not a ranking, and reporting it as one repeats the error
+F-013 found in the regional rankings: a difference too small to survive its own
+uncertainty, stated as though it were a result. The honest sentence is that
+South Asia and sub-Saharan Africa lose the largest share of their carbon and
+are not separable from each other.
+
+`document_edit_owed` for C-010 accordingly becomes: correct 2.5% to 2.24%, and
+replace the sub-Saharan-Africa-highest phrasing with the two-region statement.
