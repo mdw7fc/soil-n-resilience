@@ -1464,3 +1464,53 @@ is reported: a canonical run is 6.4 s wall against 6.6 s CPU, 103% of one core,
 single-threaded, peak RSS 108 MB, no major faults. The work is CPU-bound and
 this container has two cores, so the parallelism ceiling on any sweep is 2x
 regardless of how many workers are scheduled.
+
+## F-020 — 2026-07-28 — The widened fingerprint splits the six unprobed price parameters three and three: half reach money untested, half are inert against money itself
+
+F-011 could not score six leaves. `crop_price_usd_t`, `n_price_wedge`,
+`n_price_usd_kg_farmer_paid`, `n_benchmark_usd_kg`, `urea_n_fraction` and
+`price_benchmark_max_factor` were listed in the harness's `NOT_PROBED`
+frozenset and each came back INERT, and the harness said in as many words that
+the verdict should be read as "not probed" rather than "irrelevant", because
+the published-number set was the canonical artifact alone and that artifact
+carries no gross margins, no prices and no cost shares. F-019 deleted the
+frozenset and widened the fingerprint to the money the abstract actually
+quotes: the Figure 1 margin curves point by point along each curve, plus the
+derived per-region nitrogen cost shares and the regional price pair. The
+published set goes from 107 numeric fields to 587, the added 480 being the
+money half. This entry is the re-sweep, `logs/run_210_mutation.log`, run 210,
+55 leaves, two workers on two cores, 64.2 minutes, results in
+`results/mutation_coverage.csv` and `results/mutation_coverage_summary.txt`.
+
+The six do not move together. `crop_price_usd_t`, `n_price_wedge` and
+`n_benchmark_usd_kg` score UNTESTED. Each moves 164 published fields, all of
+them in the money half, since the same three scored INERT against the
+107-field canonical set in the F-011 re-sweep and the canonical half has not
+changed. The worst movements are `price.sub_saharan_africa.crop_usd_per_t` at
+30.0 for the crop price and `margin.south_asia.margin_chg@10` at 1.042 for
+both nitrogen price terms, and no test in the green baseline set objected to
+any of it. The other three, `n_price_usd_kg_farmer_paid`, `urea_n_fraction`
+and `price_benchmark_max_factor`, stay INERT: each moves exactly one model
+state field and no published field at all.
+
+Those are the only verdict changes against the F-011 sweep at 4cf2b72. Every
+other leaf holds its verdict, and the one further difference in the table is
+`cre_base`, which is absent rather than changed because F-019 deleted it. The
+totals are 32 COVERED, 3 UNTESTED, 6 GUARDED_AT_LOAD, 2 DECLARED_NOT_WIRED and
+12 INERT over 55 leaves; INERT falls from 16 to 12 and UNTESTED rises from 0 to
+3. The largest fingerprint movements belong to `faostat_yield_target` and
+`synth_n_current` at 523 fields each and `residue_c_to_active_fraction` at 514,
+all three COVERED.
+
+The lesson is about what a verdict costs to earn. An INERT verdict is only as
+strong as the set of numbers the probe looks at, and a probe that omits half
+the published output turns "we did not look" into a scored result that reads
+like a finding. Widening the fingerprint did not change any parameter; it
+changed what the harness was entitled to say about them, and it converted three
+silent passes into three named coverage gaps. The remaining nine INERT leaves,
+and in particular the three price leaves that survived the widening, now carry
+a much stronger claim than they did in F-011: they are wired, they move model
+state, and they move nothing in either the canonical artifact or the farm
+margins. That is no longer a limitation of the probe. It is a statement about
+the parameters, and each of them is now a candidate for the same treatment
+`cre_base` received.

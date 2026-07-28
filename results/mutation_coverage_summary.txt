@@ -1,18 +1,18 @@
 MUTATION COVERAGE OVER THE PARAMETER REGISTRY (F-011)
 
-leaves          56
+leaves          55
 delta           +10% relative, additive on a zero-valued leaf
-published set   107 numeric fields of data/canonical_ERA5_y30.json
-model state     267 numeric fields
-elapsed         32.6 min
+published set   587 numeric fields of data/canonical_ERA5_y30.json
+model state     266 numeric fields
+elapsed         64.2 min
 
     COVERED               32
-    UNTESTED               0
+    UNTESTED               3
     DECLARED_NOT_WIRED     2
     GUARDED_AT_LOAD        6
-    INERT                 16
+    INERT                 12
     ------------------------
-                          56
+                          55
 
 TESTS EXCLUDED FROM CATCH (already red on the unmutated tree)
     code/repro/test_cross_document_consistency_sol.py  rc=1
@@ -21,15 +21,11 @@ TESTS EXCLUDED FROM CATCH (already red on the unmutated tree)
 NOT PROBED. These are wired and move gross margins, prices or
 cost shares, none of which the canonical artifact carries. Read
 their INERT verdict as 'not probed', not as 'irrelevant'.
-    crop_price_usd_t  (INERT)
-    n_benchmark_usd_kg  (INERT)
-    n_price_usd_kg_farmer_paid  (INERT)
-    n_price_wedge  (INERT)
-    price_benchmark_max_factor  (INERT)
-    urea_n_fraction  (INERT)
 
 UNTESTED -- a published number moves and nothing objects.
-    none
+    crop_price_usd_t  (164 fields, worst price.sub_saharan_africa.crop_usd_per_t 30)
+    n_benchmark_usd_kg  (164 fields, worst margin.south_asia.margin_chg@10 1.042)
+    n_price_wedge  (164 fields, worst margin.south_asia.margin_chg@10 1.042)
 
 COVERAGE DEPTH -- how many tests object, not whether any does.
     12 of 32 COVERED leaves rest on a single test.
