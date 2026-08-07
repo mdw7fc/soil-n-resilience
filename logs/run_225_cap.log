@@ -1,0 +1,24 @@
+SC1 production-weighted global loss  yr1/yr10/yr30 = 2.73 / 3.76 / 3.90 %
+    north_america            2.63   3.05   3.13
+    europe                   3.42   5.08   5.21
+    east_asia                1.18   1.31   1.32
+    south_asia               2.90   5.12   5.22
+    southeast_asia           3.14   3.84   3.98
+    latin_america            1.84   2.75   2.88
+    sub_saharan_africa       3.50   4.93   5.37
+    fsu_central_asia         5.10   6.46   6.84
+SC2 production-weighted global loss  yr1/yr10/yr30 = 2.59 / 1.92 / 0.04 %
+    north_america            2.49   1.49   0.02
+    europe                   3.23   2.52   0.03
+    east_asia                1.10   0.56   0.00
+    south_asia               2.76   2.65   0.03
+    southeast_asia           2.98   2.00   0.04
+    latin_america            1.74   1.43   0.04
+    sub_saharan_africa       3.35   2.87   0.16
+    fsu_central_asia         4.83   3.34   0.10
+
+cap-binding steps checked            : 237
+worst structural residual (log-pts)  : 1.39e-17
+worst root gap on the food price     : 2.22e-16
+worst step                           : SC1/north_america year 20
+CONSTRAINED MARKET CLEARING: PASS

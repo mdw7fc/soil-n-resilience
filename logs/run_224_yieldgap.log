@@ -1,0 +1,14 @@
+rows 720 over 3 scenarios x 8 regions x 30 years
+solver residual (demand vs log-linear supply)  max 1.11e-14 pp
+realized minus econ-implied production         max 1.5379 pp   mean 0.2383 pp
+  worst S3                 south_asia         yr1   realized  -2.142%  econ-implied  -3.680%  gap +1.5379 pp
+  worst SC1_20pct          south_asia         yr1   realized  -2.142%  econ-implied  -3.680%  gap +1.5379 pp
+  worst SC2_20pct_recovery south_asia         yr1   realized  -2.039%  econ-implied  -3.499%  gap +1.4604 pp
+cap-binding steps 237 of 720; max clearing_residual 0.00e+00
+elasticity lag |d(beta+gamma)| per step         max 3.2483 pp
+food price index error (reported minus clears-realized)
+  max +4.350 pp   mean |err| 0.597 pp   year-10 mean |err| 0.597 pp
+  worst SC1_20pct          europe             yr1   reported 1.1212  clears-realized 1.0777  +4.350 pp
+  worst SC2_20pct_recovery europe             yr1   reported 1.1141  clears-realized 1.0733  +4.074 pp
+  worst S3                 europe             yr1   reported 1.0874  clears-realized 1.0568  +3.064 pp
+wrote results/econ_biophysical_yield_gap.csv

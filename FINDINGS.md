@@ -1573,3 +1573,94 @@ to the one the lost deposit was computed in, so the deposit was the anomaly and
 not the paper. Twenty-four checks remain DRIFTED and none of them moved.
 `docs/claims_baseline.json` is regenerated on the strength of this entry
 (`logs/run_217_freeze.log`).
+
+## F-022 - 2026-08-07 - There is one yield and one fertilizer quantity, but the reported food price clears a production change the biogeochemistry did not deliver
+
+Dale Manning, reading the 7_22 draft, asked two things: whether the economic
+and biogeochemical models each carry a yield that could drift apart, and
+whether the fertilizer cap feeds back into `F_hat` inside the equilibrium or is
+applied after it is solved. The second has a clean answer. The first has an
+answer that is clean about yield and not clean about price.
+
+**The cap.** In the model that produces every published number it is inside the
+solve. `coupled_monthly` detects a binding cap, discards the unconstrained
+solution and calls `_solve_equilibrium_capped`, which sets `F_hat = ln(c) -
+L_hat` and re-derives the food price and land allocation from the fertilizer
+physically available, with the fertilizer-price term dropping out because price
+no longer rations demand once quantity does. `test_cap_market_clearing.py`
+checks this the only way that means anything, by re-solving the four structural
+equations outside the model with `brentq` and requiring the reported price to be
+that root: 237 cap-binding steps, worst structural residual 1.4e-17, worst root
+gap 2.2e-16 (`logs/run_225_cap.log`). F-010 records that the previous version of
+this test asserted a residual that was zero by algebra and so could not fail.
+
+There is a second model, `CoupledEconBiophysicalModel` in
+`coupled_econ_biophysical`, which is annual rather than monthly and which still
+does exactly what Dale was worried about: it solves the unconstrained
+equilibrium, stores `PY_hat`, `F_hat` and `L_hat` from that solve, and then
+clips the fertilizer level with `F_level = min(F_level, F_max)`. Its reported
+`F_hat` is the unconstrained one and does not correspond to the fertilizer it
+went on to apply. No published generator uses it: all seventeen call
+`CoupledMonthlyModel` and the annual class has no importer outside its own
+module. So no published number is affected, and a class that carries the
+superseded behaviour, is importable, and is named as though it were the coupled
+model is a trap rather than a spare.
+
+**The yield.** There is one reported yield. `yield_fraction` is written only by
+the Mitscherlich response in the monthly biogeochemical engine, and the economic
+block produces no yield at all: it produces a fertilizer rate, a land area and a
+food price. `beta` and `gamma` are not free economic parameters either; they are
+recomputed every step as the local elasticities of that same Mitscherlich curve,
+partitioned between soil and fertilizer nitrogen by gross input share. Dale's
+description of the intended design, an economic yield parameterised on the
+biogeochemistry, is what the elasticities do, and the yield itself is taken
+straight from the biogeochemistry rather than from the linearisation.
+
+There is nonetheless a second yield, implicit and unreconciled. The equilibrium
+closes on market clearing, `Y_hat = eta * PY_hat`, against the log-linear supply
+relation `Y_hat = alpha*L_hat + beta*N_hat + gamma*F_hat`. So the food price the
+model reports is the price that clears a market for the log-linear production
+change, while the production the model reports is the nonlinear one the
+biogeochemistry delivered. Nothing forces those to agree and until now nothing
+measured them. `code/repro/diagnose_yield_consistency.py` does, over three
+scenarios by eight regions by thirty years.
+
+The equilibrium itself is exact: demand and log-linear supply agree to 1.1e-14
+pp. Getting that number required using the elasticities the solver actually
+used, which are the previous step's, because the current step's are not known
+until the biogeochemistry has been advanced and that happens after the solve. A
+first version of the diagnostic compared against the current step's stored
+`beta` and `gamma` and reported a 0.948 pp residual, which was the size of the
+one-step lag and not a defect. The lag is real and moves `beta + gamma` by up to
+3.25 pp in a step.
+
+The gap that matters is realized production against econ-implied production. It
+is a year-1 transient on a persistent floor: mean 0.71 pp and max 1.54 pp in
+year 1, falling to roughly 0.22 pp mean by year 3 and staying there through year
+30. The sign is almost always the same. Realized production exceeds the
+log-linear production, because the Mitscherlich curve is concave and a
+first-order expansion taken at a large one-year move overstates the loss. The
+worst cell is South Asia in year 1 of S3: the biogeochemistry gives -2.14% and
+the price is clearing -3.68%.
+
+Where that lands on a published number is the food price index, which C-060
+quotes. Reported indices are biased high, by up to 4.35 pp in year 1 (Europe
+under SC1: 1.1212 reported against 1.0777 clearing realized production) and by
+0.60 pp on average. At year 10, which is what the manuscript reports, the errors
+run from -0.22 pp (sub-Saharan Africa) to +1.00 pp (Europe), with the FSU, whose
+10.3% index is a C-060 check, reading 1.1103 against 1.1028. So the direction is
+that the paper's food price responses are modestly too pessimistic, and the
+year-1 price numbers are the ones to treat with most caution.
+
+This is a limitation to state rather than a bug to fix. Reconciling the two
+would mean iterating the equilibrium against the nonlinear biogeochemical
+response within each step instead of solving the linearisation once, which is a
+different model and not a correction to this one. What is owed is the SI
+sentence: the food price is the market-clearing price for a first-order
+expansion of the production response, the expansion is re-anchored every month,
+and the residual between it and realized production is under 0.25 pp after year
+2 and up to 1.54 pp in year 1. Nothing about the yield trajectories changes,
+because they never came from the linearisation.
+
+Numbers in `results/econ_biophysical_yield_gap.csv`;
+`logs/run_224_yieldgap.log`.
