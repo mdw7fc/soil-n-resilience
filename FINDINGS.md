@@ -1746,3 +1746,45 @@ simulate), repair the cross-reference Dale could not find (the optional
 two-crop sensitivity note), and state explicitly where each clarification
 landed in the paper. A clean standalone model description document is owed for
 resubmission or on request.
+
+## F-024 - 2026-08-29 - Dale's remedy prototyped: clearing on the realized yield moves prices 1-2 pp, yields by at most 0.05 pp, and removes the two-yields objection by construction
+
+`code/repro/prototype_realized_clearing.py` implements the fix Dale proposed:
+root-find the food price at which demand equals the production change the
+biogeochemistry actually delivers, eta*PY = ln(yield_frac(F(PY))) + alpha*
+lambda_L*PY, with each candidate price evaluated by running the monthly
+biophysical step from a soil-state snapshot. beta and gamma drop out of the
+clearing entirely and revert to being diagnostics.
+
+The prototype carries its own gate: run in linear mode it must reproduce
+CoupledMonthlyModel.run() before its realized mode is believed. It reproduces
+it to zero, literally 0.0e+00 across PY_hat, yield_fraction and fertilizer
+over 30 years in two regions (`logs/run_228_proto.log`). A compact reimplementation
+that had NOT been held to that standard would have been a second copy of the
+model, which is the disease this rebuild treats.
+
+Results over S3, eight regions, 30 years, 240 clearings: brentq converges in 8
+evaluations per step, every step, no bracket failures. Prices move +0.83 pp on
+average (range -1.5 to +2.8); at year 10, +0.9 to +1.9 pp everywhere except
+East Asia at -0.36. This confirms F-023's first-iterate prediction and bounds
+the second-order fertilizer-demand feedback at about 0.2 pp. Yield fractions
+move by at most 0.054 pp and fertilizer by at most 0.25 percent, so the
+published yield-loss claims are untouched to the precision the manuscript
+quotes; the change is confined to the price channel, where the current numbers
+were the ones F-023 showed to be conservative.
+
+Matthew's question, whether the 10-13 percent gap warrants remedy, resolves as
+follows. That ratio measured the internal inconsistency against a production
+concept nothing published uses; the published casualties were only ever the
+price indices, low by about 1 pp mean. The remedy costs one wiring change,
+raises price responses by 1-2 pp at year 10, and eliminates the objection
+rather than caveating it: after it, there is no second yield anywhere in the
+system, implicit or otherwise, because the market clears the biogeochemical
+response itself.
+
+Cost: roughly 8x the biophysical work per run (a 6-second canonical run
+becomes under a minute; the Monte Carlo ensemble is year-1-scoped and scales
+less than proportionally). Adopting it regenerates every price-bearing
+artifact, reopens C-060 and C-042 deliberately, and needs a FINDINGS entry
+plus refreeze when it lands. Not yet wired; awaiting Matthew and Dale's
+go-ahead. Numbers in `results/realized_clearing_comparison.csv`.
