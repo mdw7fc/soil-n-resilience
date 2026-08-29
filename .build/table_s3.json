@@ -2,13 +2,13 @@
   "generator": "code/repro/make_table_s3.py",
   "generator_sha": "7ca9f71f1df605090f7b4b62765fb9e6edf8447a20576cc2691ac67f5d2b0615",
   "inputs": {
-    "data/canonical_ERA5_y30.json": "790f524dc3adf57f8a23758bbe637952cded7d3caac928044d95afbf8f038ae0"
+    "data/canonical_ERA5_y30.json": "06f3e755c20021ffea7abfa81ba25ba8fe107eb16454ec7415940ca89d87b052"
   },
   "node": "table_s3",
   "outputs": {
     "outputs/table_S3_correlations.csv": "c827a0962fa0202304d12632172f098846130957297760d564fac8a2112aea8b"
   },
   "params_fingerprint": null,
-  "stamped_at": "2026-08-29T15:10:30Z",
-  "stamped_at_commit": "063c94e"
+  "stamped_at": "2026-08-29T20:35:05Z",
+  "stamped_at_commit": "dcb8517"
 }

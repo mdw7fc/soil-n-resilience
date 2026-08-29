@@ -1,233 +1,233 @@
 test_family,case,region,horizon_year,low_soc_loss_pct,high_soc_loss_pct,monotone_pass,domain_pass
-one-at-a-time MC prior bound,MC_central,north_america,1,2.1804729197887007,1.0861438123490719,True,True
-one-at-a-time MC prior bound,MC_central,europe,1,2.766002578144866,2.2211918438858502,True,True
-one-at-a-time MC prior bound,MC_central,east_asia,1,1.4134592207897367,0.7973135376562857,True,True
-one-at-a-time MC prior bound,MC_central,south_asia,1,2.983969430323652,2.7043341957816103,True,True
-one-at-a-time MC prior bound,MC_central,southeast_asia,1,4.7914609294229855,1.9858107654403878,True,True
-one-at-a-time MC prior bound,MC_central,latin_america,1,2.1261356552085497,1.2873621310561356,True,True
-one-at-a-time MC prior bound,MC_central,sub_saharan_africa,1,4.102285152103113,2.903412244520487,True,True
-one-at-a-time MC prior bound,MC_central,fsu_central_asia,1,5.3226439830534655,3.570752844875902,True,True
-one-at-a-time MC prior bound,MC_max_uptake_frac_lo,north_america,1,2.2406178806724797,1.224832512305507,True,True
-one-at-a-time MC prior bound,MC_max_uptake_frac_lo,europe,1,2.777405287328516,2.2910639508847086,True,True
-one-at-a-time MC prior bound,MC_max_uptake_frac_lo,east_asia,1,1.4681648961691107,0.8913674897084722,True,True
-one-at-a-time MC prior bound,MC_max_uptake_frac_lo,south_asia,1,3.1320110683833335,2.881821560190756,True,True
-one-at-a-time MC prior bound,MC_max_uptake_frac_lo,southeast_asia,1,4.832707664477354,2.25678989975705,True,True
-one-at-a-time MC prior bound,MC_max_uptake_frac_lo,latin_america,1,2.1574880905558036,1.428744806568949,True,True
-one-at-a-time MC prior bound,MC_max_uptake_frac_lo,sub_saharan_africa,1,3.889548133041232,2.8851700296974814,True,True
-one-at-a-time MC prior bound,MC_max_uptake_frac_lo,fsu_central_asia,1,5.23344342336568,3.7055399801578126,True,True
-one-at-a-time MC prior bound,MC_max_uptake_frac_hi,north_america,1,2.145628530903265,0.9951618971857923,True,True
-one-at-a-time MC prior bound,MC_max_uptake_frac_hi,europe,1,2.773184626507119,2.1585527879078525,True,True
-one-at-a-time MC prior bound,MC_max_uptake_frac_hi,east_asia,1,1.3851556915226215,0.7397828500395942,True,True
-one-at-a-time MC prior bound,MC_max_uptake_frac_hi,south_asia,1,2.896929636950507,2.591020657881027,True,True
-one-at-a-time MC prior bound,MC_max_uptake_frac_hi,southeast_asia,1,4.785549280801648,1.8007768898877674,True,True
-one-at-a-time MC prior bound,MC_max_uptake_frac_hi,latin_america,1,2.1304313685312715,1.184920847167592,True,True
-one-at-a-time MC prior bound,MC_max_uptake_frac_hi,sub_saharan_africa,1,4.290400117974058,2.923607524974936,True,True
-one-at-a-time MC prior bound,MC_max_uptake_frac_hi,fsu_central_asia,1,5.391988076298848,3.469490898441052,True,True
-one-at-a-time MC prior bound,MC_mitscherlich_c_mult_lo,north_america,1,3.198023197268396,1.9627465991240545,True,True
-one-at-a-time MC prior bound,MC_mitscherlich_c_mult_lo,europe,1,3.884623949542665,3.331448290844252,True,True
-one-at-a-time MC prior bound,MC_mitscherlich_c_mult_lo,east_asia,1,3.1051069284887545,2.0794248587459596,True,True
-one-at-a-time MC prior bound,MC_mitscherlich_c_mult_lo,south_asia,1,4.613996052227032,4.306819361940928,True,True
-one-at-a-time MC prior bound,MC_mitscherlich_c_mult_lo,southeast_asia,1,6.858797017222429,3.7004175996076194,True,True
-one-at-a-time MC prior bound,MC_mitscherlich_c_mult_lo,latin_america,1,3.145868382159811,2.2138489505175163,True,True
-one-at-a-time MC prior bound,MC_mitscherlich_c_mult_lo,sub_saharan_africa,1,5.010563056758488,3.934510262230684,True,True
-one-at-a-time MC prior bound,MC_mitscherlich_c_mult_lo,fsu_central_asia,1,6.763884667065357,5.115304524498299,True,True
-one-at-a-time MC prior bound,MC_mitscherlich_c_mult_hi,north_america,1,1.4693723200038145,0.5946777040824913,True,True
-one-at-a-time MC prior bound,MC_mitscherlich_c_mult_hi,europe,1,1.9474046662178668,1.464703118487709,True,True
-one-at-a-time MC prior bound,MC_mitscherlich_c_mult_hi,east_asia,1,0.6039026114654122,0.2869526149120172,True,True
-one-at-a-time MC prior bound,MC_mitscherlich_c_mult_hi,south_asia,1,1.8944130377793411,1.6669453124485423,True,True
-one-at-a-time MC prior bound,MC_mitscherlich_c_mult_hi,southeast_asia,1,3.350569687774607,1.0673584293622196,True,True
-one-at-a-time MC prior bound,MC_mitscherlich_c_mult_hi,latin_america,1,1.4557628732858152,0.758461935233723,True,True
-one-at-a-time MC prior bound,MC_mitscherlich_c_mult_hi,sub_saharan_africa,1,3.358886751639434,2.14215997929722,True,True
-one-at-a-time MC prior bound,MC_mitscherlich_c_mult_hi,fsu_central_asia,1,4.205805648856509,2.5051422411679236,True,True
-one-at-a-time MC prior bound,MC_k_slow_mult_lo,north_america,1,2.182067691019185,1.0878300116247575,True,True
-one-at-a-time MC prior bound,MC_k_slow_mult_lo,europe,1,2.7675294072019185,2.222965345638628,True,True
-one-at-a-time MC prior bound,MC_k_slow_mult_lo,east_asia,1,1.4141607597357275,0.7982555944725522,True,True
-one-at-a-time MC prior bound,MC_k_slow_mult_lo,south_asia,1,2.9799067026018533,2.6999634515773363,True,True
-one-at-a-time MC prior bound,MC_k_slow_mult_lo,southeast_asia,1,4.782828472975154,1.9778272259778351,True,True
-one-at-a-time MC prior bound,MC_k_slow_mult_lo,latin_america,1,2.121479422844008,1.2829907441300858,True,True
-one-at-a-time MC prior bound,MC_k_slow_mult_lo,sub_saharan_africa,1,4.0972272918131765,2.897610731255329,True,True
-one-at-a-time MC prior bound,MC_k_slow_mult_lo,fsu_central_asia,1,5.326481073443478,3.575223205551503,True,True
-one-at-a-time MC prior bound,MC_k_slow_mult_hi,north_america,1,2.1804263160326243,1.0860946860591802,True,True
-one-at-a-time MC prior bound,MC_k_slow_mult_hi,europe,1,2.7658857714061957,2.221056715323344,True,True
-one-at-a-time MC prior bound,MC_k_slow_mult_hi,east_asia,1,1.413471671962474,0.7973301547499645,True,True
-one-at-a-time MC prior bound,MC_k_slow_mult_hi,south_asia,1,2.983959237022482,2.7043233003357092,True,True
-one-at-a-time MC prior bound,MC_k_slow_mult_hi,southeast_asia,1,4.791439196558556,1.985790798644349,True,True
-one-at-a-time MC prior bound,MC_k_slow_mult_hi,latin_america,1,2.126123036835148,1.2873504304989347,True,True
-one-at-a-time MC prior bound,MC_k_slow_mult_hi,sub_saharan_africa,1,4.102270077506665,2.903395178692547,True,True
-one-at-a-time MC prior bound,MC_k_slow_mult_hi,fsu_central_asia,1,5.322775348093667,3.570905044344108,True,True
-one-at-a-time MC prior bound,MC_cre_regional_mult_lo,north_america,1,3.10805537287977,2.3505369301783596,True,True
-one-at-a-time MC prior bound,MC_cre_regional_mult_lo,europe,1,3.658868867310905,3.35047109445189,True,True
-one-at-a-time MC prior bound,MC_cre_regional_mult_lo,east_asia,1,1.8054302975691994,1.4348466706812335,True,True
-one-at-a-time MC prior bound,MC_cre_regional_mult_lo,south_asia,1,4.119577654915519,3.9602000596130837,True,True
-one-at-a-time MC prior bound,MC_cre_regional_mult_lo,southeast_asia,1,7.291135545740069,5.126414858838024,True,True
-one-at-a-time MC prior bound,MC_cre_regional_mult_lo,latin_america,1,3.6761531280184667,3.006760082359794,True,True
-one-at-a-time MC prior bound,MC_cre_regional_mult_lo,sub_saharan_africa,1,5.56073304511907,4.842811790644863,True,True
-one-at-a-time MC prior bound,MC_cre_regional_mult_lo,fsu_central_asia,1,7.154511524021123,6.096510440015779,True,True
-one-at-a-time MC prior bound,MC_cre_regional_mult_hi,north_america,1,1.3230017909188985,0.3776182991432231,True,True
-one-at-a-time MC prior bound,MC_cre_regional_mult_hi,europe,1,1.861608191212183,1.2549543711713462,True,True
-one-at-a-time MC prior bound,MC_cre_regional_mult_hi,east_asia,1,1.015600150988405,0.3629356993251176,True,True
-one-at-a-time MC prior bound,MC_cre_regional_mult_hi,south_asia,1,1.9175218312034614,1.606574218312029,True,True
-one-at-a-time MC prior bound,MC_cre_regional_mult_hi,southeast_asia,1,2.6900901759760343,0.5510580215057681,True,True
-one-at-a-time MC prior bound,MC_cre_regional_mult_hi,latin_america,1,1.0105704951408945,0.40988361543997653,True,True
-one-at-a-time MC prior bound,MC_cre_regional_mult_hi,sub_saharan_africa,1,2.435358001836063,1.3041404057208883,True,True
-one-at-a-time MC prior bound,MC_cre_regional_mult_hi,fsu_central_asia,1,3.3887391670630707,1.6514016936575837,True,True
-one-at-a-time MC prior bound,MC_residue_retention_mult_lo,north_america,1,2.326579629841663,1.2475924523717596,True,True
-one-at-a-time MC prior bound,MC_residue_retention_mult_lo,europe,1,2.910183414763501,2.391706609387978,True,True
-one-at-a-time MC prior bound,MC_residue_retention_mult_lo,east_asia,1,1.479434712895289,0.8892104329720874,True,True
-one-at-a-time MC prior bound,MC_residue_retention_mult_lo,south_asia,1,3.1228429167023064,2.853459097826927,True,True
-one-at-a-time MC prior bound,MC_residue_retention_mult_lo,southeast_asia,1,5.179361316613241,2.3605653242573577,True,True
-one-at-a-time MC prior bound,MC_residue_retention_mult_lo,latin_america,1,2.3231044205932028,1.474624437688965,True,True
-one-at-a-time MC prior bound,MC_residue_retention_mult_lo,sub_saharan_africa,1,4.271807465128918,3.09881722608244,True,True
-one-at-a-time MC prior bound,MC_residue_retention_mult_lo,fsu_central_asia,1,5.5887032274352215,3.8895202506963766,True,True
-one-at-a-time MC prior bound,MC_residue_retention_mult_hi,north_america,1,2.103916889203683,1.0065643482635722,True,True
-one-at-a-time MC prior bound,MC_residue_retention_mult_hi,europe,1,2.6894859437928575,2.132519950131284,True,True
-one-at-a-time MC prior bound,MC_residue_retention_mult_hi,east_asia,1,1.3664058439476934,0.7353776349897867,True,True
-one-at-a-time MC prior bound,MC_residue_retention_mult_hi,south_asia,1,2.883411858927154,2.597178918453935,True,True
-one-at-a-time MC prior bound,MC_residue_retention_mult_hi,southeast_asia,1,4.518113753270303,1.7434801170933878,True,True
-one-at-a-time MC prior bound,MC_residue_retention_mult_hi,latin_america,1,1.9889051234979194,1.1623016089625904,True,True
-one-at-a-time MC prior bound,MC_residue_retention_mult_hi,sub_saharan_africa,1,3.9763049292838692,2.7625856296588758,True,True
-one-at-a-time MC prior bound,MC_residue_retention_mult_hi,fsu_central_asia,1,5.131500653599641,3.350528479147441,True,True
-one-at-a-time MC prior bound,MC_eps_F_PF_mult_lo,north_america,1,1.0944168058870885,0.5451542328534509,True,True
-one-at-a-time MC prior bound,MC_eps_F_PF_mult_lo,europe,1,1.399556749104347,1.1238905056447646,True,True
-one-at-a-time MC prior bound,MC_eps_F_PF_mult_lo,east_asia,1,0.6456719595164473,0.36421496045700996,True,True
-one-at-a-time MC prior bound,MC_eps_F_PF_mult_lo,south_asia,1,1.5136337449428883,1.3717873429735628,True,True
-one-at-a-time MC prior bound,MC_eps_F_PF_mult_lo,southeast_asia,1,2.4363963994550875,1.0097592926633148,True,True
-one-at-a-time MC prior bound,MC_eps_F_PF_mult_lo,latin_america,1,1.0957419873984242,0.663465069375635,True,True
-one-at-a-time MC prior bound,MC_eps_F_PF_mult_lo,sub_saharan_africa,1,2.2151113505727738,1.5677558189566843,True,True
-one-at-a-time MC prior bound,MC_eps_F_PF_mult_lo,fsu_central_asia,1,2.7334059378142372,1.833734711494206,True,True
-one-at-a-time MC prior bound,MC_eps_F_PF_mult_hi,north_america,1,3.254280952731492,1.6210323404508453,True,True
-one-at-a-time MC prior bound,MC_eps_F_PF_mult_hi,europe,1,4.094133324216365,3.2877248992406183,True,True
-one-at-a-time MC prior bound,MC_eps_F_PF_mult_hi,east_asia,1,2.3017862174626647,1.2984069755816674,True,True
-one-at-a-time MC prior bound,MC_eps_F_PF_mult_hi,south_asia,1,4.393243059776298,3.9815412705634823,True,True
-one-at-a-time MC prior bound,MC_eps_F_PF_mult_hi,southeast_asia,1,7.03929709829657,2.9174216726033375,True,True
-one-at-a-time MC prior bound,MC_eps_F_PF_mult_hi,latin_america,1,3.091283227596131,1.8717530811484862,True,True
-one-at-a-time MC prior bound,MC_eps_F_PF_mult_hi,sub_saharan_africa,1,5.706832083875235,4.0390381300654195,True,True
-one-at-a-time MC prior bound,MC_eps_F_PF_mult_hi,fsu_central_asia,1,7.765498477402122,5.209568001983078,True,True
-one-at-a-time MC prior bound,MC_eta_mult_lo,north_america,1,2.128376206800764,1.0601932389931679,True,True
-one-at-a-time MC prior bound,MC_eta_mult_lo,europe,1,2.6936076805760822,2.163056339136382,True,True
-one-at-a-time MC prior bound,MC_eta_mult_lo,east_asia,1,1.4009896708646608,0.7902796304748549,True,True
-one-at-a-time MC prior bound,MC_eta_mult_lo,south_asia,1,2.951015080638153,2.6744680805833476,True,True
-one-at-a-time MC prior bound,MC_eta_mult_lo,southeast_asia,1,4.7298350028737834,1.9602700315861088,True,True
-one-at-a-time MC prior bound,MC_eta_mult_lo,latin_america,1,2.1051009376330088,1.2746257382592718,True,True
-one-at-a-time MC prior bound,MC_eta_mult_lo,sub_saharan_africa,1,4.092326389935841,2.896363882218822,True,True
-one-at-a-time MC prior bound,MC_eta_mult_lo,fsu_central_asia,1,5.168310984537716,3.4672168963392647,True,True
-one-at-a-time MC prior bound,MC_eta_mult_hi,north_america,1,2.2035861089876763,1.0976570245537665,True,True
-one-at-a-time MC prior bound,MC_eta_mult_hi,europe,1,2.798213737203137,2.247058473348773,True,True
-one-at-a-time MC prior bound,MC_eta_mult_hi,east_asia,1,1.418880465230432,0.800371589505211,True,True
-one-at-a-time MC prior bound,MC_eta_mult_hi,south_asia,1,2.9983123863248196,2.7173330375219185,True,True
-one-at-a-time MC prior bound,MC_eta_mult_hi,southeast_asia,1,4.818349956801294,1.9969548655023095,True,True
-one-at-a-time MC prior bound,MC_eta_mult_hi,latin_america,1,2.1352717773728935,1.2928939971298292,True,True
-one-at-a-time MC prior bound,MC_eta_mult_hi,sub_saharan_africa,1,4.106565460657019,2.9064416536924598,True,True
-one-at-a-time MC prior bound,MC_eta_mult_hi,fsu_central_asia,1,5.391530527643584,3.6169661226852057,True,True
-one-at-a-time MC prior bound,MC_fert_price_shock_mult_lo,north_america,1,1.2796661810629884,0.637431215870643,True,True
-one-at-a-time MC prior bound,MC_fert_price_shock_mult_lo,europe,1,1.6342402166557912,1.3123491166883494,True,True
-one-at-a-time MC prior bound,MC_fert_price_shock_mult_lo,east_asia,1,0.767511004756738,0.43294274457442716,True,True
-one-at-a-time MC prior bound,MC_fert_price_shock_mult_lo,south_asia,1,1.7670814328762163,1.6014838145106736,True,True
-one-at-a-time MC prior bound,MC_fert_price_shock_mult_lo,southeast_asia,1,2.8431218126834468,1.1783257729214403,True,True
-one-at-a-time MC prior bound,MC_fert_price_shock_mult_lo,latin_america,1,1.2754488536461772,0.772276477401912,True,True
-one-at-a-time MC prior bound,MC_fert_price_shock_mult_lo,sub_saharan_africa,1,2.5576022947107147,1.8101554484260984,True,True
-one-at-a-time MC prior bound,MC_fert_price_shock_mult_lo,fsu_central_asia,1,3.183638176567838,2.1357778412813277,True,True
-one-at-a-time MC prior bound,MC_fert_price_shock_mult_hi,north_america,1,2.8734836344720405,1.4313484204016458,True,True
-one-at-a-time MC prior bound,MC_fert_price_shock_mult_hi,europe,1,3.6258089892603818,2.911644919664025,True,True
-one-at-a-time MC prior bound,MC_fert_price_shock_mult_hi,east_asia,1,1.9718815700318082,1.112312153981232,True,True
-one-at-a-time MC prior bound,MC_fert_price_shock_mult_hi,south_asia,1,3.899264078346132,3.533854294315164,True,True
-one-at-a-time MC prior bound,MC_fert_price_shock_mult_hi,southeast_asia,1,6.25236371448149,2.591278809647213,True,True
-one-at-a-time MC prior bound,MC_fert_price_shock_mult_hi,latin_america,1,2.7549907712886457,1.6681300563666568,True,True
-one-at-a-time MC prior bound,MC_fert_price_shock_mult_hi,sub_saharan_africa,1,5.165164060633332,3.6556699552959593,True,True
-one-at-a-time MC prior bound,MC_fert_price_shock_mult_hi,fsu_central_asia,1,6.912326614904806,4.637208500787859,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_0,north_america,10,2.0997185413099806,1.5332395576995506,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_0,europe,10,4.015697779204041,3.3203878397326636,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_0,east_asia,10,1.3436314102153402,1.0912999536747403,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_0,south_asia,10,5.59844340612925,4.65493267105489,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_0,southeast_asia,10,4.65839244921451,3.193747423778137,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_0,latin_america,10,3.0816265400594345,2.062852299858031,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_0,sub_saharan_africa,10,5.591741294717245,4.372772821611615,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_0,fsu_central_asia,10,6.270480045143034,4.8614744335620745,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.25,north_america,10,2.080375731476003,1.4963563700643778,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.25,europe,10,3.944953852211419,3.19145305233558,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.25,east_asia,10,1.654923552985188,0.9522224538237256,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.25,south_asia,10,5.670556010991968,4.411561818480858,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.25,southeast_asia,10,4.5712334268669945,3.1323717702500975,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.25,latin_america,10,2.927479922143439,2.070584596755254,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.25,sub_saharan_africa,10,5.075923555681017,4.472768656035053,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.25,fsu_central_asia,10,5.893346063277416,4.753911974624147,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.5,north_america,10,2.0413959604380083,1.45623281481283,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.5,europe,10,3.8406272368566197,3.0612503461546314,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.5,east_asia,10,1.9475146815398192,0.8228837781286802,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.5,south_asia,10,5.656825781133179,4.168994934107994,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.5,southeast_asia,10,4.450982888254085,3.0630430862845226,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.5,latin_america,10,2.7723159864088798,2.0729313100116387,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.5,sub_saharan_africa,10,4.62444729649275,4.564731723607906,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.5,fsu_central_asia,10,5.537836222986514,4.637641666078607,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-1,north_america,10,1.9269521147102564,1.3680816610985636,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-1,europe,10,3.579887960887884,2.802300268496516,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-1,east_asia,10,2.417102833055995,0.594869045446178,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-1,south_asia,10,5.456146102281489,3.6941706070515057,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-1,southeast_asia,10,4.155106856695712,2.904244828618552,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-1,latin_america,10,2.4722223879854344,2.0618039949851674,True,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-1,sub_saharan_africa,10,3.876101773101448,4.721489030384463,False,True
-WHC x soil-N-response structural grid,WHC_2.3_epsFN_-1,fsu_central_asia,10,4.9055126188624065,4.386935550471771,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_0,north_america,10,2.1028061208261173,1.532904940822255,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_0,europe,10,4.018861188737821,3.3201796331611466,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_0,east_asia,10,1.3447138184589313,1.091570613225612,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_0,south_asia,10,5.6033575261296376,4.655537915764329,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_0,southeast_asia,10,4.66483998427385,3.192729878377021,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_0,latin_america,10,3.0850170280748213,2.062462297937384,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_0,sub_saharan_africa,10,5.593534780201814,4.373190673139149,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_0,fsu_central_asia,10,6.278528821546436,4.860431834369505,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.25,north_america,10,2.083384588296977,1.4960627974250795,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.25,europe,10,3.947899416681344,3.1913182667524187,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.25,east_asia,10,1.6553649828528139,0.9529480695743109,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.25,south_asia,10,5.674967117423413,4.412551200217951,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.25,southeast_asia,10,4.577436363243748,3.1314606036199844,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.25,latin_america,10,2.9308294851948413,2.0701679541513363,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.25,sub_saharan_africa,10,5.077915673661004,4.472933145991176,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.25,fsu_central_asia,10,5.90106277321466,4.752774740649047,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.5,north_america,10,2.0443898550821293,1.455989739973973,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.5,europe,10,3.8434574332670723,3.0612001557956625,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.5,east_asia,10,1.9474202112590988,0.8240028888770623,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.5,south_asia,10,5.660941802534547,4.170403048641369,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.5,southeast_asia,10,4.45704353757338,3.0622834510635633,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.5,latin_america,10,2.775649853810147,2.072499108203607,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.5,sub_saharan_africa,10,4.6265884061380325,4.564651223358041,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.5,fsu_central_asia,10,5.545329200789906,4.636497631180292,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-1,north_america,10,1.9300226807801746,1.3679629658636228,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-1,europe,10,3.5826445862492173,2.80244061466679,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-1,east_asia,10,2.416544032768164,0.5965657151990822,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-1,south_asia,10,5.460047572938976,3.6964714779173846,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-1,southeast_asia,10,4.161063519443564,2.9039031719027553,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-1,latin_america,10,2.4755598252495403,2.061374071518518,True,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-1,sub_saharan_africa,10,3.878433523631708,4.72095735337239,False,True
-WHC x soil-N-response structural grid,WHC_3.48_epsFN_-1,fsu_central_asia,10,4.912708351127382,4.385982006983536,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_0,north_america,10,2.1176002508407343,1.531889147191745,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_0,europe,10,4.0342234368827885,3.3192294186454974,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_0,east_asia,10,1.349282054050649,1.0924821408054508,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_0,south_asia,10,5.623935125984081,4.658024689420792,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_0,southeast_asia,10,4.692181728137223,3.188413219139674,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_0,latin_america,10,3.101965963228648,2.0610052178954397,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_0,sub_saharan_africa,10,5.601017857344726,4.374933448779328,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_0,fsu_central_asia,10,6.312287539968098,4.856016233820926,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.25,north_america,10,2.097791967591478,1.4951510491669429,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.25,europe,10,3.962186654059474,3.1905706036464143,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.25,east_asia,10,1.6571777068791649,0.9556605190807033,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.25,south_asia,10,5.6934254588604905,4.4166325536963535,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.25,southeast_asia,10,4.6037329121695,3.1275753741935364,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.25,latin_america,10,2.9475655723250505,2.0686347411178585,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.25,sub_saharan_africa,10,5.086231309478418,4.47361958497442,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.25,fsu_central_asia,10,5.933432348097634,4.747965408952348,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.5,north_america,10,2.0587248758104137,1.455205070999166,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.5,europe,10,3.857176955735808,3.060683796988084,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.5,east_asia,10,1.9469204852050281,0.8282766683139431,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.5,south_asia,10,5.678154488552655,4.176221377315581,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.5,southeast_asia,10,4.482729093092786,3.059011638201792,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.5,latin_america,10,2.792298709405372,2.0709220778212467,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.5,sub_saharan_africa,10,4.635528961645186,4.564316359907261,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.5,fsu_central_asia,10,5.576760113962109,4.63165517233125,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-1,north_america,10,1.9447399884986671,1.3674894370172108,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-1,europe,10,3.5960081335706717,2.8024415796596758,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-1,east_asia,10,2.413995174452088,0.6031464799013952,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-1,south_asia,10,5.476349284945736,3.705991152889443,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-1,southeast_asia,10,4.186294507140175,2.9023215790936696,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-1,latin_america,10,2.492209995721739,2.0598067981816626,True,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-1,sub_saharan_africa,10,3.8881748446387587,4.718741719966857,False,True
-WHC x soil-N-response structural grid,WHC_8.4_epsFN_-1,fsu_central_asia,10,4.942884020560834,4.381911591690734,True,True
+one-at-a-time MC prior bound,MC_central,north_america,1,2.18047,1.08614,True,True
+one-at-a-time MC prior bound,MC_central,europe,1,2.766,2.22119,True,True
+one-at-a-time MC prior bound,MC_central,east_asia,1,1.41346,0.797314,True,True
+one-at-a-time MC prior bound,MC_central,south_asia,1,2.98397,2.70433,True,True
+one-at-a-time MC prior bound,MC_central,southeast_asia,1,4.79146,1.98581,True,True
+one-at-a-time MC prior bound,MC_central,latin_america,1,2.12614,1.28736,True,True
+one-at-a-time MC prior bound,MC_central,sub_saharan_africa,1,4.10229,2.90341,True,True
+one-at-a-time MC prior bound,MC_central,fsu_central_asia,1,5.32264,3.57075,True,True
+one-at-a-time MC prior bound,MC_max_uptake_frac_lo,north_america,1,2.24062,1.22483,True,True
+one-at-a-time MC prior bound,MC_max_uptake_frac_lo,europe,1,2.77741,2.29106,True,True
+one-at-a-time MC prior bound,MC_max_uptake_frac_lo,east_asia,1,1.46816,0.891367,True,True
+one-at-a-time MC prior bound,MC_max_uptake_frac_lo,south_asia,1,3.13201,2.88182,True,True
+one-at-a-time MC prior bound,MC_max_uptake_frac_lo,southeast_asia,1,4.83271,2.25679,True,True
+one-at-a-time MC prior bound,MC_max_uptake_frac_lo,latin_america,1,2.15749,1.42874,True,True
+one-at-a-time MC prior bound,MC_max_uptake_frac_lo,sub_saharan_africa,1,3.88955,2.88517,True,True
+one-at-a-time MC prior bound,MC_max_uptake_frac_lo,fsu_central_asia,1,5.23344,3.70554,True,True
+one-at-a-time MC prior bound,MC_max_uptake_frac_hi,north_america,1,2.14563,0.995162,True,True
+one-at-a-time MC prior bound,MC_max_uptake_frac_hi,europe,1,2.77318,2.15855,True,True
+one-at-a-time MC prior bound,MC_max_uptake_frac_hi,east_asia,1,1.38516,0.739783,True,True
+one-at-a-time MC prior bound,MC_max_uptake_frac_hi,south_asia,1,2.89693,2.59102,True,True
+one-at-a-time MC prior bound,MC_max_uptake_frac_hi,southeast_asia,1,4.78555,1.80078,True,True
+one-at-a-time MC prior bound,MC_max_uptake_frac_hi,latin_america,1,2.13043,1.18492,True,True
+one-at-a-time MC prior bound,MC_max_uptake_frac_hi,sub_saharan_africa,1,4.2904,2.92361,True,True
+one-at-a-time MC prior bound,MC_max_uptake_frac_hi,fsu_central_asia,1,5.39199,3.46949,True,True
+one-at-a-time MC prior bound,MC_mitscherlich_c_mult_lo,north_america,1,3.19802,1.96275,True,True
+one-at-a-time MC prior bound,MC_mitscherlich_c_mult_lo,europe,1,3.88462,3.33145,True,True
+one-at-a-time MC prior bound,MC_mitscherlich_c_mult_lo,east_asia,1,3.10511,2.07942,True,True
+one-at-a-time MC prior bound,MC_mitscherlich_c_mult_lo,south_asia,1,4.614,4.30682,True,True
+one-at-a-time MC prior bound,MC_mitscherlich_c_mult_lo,southeast_asia,1,6.8588,3.70042,True,True
+one-at-a-time MC prior bound,MC_mitscherlich_c_mult_lo,latin_america,1,3.14587,2.21385,True,True
+one-at-a-time MC prior bound,MC_mitscherlich_c_mult_lo,sub_saharan_africa,1,5.01056,3.93451,True,True
+one-at-a-time MC prior bound,MC_mitscherlich_c_mult_lo,fsu_central_asia,1,6.76388,5.1153,True,True
+one-at-a-time MC prior bound,MC_mitscherlich_c_mult_hi,north_america,1,1.46937,0.594678,True,True
+one-at-a-time MC prior bound,MC_mitscherlich_c_mult_hi,europe,1,1.9474,1.4647,True,True
+one-at-a-time MC prior bound,MC_mitscherlich_c_mult_hi,east_asia,1,0.603903,0.286953,True,True
+one-at-a-time MC prior bound,MC_mitscherlich_c_mult_hi,south_asia,1,1.89441,1.66695,True,True
+one-at-a-time MC prior bound,MC_mitscherlich_c_mult_hi,southeast_asia,1,3.35057,1.06736,True,True
+one-at-a-time MC prior bound,MC_mitscherlich_c_mult_hi,latin_america,1,1.45576,0.758462,True,True
+one-at-a-time MC prior bound,MC_mitscherlich_c_mult_hi,sub_saharan_africa,1,3.35889,2.14216,True,True
+one-at-a-time MC prior bound,MC_mitscherlich_c_mult_hi,fsu_central_asia,1,4.20581,2.50514,True,True
+one-at-a-time MC prior bound,MC_k_slow_mult_lo,north_america,1,2.18207,1.08783,True,True
+one-at-a-time MC prior bound,MC_k_slow_mult_lo,europe,1,2.76753,2.22297,True,True
+one-at-a-time MC prior bound,MC_k_slow_mult_lo,east_asia,1,1.41416,0.798256,True,True
+one-at-a-time MC prior bound,MC_k_slow_mult_lo,south_asia,1,2.97991,2.69996,True,True
+one-at-a-time MC prior bound,MC_k_slow_mult_lo,southeast_asia,1,4.78283,1.97783,True,True
+one-at-a-time MC prior bound,MC_k_slow_mult_lo,latin_america,1,2.12148,1.28299,True,True
+one-at-a-time MC prior bound,MC_k_slow_mult_lo,sub_saharan_africa,1,4.09723,2.89761,True,True
+one-at-a-time MC prior bound,MC_k_slow_mult_lo,fsu_central_asia,1,5.32648,3.57522,True,True
+one-at-a-time MC prior bound,MC_k_slow_mult_hi,north_america,1,2.18043,1.08609,True,True
+one-at-a-time MC prior bound,MC_k_slow_mult_hi,europe,1,2.76589,2.22106,True,True
+one-at-a-time MC prior bound,MC_k_slow_mult_hi,east_asia,1,1.41347,0.79733,True,True
+one-at-a-time MC prior bound,MC_k_slow_mult_hi,south_asia,1,2.98396,2.70432,True,True
+one-at-a-time MC prior bound,MC_k_slow_mult_hi,southeast_asia,1,4.79144,1.98579,True,True
+one-at-a-time MC prior bound,MC_k_slow_mult_hi,latin_america,1,2.12612,1.28735,True,True
+one-at-a-time MC prior bound,MC_k_slow_mult_hi,sub_saharan_africa,1,4.10227,2.9034,True,True
+one-at-a-time MC prior bound,MC_k_slow_mult_hi,fsu_central_asia,1,5.32278,3.57091,True,True
+one-at-a-time MC prior bound,MC_cre_regional_mult_lo,north_america,1,3.10806,2.35054,True,True
+one-at-a-time MC prior bound,MC_cre_regional_mult_lo,europe,1,3.65887,3.35047,True,True
+one-at-a-time MC prior bound,MC_cre_regional_mult_lo,east_asia,1,1.80543,1.43485,True,True
+one-at-a-time MC prior bound,MC_cre_regional_mult_lo,south_asia,1,4.11958,3.9602,True,True
+one-at-a-time MC prior bound,MC_cre_regional_mult_lo,southeast_asia,1,7.29114,5.12641,True,True
+one-at-a-time MC prior bound,MC_cre_regional_mult_lo,latin_america,1,3.67615,3.00676,True,True
+one-at-a-time MC prior bound,MC_cre_regional_mult_lo,sub_saharan_africa,1,5.56073,4.84281,True,True
+one-at-a-time MC prior bound,MC_cre_regional_mult_lo,fsu_central_asia,1,7.15451,6.09651,True,True
+one-at-a-time MC prior bound,MC_cre_regional_mult_hi,north_america,1,1.323,0.377618,True,True
+one-at-a-time MC prior bound,MC_cre_regional_mult_hi,europe,1,1.86161,1.25495,True,True
+one-at-a-time MC prior bound,MC_cre_regional_mult_hi,east_asia,1,1.0156,0.362936,True,True
+one-at-a-time MC prior bound,MC_cre_regional_mult_hi,south_asia,1,1.91752,1.60657,True,True
+one-at-a-time MC prior bound,MC_cre_regional_mult_hi,southeast_asia,1,2.69009,0.551058,True,True
+one-at-a-time MC prior bound,MC_cre_regional_mult_hi,latin_america,1,1.01057,0.409884,True,True
+one-at-a-time MC prior bound,MC_cre_regional_mult_hi,sub_saharan_africa,1,2.43536,1.30414,True,True
+one-at-a-time MC prior bound,MC_cre_regional_mult_hi,fsu_central_asia,1,3.38874,1.6514,True,True
+one-at-a-time MC prior bound,MC_residue_retention_mult_lo,north_america,1,2.32658,1.24759,True,True
+one-at-a-time MC prior bound,MC_residue_retention_mult_lo,europe,1,2.91018,2.39171,True,True
+one-at-a-time MC prior bound,MC_residue_retention_mult_lo,east_asia,1,1.47943,0.88921,True,True
+one-at-a-time MC prior bound,MC_residue_retention_mult_lo,south_asia,1,3.12284,2.85346,True,True
+one-at-a-time MC prior bound,MC_residue_retention_mult_lo,southeast_asia,1,5.17936,2.36057,True,True
+one-at-a-time MC prior bound,MC_residue_retention_mult_lo,latin_america,1,2.3231,1.47462,True,True
+one-at-a-time MC prior bound,MC_residue_retention_mult_lo,sub_saharan_africa,1,4.27181,3.09882,True,True
+one-at-a-time MC prior bound,MC_residue_retention_mult_lo,fsu_central_asia,1,5.5887,3.88952,True,True
+one-at-a-time MC prior bound,MC_residue_retention_mult_hi,north_america,1,2.10392,1.00656,True,True
+one-at-a-time MC prior bound,MC_residue_retention_mult_hi,europe,1,2.68949,2.13252,True,True
+one-at-a-time MC prior bound,MC_residue_retention_mult_hi,east_asia,1,1.36641,0.735378,True,True
+one-at-a-time MC prior bound,MC_residue_retention_mult_hi,south_asia,1,2.88341,2.59718,True,True
+one-at-a-time MC prior bound,MC_residue_retention_mult_hi,southeast_asia,1,4.51811,1.74348,True,True
+one-at-a-time MC prior bound,MC_residue_retention_mult_hi,latin_america,1,1.98891,1.1623,True,True
+one-at-a-time MC prior bound,MC_residue_retention_mult_hi,sub_saharan_africa,1,3.9763,2.76259,True,True
+one-at-a-time MC prior bound,MC_residue_retention_mult_hi,fsu_central_asia,1,5.1315,3.35053,True,True
+one-at-a-time MC prior bound,MC_eps_F_PF_mult_lo,north_america,1,1.09442,0.545154,True,True
+one-at-a-time MC prior bound,MC_eps_F_PF_mult_lo,europe,1,1.39956,1.12389,True,True
+one-at-a-time MC prior bound,MC_eps_F_PF_mult_lo,east_asia,1,0.645672,0.364215,True,True
+one-at-a-time MC prior bound,MC_eps_F_PF_mult_lo,south_asia,1,1.51363,1.37179,True,True
+one-at-a-time MC prior bound,MC_eps_F_PF_mult_lo,southeast_asia,1,2.4364,1.00976,True,True
+one-at-a-time MC prior bound,MC_eps_F_PF_mult_lo,latin_america,1,1.09574,0.663465,True,True
+one-at-a-time MC prior bound,MC_eps_F_PF_mult_lo,sub_saharan_africa,1,2.21511,1.56776,True,True
+one-at-a-time MC prior bound,MC_eps_F_PF_mult_lo,fsu_central_asia,1,2.73341,1.83373,True,True
+one-at-a-time MC prior bound,MC_eps_F_PF_mult_hi,north_america,1,3.25428,1.62103,True,True
+one-at-a-time MC prior bound,MC_eps_F_PF_mult_hi,europe,1,4.09413,3.28772,True,True
+one-at-a-time MC prior bound,MC_eps_F_PF_mult_hi,east_asia,1,2.30179,1.29841,True,True
+one-at-a-time MC prior bound,MC_eps_F_PF_mult_hi,south_asia,1,4.39324,3.98154,True,True
+one-at-a-time MC prior bound,MC_eps_F_PF_mult_hi,southeast_asia,1,7.0393,2.91742,True,True
+one-at-a-time MC prior bound,MC_eps_F_PF_mult_hi,latin_america,1,3.09128,1.87175,True,True
+one-at-a-time MC prior bound,MC_eps_F_PF_mult_hi,sub_saharan_africa,1,5.70683,4.03904,True,True
+one-at-a-time MC prior bound,MC_eps_F_PF_mult_hi,fsu_central_asia,1,7.7655,5.20957,True,True
+one-at-a-time MC prior bound,MC_eta_mult_lo,north_america,1,2.12838,1.06019,True,True
+one-at-a-time MC prior bound,MC_eta_mult_lo,europe,1,2.69361,2.16306,True,True
+one-at-a-time MC prior bound,MC_eta_mult_lo,east_asia,1,1.40099,0.79028,True,True
+one-at-a-time MC prior bound,MC_eta_mult_lo,south_asia,1,2.95102,2.67447,True,True
+one-at-a-time MC prior bound,MC_eta_mult_lo,southeast_asia,1,4.72984,1.96027,True,True
+one-at-a-time MC prior bound,MC_eta_mult_lo,latin_america,1,2.1051,1.27463,True,True
+one-at-a-time MC prior bound,MC_eta_mult_lo,sub_saharan_africa,1,4.09233,2.89636,True,True
+one-at-a-time MC prior bound,MC_eta_mult_lo,fsu_central_asia,1,5.16831,3.46722,True,True
+one-at-a-time MC prior bound,MC_eta_mult_hi,north_america,1,2.20359,1.09766,True,True
+one-at-a-time MC prior bound,MC_eta_mult_hi,europe,1,2.79821,2.24706,True,True
+one-at-a-time MC prior bound,MC_eta_mult_hi,east_asia,1,1.41888,0.800372,True,True
+one-at-a-time MC prior bound,MC_eta_mult_hi,south_asia,1,2.99831,2.71733,True,True
+one-at-a-time MC prior bound,MC_eta_mult_hi,southeast_asia,1,4.81835,1.99695,True,True
+one-at-a-time MC prior bound,MC_eta_mult_hi,latin_america,1,2.13527,1.29289,True,True
+one-at-a-time MC prior bound,MC_eta_mult_hi,sub_saharan_africa,1,4.10657,2.90644,True,True
+one-at-a-time MC prior bound,MC_eta_mult_hi,fsu_central_asia,1,5.39153,3.61697,True,True
+one-at-a-time MC prior bound,MC_fert_price_shock_mult_lo,north_america,1,1.27967,0.637431,True,True
+one-at-a-time MC prior bound,MC_fert_price_shock_mult_lo,europe,1,1.63424,1.31235,True,True
+one-at-a-time MC prior bound,MC_fert_price_shock_mult_lo,east_asia,1,0.767511,0.432943,True,True
+one-at-a-time MC prior bound,MC_fert_price_shock_mult_lo,south_asia,1,1.76708,1.60148,True,True
+one-at-a-time MC prior bound,MC_fert_price_shock_mult_lo,southeast_asia,1,2.84312,1.17833,True,True
+one-at-a-time MC prior bound,MC_fert_price_shock_mult_lo,latin_america,1,1.27545,0.772276,True,True
+one-at-a-time MC prior bound,MC_fert_price_shock_mult_lo,sub_saharan_africa,1,2.5576,1.81016,True,True
+one-at-a-time MC prior bound,MC_fert_price_shock_mult_lo,fsu_central_asia,1,3.18364,2.13578,True,True
+one-at-a-time MC prior bound,MC_fert_price_shock_mult_hi,north_america,1,2.87348,1.43135,True,True
+one-at-a-time MC prior bound,MC_fert_price_shock_mult_hi,europe,1,3.62581,2.91164,True,True
+one-at-a-time MC prior bound,MC_fert_price_shock_mult_hi,east_asia,1,1.97188,1.11231,True,True
+one-at-a-time MC prior bound,MC_fert_price_shock_mult_hi,south_asia,1,3.89926,3.53385,True,True
+one-at-a-time MC prior bound,MC_fert_price_shock_mult_hi,southeast_asia,1,6.25236,2.59128,True,True
+one-at-a-time MC prior bound,MC_fert_price_shock_mult_hi,latin_america,1,2.75499,1.66813,True,True
+one-at-a-time MC prior bound,MC_fert_price_shock_mult_hi,sub_saharan_africa,1,5.16516,3.65567,True,True
+one-at-a-time MC prior bound,MC_fert_price_shock_mult_hi,fsu_central_asia,1,6.91233,4.63721,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_0,north_america,10,2.09972,1.53324,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_0,europe,10,4.0157,3.32039,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_0,east_asia,10,1.34363,1.0913,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_0,south_asia,10,5.59844,4.65493,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_0,southeast_asia,10,4.65839,3.19375,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_0,latin_america,10,3.08163,2.06285,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_0,sub_saharan_africa,10,5.59174,4.37277,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_0,fsu_central_asia,10,6.27048,4.86147,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.25,north_america,10,2.08038,1.49636,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.25,europe,10,3.94495,3.19145,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.25,east_asia,10,1.65492,0.952222,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.25,south_asia,10,5.67056,4.41156,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.25,southeast_asia,10,4.57123,3.13237,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.25,latin_america,10,2.92748,2.07058,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.25,sub_saharan_africa,10,5.07592,4.47277,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.25,fsu_central_asia,10,5.89335,4.75391,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.5,north_america,10,2.0414,1.45623,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.5,europe,10,3.84063,3.06125,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.5,east_asia,10,1.94751,0.822884,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.5,south_asia,10,5.65683,4.16899,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.5,southeast_asia,10,4.45098,3.06304,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.5,latin_america,10,2.77232,2.07293,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.5,sub_saharan_africa,10,4.62445,4.56473,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-0.5,fsu_central_asia,10,5.53784,4.63764,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-1,north_america,10,1.92695,1.36808,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-1,europe,10,3.57989,2.8023,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-1,east_asia,10,2.4171,0.594869,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-1,south_asia,10,5.45615,3.69417,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-1,southeast_asia,10,4.15511,2.90424,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-1,latin_america,10,2.47222,2.0618,True,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-1,sub_saharan_africa,10,3.8761,4.72149,False,True
+WHC x soil-N-response structural grid,WHC_2.3_epsFN_-1,fsu_central_asia,10,4.90551,4.38694,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_0,north_america,10,2.10281,1.5329,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_0,europe,10,4.01886,3.32018,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_0,east_asia,10,1.34471,1.09157,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_0,south_asia,10,5.60336,4.65554,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_0,southeast_asia,10,4.66484,3.19273,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_0,latin_america,10,3.08502,2.06246,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_0,sub_saharan_africa,10,5.59353,4.37319,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_0,fsu_central_asia,10,6.27853,4.86043,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.25,north_america,10,2.08338,1.49606,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.25,europe,10,3.9479,3.19132,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.25,east_asia,10,1.65536,0.952948,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.25,south_asia,10,5.67497,4.41255,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.25,southeast_asia,10,4.57744,3.13146,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.25,latin_america,10,2.93083,2.07017,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.25,sub_saharan_africa,10,5.07792,4.47293,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.25,fsu_central_asia,10,5.90106,4.75277,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.5,north_america,10,2.04439,1.45599,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.5,europe,10,3.84346,3.0612,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.5,east_asia,10,1.94742,0.824003,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.5,south_asia,10,5.66094,4.1704,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.5,southeast_asia,10,4.45704,3.06228,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.5,latin_america,10,2.77565,2.0725,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.5,sub_saharan_africa,10,4.62659,4.56465,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-0.5,fsu_central_asia,10,5.54533,4.6365,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-1,north_america,10,1.93002,1.36796,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-1,europe,10,3.58264,2.80244,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-1,east_asia,10,2.41654,0.596566,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-1,south_asia,10,5.46005,3.69647,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-1,southeast_asia,10,4.16106,2.9039,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-1,latin_america,10,2.47556,2.06137,True,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-1,sub_saharan_africa,10,3.87843,4.72096,False,True
+WHC x soil-N-response structural grid,WHC_3.48_epsFN_-1,fsu_central_asia,10,4.91271,4.38598,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_0,north_america,10,2.1176,1.53189,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_0,europe,10,4.03422,3.31923,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_0,east_asia,10,1.34928,1.09248,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_0,south_asia,10,5.62394,4.65802,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_0,southeast_asia,10,4.69218,3.18841,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_0,latin_america,10,3.10197,2.06101,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_0,sub_saharan_africa,10,5.60102,4.37493,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_0,fsu_central_asia,10,6.31229,4.85602,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.25,north_america,10,2.09779,1.49515,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.25,europe,10,3.96219,3.19057,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.25,east_asia,10,1.65718,0.955661,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.25,south_asia,10,5.69343,4.41663,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.25,southeast_asia,10,4.60373,3.12758,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.25,latin_america,10,2.94757,2.06863,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.25,sub_saharan_africa,10,5.08623,4.47362,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.25,fsu_central_asia,10,5.93343,4.74797,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.5,north_america,10,2.05872,1.45521,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.5,europe,10,3.85718,3.06068,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.5,east_asia,10,1.94692,0.828277,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.5,south_asia,10,5.67815,4.17622,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.5,southeast_asia,10,4.48273,3.05901,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.5,latin_america,10,2.7923,2.07092,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.5,sub_saharan_africa,10,4.63553,4.56432,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-0.5,fsu_central_asia,10,5.57676,4.63166,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-1,north_america,10,1.94474,1.36749,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-1,europe,10,3.59601,2.80244,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-1,east_asia,10,2.414,0.603146,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-1,south_asia,10,5.47635,3.70599,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-1,southeast_asia,10,4.18629,2.90232,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-1,latin_america,10,2.49221,2.05981,True,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-1,sub_saharan_africa,10,3.88817,4.71874,False,True
+WHC x soil-N-response structural grid,WHC_8.4_epsFN_-1,fsu_central_asia,10,4.94288,4.38191,True,True

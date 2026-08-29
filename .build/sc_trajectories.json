@@ -18,6 +18,6 @@
     "data/SC2_regional_trajectory.csv": "a27acaa9d214dab51e5e3ce5e9f41efb20fb097e9b0b74dcd6e8a4cac2314e27"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T16:56:36Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T19:54:10Z",
+  "stamped_at_commit": "dcb8517"
 }

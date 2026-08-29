@@ -1,15 +1,15 @@
 Drawing 1000 joint samples (seed=20260424); evaluating draws [0:1000); workers=1.
-  100/1000  elapsed=69s  eta=623s
-  200/1000  elapsed=141s  eta=562s
-  300/1000  elapsed=217s  eta=507s
-  400/1000  elapsed=289s  eta=434s
-  500/1000  elapsed=368s  eta=368s
-  600/1000  elapsed=446s  eta=297s
-  700/1000  elapsed=522s  eta=224s
-  800/1000  elapsed=592s  eta=148s
-  900/1000  elapsed=663s  eta=74s
-  1000/1000  elapsed=736s  eta=0s
-Completed 1000 draws in 736s (0.74s/draw).
+  100/1000  elapsed=53s  eta=477s
+  200/1000  elapsed=107s  eta=427s
+  300/1000  elapsed=161s  eta=377s
+  400/1000  elapsed=214s  eta=321s
+  500/1000  elapsed=270s  eta=270s
+  600/1000  elapsed=324s  eta=216s
+  700/1000  elapsed=378s  eta=162s
+  800/1000  elapsed=433s  eta=108s
+  900/1000  elapsed=487s  eta=54s
+  1000/1000  elapsed=542s  eta=0s
+Completed 1000 draws in 542s (0.54s/draw).
 
 Monte Carlo ensemble — Wallenstein-Manning coupled model
 ======================================================================

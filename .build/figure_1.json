@@ -2,15 +2,15 @@
   "generator": "code/repro/make_figure_1.py",
   "generator_sha": "7354a77408dd8e8900bfe79014a2a5b76a996884e904f390705f8acfe4784d11",
   "inputs": {
-    "data/figure1_farm_gradient.json": "0444c419beec386958a7db6c3c009d2fe4e2267b7215aa94d0d2e1ce35dcb811"
+    "data/figure1_farm_gradient.json": "1fc1015b061214ff4c73ecb2fadc045bde345a2ed2b975abcf722ffd1dab4ae1"
   },
   "node": "figure_1",
   "outputs": {
-    "data/figure1_soc_gradient.csv": "230efcb759504c3f6c24f4a3a7f08e9f5c58241eb352c5280fa8a6c1ae0c14af",
-    "figures/Figure_1_farm_buffering.pdf": "722a6629b12b133bbea808958043d2c52b6ea99ec789dfcf010227060c9ab82a",
-    "figures/Figure_1_farm_buffering.png": "b4ff4dbe59ecad15fa738ab7572c69c6a839d5986c8a348cb93a8ca82318c40d"
+    "data/figure1_soc_gradient.csv": "9fbd45048031f00a9f3f26458c0395e5c5f577f78058837b41ae53cd0e4dc3a6",
+    "figures/Figure_1_farm_buffering.pdf": "885ad97e66b651dc1bfc9a229f9dddfcbfe40e6a3c17763fb724609e5d01811c",
+    "figures/Figure_1_farm_buffering.png": "55299cb1b15c0f4e2e2707bc8cc95627600462042796b9d74816dc24a5cffaf7"
   },
   "params_fingerprint": null,
-  "stamped_at": "2026-08-29T14:02:04Z",
-  "stamped_at_commit": "6c2cf9b"
+  "stamped_at": "2026-08-29T19:56:55Z",
+  "stamped_at_commit": "dcb8517"
 }

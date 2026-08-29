@@ -1,7 +1,8 @@
 # HANDOFF — ERFS-100341 "Soil organic matter buffers fertilizer supply disruptions"
 
 Wallenstein & Manning, *Environmental Research: Food Systems*. v15 rebuild line,
-written 2026-08-29 at commit `56a4246`. This file is the entry point for anyone
+last updated 2026-08-29 at the F-028 release commit (the commit tagged by
+RELEASE_AUDIT_v17.md in resumbission/v17/). This file is the entry point for anyone
 (or any session) picking the project up cold. The older
 `HANDOFF_v15_model_assurance.md` describes the original rebuild plan and is
 superseded by this file wherever they disagree; FINDINGS.md is the full ledger
@@ -16,9 +17,9 @@ only in a container. To restore a working tree:
 
     git clone <path>/v15_base.bundle repo        # full history through d979a0c
     cd repo
-    git fetch <path>/v15_f025.bundle HEAD:work   # the 9 commits on top
-    git checkout work                            # HEAD 56a4246
-    make verify                                  # expect: 15 suites, exit 0
+    git fetch <path>/v15_f025.bundle HEAD:work   # the rebuild commits on top
+    git checkout work                            # HEAD = the F-028 release commit
+    make verify                                  # expect: 18 suites, exit 0
 
 `v15_release_code_docs.zip` in the same folder is a snapshot of the tree for
 humans; the bundles are authoritative. The Mac v15 folder's own git checkout is
@@ -31,7 +32,7 @@ repair is to the document. `docs/claims.yaml` is the claim register (19 claims,
 
 ## State of the model
 
-The model is green: 17 suites and the 32-node build graph, exit 0, nothing
+The model is green: 18 suites and the 32-node build graph, exit 0, nothing
 blocked (the MC ensemble regenerated under F-026). The registry central
 eps_F_N is -0.50 (F-026, closing the code-document fork an external audit
 found); the claim register reads 70/70 AGREES on document_basis v17. The
@@ -135,11 +136,10 @@ deliberately.
 1. Dale's sign-off on two things: adopting the realized clearing (done on
    Matthew's instruction; Dale called it "possibly preferred") and the
    inverted SSA/South-Asia margin framing in the discussion.
-2. `mc_ensemble` is BLOCKED: the deposited ensemble is the only surviving v15
-   one and F-013's claim strength reproduces against it. It is owed a rerun as
-   a CHECK (snapshot first). Under realized clearing a rerun costs ~8x the
-   biophysical work; it is year-1-scoped so the multiplier bites less, but
-   budget hours, and expect P3/P4 strength numbers to need a FINDINGS entry.
+2. (retired) `mc_ensemble` was regenerated and stamped through the graph
+   under F-026/F-027 (1,000 draws, ~12 min, seeded): buffering P = 1.0 in
+   every region, SSA worst-net-revenue in 0 of 1,000 draws. The deposited
+   v15 ensemble survives in baseline/surviving_v15/ for the record.
 3. The mutation-coverage sweep (F-020 harness) has not rerun under F-025.
    The three UNTESTED price parameters (`crop_price_usd_t`, `n_price_wedge`,
    `n_benchmark_usd_kg`) move 164 published fields each and still have no

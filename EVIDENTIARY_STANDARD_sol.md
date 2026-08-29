@@ -1,5 +1,13 @@
 # Prospective evidentiary standard for the completed SOL audit
 
+> **SUPERSEDED working record (marked 2026-08-29, F-028).** This file is a
+> preserved process document from the v15 rebuild. Numbers quoted in it predate
+> F-025 (realized-yield market clearing) and F-026 (central eps_F_N = -0.50)
+> and are NOT the released results. The released headline family is: global S3
+> yield loss 2.32 / 3.02 / 3.07 % at years 1/10/30; SSA y_max 3.97. Current
+> truth lives in README.md, docs/claims.yaml (v17 basis) and FINDINGS.md.
+
+
 This standard was frozen before the code-wide parameter inventory and
 parameter-extreme results were examined. It governs which results may remain
 in the manuscript, Supplementary Information, response letter and

@@ -17,6 +17,6 @@
     "results/s3_shock_calibration.csv": "8e02ea341b1a92c88645f9b6f867a753423c269bcfd301219705b5a71b3fc143"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T16:56:14Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T20:35:30Z",
+  "stamped_at_commit": "dcb8517"
 }

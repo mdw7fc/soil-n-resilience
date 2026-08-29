@@ -3,13 +3,13 @@
   "generator_sha": "0a627bc2219e9af4ad79bb52c1b7dd6bb80949c6d93012d142b8bae057c2cd73",
   "inputs": {
     "data/ofra_maize_N_responsefunctions.csv": "14e2865bd72af8a41d5dd5c7f3c6fdd3a4b82dc4c771585f50fb5d5b8e9eb40f",
-    "outputs/Table_S4_calibration_sol.csv": "2899f7a573ec3fbb5dc9aed859e7e6ea40fa244b59313c67c27b95ddc8055c89"
+    "outputs/Table_S4_calibration_sol.csv": "bb56969a30957cc00ba2882790b85ff621e60b81a901cfe52abc98b8b6551c2f"
   },
   "node": "ofra_validation",
   "outputs": {
     "figures/Figure_S13_OFRA_SSA_validation.png": "624f4ae062b8296936e45020993ac908fd014b3d6cd829c2e8ebf52438ba0669"
   },
   "params_fingerprint": null,
-  "stamped_at": "2026-07-26T10:11:28Z",
-  "stamped_at_commit": "1037e39"
+  "stamped_at": "2026-08-29T20:13:46Z",
+  "stamped_at_commit": "dcb8517"
 }

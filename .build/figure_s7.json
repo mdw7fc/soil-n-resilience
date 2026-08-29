@@ -14,11 +14,11 @@
   },
   "node": "figure_s7",
   "outputs": {
-    "data/figS7_farm_elasticity_gradient.json": "f3d742252e9a7f5a0bbdce091e446d5b546d39deb5490808cd51d8953922f1fe",
-    "figures/Figure_S7_farm_elasticity_gradient.pdf": "18fe78ebaed54c4fa634a200f20e3b6f5e09af736317bda960325af013e5468d",
+    "data/figS7_farm_elasticity_gradient.json": "f6cbebb58a4201329f08beb0f5444c3d690a2d7be80261c12a2ba292dbc887ed",
+    "figures/Figure_S7_farm_elasticity_gradient.pdf": "405033467872e2cffa9c892fe9823f349210393a4b896082f8a954e8a3c0380b",
     "figures/Figure_S7_farm_elasticity_gradient.png": "8e864e7764c0e8ce64f3a5b63882ed432417a1a39203b52069522e102418c6e6"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T17:06:47Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T20:01:39Z",
+  "stamped_at_commit": "dcb8517"
 }

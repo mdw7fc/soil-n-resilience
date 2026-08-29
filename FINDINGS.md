@@ -1974,3 +1974,95 @@ files is a gate on something else. The cross-document test now requires the
 corrected values, forbids twenty stale fragments, and hash-checks ten
 embedded figures against the deposited renders, so each of this round's
 findings is a permanent regression check rather than a memory.
+
+## F-028 - 2026-08-29 - The third audit round: one decision carried everywhere, canonical bytes, and repo docs join the gate
+
+The third external audit found four residues, all real, all fixed in one
+synchronization pass. Verdicts on the four:
+
+**1. The four-pool withdrawal now follows one decision (CONFIRMED, fixed).**
+The manuscript withdrew the quantitative engine comparison on p.20 and then
+re-cited Supplementary Fig. S5, Supplementary table 2 and the uncertainty
+range in the parameter-uncertainty discussion; the SI kept an orphan
+"Supplementary table 2" heading, its caption and its CUE-decomposition note
+(the earlier deletion loop matched the table rows but not those three
+paragraphs); SI Note 8 said the ratios were "retained here as originally
+reported"; the response letter told the reviewer "we retain this analysis."
+All four sites now state the same thing: the quantitative comparison
+(Fig. S5, table 2, the SOC-loss ratios) is withdrawn because the alternative
+engine is not part of the deposit, and only the qualitative
+direction-of-response statement survives. Tracked deletions, author
+"Matthew Wallenstein". Two XML traps surfaced and are fixed in the tooling
+sense too: a paragraph whose pPr already carried an empty `<w:rPr/>` got a
+second rPr from the deletion mark (schema violation; the marks are now
+merged), and deleting a paragraph that contained a previous round's tracked
+deletion nested `<w:del>` inside `<w:del>`, which the accepter's non-greedy
+removal turned into a stray close tag (nesting is now flattened before
+accept).
+
+**2. Gross-margin language is gone (CONFIRMED, fixed).** Manuscript:
+"Gross-margin losses follow..." became a partial net-revenue sentence scoped
+to the four priced regions, and "the fertilizer share in regional gross
+margin" became "the land-response coefficient" - which is what Supplementary
+Note 3 actually reports, since Note 3 explicitly EXCLUDES cost share from the
+cross-regional diagnostic (prices exist for only four regions). SI Note 6 now
+counts "24,000 region-x-SOC-x-draw yield evaluations plus 12,000 evaluations
+of the year-1 change in crop revenue net of nitrogen-fertilizer expenditure
+across the four regions with audited price pairs" (1,000 draws x 3 SOC x 8
+regions; x 4 priced regions), and its universality sentence is scoped to
+those four regions - which the regenerated ensemble supports at P = 1.000 in
+each. The Figure S7 caption's two "gross-margin" mentions became
+net-revenue. Fixing the caption exposed a value drift nobody had flagged:
+it claimed the 50-vs-100% SOC gap is "comparable or larger under halved
+elasticities (2.5-4.2 pp baseline against 3.0-5.9 pp halved)" while the
+deposited figS7 data gives 0.3-1.0 pp baseline against 0.2-0.7 pp halved -
+smaller under halved elasticities, sign preserved. The caption now says
+that. All the retired phrases joined the cross-document forbid list.
+
+**3. The staleness gate is byte-deterministic (CONFIRMED, fixed at the
+write side).** The auditor's machine regenerated one node's output with
+1e-14-scale float differences and the gate correctly-but-uselessly called it
+stale. Every node's textual outputs (.json, .csv, .csv.gz) are now
+canonicalized immediately after the generator runs and before the sidecar is
+stamped: float literals carrying more than six significant digits are
+re-rendered at six (`%.6g`), JSON is re-dumped in one canonical form, and
+gzip containers are rewritten with mtime=0. Six significant digits is two
+orders finer than anything the documents quote and coarse enough that
+1e-13-relative noise cannot move a rounding boundary (~1e-7 flip probability
+per value). Two suites double as node generators
+(test_parameter_extremes_sol, test_zero_shock_invariance) and re-staled
+their own nodes when run as tests; they now canonicalize their own output.
+The whole graph was regenerated under the hook (32 nodes including the
+Monte Carlo ensemble, rerun in full), and five nodes rerun afterwards
+reproduced their outputs byte-identically - only sidecar timestamps moved.
+Figure PNGs changed bytes when their canonicalized inputs shifted values at
+the 1e-6 level (pixel-identical renders); the five doc-embedded ones
+(Figures 1, 2, S6, S8, S12) were re-embedded and the embedded-figure hash
+check passes.
+
+**4. Repo docs carry the released numbers or say they are history
+(CONFIRMED, fixed, and now gated).** README still led with 2.31/3.18/3.29,
+SSA y_max 3.88, "unsupported eps_F_N = -0.50", a stale expected-results
+table and a reproduce list that bypassed the build graph; MANIFEST described
+CLAIM_REGISTER_sol.csv as the decision table; the legacy register itself
+retained pre-rebuild claim values (C02: 2.31/3.18/3.29 "retain"). README and
+MANIFEST are rewritten to the released family (every expected-results row
+recomputed from the regenerated artifacts), CHANGELOG gained a dated v17
+entry, CLAIM_REGISTER_sol.csv/.md moved to docs/archive/ (preserved, exempt
+from the orphan scan by prefix), and the surviving working records
+(D1_D2_HOLD, RECONSTRUCTION_GAPS, v15_REBUILD_STATE, HANDOFF_v15,
+EVIDENTIARY_STANDARD_sol, the two results/ reconciliation notes) carry a
+SUPERSEDED banner stating the released family. The hole the audit named -
+"the automated 70/70 claim check is not catching stale quoted text" in repo
+docs - is closed structurally by a new 18th suite,
+`code/repro/test_repo_docs_consistency.py`: README/MANIFEST/HANDOFF must
+contain the released headline family and must not contain the stale one;
+FINDINGS and CHANGELOG are append-only ledgers and exempt; every other
+markdown at the root and under results/ must either carry SUPERSEDED in its
+head or contain no stale fragment.
+
+State at close: `make verify` = 18 suites + 32-node graph, exit 0, zero
+orphans, zero unsourced inputs; claim register 70/70 AGREES on document
+basis v17; the three tracked documents and their equation-preserving cleans
+all validate, with the required withdrawal/net-revenue fragments present and
+twelve new stale fragments forbidden.

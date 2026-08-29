@@ -14,9 +14,9 @@
   },
   "node": "food_price_table",
   "outputs": {
-    "data/food_price_response.csv": "10c44a587516cc63e941744b3511d0252f6a222595bf4371a1b29a0e21ac0a18"
+    "data/food_price_response.csv": "94c0c3778b039ed09a6b071d6e86ce0736100f9de3299f31028a5357f4ec6e15"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T17:10:16Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T20:13:20Z",
+  "stamped_at_commit": "dcb8517"
 }

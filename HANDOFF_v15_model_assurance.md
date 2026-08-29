@@ -1,5 +1,13 @@
 # HANDOFF — v15 model assurance pass
 
+> **SUPERSEDED working record (marked 2026-08-29, F-028).** This file is a
+> preserved process document from the v15 rebuild. Numbers quoted in it predate
+> F-025 (realized-yield market clearing) and F-026 (central eps_F_N = -0.50)
+> and are NOT the released results. The released headline family is: global S3
+> yield loss 2.32 / 3.02 / 3.07 % at years 1/10/30; SSA y_max 3.97. Current
+> truth lives in README.md, docs/claims.yaml (v17 basis) and FINDINGS.md.
+
+
 **Manuscript:** ERFS-100341, *Soil organic matter buffers fertilizer supply disruptions*
 **Author:** Matthew Wallenstein
 **Handoff written:** 2026-07-25, 20:45 UTC (14:45 MDT)

@@ -1,0 +1,68 @@
+python3 code/build.py run --all --log-dir logs/build
+running 32 node(s), about 126 min:
+  canonical table_s3 figure_s6 scenario_trajectories s3_shock_calibration soc_trajectories sc_trajectories climate_swap price_shock figure_1 figure_2 figS8_curves figure_s8 figure_s7 table_s4 figure_s12 mc_ensemble figure_s9 figure_s10 figure_s11 food_price_table broadbalk_benchmark hindcast_benchmark ofra_validation benchmarks zero_shock_invariance structural_sensitivity parameter_extremes calibration_production_path parameter_ledger claims_report claim_strength
+
+--> canonical                    code/repro/run_canonical.py
+    ok   7.7s  (canonicalized 2)
+--> table_s3                     code/repro/make_table_s3.py
+    ok   1.2s
+--> figure_s6                    code/repro/make_figure_s6.py
+    ok   2.3s
+--> scenario_trajectories        code/repro/make_scenario_trajectories.py
+    ok   10.2s
+--> s3_shock_calibration         code/repro/make_s3_shock_calibration.py
+    ok   8.4s
+--> soc_trajectories             code/repro/make_soc_trajectories.py
+    ok   7.6s  (canonicalized 1)
+--> sc_trajectories              code/repro/make_sc_trajectories.py
+    ok   8.5s
+--> climate_swap                 code/repro/climate_comparison.py
+    ok   8.3s
+--> price_shock                  code/repro/run_price_shock_analysis.py
+    ok   154.7s  (canonicalized 2)
+--> figure_1                     code/repro/make_figure_1.py
+    ok   2.0s
+--> figure_2                     code/repro/make_figure_2.py
+    ok   10.1s  (canonicalized 1)
+--> figS8_curves                 code/repro/compute_figS8_curves.py
+    ok   9.2s  (canonicalized 1)
+--> figure_s8                    code/repro/make_figure_s8.py
+    ok   1.2s
+--> figure_s7                    code/repro/make_figure_s7.py
+    ok   263.5s  (canonicalized 1)
+--> table_s4                     code/repro/make_table_s4_sol.py
+    ok   7.0s  (canonicalized 2)
+--> figure_s12                   code/repro/make_figure_s12.py
+    ok   1.6s
+--> mc_ensemble                  code/repro/run_mc_ensemble.py
+    ok   544.7s  (canonicalized 4)
+--> figure_s9                    code/repro/make_figure_s9.py
+    ok   2.0s
+--> figure_s10                   code/repro/make_figure_s10.py
+    ok   12.0s  (canonicalized 1)
+--> figure_s11                   code/repro/make_figure_s11.py
+    ok   124.6s  (canonicalized 1)
+--> food_price_table             code/repro/make_food_price_table.py
+    ok   7.5s  (canonicalized 1)
+--> broadbalk_benchmark          code/repro/make_broadbalk_benchmark.py
+    ok   2.2s  (canonicalized 1)
+--> hindcast_benchmark           code/repro/make_hindcast_benchmark.py
+    ok   23.1s  (canonicalized 1)
+--> ofra_validation              code/repro/make_ofra_validation.py
+    ok   0.9s
+--> benchmarks                   code/repro/run_benchmarks.py
+    ok   8.3s  (canonicalized 1)
+--> zero_shock_invariance        code/repro/test_zero_shock_invariance.py
+    ok   8.6s
+--> structural_sensitivity       code/repro/run_structural_sensitivity_sol.py
+    ok   27.4s  (canonicalized 2)
+--> parameter_extremes           code/repro/test_parameter_extremes_sol.py
+    ok   23.9s  (canonicalized 1)
+--> calibration_production_path  code/repro/make_calibration_production_path.py
+    ok   7.8s  (canonicalized 1)
+--> parameter_ledger             code/repro/make_parameter_ledger_sol.py
+    ok   7.2s  (canonicalized 1)
+--> claims_report                code/repro/make_claim_report.py
+    ok   0.2s  (canonicalized 1)
+--> claim_strength               code/repro/make_claim_strength.py
+    ok   0.2s

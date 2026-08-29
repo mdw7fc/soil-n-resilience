@@ -2,13 +2,13 @@
   "generator": "code/repro/make_figure_s6.py",
   "generator_sha": "86b30218996f68e76f918cd86b967377d0486c2210f7e5f1a7b27570c37bc81c",
   "inputs": {
-    "data/canonical_ERA5_y30.json": "790f524dc3adf57f8a23758bbe637952cded7d3caac928044d95afbf8f038ae0"
+    "data/canonical_ERA5_y30.json": "06f3e755c20021ffea7abfa81ba25ba8fe107eb16454ec7415940ca89d87b052"
   },
   "node": "figure_s6",
   "outputs": {
-    "figures/Figure_S6_pairwise_diagnostics.png": "a041c252a3758358f2f5986e398c8dbab4de3c6c07e70be5c018ead90ec60cc9"
+    "figures/Figure_S6_pairwise_diagnostics.png": "392d44a11527e3a8798d33814dcb5334f23413aa32f0286f5ff4f349e0324193"
   },
   "params_fingerprint": null,
-  "stamped_at": "2026-08-29T15:10:33Z",
-  "stamped_at_commit": "063c94e"
+  "stamped_at": "2026-08-29T19:53:35Z",
+  "stamped_at_commit": "dcb8517"
 }

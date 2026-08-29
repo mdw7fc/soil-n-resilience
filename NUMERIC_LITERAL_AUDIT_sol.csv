@@ -1506,14 +1506,14 @@ code/repro/test_cap_market_clearing.py,126,[0],binding_total = 0,reviewed result
 code/repro/test_cap_market_clearing.py,130,[30.0],"t_max=30.0,",reviewed result-affecting/algebraic literal
 code/repro/test_cap_market_clearing.py,166,"[0, 1]",return 0 if ok else 1,reviewed result-affecting/algebraic literal
 code/repro/test_cross_document_consistency_sol.py,12,[2],ROOT = Path(__file__).resolve().parents[2],reviewed result-affecting/algebraic literal
-code/repro/test_cross_document_consistency_sol.py,109,"[0, 8, 0]",if len(t.rows) > 0 and len(t.rows[0].cells) >= 8,reviewed result-affecting/algebraic literal
-code/repro/test_cross_document_consistency_sol.py,110,"[0, 0]","and t.rows[0].cells[0].text.strip() == ""Region""",reviewed result-affecting/algebraic literal
-code/repro/test_cross_document_consistency_sol.py,111,"[4, 0]","and ""y_max"" in t.rows[0].cells[4].text",reviewed result-affecting/algebraic literal
-code/repro/test_cross_document_consistency_sol.py,118,[1],"labels, table_s4.rows[1:], table.itertuples(index=False)",reviewed result-affecting/algebraic literal
-code/repro/test_cross_document_consistency_sol.py,120,[0],assert row.cells[0].text.strip() == label,reviewed result-affecting/algebraic literal
-code/repro/test_cross_document_consistency_sol.py,121,"[0.01, 4]",assert abs(float(row.cells[4].text) - record.calibrated_y_max_t_ha) <= .01,reviewed result-affecting/algebraic literal
-code/repro/test_cross_document_consistency_sol.py,123,[7],float(row.cells[7].text),reviewed result-affecting/algebraic literal
-code/repro/test_cross_document_consistency_sol.py,125,[0.01],) <= .01,reviewed result-affecting/algebraic literal
+code/repro/test_cross_document_consistency_sol.py,126,"[0, 8, 0]",if len(t.rows) > 0 and len(t.rows[0].cells) >= 8,reviewed result-affecting/algebraic literal
+code/repro/test_cross_document_consistency_sol.py,127,"[0, 0]","and t.rows[0].cells[0].text.strip() == ""Region""",reviewed result-affecting/algebraic literal
+code/repro/test_cross_document_consistency_sol.py,128,"[4, 0]","and ""y_max"" in t.rows[0].cells[4].text",reviewed result-affecting/algebraic literal
+code/repro/test_cross_document_consistency_sol.py,135,[1],"labels, table_s4.rows[1:], table.itertuples(index=False)",reviewed result-affecting/algebraic literal
+code/repro/test_cross_document_consistency_sol.py,137,[0],assert row.cells[0].text.strip() == label,reviewed result-affecting/algebraic literal
+code/repro/test_cross_document_consistency_sol.py,138,"[0.01, 4]",assert abs(float(row.cells[4].text) - record.calibrated_y_max_t_ha) <= .01,reviewed result-affecting/algebraic literal
+code/repro/test_cross_document_consistency_sol.py,140,[7],float(row.cells[7].text),reviewed result-affecting/algebraic literal
+code/repro/test_cross_document_consistency_sol.py,142,[0.01],) <= .01,reviewed result-affecting/algebraic literal
 code/repro/test_dimensional_consistency_sol.py,9,[0],"sys.path.insert(0, str(HERE.parent / ""model""))",reviewed result-affecting/algebraic literal
 code/repro/test_dimensional_consistency_sol.py,25,[0],c: int = 0,reviewed result-affecting/algebraic literal
 code/repro/test_dimensional_consistency_sol.py,26,[0],n: int = 0,reviewed result-affecting/algebraic literal
@@ -1634,6 +1634,9 @@ code/repro/test_parameter_extremes_sol.py,163,[50],"""low_soc_loss_pct"": losses
 code/repro/test_parameter_extremes_sol.py,164,[150],"""high_soc_loss_pct"": losses[150],",reviewed result-affecting/algebraic literal
 code/repro/test_parameter_extremes_sol.py,169,[0],"print(f""  {case}: {'PASS' if failures == 0 else f'FAIL ({failures})'}"")",reviewed result-affecting/algebraic literal
 code/repro/test_parameter_extremes_sol.py,186,[0],"writer = csv.DictWriter(handle, fieldnames=list(records[0]))",reviewed result-affecting/algebraic literal
+code/repro/test_repo_docs_consistency.py,89,[400],"if ""SUPERSEDED"" in text[:400]:",reviewed result-affecting/algebraic literal
+code/repro/test_repo_docs_consistency.py,120,[1],sys.exit(1),reviewed result-affecting/algebraic literal
+code/repro/test_repo_docs_consistency.py,122,[1],"f""({len(CURRENT) + 1} current/ledger docs checked, """,reviewed result-affecting/algebraic literal
 code/repro/test_zero_shock_invariance.py,21,[0],"sys.path.insert(0, os.path.join(HERE, '..', 'model'))",reviewed result-affecting/algebraic literal
 code/repro/test_zero_shock_invariance.py,34,[0.005],TOL_YR10 = 0.005   # 0.5 % maximum permitted year-10 drift,reviewed result-affecting/algebraic literal
 code/repro/test_zero_shock_invariance.py,35,[0.01],TOL_YR30 = 0.010   # 1.0 % maximum permitted year-30 drift,reviewed result-affecting/algebraic literal

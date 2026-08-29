@@ -1,5 +1,34 @@
 # CHANGELOG — ERFS-100341
 
+## v17 — realized-yield market clearing, restored eps_F_N central, release audits (2026-08-29)
+
+Everything below this entry describes earlier deposits; numbers quoted in
+older entries are historical. The released result family is:
+
+- **Global S3 yield loss 2.32 / 3.02 / 3.07 % at years 1/10/30** (was
+  2.31 / 3.18 / 3.29 in the v14 SOL deposit). Two changes moved it: F-025
+  replaced the log-linear within-step clearing with realized-yield market
+  clearing (the price is root-found against the monthly biophysical model's
+  own production response), and F-026 restored the central soil-N
+  fertilizer-demand feedback to eps_F_N = -0.50, closing a code-document fork
+  found by an external audit.
+- SSA y_max 3.97 t/ha (production-path calibration, F-002/D3 line).
+- Financial results are reported as crop revenue net of nitrogen-fertilizer
+  expenditure (partial net revenue) for the four regions with audited price
+  pairs; the SSA-largest-financial-loss claim is retracted.
+- The four-pool quantitative engine comparison (Figure S5, Supplementary
+  table 2, the 0.9-2.5x ratios) is withdrawn pending a regenerable engine.
+- The Monte Carlo ensemble was regenerated through the build graph (1,000
+  draws, seeded, ERA5): buffering P = 1.0 in every region.
+- The claim register moved to `docs/claims.yaml` (19 claims, 70 checks,
+  document basis v17); `CLAIM_REGISTER_sol.*` is archived under
+  `docs/archive/`. Build outputs are canonicalized at write time (floats at
+  six significant digits) so the staleness gate is byte-stable across
+  machines (F-028).
+
+Ledger: FINDINGS.md F-018 through F-028. Release documents:
+`resumbission/v17/` (RELEASE_AUDIT_v17.md there).
+
 ## v14 SOL / deposit v1.5 — complete parameter, robustness and evidence audit
 
 This release supersedes all numerical summaries below. It executes the

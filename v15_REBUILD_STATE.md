@@ -1,5 +1,13 @@
 # v15 REBUILD — STATE
 
+> **SUPERSEDED working record (marked 2026-08-29, F-028).** This file is a
+> preserved process document from the v15 rebuild. Numbers quoted in it predate
+> F-025 (realized-yield market clearing) and F-026 (central eps_F_N = -0.50)
+> and are NOT the released results. The released headline family is: global S3
+> yield loss 2.32 / 3.02 / 3.07 % at years 1/10/30; SSA y_max 3.97. Current
+> truth lives in README.md, docs/claims.yaml (v17 basis) and FINDINGS.md.
+
+
 **Read this file first. It is deliberately short.**
 Full specification: `FINDINGS.md` (73 KB — read only the section named for your step, never the whole file).
 Full context: `HANDOFF_v15_model_assurance.md`.

@@ -14,9 +14,9 @@
   },
   "node": "calibration_production_path",
   "outputs": {
-    "results/calibration_production_path.csv": "4f445e4445e439ef857952a9e6a7a772ed0d4c9a1f6b683227cbeb422238d666"
+    "results/calibration_production_path.csv": "75e200fd12dbe306640de2f5b63da9d9de5c82e3c7699d820ad47dd00a6a9067"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T17:12:24Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T20:15:02Z",
+  "stamped_at_commit": "dcb8517"
 }

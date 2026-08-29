@@ -15,10 +15,10 @@
   "node": "table_s4",
   "outputs": {
     "data/crop_response_calibration_table.csv": "c8f6ccccd349e15d45e334c95027ea69ef6fdf6312e8a00793f70641293e737b",
-    "data/figS12_curves.json": "fb232610db2e8eb2a5c69c101b10d1695574ffc15af2f5b6a91226b1bf3fe009",
-    "outputs/Table_S4_calibration_sol.csv": "2899f7a573ec3fbb5dc9aed859e7e6ea40fa244b59313c67c27b95ddc8055c89"
+    "data/figS12_curves.json": "516548da025fdef1425d79ac06e2509833c5a2eaa286a6518a9e2ea30cb3e45d",
+    "outputs/Table_S4_calibration_sol.csv": "bb56969a30957cc00ba2882790b85ff621e60b81a901cfe52abc98b8b6551c2f"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T17:06:56Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T20:01:46Z",
+  "stamped_at_commit": "dcb8517"
 }

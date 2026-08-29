@@ -1,13 +1,13 @@
 scenario,region,predicted_reduction_pct,observed_reduction_pct
-Halved (0.5×),North America,4.854167086738926,2.6
-Halved (0.5×),Europe,6.023967668631247,9.6
-Halved (0.5×),South Asia,9.705726501189982,-2.3
-Halved (0.5×),Sub-Saharan Africa,12.096999402101805,16.2
-Baseline (1.0×),North America,9.472507953397125,2.6
-Baseline (1.0×),Europe,11.686927805495218,9.6
-Baseline (1.0×),South Asia,18.47064700921319,-2.3
-Baseline (1.0×),Sub-Saharan Africa,22.7351681556633,16.2
-Doubled (2.0×),North America,18.048396273010248,2.6
-Doubled (2.0×),Europe,22.016683115012047,9.6
-Doubled (2.0×),South Asia,33.53660939918753,-2.3
-Doubled (2.0×),Sub-Saharan Africa,40.314372927460575,16.2
+Halved (0.5×),North America,4.85417,2.6
+Halved (0.5×),Europe,6.02397,9.6
+Halved (0.5×),South Asia,9.70573,-2.3
+Halved (0.5×),Sub-Saharan Africa,12.097,16.2
+Baseline (1.0×),North America,9.47251,2.6
+Baseline (1.0×),Europe,11.6869,9.6
+Baseline (1.0×),South Asia,18.4706,-2.3
+Baseline (1.0×),Sub-Saharan Africa,22.7352,16.2
+Doubled (2.0×),North America,18.0484,2.6
+Doubled (2.0×),Europe,22.0167,9.6
+Doubled (2.0×),South Asia,33.5366,-2.3
+Doubled (2.0×),Sub-Saharan Africa,40.3144,16.2

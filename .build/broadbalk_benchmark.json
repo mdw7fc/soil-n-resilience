@@ -14,11 +14,11 @@
   },
   "node": "broadbalk_benchmark",
   "outputs": {
-    "data/benchmarks/broadbalk_yield_benchmark_sol.csv": "45688928489466eb0e19d70c35144450367d92bdfca91fdee9259ca2247b529d",
-    "figures/Figure_S2_broadbalk_benchmark.pdf": "c004116a953821298ec1baf5ed01d6c6346f128e0536d269d5a004b60f9304de",
+    "data/benchmarks/broadbalk_yield_benchmark_sol.csv": "d1b72e0f749ca837247ff7f5fa34b8341d455818e13d96ba5d060e0df596eaa3",
+    "figures/Figure_S2_broadbalk_benchmark.pdf": "3d4547407b68d882df96e8c9b12517229a32b59b1842e115fa312d44cac0caee",
     "figures/Figure_S2_broadbalk_benchmark.png": "58c5b98182951c1b7282b400a90e1e6222dd63031d5c5f011aee38debf21bf75"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T17:10:18Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T20:13:22Z",
+  "stamped_at_commit": "dcb8517"
 }

@@ -1,9 +1,11 @@
 # MANIFEST — ERFS-100341 canonical reproducibility deposit
 
-Generated for the v14 SOL manuscript, deposit v1.5. Central model results derive
-from the ERA5 climate run to year 30 (`code/repro/run_canonical.py`). Entries
-for benchmarks and Figure 3 use the explicitly identified deposited datasets.
-See `CHANGELOG.md`.
+Maintained for the v17 release (F-025 realized-yield market clearing, F-026
+central eps_F_N = -0.50; see FINDINGS.md). Central model results derive from
+the ERA5 climate run to year 30 (`code/repro/run_canonical.py`); the claim
+register that gates every quoted number is `docs/claims.yaml` (19 claims, 70
+checks, document basis v17), run by `make verify`. Entries for benchmarks and
+Figure 3 use the explicitly identified deposited datasets. See `CHANGELOG.md`.
 
 ## Root
 
@@ -15,8 +17,9 @@ See `CHANGELOG.md`.
 - `.zenodo.json` — Zenodo deposit metadata
 - `LICENSE` — MIT (code) + CC-BY-4.0 (data/figures)
 - `requirements.txt` — Python dependencies
-- `EVIDENTIARY_STANDARD_sol.md` — prospective acceptance rules
-- `CLAIM_REGISTER_sol.csv` / `.md` — result-by-result retain/qualify/exclude decisions
+- `EVIDENTIARY_STANDARD_sol.md` — prospective acceptance rules (superseded working record)
+- `docs/claims.yaml` — the claim register: 19 claims, 70 checks, document basis v17
+- `docs/archive/CLAIM_REGISTER_sol.csv` / `.md` — pre-F-025 register, archived; values are historical
 - `PARAMETER_LEDGER_sol.csv` / `.md` — 577 semantic live-parameter entries
 - `NUMERIC_LITERAL_AUDIT_sol.csv` — 2,087 audited source-line numeric entries
 
@@ -81,6 +84,10 @@ See `CHANGELOG.md`.
 - `test_mc_robustness_sol.py` — pre-specified 95% joint-prior direction gate
 - `test_parameter_extremes_sol.py` — one-at-a-time prior bounds and WHC × εF,N grid
 - `test_cross_document_consistency_sol.py` — headline values, Table S4 and embedded-figure check
+- `test_repo_docs_consistency.py` — **new in v17** — README/MANIFEST/HANDOFF carry the released
+  family; superseded working records must say so (F-028)
+- `make_s3_shock_calibration.py` — **new in v17** — regenerates `results/s3_shock_calibration.csv`,
+  retiring the deposit's last unsourced input (F-027)
 
 ## Data (`data/`)
 
@@ -145,7 +152,7 @@ until D3.
 - `Figure_S11_severity_gradient.png` / `.pdf` — **new in v1.3** — SOC gradient vs shock severity
 - `Figure_S8_elasticity_sensitivity.png` — elasticity sensitivity (canonical ERA5)
 - `Figure_S12_crop_response_calibration.png` — simulated crop-response calibration (canonical y_max)
-- `Figure_S13_OFRA_SSA_validation.png` — OFRA contextual benchmark overlay (SSA y_max = 3.88)
+- `Figure_S13_OFRA_SSA_validation.png` — OFRA contextual benchmark overlay (SSA y_max = 3.97, production-path calibration)
 
 ## Outputs (`outputs/`)
 

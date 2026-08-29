@@ -43,6 +43,7 @@ TESTS := \
 	code/tests/test_supply_state.py \
 	code/repro/test_parameter_consistency_sol.py \
 	code/repro/test_cross_document_consistency_sol.py \
+	code/repro/test_repo_docs_consistency.py \
 	code/repro/test_parameter_extremes_sol.py
 
 # Excluded from the gate, by name and with the reason. A test excluded without

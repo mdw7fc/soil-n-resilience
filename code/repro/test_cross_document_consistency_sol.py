@@ -63,6 +63,8 @@ def main() -> None:
         "3.5 mm",
         "reduces Sub-Saharan African year-10 yield loss by approximately 8%",
         "ε_F,N = −0.50",
+        "withdrawn in this revision",          # four-pool comparison (F-028)
+        "land-response coefficient",           # replaced gross-margin descriptor
     ], "manuscript")
     require(si, [
         "6.198", "6.022", "6.220", "3.773", "4.874", "5.414", "3.967", "4.318",
@@ -74,6 +76,8 @@ def main() -> None:
         "y_max = 3.97",
         "withdrawn in this revision",
         "ρ = +0.54",                 # fert-elasticity yr10, Note 3
+        "plus 12,000 evaluations",   # Note 6: yield vs partial-net-revenue counts
+        "in each of the four regions with audited price pairs",
     ], "SI")
     require(response, [
         "ε_F,N = −0.50, active in S3, SC1 and SC2",
@@ -82,6 +86,7 @@ def main() -> None:
         "ρ = +0.19",
         "0.62 percentage points",
         "y_max = 3.97",
+        "withdrawn the numerical results",   # four-pool comparison (F-028)
     ], "response")
 
     stale = [
@@ -98,6 +103,20 @@ def main() -> None:
         "roughly twice the year-30",
         "83.7% of draws despite",
         "2.6 to 10.3 percentage points",
+        # F-028: four-pool withdrawal must hold everywhere, and the partial
+        # net-revenue framing admits no leftover gross-margin claims
+        "Gross-margin losses follow",
+        "fertilizer share in regional gross margin",
+        "gross-margin change",
+        "higher year-1 gross margin",
+        "in gross-margin terms",
+        "gross-margin response",
+        "retained here as originally reported",
+        "we retain this analysis",
+        "Supplementary Fig. S5; Supplementary table 2",
+        "Partitioning of microbially-explicit 4-pool SOC loss",
+        "comparable or larger under halved",
+        "3.0–5.9 percentage points when halved",
     ]
     forbid(manuscript + "\n" + si + "\n" + response, stale, "all documents")
 

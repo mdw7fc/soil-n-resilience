@@ -14,11 +14,11 @@
   },
   "node": "canonical",
   "outputs": {
-    "data/canonical_ERA5_y30.csv": "f57fb2502a09fbfc9444abcedad9586a0b24d866f3f6e6f2cddbd97998c05ba5",
-    "data/canonical_ERA5_y30.json": "790f524dc3adf57f8a23758bbe637952cded7d3caac928044d95afbf8f038ae0",
+    "data/canonical_ERA5_y30.csv": "7e82d86a2a900b1c47a1c7d27e1be65625fbe474ecdcb957b1d3659911b89e15",
+    "data/canonical_ERA5_y30.json": "06f3e755c20021ffea7abfa81ba25ba8fe107eb16454ec7415940ca89d87b052",
     "outputs/global_S3_losses.txt": "1bcca226c1f6459c10cd819b976baa7b790dc1fbf5f751700024b2ed471fc97a"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T16:55:49Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T20:35:04Z",
+  "stamped_at_commit": "dcb8517"
 }

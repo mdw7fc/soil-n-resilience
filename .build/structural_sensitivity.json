@@ -14,10 +14,10 @@
   },
   "node": "structural_sensitivity",
   "outputs": {
-    "outputs/price_convention_sensitivity_sol.csv": "b0a1c6d3b71c4f01e27bfcb8e92f8e0670828b4ec00077ef0b37e4d98c087c10",
-    "outputs/structural_sensitivity_sol.csv": "89da39f43b4aa542d176a051255ce32e4f02c4e72584bf110f01741528272da9"
+    "outputs/price_convention_sensitivity_sol.csv": "7c12495dd5a4d5439a2a483d83ead8f1030d67851ced9c7a8f8c0b5e7de1260f",
+    "outputs/structural_sensitivity_sol.csv": "567819baedbdec21eaf7a3197464498f3bcf0f00f75be909d1e4a2b745319c56"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T17:11:43Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T20:14:31Z",
+  "stamped_at_commit": "dcb8517"
 }

@@ -1,71 +1,71 @@
 claim_id,location,check_id,stated,model,delta,tol,units,verdict
-C-001,MS [6]; MS [46]; figure 2a,gradient_monotone_north_america,1,1.000000,+0.000000,0,boolean,AGREES
-C-001,MS [6]; MS [46]; figure 2a,gradient_monotone_europe,1,1.000000,+0.000000,0,boolean,AGREES
-C-001,MS [6]; MS [46]; figure 2a,gradient_monotone_east_asia,1,1.000000,+0.000000,0,boolean,AGREES
-C-001,MS [6]; MS [46]; figure 2a,gradient_monotone_south_asia,1,1.000000,+0.000000,0,boolean,AGREES
-C-001,MS [6]; MS [46]; figure 2a,gradient_monotone_southeast_asia,1,1.000000,+0.000000,0,boolean,AGREES
+C-001,MS [6]; MS [46]; figure 2a,gradient_monotone_north_america,1,1,+0.000000,0,boolean,AGREES
+C-001,MS [6]; MS [46]; figure 2a,gradient_monotone_europe,1,1,+0.000000,0,boolean,AGREES
+C-001,MS [6]; MS [46]; figure 2a,gradient_monotone_east_asia,1,1,+0.000000,0,boolean,AGREES
+C-001,MS [6]; MS [46]; figure 2a,gradient_monotone_south_asia,1,1,+0.000000,0,boolean,AGREES
+C-001,MS [6]; MS [46]; figure 2a,gradient_monotone_southeast_asia,1,1,+0.000000,0,boolean,AGREES
 C-001,MS [6]; MS [46]; figure 2a,gradient_monotone_latin_america,0,0.000000,+0.000000,0,boolean,AGREES
 C-001,MS [6]; MS [46]; figure 2a,gradient_monotone_sub_saharan_africa,0,0.000000,+0.000000,0,boolean,AGREES
 C-001,MS [6]; MS [46]; figure 2a,gradient_monotone_fsu_central_asia,0,0.000000,+0.000000,0,boolean,AGREES
-C-002,SI [167] (Supplementary Figure S9 caption),buffer_positive_every_region,1,1.000000,+0.000000,0,probability,AGREES
+C-002,SI [167] (Supplementary Figure S9 caption),buffer_positive_every_region,1,1,+0.000000,0,probability,AGREES
 C-002,SI [167] (Supplementary Figure S9 caption),cross_region_median_buffer_ppt,0.88,0.883008,+0.003008,0.01,percentage points,AGREES
-C-010,MS [64],ssa_soc_decline_30yr,2.1,2.142800,+0.042800,0.15,% of year-0 stock,AGREES
-C-010,MS [64],ssa_loss_yr30,5.1,5.076000,-0.024000,0.1,% yield loss,AGREES
-C-010,MS [64],south_asia_loss_yr30,4.8,4.791000,-0.009000,0.1,% yield loss,AGREES
-C-010,MS [64],fsu_loss_yr30,5.2,5.187000,-0.013000,0.1,% yield loss,AGREES
-C-011,MS [56]; figure 2b,figure2_global_total_yr10,3,3.020502,+0.020502,0.1,% yield loss,AGREES
-C-011,MS [56]; figure 2b,figure2_south_asia_total_yr10,4.8,4.796196,-0.003804,0.1,% yield loss,AGREES
-C-014,MS [6] (abstract); MS [47]; MS [73],margin_gap_min_pp,0.3,0.273254,-0.026746,0.1,percentage points,AGREES
-C-014,MS [6] (abstract); MS [47]; MS [73],margin_gap_max_pp,1,0.984991,-0.015009,0.1,percentage points,AGREES
+C-010,MS [64],ssa_soc_decline_30yr,2.1,2.1428,+0.042800,0.15,% of year-0 stock,AGREES
+C-010,MS [64],ssa_loss_yr30,5.1,5.076,-0.024000,0.1,% yield loss,AGREES
+C-010,MS [64],south_asia_loss_yr30,4.8,4.791,-0.009000,0.1,% yield loss,AGREES
+C-010,MS [64],fsu_loss_yr30,5.2,5.187,-0.013000,0.1,% yield loss,AGREES
+C-011,MS [56]; figure 2b,figure2_global_total_yr10,3,3.0205,+0.020500,0.1,% yield loss,AGREES
+C-011,MS [56]; figure 2b,figure2_south_asia_total_yr10,4.8,4.7962,-0.003800,0.1,% yield loss,AGREES
+C-014,MS [6] (abstract); MS [47]; MS [73],margin_gap_min_pp,0.3,0.273260,-0.026740,0.1,percentage points,AGREES
+C-014,MS [6] (abstract); MS [47]; MS [73],margin_gap_max_pp,1,0.984993,-0.015007,0.1,percentage points,AGREES
 C-014,MS [6] (abstract); MS [47]; MS [73],ssa_margin_mean_pct,0,0.013906,+0.013906,0.1,% change in margin,AGREES
 C-014,MS [6] (abstract); MS [47]; MS [73],ssa_margin_half_pct,-0.9,-0.917289,-0.017289,0.1,% change in margin,AGREES
-C-021,MS [28]; MS [31]; AR [40],whc_sensitivity_ms28,3.5,3.480000,-0.020000,0.1,mm per pp SOC,AGREES
-C-021,MS [28]; MS [31]; AR [40],whc_sensitivity_ms31,3.5,3.480000,-0.020000,0.1,mm per pp SOC,AGREES
-C-021,MS [28]; MS [31]; AR [40],whc_sensitivity_ar40,3.5,3.480000,-0.020000,0.1,mm per pp SOC,AGREES
-C-030,SI [80],n_price_sub_saharan_africa,2.3,2.300000,+0.000000,0.01,USD per kg N,AGREES
-C-030,SI [80],n_price_south_asia,1.2,1.200000,+0.000000,0.01,USD per kg N,AGREES
-C-030,SI [80],n_price_latin_america,1.15,1.150000,+0.000000,0.01,USD per kg N,AGREES
-C-030,SI [80],n_price_north_america,1.1,1.100000,+0.000000,0.01,USD per kg N,AGREES
-C-030,SI [80],crop_price_sub_saharan_africa,300,300.000000,+0.000000,1,USD per t,AGREES
-C-030,SI [80],crop_price_south_asia,280,280.000000,+0.000000,1,USD per t,AGREES
-C-030,SI [80],crop_price_latin_america,260,260.000000,+0.000000,1,USD per t,AGREES
-C-030,SI [80],crop_price_north_america,250,250.000000,+0.000000,1,USD per t,AGREES
-C-031,MS [53],spread_min_crisis,0.2,0.218443,+0.018443,0.1,percentage points,AGREES
-C-031,MS [53],spread_max_crisis,1.5,1.441040,-0.058960,0.1,percentage points,AGREES
-C-031,MS [53],spread_min_300,0.4,0.419337,+0.019337,0.1,percentage points,AGREES
-C-031,MS [53],spread_max_300,2.2,2.162617,-0.037383,0.1,percentage points,AGREES
-C-032,SI [126],priced_region_count,4,4.000000,+0.000000,0,count,AGREES
-C-032,SI [126],priced_regions_match,1,1.000000,+0.000000,0,boolean,AGREES
+C-021,MS [28]; MS [31]; AR [40],whc_sensitivity_ms28,3.5,3.48,-0.020000,0.1,mm per pp SOC,AGREES
+C-021,MS [28]; MS [31]; AR [40],whc_sensitivity_ms31,3.5,3.48,-0.020000,0.1,mm per pp SOC,AGREES
+C-021,MS [28]; MS [31]; AR [40],whc_sensitivity_ar40,3.5,3.48,-0.020000,0.1,mm per pp SOC,AGREES
+C-030,SI [80],n_price_sub_saharan_africa,2.3,2.3,+0.000000,0.01,USD per kg N,AGREES
+C-030,SI [80],n_price_south_asia,1.2,1.2,+0.000000,0.01,USD per kg N,AGREES
+C-030,SI [80],n_price_latin_america,1.15,1.15,+0.000000,0.01,USD per kg N,AGREES
+C-030,SI [80],n_price_north_america,1.1,1.1,+0.000000,0.01,USD per kg N,AGREES
+C-030,SI [80],crop_price_sub_saharan_africa,300,300,+0.000000,1,USD per t,AGREES
+C-030,SI [80],crop_price_south_asia,280,280,+0.000000,1,USD per t,AGREES
+C-030,SI [80],crop_price_latin_america,260,260,+0.000000,1,USD per t,AGREES
+C-030,SI [80],crop_price_north_america,250,250,+0.000000,1,USD per t,AGREES
+C-031,MS [53],spread_min_crisis,0.2,0.218440,+0.018440,0.1,percentage points,AGREES
+C-031,MS [53],spread_max_crisis,1.5,1.44104,-0.058960,0.1,percentage points,AGREES
+C-031,MS [53],spread_min_300,0.4,0.419340,+0.019340,0.1,percentage points,AGREES
+C-031,MS [53],spread_max_300,2.2,2.16262,-0.037380,0.1,percentage points,AGREES
+C-032,SI [126],priced_region_count,4,4,+0.000000,0,count,AGREES
+C-032,SI [126],priced_regions_match,1,1,+0.000000,0,boolean,AGREES
 C-033,SI-sol [81],south_asia_net_revenue_farmer_paid_pct,-0.59,-0.593005,-0.003005,0.01,% change in net revenue,AGREES
 C-040,MS [35]; SI [76],eps_F_N_central,-0.5,-0.500000,+0.000000,0,elasticity,AGREES
 C-040,MS [35]; SI [76],eps_F_PF_sub_saharan_africa,-0.5,-0.500000,+0.000000,0,elasticity,AGREES
-C-041,SI [151] (Supplementary Figure S8 caption),global_yr10_baseline,3,3.020502,+0.020502,0.1,% yield loss,AGREES
-C-041,SI [151] (Supplementary Figure S8 caption),global_yr10_halved,1.5,1.512633,+0.012633,0.1,% yield loss,AGREES
-C-041,SI [151] (Supplementary Figure S8 caption),reduction_pct,50,49.921124,-0.078876,1,% reduction,AGREES
-C-042,SI [152],global_yr1,5.2,5.200000,+0.000000,0.1,% price index,AGREES
-C-042,SI [152],global_yr10,6.7,6.720000,+0.020000,0.1,% price index,AGREES
-C-042,SI [152],latin_america_yr10,4.7,4.740000,+0.040000,0.1,% price index,AGREES
-C-042,SI [152],fsu_yr10,11.9,11.890000,-0.010000,0.1,% price index,AGREES
-C-042,SI [152],regional_yr1_min,2.4,2.440000,+0.040000,0.1,% price index,AGREES
-C-042,SI [152],regional_yr1_max,10.3,10.290000,-0.010000,0.1,% price index,AGREES
-C-050,MS [56]; MS [65]; SI [78]; SI [151],shock_pct,104,103.900000,-0.100000,1,% price increase,AGREES
-C-050,MS [56]; MS [65]; SI [78]; SI [151],s1_reduction_pct,20,20.000022,+0.000022,1,% N-tonnage cut,AGREES
-C-050,MS [56]; MS [65]; SI [78]; SI [151],s3_sustained_mean_pct,19,18.742785,-0.257215,1,% N-tonnage cut,AGREES
-C-060,MS [56]; MS [32],global_yr1,2.3,2.317000,+0.017000,0.1,% yield loss,AGREES
-C-060,MS [56]; MS [32],global_yr10,3,3.021000,+0.021000,0.1,% yield loss,AGREES
-C-060,MS [56]; MS [32],east_asia_yr10,1.2,1.184000,-0.016000,0.1,% yield loss,AGREES
-C-060,MS [56]; MS [32],south_asia_yr10,4.8,4.796000,-0.004000,0.1,% yield loss,AGREES
-C-060,MS [56]; MS [32],fsu_yr10,5.1,5.088000,-0.012000,0.1,% yield loss,AGREES
-C-060,MS [56]; MS [32],ssa_yr10,4.7,4.745000,+0.045000,0.1,% yield loss,AGREES
-C-060,MS [56]; MS [32],latin_america_yr10,2.4,2.410000,+0.010000,0.1,% yield loss,AGREES
-C-060,MS [56]; MS [32],total_cropland_mha,1230,1230.000000,+0.000000,1,Mha,AGREES
-C-061,MS [64],pulse_yr1,2.3,2.317000,+0.017000,0.1,% yield loss,AGREES
+C-041,SI [151] (Supplementary Figure S8 caption),global_yr10_baseline,3,3.0205,+0.020500,0.1,% yield loss,AGREES
+C-041,SI [151] (Supplementary Figure S8 caption),global_yr10_halved,1.5,1.51263,+0.012630,0.1,% yield loss,AGREES
+C-041,SI [151] (Supplementary Figure S8 caption),reduction_pct,50,49.9212,-0.078795,1,% reduction,AGREES
+C-042,SI [152],global_yr1,5.2,5.2,+0.000000,0.1,% price index,AGREES
+C-042,SI [152],global_yr10,6.7,6.72,+0.020000,0.1,% price index,AGREES
+C-042,SI [152],latin_america_yr10,4.7,4.74,+0.040000,0.1,% price index,AGREES
+C-042,SI [152],fsu_yr10,11.9,11.89,-0.010000,0.1,% price index,AGREES
+C-042,SI [152],regional_yr1_min,2.4,2.44,+0.040000,0.1,% price index,AGREES
+C-042,SI [152],regional_yr1_max,10.3,10.29,-0.010000,0.1,% price index,AGREES
+C-050,MS [56]; MS [65]; SI [78]; SI [151],shock_pct,104,103.9,-0.100000,1,% price increase,AGREES
+C-050,MS [56]; MS [65]; SI [78]; SI [151],s1_reduction_pct,20,20,+0.000022,1,% N-tonnage cut,AGREES
+C-050,MS [56]; MS [65]; SI [78]; SI [151],s3_sustained_mean_pct,19,18.7428,-0.257215,1,% N-tonnage cut,AGREES
+C-060,MS [56]; MS [32],global_yr1,2.3,2.317,+0.017000,0.1,% yield loss,AGREES
+C-060,MS [56]; MS [32],global_yr10,3,3.021,+0.021000,0.1,% yield loss,AGREES
+C-060,MS [56]; MS [32],east_asia_yr10,1.2,1.184,-0.016000,0.1,% yield loss,AGREES
+C-060,MS [56]; MS [32],south_asia_yr10,4.8,4.796,-0.004000,0.1,% yield loss,AGREES
+C-060,MS [56]; MS [32],fsu_yr10,5.1,5.088,-0.012000,0.1,% yield loss,AGREES
+C-060,MS [56]; MS [32],ssa_yr10,4.7,4.745,+0.045000,0.1,% yield loss,AGREES
+C-060,MS [56]; MS [32],latin_america_yr10,2.4,2.41,+0.010000,0.1,% yield loss,AGREES
+C-060,MS [56]; MS [32],total_cropland_mha,1230,1230,+0.000000,1,Mha,AGREES
+C-061,MS [64],pulse_yr1,2.3,2.317,+0.017000,0.1,% yield loss,AGREES
 C-061,MS [64],pulse_yr5,0.01,0.010000,+0.000000,0.01,% yield loss,AGREES
 C-070,MS [27],worst_faostat_gap_pct,0,0.000000,+0.000000,0.01,% deviation,AGREES
-C-070,MS [27],faostat_target_north_america,5.5,5.500000,+0.000000,0.05,t/ha,AGREES
-C-070,MS [27],faostat_target_east_asia,6,6.000000,+0.000000,0.05,t/ha,AGREES
-C-070,MS [27],faostat_target_ssa,1.5,1.500000,+0.000000,0.05,t/ha,AGREES
-C-071,MS [78],bnf_ramp_not_wired,1,1.000000,+0.000000,0,boolean,AGREES
-C-071,MS [78],bnf_constant_ssa_kg_n,15,15.000000,+0.000000,0.05,kg N/ha/yr,AGREES
+C-070,MS [27],faostat_target_north_america,5.5,5.5,+0.000000,0.05,t/ha,AGREES
+C-070,MS [27],faostat_target_east_asia,6,6,+0.000000,0.05,t/ha,AGREES
+C-070,MS [27],faostat_target_ssa,1.5,1.5,+0.000000,0.05,t/ha,AGREES
+C-071,MS [78],bnf_ramp_not_wired,1,1,+0.000000,0,boolean,AGREES
+C-071,MS [78],bnf_constant_ssa_kg_n,15,15,+0.000000,0.05,kg N/ha/yr,AGREES
 C-072,MS [27]; MS [28],water_stress_min_factor,0.3,0.300000,+0.000000,0.005,fraction,AGREES
-C-072,MS [27]; MS [28],yield_min_regional_all_positive,1,1.000000,+0.000000,0,boolean,AGREES
+C-072,MS [27]; MS [28],yield_min_regional_all_positive,1,1,+0.000000,0,boolean,AGREES

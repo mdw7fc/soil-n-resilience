@@ -10,16 +10,16 @@
     "code/model/registry.py": "0ad6974d63de654822aa0b456a1b92a57052bf0092efc1ab3863b4f1dd45546f",
     "code/model/seams.py": "5203d7d1a0f8a88ce5b94b5394e1ecc6aea8dee9d95a2df76b023572a4ad85e2",
     "code/model/soil_n_model.py": "ea7ffb4e0db8a4ce2dbc921006819db711dad382f759f5da22399ac28d003aa8",
-    "data/canonical_ERA5_y30.json": "790f524dc3adf57f8a23758bbe637952cded7d3caac928044d95afbf8f038ae0",
-    "data/figure2_soc_gradient.json": "792d8ae8232f6abb7f734b0e798d1611ef43669c4d29b81e97c42fca31879aa1"
+    "data/canonical_ERA5_y30.json": "06f3e755c20021ffea7abfa81ba25ba8fe107eb16454ec7415940ca89d87b052",
+    "data/figure2_soc_gradient.json": "d76c70cf809e071f7284e35ea45cb2540bae4809a4bc571274980cc1a98fa4db"
   },
   "node": "figure_2",
   "outputs": {
-    "data/figure2_panels.json": "56decfffbb36754ae61ae977b6983834cf1c3df5363f67716a716d38cb0656dd",
-    "figures/Figure_2_regional_vulnerability.pdf": "00794e967e43e0d1eff81775d4d5566589b5ae541b776068e7d528bcbd911239",
-    "figures/Figure_2_regional_vulnerability.png": "34500486c83bfd83bdd249e302e3e16e409cb4753e939634f48ba7bd6115396d"
+    "data/figure2_panels.json": "fbcaf536da346c68f549516e877f2606c2ad9f1af4eb6ee1e04b96b078225e5e",
+    "figures/Figure_2_regional_vulnerability.pdf": "9ddc08b8e15054164d57b13edb89f53094882cebbfef4a00efe26033ff74d999",
+    "figures/Figure_2_regional_vulnerability.png": "52d2400285a1abd38df713d7a266de8f5a3b35804eb5f2d4a08ff43ca4da6154"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T17:00:44Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T19:57:05Z",
+  "stamped_at_commit": "dcb8517"
 }

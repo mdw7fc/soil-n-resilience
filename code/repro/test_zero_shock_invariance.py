@@ -92,6 +92,11 @@ def main():
         w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         w.writeheader()
         [w.writerow(r) for r in rows]
+    # F-028: dual-role file (gate suite and node generator); write canonical
+    # bytes so a suite run cannot re-stale its own node. See build.py.
+    sys.path.insert(0, os.path.join(HERE, '..'))
+    import build as _build
+    _build.canonicalize_file('outputs/zero_shock_invariance.csv')
     print("%-22s %10s %10s %12s" % ("region", "yr10 frac", "yr30 frac", "max |dev|"))
     for r in rows:
         print("%-22s %10.5f %10.5f %12.6f" % (r['region'], r['yr10_yield_fraction'],

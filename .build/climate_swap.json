@@ -18,6 +18,6 @@
     "results/climate_swap_stats.txt": "0e0c3449812e92239e398ccf7547c7263a0b6a71bf80e3543f37bdb2721901fe"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T16:56:47Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T20:35:22Z",
+  "stamped_at_commit": "dcb8517"
 }

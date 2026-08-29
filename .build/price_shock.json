@@ -14,10 +14,10 @@
   },
   "node": "price_shock",
   "outputs": {
-    "data/figure1_farm_gradient.json": "0444c419beec386958a7db6c3c009d2fe4e2267b7215aa94d0d2e1ce35dcb811",
-    "data/figure2_soc_gradient.json": "792d8ae8232f6abb7f734b0e798d1611ef43669c4d29b81e97c42fca31879aa1"
+    "data/figure1_farm_gradient.json": "1fc1015b061214ff4c73ecb2fadc045bde345a2ed2b975abcf722ffd1dab4ae1",
+    "data/figure2_soc_gradient.json": "d76c70cf809e071f7284e35ea45cb2540bae4809a4bc571274980cc1a98fa4db"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T17:00:29Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T19:56:53Z",
+  "stamped_at_commit": "dcb8517"
 }

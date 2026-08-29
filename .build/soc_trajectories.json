@@ -15,9 +15,9 @@
   "node": "soc_trajectories",
   "outputs": {
     "data/soc_trajectories.csv": "8599349d325d2f5bf8486b782baf418476d81179b633cdb7aaf105d7b268b6c6",
-    "data/soc_trajectories.json": "2b03de28bf2576b8762d06578893ef6fd4a5af25fbb1e4e420e9503ba5e89af8"
+    "data/soc_trajectories.json": "8e495abc55d8b0ae8c14e7dd83c39e460cb2486391c25e75942075b65daca9ee"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T16:56:24Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T20:35:13Z",
+  "stamped_at_commit": "dcb8517"
 }

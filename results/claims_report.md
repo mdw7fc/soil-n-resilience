@@ -145,7 +145,7 @@ Every drift is an edit owed to the document, not a tolerance artefact. Tolerance
 |---|---:|---:|---:|---:|---|
 | `global_yr10_baseline` | 3 | 3.0205 | +0.0205 | 0.1 | AGREES |
 | `global_yr10_halved` | 1.5 | 1.5126 | +0.0126 | 0.1 | AGREES |
-| `reduction_pct` | 50 | 49.9211 | -0.0789 | 1 | AGREES |
+| `reduction_pct` | 50 | 49.9212 | -0.0788 | 1 | AGREES |
 
 **Document edit owed.** Figure S8 caption: 3.4 / 1.9 / 46% -> the regenerated triple. F-015.
 

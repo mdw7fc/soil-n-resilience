@@ -60,6 +60,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -482,7 +483,9 @@ CACHES: Dict[str, str] = {
 # adopting realized market clearing; rerunning their generators against the
 # current model would measure a gap the model no longer has, so they are
 # frozen evidence, not regenerable artifacts (see the README there).
-PRESERVED_PREFIXES = ("baseline/surviving_v15/", "baseline/f022_f025_evidence/")
+PRESERVED_PREFIXES = ("baseline/surviving_v15/", "baseline/f022_f025_evidence/",
+                      # F-028: archived pre-F-025 claim register, kept for the record
+                      "docs/archive/")
 
 # Hand-written prose. Reconciliation notes are arguments about artifacts, not
 # artifacts. They are listed rather than pattern-matched so that a generated
@@ -547,6 +550,92 @@ def content_hash(rel: str) -> Optional[str]:
     if rel.endswith(".gz"):
         return gzip_payload_hash(rel)
     return file_hash(rel)
+
+
+# ---------------------------------------------------------------------------
+# Output canonicalization (F-028)
+# ---------------------------------------------------------------------------
+# The third external audit ran the graph on another machine and found a node
+# whose regenerated output differed from the stamped one at the 1e-14 scale:
+# libm/BLAS last-ulp differences, amplified through the monthly loop, land in
+# the full-precision float text that json.dump and csv writers emit. A
+# staleness gate that hashes bytes then reports a defect where there is none.
+#
+# The repair is at the write side, not the compare side: every node's textual
+# outputs are rewritten to a canonical form -- float literals carrying more
+# than six significant digits are re-rendered at six -- immediately after the
+# generator runs and before the sidecar is stamped. Six significant digits is
+# two orders finer than any value the documents quote (three to four), and
+# coarse enough that noise at 1e-13 relative cannot move a rounding boundary
+# (flip probability ~1e-7 per value). Tolerance-based comparison was rejected
+# because it would have to live in every consumer; canonical bytes fix every
+# consumer at once.
+
+_FLOAT_CELL = re.compile(r'-?(?:\d+\.\d+|\.\d+)(?:[eE][+-]?\d+)?')
+
+
+def _sig_digits(lit: str) -> int:
+    mant = lit.split('e')[0].split('E')[0].lstrip('-+').replace('.', '')
+    return len(mant.lstrip('0'))
+
+
+def _canon_float(x) -> float:
+    return float('%.6g' % float(x))
+
+
+def _canon_json_text(text: str) -> str:
+    obj = json.loads(text, parse_float=_canon_float)
+    return json.dumps(obj, indent=2, ensure_ascii=False) + '\n'
+
+
+def _canon_csv_text(text: str) -> str:
+    import csv as _csv
+    import io as _io
+    rows = list(_csv.reader(_io.StringIO(text)))
+    for row in rows:
+        for i, cell in enumerate(row):
+            if _FLOAT_CELL.fullmatch(cell) and _sig_digits(cell) > 6:
+                row[i] = '%.6g' % float(cell)
+    out = _io.StringIO()
+    _csv.writer(out, lineterminator='\n').writerows(rows)
+    return out.getvalue()
+
+
+def canonicalize_file(rel: str) -> bool:
+    """Rewrite one output file in canonical form. True if bytes changed."""
+    path = abspath(rel)
+    if not os.path.exists(path):
+        return False
+    if rel.endswith('.csv.gz'):
+        import gzip as _gzip
+        with _gzip.open(path, 'rt', encoding='utf-8') as fh:
+            old = fh.read()
+        new = _canon_csv_text(old)
+        # the container is rewritten unconditionally (mtime=0, no name) so the
+        # gzip bytes are as deterministic as the payload; content_hash() hashes
+        # the payload, so the return value tracks payload change only
+        with open(path, 'wb') as raw:
+            with _gzip.GzipFile(filename='', mode='wb', fileobj=raw,
+                                mtime=0) as gz:
+                gz.write(new.encode('utf-8'))
+        return new != old
+    if rel.endswith('.json'):
+        old = open(path, encoding='utf-8').read()
+        new = _canon_json_text(old)
+    elif rel.endswith('.csv'):
+        old = open(path, encoding='utf-8').read()
+        new = _canon_csv_text(old)
+    else:
+        return False
+    if new == old:
+        return False
+    with open(path, 'w', encoding='utf-8') as fh:
+        fh.write(new)
+    return True
+
+
+def canonicalize_outputs(node: "Node") -> List[str]:
+    return [p for p in node.outputs if canonicalize_file(p)]
 
 
 def generator_hash(node: "Node") -> Optional[str]:
@@ -844,8 +933,10 @@ def run_node(node: Node, log_dir: Optional[str] = None) -> int:
         proc = subprocess.run(cmd, cwd=ROOT)
     dt = time.time() - started
     if proc.returncode == 0:
+        canon = canonicalize_outputs(node)
         write_sidecar(node)
-        print("    ok   %.1fs" % dt, flush=True)
+        note = "  (canonicalized %d)" % len(canon) if canon else ""
+        print("    ok   %.1fs%s" % (dt, note), flush=True)
     else:
         print("    FAIL exit %d after %.1fs" % (proc.returncode, dt), flush=True)
     return proc.returncode

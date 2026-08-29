@@ -10,16 +10,16 @@
     "code/model/registry.py": "0ad6974d63de654822aa0b456a1b92a57052bf0092efc1ab3863b4f1dd45546f",
     "code/model/seams.py": "5203d7d1a0f8a88ce5b94b5394e1ecc6aea8dee9d95a2df76b023572a4ad85e2",
     "code/model/soil_n_model.py": "ea7ffb4e0db8a4ce2dbc921006819db711dad382f759f5da22399ac28d003aa8",
-    "data/benchmarks/broadbalk_yield_benchmark_sol.csv": "45688928489466eb0e19d70c35144450367d92bdfca91fdee9259ca2247b529d",
+    "data/benchmarks/broadbalk_yield_benchmark_sol.csv": "d1b72e0f749ca837247ff7f5fa34b8341d455818e13d96ba5d060e0df596eaa3",
     "data/benchmarks/observed_values.yaml": "2f094de971e1285ecc446b90f92dd3a4f5690742f18db60badc015c8ff55ef6f",
-    "data/canonical_ERA5_y30.json": "790f524dc3adf57f8a23758bbe637952cded7d3caac928044d95afbf8f038ae0"
+    "data/canonical_ERA5_y30.json": "06f3e755c20021ffea7abfa81ba25ba8fe107eb16454ec7415940ca89d87b052"
   },
   "node": "benchmarks",
   "outputs": {
     "outputs/benchmarks.csv": "8394907c07d52f331151b5573d832cf24fd7b7d861ac15291fa17ed8445d13e2",
-    "outputs/benchmarks.json": "3b5369099df0a82f58fd121d9cc0a5e41d6a089e9ec0045688c1104229aea4d9"
+    "outputs/benchmarks.json": "aa8d7f357a51a29e10e8e2f09d779a0c41ed82c2b2595a7c9da562be47858451"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T17:10:59Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T20:13:54Z",
+  "stamped_at_commit": "dcb8517"
 }

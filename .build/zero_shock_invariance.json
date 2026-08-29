@@ -1,6 +1,6 @@
 {
   "generator": "code/repro/test_zero_shock_invariance.py",
-  "generator_sha": "40c3215653c682aad4d12d57497404e67fa7700297ea018763008ea2f298b61a",
+  "generator_sha": "f48199f184274dcdee3be10d67b265194a289b6508a057513e103ab7365b66bd",
   "inputs": {
     "code/model/coupled_econ_biophysical.py": "f60020c4b556d77b267dd508fdb1e097415fdc3e89c979a568719a05d27d6ba4",
     "code/model/coupled_monthly.py": "d69c8ba2e75dad66c184935b27218a3dce194df61851db259911263606c090b9",
@@ -17,6 +17,6 @@
     "outputs/zero_shock_invariance.csv": "7630ce85105b8608149ac08e9130aa9c5b81cb86cca83fa0eaca42737f697fed"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T17:11:10Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T20:29:57Z",
+  "stamped_at_commit": "dcb8517"
 }

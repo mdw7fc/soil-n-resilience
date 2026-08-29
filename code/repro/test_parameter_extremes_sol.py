@@ -187,6 +187,13 @@ def main():
         writer.writeheader()
         writer.writerows(records)
 
+    # F-028: this file is both a gate suite and the node generator. When it
+    # runs as a suite it must leave the same canonical bytes the graph
+    # stamped, or `make verify` re-stales its own node on float noise.
+    sys.path.insert(0, str(ROOT / "code"))
+    import build as _build
+    _build.canonicalize_file("outputs/parameter_extreme_acceptance_sol.csv")
+
     assert all(r["domain_pass"] for r in records)
     failures = [r for r in records if not r["monotone_pass"]]
     print(f"PARAMETER EXTREME AUDIT: COMPLETE ({len(records)} region-case checks)")

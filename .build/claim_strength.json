@@ -10,7 +10,7 @@
     "code/model/registry.py": "0ad6974d63de654822aa0b456a1b92a57052bf0092efc1ab3863b4f1dd45546f",
     "code/model/seams.py": "5203d7d1a0f8a88ce5b94b5394e1ecc6aea8dee9d95a2df76b023572a4ad85e2",
     "code/model/soil_n_model.py": "ea7ffb4e0db8a4ce2dbc921006819db711dad382f759f5da22399ac28d003aa8",
-    "data/mc_ensemble/mc_posterior.csv.gz": "30b0b1bb8b0d85b22561f5caf3cfc707c56e58c767b61c6944cf3ea5badb0e2b",
+    "data/mc_ensemble/mc_posterior.csv.gz": "f5b9975d825a1dd42b9c8febbf7c34b533965354baaf707642f93ed4641a8b46",
     "docs/claims.yaml": "73485f44038664521019b006fa76f1176475ce2551ec1341019016e5e835e31a"
   },
   "node": "claim_strength",
@@ -19,6 +19,6 @@
     "results/claim_strength.md": "52552f8ff6aff3691b95a4e4e3c8f9b234b34fa4bc4223262b85acc305451e39"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T17:29:48Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T20:15:10Z",
+  "stamped_at_commit": "dcb8517"
 }

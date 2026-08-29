@@ -17,6 +17,6 @@
     "data/scenario_trajectories.csv": "b0b21006655c25dd3dc540d441c721b65da671f6bdd391c571579ed8a069dc5d"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T16:56:03Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T19:53:45Z",
+  "stamped_at_commit": "dcb8517"
 }

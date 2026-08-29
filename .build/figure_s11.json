@@ -14,11 +14,11 @@
   },
   "node": "figure_s11",
   "outputs": {
-    "data/figS11_severity_sweep.json": "825a102d0de4e032f278779bee62032d1d80fdb9ed74f7a0fd64036758d5e78c",
-    "figures/Figure_S11_severity_gradient.pdf": "9f2cd7dc299dd5147258d358b8d883fb4c775c0e6b42dd9d67f90b8ca0a4f3ad",
+    "data/figS11_severity_sweep.json": "4c2c2247697732a34a073c4567e52f2264cf6c646554f66ae19ad2fb44cca6c7",
+    "figures/Figure_S11_severity_gradient.pdf": "1359c80cc27113a6459be337a808637464e87833cd1fc527ebef6a3eedb4870e",
     "figures/Figure_S11_severity_gradient.png": "5ff55fcee2a741ff71fe7a9015e6325ef8209c71f94900693f44ddfa44c03e7c"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T17:10:05Z",
-  "stamped_at_commit": "0e834ce"
+  "stamped_at": "2026-08-29T20:13:12Z",
+  "stamped_at_commit": "dcb8517"
 }
