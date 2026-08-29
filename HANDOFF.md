@@ -92,7 +92,7 @@ Three document generations exist. Do not mix them:
   propagate its values.
 - **v14 set** (`resumbission/v14/`) — the basis the claim register tracks
   (`document_basis: v14` in claims.yaml).
-- **8_29 set** (`resumbission/8_29_documents/`, also committed in-repo) — the
+- **v17 set** (`resumbission/v17/`, also committed in-repo; released 2026-08-29, RELEASE_AUDIT_v17.md there) — the
   live set: v14 base plus tracked changes, every insertion and deletion
   authored "Matthew Wallenstein". Contains all 29 drifted-number restatements,
   the realized-clearing Methods description, the mean-SOC operational
@@ -145,7 +145,7 @@ deliberately.
    run_cue_decomp_matched) and the F-004 planting-month registration remain
    from the original plan; README:156-158's "known gap" paragraph waits on the
    4-pool port.
-6. Zenodo/journal deposit refresh once Dale approves the 8_29 set.
+6. Zenodo/journal deposit refresh once Dale approves the v17 set.
 
 ## Environment gotchas (all learned the hard way)
 
