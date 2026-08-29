@@ -1,0 +1,10 @@
+S3 price error vs econ-consistent clearing of realized yield: mean -0.970 pp  mean|.| 1.088  max|.| 3.003
+year 10 by region:
+  north_america        reported 1.0508  consistent 1.0604  -0.962 pp
+  europe               reported 1.1001  consistent 1.1109  -1.075 pp
+  east_asia            reported 1.0306  consistent 1.0269  +0.371 pp
+  south_asia           reported 1.0791  consistent 1.0895  -1.035 pp
+  southeast_asia       reported 1.0634  consistent 1.0721  -0.868 pp
+  latin_america        reported 1.0411  consistent 1.0499  -0.876 pp
+  sub_saharan_africa   reported 1.0576  consistent 1.0726  -1.492 pp
+  fsu_central_asia     reported 1.1103  consistent 1.1314  -2.109 pp

@@ -1664,3 +1664,85 @@ because they never came from the linearisation.
 
 Numbers in `results/econ_biophysical_yield_gap.csv`;
 `logs/run_224_yieldgap.log`.
+
+## F-023 - 2026-08-29 - The yield gap decomposes into two offsetting terms, and the sign of the price bias depends on which output concept the market is asked to clear
+
+Dale Manning's follow-up on F-022 asked three quantitative questions: whether
+the 0.71 pp year-1 gap is small relative to the yield changes themselves,
+whether the gap is explained by an assumption of constant elasticity, and what
+the per-region production and price errors are. Answering them properly
+required decomposing the gap, and the decomposition changes the story F-022
+told about sign.
+
+The gap between realized production (yield_fraction times land) and the
+econ-implied production (eta times PY_hat) is the sum of two terms
+(`results/yield_gap_decomposition.csv`, S3, `logs/run_226_decomp.log`):
+
+The land term. The realized index credits land at elasticity 1, while the
+supply relation credits it at alpha, about 0.10. With land expanding up to 1.4
+percent, this contributes a steady +0.70 pp. It is a definitional difference,
+not an error: alpha embeds diminishing returns at the extensive margin, the
+yield-times-land index assumes new land yields the average. No published
+number reads `total_production_index`, so this term touches nothing published
+directly.
+
+The yield term. Realized ln(yield_fraction) against the linearized beta*N_hat
++ gamma*F_hat. The elasticities are re-anchored annually, so this is not a
+constant-elasticity error over time; it is the within-step error of a
+first-order expansion across a finite move. Signed, it averages +0.08 pp in
+year 1 (mixed across regions, up to about +1.5 pp where the move is large) and
+-0.44 pp in the chronic phase: the linearized yield response is too
+OPTIMISTIC after year 2, understating the loss, because the accumulating
+soil-N decline compounds nonlinearly. F-022's statement that the sign of the
+gap comes from concavity overstating the loss was true of the worst year-1
+cells and wrong as the general mechanism; the persistent positive gap is the
+land term winning over a negative yield term.
+
+Relative size, over all three scenarios: the gap is 13 percent of the realized
+production change on average (median 10 percent), concentrated where one-year
+moves are large; corr(|gap|, squared move) = 0.35, so the second-order story
+is partial, consistent with the two-term decomposition.
+
+The consequence for price is concept-dependent
+(`results/price_error_econ_consistent.csv`, `logs/run_227_price_consistent.log`).
+Against a market that clears yield-times-land, reported price indices are HIGH
+by up to 4.35 pp in year 1 (F-022's numbers). Against the economically
+consistent concept, realized yield with land at alpha, reported prices are LOW:
+mean -0.97 pp, mean magnitude 1.09 pp, worst -3.0 pp, and at year 10 between
++0.37 pp (East Asia) and -2.11 pp (FSU). Since the chronic-phase yield
+linearization is too optimistic, the defensible statement for the paper is
+that reported food price responses are modestly conservative in the chronic
+phase, with year-1 values the least certain in either direction. C-060 is the
+claim affected; the yield-loss series are not, as they never pass through the
+linearization.
+
+Dale's preferred remedy, clearing the market on the biogeochemical response
+itself, has its first iterate already computed: `price_econ_consistent` is the
+price that clears realized yield with land at alpha. A full fix is a
+fixed-point iteration per step with biophysical state rollback; the remaining
+adjustment beyond the first iterate enters through fertilizer demand
+responding to the revised price and is second-order. Adopting it would
+regenerate every price-bearing artifact and is a model change to decide
+deliberately, not to slip into a revision.
+
+His question about beta and gamma has a direct answer: they are not estimated
+by regression. The SI (7_22) already states they are local Mitscherlich
+elasticities recomputed each year at the current operating point and
+partitioned between mineralized soil N and applied fertilizer by gross input
+share, collapsing to unit elasticity where the stoichiometric cap binds.
+
+Owed edits recorded from Dale's 8/28-29 review, to be executed with the D1
+batch: move the AI-use statement from page 12 to back matter; add the SI
+paragraph explaining how the regional price change computed at mean SOC is
+applied to farms across the SOC distribution (his manuscript comment on the
+farm-distribution paragraph); acknowledge in the econ-component paragraph that
+food production and prices are outputs and state the difference from reported
+production (this entry supplies the numbers); fix the "By contrast" sentence
+that repeats its predecessor; in the author response, paste the revised
+manuscript text under each reply, replace "FAOSTAT ~2020" with "FAOSTAT
+2019-2021 mean" and say why that vintage (matches the IFA fertilizer-rate and
+cropland vintages and pre-dates the 2021-22 price spike the scenarios
+simulate), repair the cross-reference Dale could not find (the optional
+two-crop sensitivity note), and state explicitly where each clarification
+landed in the paper. A clean standalone model description document is owed for
+resubmission or on request.
