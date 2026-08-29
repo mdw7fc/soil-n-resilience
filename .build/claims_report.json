@@ -3,7 +3,7 @@
   "generator_sha": "524e3cc5ad94f83acd3e333be564679a1f0eb676d9a30f31c6a5bf40932f275e",
   "inputs": {
     "code/model/coupled_econ_biophysical.py": "123bb16cf7148c9f84b544ee7107dc497f94baeeced8804ea83d324e44fc8c63",
-    "code/model/coupled_monthly.py": "bc4b1ae1560a41d5da69df29622c16af723d86dcf814a14c65aead5f367d43ad",
+    "code/model/coupled_monthly.py": "1cf2ee293a03bd807cd354234e0d37ca22903e9e816a9eacadc0536fe5623f04",
     "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
     "code/model/parameter_registry.py": "0033a30e18a46cf7ab7cc8072e0ce4f85fa235fbac3d4c6977c0b7d81c7a6748",
     "code/model/prices.py": "9685f40ece2f5659bae91f9ec980ea9a76a8595e85f6cc823759cd8db7f78250",
@@ -11,24 +11,24 @@
     "code/model/seams.py": "5203d7d1a0f8a88ce5b94b5394e1ecc6aea8dee9d95a2df76b023572a4ad85e2",
     "code/model/soil_n_model.py": "ea7ffb4e0db8a4ce2dbc921006819db711dad382f759f5da22399ac28d003aa8",
     "data/figS11_severity_sweep.json": "73c4473e4539128ef5258d7d1db9701dbfdbf0708b1e7fa1b6b0ac8c0482916e",
-    "data/figS8_curves.json": "88b8de227a4c2fda15ea4f3b5c1a6309e8ddb540d263cc81a95fc19b9b654e1f",
-    "data/figure1_farm_gradient.json": "c57398ffba177a1f61aaa244f11a24232a031e345f86ecfa2692ccde08c54a25",
-    "data/figure2_panels.json": "9331535a6eae35789d0cf5111371964e4e13c780307e2f2ff1a1609814686cf3",
-    "data/food_price_response.csv": "8a758366499863c33546a0c18ec5343b2ad813dae54faa15641928819d1d543a",
+    "data/figS8_curves.json": "1d3b17dac1a83f33e88ab4c2bf2da210e290ff6fa3b04308e36274c9cfe4d19c",
+    "data/figure1_farm_gradient.json": "0444c419beec386958a7db6c3c009d2fe4e2267b7215aa94d0d2e1ce35dcb811",
+    "data/figure2_panels.json": "2c5d8c8b4bf0680965f267a84e6fb6ffcdf09b19e54026c724634e82eb2db6e1",
+    "data/food_price_response.csv": "c1c684683ad97203977a41bf8f30d11b53bb9d85049be7435d9f7c8ba530866a",
     "data/mc_ensemble/mc_probabilities.csv": "a758459fc60a1f37cbcc21048ca39cffe893cd2cc639577b15887ad56eaf8fbf",
-    "data/scenario_trajectories.csv": "205e37905f9d75e632868745c1979267a475e10c9646c2cdf6a034d2906141a8",
-    "data/soc_trajectories.json": "817ed15811c071aca5a5574637a6640b150e3d9eff0c3df37775bb026cc49d7e",
+    "data/scenario_trajectories.csv": "51b22f1f22564d078e0e7af3668a40fe543fa66a61e5af070cd605bf13a3e269",
+    "data/soc_trajectories.json": "af739811631db47c9306d007f7f79c1c7ac9ad05de4065a9cc4c646a88c76fee",
     "docs/claims.yaml": "1555ed1f561d45520728e8d9f674e6bca278aac8d18ce7352bb7e5739c49b39c",
-    "outputs/price_convention_sensitivity_sol.csv": "db3579519d2bcf9411bd75cf37070224dcad2196b2ebede22b7c714b6ac23521",
+    "outputs/price_convention_sensitivity_sol.csv": "b0a1c6d3b71c4f01e27bfcb8e92f8e0670828b4ec00077ef0b37e4d98c087c10",
     "results/calibration_production_path.csv": "4f445e4445e439ef857952a9e6a7a772ed0d4c9a1f6b683227cbeb422238d666",
     "results/s3_shock_calibration.csv": "61db4c6577676abbcb83ca3461afe18957fe147f82057b29800a6960a5199945"
   },
   "node": "claims_report",
   "outputs": {
-    "outputs/claims_status.csv": "4f30a9416cfb979d6865cfe99f18d873d064542d618cd19d41c276f083e95238",
-    "results/claims_report.md": "c302d586a924bcca27c8a2e353e307b211c4aa25f64fa0bd48b34e5df5d890d3"
+    "outputs/claims_status.csv": "3656ffca6e59e262478830216eb714149a76934ebbff75ce8b051d2fd4b2f47d",
+    "results/claims_report.md": "f3a93549b4741a34881e22ba5c99480240bf18bfcf14515ca373f2328ce3ffa6"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-07-28T16:49:01Z",
-  "stamped_at_commit": "1a0d009"
+  "stamped_at": "2026-08-29T14:02:05Z",
+  "stamped_at_commit": "6c2cf9b"
 }

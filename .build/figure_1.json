@@ -2,15 +2,15 @@
   "generator": "code/repro/make_figure_1.py",
   "generator_sha": "7354a77408dd8e8900bfe79014a2a5b76a996884e904f390705f8acfe4784d11",
   "inputs": {
-    "data/figure1_farm_gradient.json": "c57398ffba177a1f61aaa244f11a24232a031e345f86ecfa2692ccde08c54a25"
+    "data/figure1_farm_gradient.json": "0444c419beec386958a7db6c3c009d2fe4e2267b7215aa94d0d2e1ce35dcb811"
   },
   "node": "figure_1",
   "outputs": {
-    "data/figure1_soc_gradient.csv": "92d267b27ace7e1877a19ff6e28ce6943a0bf558e953cd41617c05daaf9dfbc1",
-    "figures/Figure_1_farm_buffering.pdf": "540b2b2f93896ffdde87863006a65f3b85b6a201a9b0cb54a22fc66d00f2e3a4",
-    "figures/Figure_1_farm_buffering.png": "8181ad0229c9e3e8b43778265046243e27c8e0d7d991c2505b906a30b9ded4ea"
+    "data/figure1_soc_gradient.csv": "230efcb759504c3f6c24f4a3a7f08e9f5c58241eb352c5280fa8a6c1ae0c14af",
+    "figures/Figure_1_farm_buffering.pdf": "722a6629b12b133bbea808958043d2c52b6ea99ec789dfcf010227060c9ab82a",
+    "figures/Figure_1_farm_buffering.png": "b4ff4dbe59ecad15fa738ab7572c69c6a839d5986c8a348cb93a8ca82318c40d"
   },
   "params_fingerprint": null,
-  "stamped_at": "2026-07-26T01:56:49Z",
-  "stamped_at_commit": "unknown"
+  "stamped_at": "2026-08-29T14:02:04Z",
+  "stamped_at_commit": "6c2cf9b"
 }

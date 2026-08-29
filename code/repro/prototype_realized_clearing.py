@@ -12,7 +12,12 @@ Each residual evaluation runs the monthly biophysical step for the candidate
 fertilizer level from a snapshot of the soil state, so beta and gamma drop out
 of the clearing entirely; the elasticities remain diagnostics.
 
-This file is a PROTOTYPE, not a wiring change: it reimplements the annual loop
+HISTORICAL NOTE: F-025 wired realized clearing into CoupledMonthlyModel
+itself, so this prototype's linear-mode gate was passed against the
+PRE-CHANGE model at commit 6c2cf9b and will no longer reproduce run(). It is
+kept as the evidence trail for the adoption decision, not as a living test.
+
+This file was a PROTOTYPE, not a wiring change: it reimplements the annual loop
 of CoupledMonthlyModel compactly, in two modes.
 
   linear   -- must reproduce CoupledMonthlyModel.run() exactly. This is the

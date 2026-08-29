@@ -144,99 +144,105 @@ code/model/coupled_econ_biophysical.py,1208,"[0, 5, 10, 25, 50, 100]","for yr in
 code/model/coupled_econ_biophysical.py,1224,[91],"print(""-"" * 91)",reviewed result-affecting/algebraic literal
 code/model/coupled_econ_biophysical.py,1226,[50],s1 = all_results['S1'][r_name].iloc[50],reviewed result-affecting/algebraic literal
 code/model/coupled_econ_biophysical.py,1227,[50],s3 = all_results['S3'][r_name].iloc[50],reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,39,[0],"sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scripts'))",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,98,[0],if region.mitscherlich_c_regional > 0 else self.crop.mitscherlich_c),reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,111,"[0.0, 0]",self.y_floor = region.yield_min_regional if region.yield_min_regional > 0 else 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,114,[1000],self.n_cost_per_tonne = self.crop.grain_n_fraction * 1000  # 18 kg N / t grain,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,178,[1.0],return 1.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,195,[0.0],if delta >= 0.0:,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,200,[1.0],1.0 - np.exp(delta / whc_gain_sat_pct),reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,215,[0.5],total_deficit = 0.5 * (raw + np.sqrt(raw * raw + eps_mm * eps_mm)),reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,216,[1.0],stress = 1.0 - self.region.water_stress_coeff * total_deficit,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,217,[1.0],"return max(WATER_STRESS_MIN_FACTOR, min(1.0, stress))",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,250,[1.0],y_mit = self.y_max * (1.0 - np.exp(-self.mit_c * n_uptake)) * ws,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,251,[0],y_stoich = n_uptake / self.n_cost_per_tonne if self.n_cost_per_tonne > 0 else y_mit,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,257,[1],rf = (1 - hi) / hi,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,277,[1e-10],eps = 1e-10,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,282,[1.0],elasticity_n_total = 1.0  # unit elasticity (proportional),reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,286,[1.0],"denom = max(1.0 - exp_term, eps)",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,296,[0.5],soil_share = 0.5,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,297,[0.5],fert_share = 0.5,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,299,[0.0],"beta = elasticity_n_total * max(0.0, soil_share)",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,304,"[0, 0]","'yield_fraction': y / self.yield_baseline if self.yield_baseline > 0 else 0,",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,311,"[1, 0]","'soc_fraction': soc_new / self.soc_initial if self.soc_initial > 0 else 1,",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,340,[100.0],"t_max: float = 100.0,",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,341,[1.0],"dt: float = 1.0,",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,366,[0.0],"self.eps_F_PY = econ.eps_F_PY if econ.eps_F_PY == 0.0 else rp.get('eps_F_PY', econ.eps_F_PY)",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,370,"[0.0, 0.0, 0.0]",if econ.eps_LD_PL == 0.0 and econ.eps_LD_PY == 0.0 and econ.eps_LS_PL == 0.0:,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,371,[0.0],self.eps_LD_PL = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,372,[0.0],self.eps_LD_PY = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,373,[0.0],self.eps_LS_PL = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,397,[1],self.PF_hat_base = np.log(1 + econ.fert_price_shock),reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,401,[0.0],self.PY_hat = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,402,[0.0],self.F_hat = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,403,[0.0],self.L_hat = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,404,[0.0],self.N_hat = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,408,[1e-10],if abs(self.eps_LS_PL - self.eps_LD_PL) > 1e-10:,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,410,[0.0],return 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,417,[1e-10],if abs(self.eps_LS_PL - self.eps_LD_PL) > 1e-10:,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,420,[0.0],lambda_L = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,426,[1e-10],if abs(denominator) > 1e-10:,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,429,[0.0],PY_hat = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,451,[1e-10],if abs(self.eps_LS_PL - self.eps_LD_PL) > 1e-10:,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,454,[0.0],lambda_L = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,458,"[0.0, 1e-10]",PY_hat = num / den if abs(den) > 1e-10 else 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,465,[1],n_steps = int(self.t_max / self.dt) + 1,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,512,[1e-10],eps = 1e-10,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,516,[1.0],y_mit_init = self.bio.y_max * (1.0 - np.exp(-self.bio.mit_c * n_up_safe)),reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,520,[1.0],init_elast = 1.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,523,[1.0],"denom = max(1.0 - exp_term, eps)",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,530,[0.0],"init_beta = init_elast * max(0.0, soil_share)",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,544,[0],if i == 0:,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,547,[0.0],results['PF_hat'][i] = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,548,[0.0],results['PY_hat'][i] = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,549,[0.0],results['F_hat'][i] = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,550,[0.0],results['L_hat'][i] = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,551,[0.0],results['N_hat'][i] = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,554,[1.0],results['food_price_index'][i] = 1.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,556,[1.0],results['yield_fraction'][i] = 1.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,563,[1.0],results['soc_fraction'][i] = 1.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,567,[1.0],results['total_production_index'][i] = 1.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,568,[1.0],results['carrying_capacity_fraction'][i] = 1.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,569,[0.0],results['cap_binding'][i] = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,570,[0.0],results['clearing_residual'][i] = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,574,[1],current_n_min = results['n_mineralized'][i-1],reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,575,[0],if self.N_min_baseline > 0:,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,576,[1e-06],"self.N_hat = np.log(max(current_n_min, 1e-6) / self.N_min_baseline)",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,578,[0.0],self.N_hat = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,586,[1],beta = results['beta'][i-1],reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,587,[1],gamma = results['gamma'][i-1],reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,591,[0.0],"F_level = max(0.0, self.F_baseline * np.exp(F_hat))",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,594,[0.0],clearing_residual = 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,602,[1.0],if supply.ceiling < 1.0:,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,604,[1e-06],"F_max = self.F_baseline * self.L_baseline * ceiling / max(L_level, 1e-6)",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,605,"[1.0, 1e-09]",if F_level > F_max * (1.0 + 1e-9):,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,608,[0.0],"F_level = max(0.0, self.F_baseline * np.exp(F_hat))",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,665,"[1.0, 0.0]",results['cap_binding'][i] = 1.0 if cap_binding else 0.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,725,[1e-05],YM_CALIBRATION_RTOL = 1e-5,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,812,"[1.0, 50.0]","lo, hi = 1.0, 50.0",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,814,[0],expand = 0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,815,"[0.0, 8]",while f_lo * f_hi > 0.0 and expand < 8:,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,817,"[0.001, 4.0]","lo = max(1e-3, lo / 4.0)",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,820,[4.0],hi = hi * 4.0,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,822,[1],expand += 1,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,824,[0.0],if f_lo * f_hi <= 0.0:,reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,825,"[1e-10, 1e-14, 200]","ym = brentq(obj, lo, hi, xtol=1e-10, rtol=1e-14, maxiter=200)",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,832,[80],"for ym in np.linspace(lo, hi, 80):",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,870,[70],print('=' * 70),reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,872,[70],print('=' * 70),reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,887,[0.2],shock = calibrate_price_shock(0.20),reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,888,[100],print(f'\nCalibrated price shock: {shock:.4f} ({shock*100:.1f}%)'),reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,892,[90],print('-' * 90),reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,897,[30.0],"region=r, econ=s3, region_key=rk, t_max=30.0,",reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,901,"[0, 0]",yr0 = df[df['year'] == 0].iloc[0],reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,902,"[0, 10]",yr10 = df[df['year'] == 10].iloc[0],reviewed result-affecting/algebraic literal
-code/model/coupled_monthly.py,903,"[100, 1]",loss = (1 - yr10['yield_fraction']) * 100,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,41,[0],"sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scripts'))",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,100,[0],if region.mitscherlich_c_regional > 0 else self.crop.mitscherlich_c),reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,113,"[0.0, 0]",self.y_floor = region.yield_min_regional if region.yield_min_regional > 0 else 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,116,[1000],self.n_cost_per_tonne = self.crop.grain_n_fraction * 1000  # 18 kg N / t grain,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,180,[1.0],return 1.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,197,[0.0],if delta >= 0.0:,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,202,[1.0],1.0 - np.exp(delta / whc_gain_sat_pct),reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,217,[0.5],total_deficit = 0.5 * (raw + np.sqrt(raw * raw + eps_mm * eps_mm)),reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,218,[1.0],stress = 1.0 - self.region.water_stress_coeff * total_deficit,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,219,[1.0],"return max(WATER_STRESS_MIN_FACTOR, min(1.0, stress))",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,252,[1.0],y_mit = self.y_max * (1.0 - np.exp(-self.mit_c * n_uptake)) * ws,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,253,[0],y_stoich = n_uptake / self.n_cost_per_tonne if self.n_cost_per_tonne > 0 else y_mit,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,259,[1],rf = (1 - hi) / hi,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,279,[1e-10],eps = 1e-10,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,284,[1.0],elasticity_n_total = 1.0  # unit elasticity (proportional),reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,288,[1.0],"denom = max(1.0 - exp_term, eps)",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,298,[0.5],soil_share = 0.5,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,299,[0.5],fert_share = 0.5,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,301,[0.0],"beta = elasticity_n_total * max(0.0, soil_share)",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,306,"[0, 0]","'yield_fraction': y / self.yield_baseline if self.yield_baseline > 0 else 0,",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,313,"[1, 0]","'soc_fraction': soc_new / self.soc_initial if self.soc_initial > 0 else 1,",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,342,[100.0],"t_max: float = 100.0,",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,343,[1.0],"dt: float = 1.0,",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,368,[0.0],"self.eps_F_PY = econ.eps_F_PY if econ.eps_F_PY == 0.0 else rp.get('eps_F_PY', econ.eps_F_PY)",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,372,"[0.0, 0.0, 0.0]",if econ.eps_LD_PL == 0.0 and econ.eps_LD_PY == 0.0 and econ.eps_LS_PL == 0.0:,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,373,[0.0],self.eps_LD_PL = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,374,[0.0],self.eps_LD_PY = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,375,[0.0],self.eps_LS_PL = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,399,[1],self.PF_hat_base = np.log(1 + econ.fert_price_shock),reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,403,[0.0],self.PY_hat = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,404,[0.0],self.F_hat = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,405,[0.0],self.L_hat = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,406,[0.0],self.N_hat = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,410,[1e-10],if abs(self.eps_LS_PL - self.eps_LD_PL) > 1e-10:,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,412,[0.0],return 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,419,[1e-10],if abs(self.eps_LS_PL - self.eps_LD_PL) > 1e-10:,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,422,[0.0],lambda_L = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,428,[1e-10],if abs(denominator) > 1e-10:,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,431,[0.0],PY_hat = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,453,[1e-10],if abs(self.eps_LS_PL - self.eps_LD_PL) > 1e-10:,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,456,[0.0],lambda_L = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,460,"[0.0, 1e-10]",PY_hat = num / den if abs(den) > 1e-10 else 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,498,[0.0],"F_level = max(0.0, self.F_baseline * np.exp(F_hat))",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,501,[1.0],if supply.ceiling < 1.0:,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,503,[1e-06],"/ max(L_level, 1e-6))",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,511,[1e-09],"yf = max(trial.step(F_level)['yield_fraction'], 1e-9)",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,514,"[0.1, 0.1]","lo, hi = self.PY_hat - 0.10, self.PY_hat + 0.10",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,515,[12],for _ in range(12):,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,516,[0],if residual(lo) * residual(hi) < 0:,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,518,[0.1],lo -= 0.10,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,519,[0.1],hi += 0.10,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,524,[1e-12],"PY_hat = brentq(residual, lo, hi, xtol=1e-12)",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,529,[1e-09],"np.log(max(bio_state['yield_fraction'], 1e-9))",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,535,[1],n_steps = int(self.t_max / self.dt) + 1,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,582,[1e-10],eps = 1e-10,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,586,[1.0],y_mit_init = self.bio.y_max * (1.0 - np.exp(-self.bio.mit_c * n_up_safe)),reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,590,[1.0],init_elast = 1.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,593,[1.0],"denom = max(1.0 - exp_term, eps)",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,600,[0.0],"init_beta = init_elast * max(0.0, soil_share)",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,614,[0],if i == 0:,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,617,[0.0],results['PF_hat'][i] = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,618,[0.0],results['PY_hat'][i] = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,619,[0.0],results['F_hat'][i] = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,620,[0.0],results['L_hat'][i] = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,621,[0.0],results['N_hat'][i] = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,624,[1.0],results['food_price_index'][i] = 1.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,626,[1.0],results['yield_fraction'][i] = 1.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,633,[1.0],results['soc_fraction'][i] = 1.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,637,[1.0],results['total_production_index'][i] = 1.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,638,[1.0],results['carrying_capacity_fraction'][i] = 1.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,639,[0.0],results['cap_binding'][i] = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,640,[0.0],results['clearing_residual'][i] = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,644,[1],current_n_min = results['n_mineralized'][i-1],reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,645,[0],if self.N_min_baseline > 0:,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,646,[1e-06],"self.N_hat = np.log(max(current_n_min, 1e-6) / self.N_min_baseline)",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,648,[0.0],self.N_hat = 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,658,[1],beta = results['beta'][i-1],reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,659,[1],gamma = results['gamma'][i-1],reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,660,[0],"self.PY_hat = self._solve_equilibrium(beta, gamma)[0]",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,697,"[1.0, 0.0]",results['cap_binding'][i] = 1.0 if cap_binding else 0.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,757,[1e-05],YM_CALIBRATION_RTOL = 1e-5,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,844,"[1.0, 50.0]","lo, hi = 1.0, 50.0",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,846,[0],expand = 0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,847,"[0.0, 8]",while f_lo * f_hi > 0.0 and expand < 8:,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,849,"[0.001, 4.0]","lo = max(1e-3, lo / 4.0)",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,852,[4.0],hi = hi * 4.0,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,854,[1],expand += 1,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,856,[0.0],if f_lo * f_hi <= 0.0:,reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,857,"[1e-10, 1e-14, 200]","ym = brentq(obj, lo, hi, xtol=1e-10, rtol=1e-14, maxiter=200)",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,864,[80],"for ym in np.linspace(lo, hi, 80):",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,902,[70],print('=' * 70),reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,904,[70],print('=' * 70),reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,919,[0.2],shock = calibrate_price_shock(0.20),reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,920,[100],print(f'\nCalibrated price shock: {shock:.4f} ({shock*100:.1f}%)'),reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,924,[90],print('-' * 90),reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,929,[30.0],"region=r, econ=s3, region_key=rk, t_max=30.0,",reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,933,"[0, 0]",yr0 = df[df['year'] == 0].iloc[0],reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,934,"[0, 10]",yr10 = df[df['year'] == 10].iloc[0],reviewed result-affecting/algebraic literal
+code/model/coupled_monthly.py,935,"[100, 1]",loss = (1 - yr10['yield_fraction']) * 100,reviewed result-affecting/algebraic literal
 code/model/monthly_model_v3.py,30,[0],"sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))",reviewed result-affecting/algebraic literal
 code/model/monthly_model_v3.py,58,"[3, 10, 17, 22, 24, 23, 18, 11, 3, 6, 4, 4]","[-6, -4, 3, 10, 17, 22, 24, 23, 18, 11, 3, -4],",reviewed result-affecting/algebraic literal
 code/model/monthly_model_v3.py,59,"[25, 30, 55, 90, 115, 120, 105, 100, 85, 65, 50, 30]","[25, 30, 55, 90, 115, 120, 105, 100, 85, 65, 50, 30],",reviewed result-affecting/algebraic literal
@@ -581,6 +587,28 @@ code/repro/compute_figS8_curves.py,68,[0.2],s3.fert_price_shock = calibrate_pric
 code/repro/compute_figS8_curves.py,72,[1],"json.dump(out, open(os.path.join(DATA, 'figS8_curves.json'), 'w'), indent=1)",reviewed result-affecting/algebraic literal
 code/repro/compute_figS8_curves.py,75,"[0, 1]","np.argsort(np.argsort([half[k]['10'] for k in RO])))[0, 1]",reviewed result-affecting/algebraic literal
 code/repro/compute_figS8_curves.py,76,"[10, 10]","print(""global yr10 baseline / halved = %.2f / %.2f %%"" % (gbase[10], ghalf[10]))",reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,54,[0],"sys.path.insert(0, os.path.join(HERE, '..', 'model'))",reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,77,[0.2],s3.fert_price_shock = calibrate_price_shock(0.20),reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,100,[30.0],"t_max=30.0,",reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,104,[0],L0 = float(df['land_mha'].iloc[0]),reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,109,[1],"for i in range(1, len(df)):",reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,111,"[1e-09, 1, 30]",if abs(float(yr[i]) - y) < 1e-9 and 1 <= y <= 30 and y not in want:,reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,118,[1],beta_used = float(df['beta'].iloc[i - 1]),reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,119,[1],gamma_used = float(df['gamma'].iloc[i - 1]),reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,121,[1e-12],"y_real = np.log(max(float(r['yield_fraction']) * land_frac, 1e-12))",reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,125,[100.0],lag_pp = 100.0 * abs(float(r['beta']) - beta_used,reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,130,"[100.0, 1.0]","y_realized_pct=100.0 * (np.exp(y_real) - 1.0),",reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,131,"[100.0, 1.0]","y_demand_pct=100.0 * (np.exp(y_dem) - 1.0),",reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,132,"[100.0, 1.0]","y_supply_pct=100.0 * (np.exp(y_sup) - 1.0),",reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,133,[100.0],"solver_residual_pp=100.0 * (np.exp(y_dem) - np.exp(y_sup)),",reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,134,[100.0],"realized_minus_econ_pp=100.0 * (np.exp(y_real) - np.exp(y_dem)),",reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,142,[100.0],price_index_error_pp=100.0 * (np.exp(float(r['PY_hat'])),reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,151,[0],"w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))",reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,157,[3],"worst = sorted(rows, key=lambda r: -abs(r['realized_minus_econ_pp']))[:3]",reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,159,[0.0],clearing = max([abs(r['clearing_residual']) for r in capped] or [0.0]),reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,161,[3],"print('rows %d over %d scenarios x 8 regions x 30 years' % (len(rows), 3))",reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,174,[3],"wp = sorted(rows, key=lambda r: -abs(r['price_index_error_pp']))[:3]",reviewed result-affecting/algebraic literal
+code/repro/diagnose_yield_consistency.py,175,[10],y10 = [abs(r['price_index_error_pp']) for r in rows if r['year'] == 10],reviewed result-affecting/algebraic literal
 code/repro/make_broadbalk_benchmark.py,45,[1],ROOT_DIR = SCRIPT_DIR.parents[1],reviewed result-affecting/algebraic literal
 code/repro/make_broadbalk_benchmark.py,61,"[1.0, 1.48]","('Nil',    'P3', 1.00,  1.48),",reviewed result-affecting/algebraic literal
 code/repro/make_broadbalk_benchmark.py,62,"[8.5, 10.65]","('N3PKMg', 'P8', 8.50, 10.65),",reviewed result-affecting/algebraic literal
@@ -1158,6 +1186,54 @@ code/repro/make_table_s4_sol.py,105,[1],"json.dumps(curves, indent=1) + ""\n"")"
 code/repro/make_table_s4_sol.py,108,[0],"writer = csv.DictWriter(handle, fieldnames=list(calib_rows[0]))",reviewed result-affecting/algebraic literal
 code/repro/make_table_s4_sol.py,116,[0],"writer = csv.DictWriter(handle, fieldnames=list(rows[0]))",reviewed result-affecting/algebraic literal
 code/repro/make_table_s4_sol.py,120,[0],return 0,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,38,[0],"sys.path.insert(0, os.path.join(HERE, '..', 'model'))",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,70,[1e-10],eps = 1e-10,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,72,[1.0],y_mit = self.bio.y_max * (1.0 - np.exp(-self.bio.mit_c * n_up)),reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,75,[1.0],el = 1.0,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,78,[1.0],"el = self.bio.mit_c * n_up * e / max(1.0 - e, eps)",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,80,[0.0],"b = el * max(0.0, nb['min'] / max(tot, eps))",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,88,[0.0],"F_level = max(0.0, self.F_baseline * np.exp(F_hat))",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,91,[1.0],if ceiling < 1.0:,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,92,[1e-06],"F_max = self.F_baseline * self.L_baseline * ceiling / max(L_level, 1e-6)",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,98,[1],n_steps = int(self.t_max / self.dt) + 1,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,110,[0],if i == 0:,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,113,[1.0],res['food_price_index'][i] = 1.0,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,114,[1.0],res['yield_fraction'][i] = 1.0,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,116,[1.0],res['soc_fraction'][i] = 1.0,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,119,[1e-06],"self.N_hat = (np.log(max(prev_n_min, 1e-6) / self.N_min_baseline)",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,120,"[0.0, 0]",if self.N_min_baseline > 0 else 0.0),reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,126,[0.0],"F_level = max(0.0, self.F_baseline * np.exp(F_hat))",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,129,[1.0],if supply.ceiling < 1.0:,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,131,[1e-06],"/ max(L_level, 1e-6))",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,132,"[1.0, 1e-09]",if F_level > F_max * (1.0 + 1e-9):,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,135,[0.0],"F_level = max(0.0, self.F_baseline * np.exp(F_hat))",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,141,[0],evals = [0],reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,144,"[1, 0]",evals[0] += 1,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,147,[1e-09],"yf = max(trial.step(F_level)['yield_fraction'], 1e-9)",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,151,"[0.1, 0.1]","lo, hi = g0 - 0.10, g0 + 0.10",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,152,[12],for _ in range(12):,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,153,[0],if residual(lo) * residual(hi) < 0:,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,155,[0.1],lo -= 0.10,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,156,[0.1],hi += 0.10,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,159,[1e-12],"PY = brentq(residual, lo, hi, xtol=1e-12)",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,160,[0],self.solver_evals.append(evals[0]),reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,178,"[1.0, 0.0]",res['cap_binding'][i] = 1.0 if capped else 0.0,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,188,[0.2],s3.fert_price_shock = calibrate_price_shock(0.20),reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,191,[0.0],worst = 0.0,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,193,[30.0],"kw = dict(region=reg[key], econ=s3, region_key=key, t_max=30.0,",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,201,[1e-09],"% (worst, 'PASS' if worst < 1e-9 else 'FAIL'))",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,202,[1e-09],if worst >= 1e-9:,reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,203,[1],sys.exit(1),reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,208,[30.0],"kw = dict(region=reg[key], econ=s3, region_key=key, t_max=30.0,",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,214,"[1, 2, 5, 10, 20, 30]","for y in (1, 2, 5, 10, 20, 30):",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,220,[100],dprice_pp=100 * float(np.exp(new['PY_hat'].iloc[i]),reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,222,"[100, 1]","yloss_linear_pct=100 * (1 - float(ref['yield_fraction'].iloc[i])),",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,223,"[100, 1]","yloss_realized_pct=100 * (1 - float(new['yield_fraction'].iloc[i])),",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,224,[100],dyield_pp=100 * (float(new['yield_fraction'].iloc[i]),reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,226,[100],dfert_pct=100 * (float(new['fert_applied_kgha'].iloc[i]),reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,227,[1],"/ float(ref['fert_applied_kgha'].iloc[i]) - 1),",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,232,[0],"w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))",reviewed result-affecting/algebraic literal
+code/repro/prototype_realized_clearing.py,247,[10],if r['year'] == 10:,reviewed result-affecting/algebraic literal
 code/repro/run_benchmarks.py,102,[0],"sys.path.insert(0, os.path.join(ROOT, 'code', 'model'))",reviewed result-affecting/algebraic literal
 code/repro/run_benchmarks.py,123,"[1, 30, 96]","HORIZONS = (1, 30, 96)",reviewed result-affecting/algebraic literal
 code/repro/run_benchmarks.py,133,[1.5],MARGINAL_FACTOR = 1.5,reviewed result-affecting/algebraic literal
@@ -1325,42 +1401,50 @@ code/repro/run_mc_ensemble.py,610,[1],"ap.add_argument('--workers', type=int, de
 code/repro/run_mc_ensemble.py,631,[1],"n_workers=max(1, args.workers))",reviewed result-affecting/algebraic literal
 code/repro/run_mc_ensemble.py,651,[2],"f, indent=2)",reviewed result-affecting/algebraic literal
 code/repro/run_price_shock_analysis.py,43,[0],"sys.path.insert(0, os.path.join(HERE, '..', 'model'))",reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,77,"[10, 205, 5]","FINE_SOC_PCTS = list(range(10, 205, 5))       # Figure 1, step 5",reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,78,"[10, 205, 10]","GRADIENT_SOC_PCTS = list(range(10, 205, 10))  # Figure 2a, step 10",reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,79,[1.0],PRICE_SHOCK_FINE = 1.0                        # 100% fertilizer price spike,reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,80,[10],T_MAX_GRADIENT = 10,reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,116,[100.0],scale = soc_pct / 100.0,reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,130,[0],if price_shock_frac <= 0:,reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,131,"[0.0, 0.0, 0.0]","return dict(yield_pen=0.0, fert_red=0.0, margin_chg=0.0,",reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,134,[0.0],"y_shock=y_base_soc, PY_hat=0.0)",reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,136,[0.2],"eps_F_PF = rp.get('eps_F_PF', -0.20)",reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,137,[0.1],"eps_F_PY = rp.get('eps_F_PY', 0.10)",reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,138,[0.3],"eta = rp.get('eta', -0.30)",reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,139,[1],PF_hat = np.log(1 + price_shock_frac),reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,143,"[0.0, 1e-10]",if abs(denom) > 1e-10 else 0.0),reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,145,[0.0],"F_shocked = max(0.0, base_fert * np.exp(F_hat))",reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,149,"[0.0, 0, 100, 1]",yield_pen = (1 - y_shock / y_base_soc) * 100 if y_base_soc > 0 else 0.0,reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,150,"[0.0, 0, 100, 1]",fert_red = (1 - F_shocked / base_fert) * 100 if base_fert > 0 else 0.0,reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,157,[1],- F_shocked * pf_per_unit * (1 + price_shock_frac)),reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,158,"[100, 1]",margin_chg = ((margin_s / margin_b - 1) * 100,reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,159,"[0.0, 1e-10]",if abs(margin_b) > 1e-10 else 0.0),reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,180,[50],i50 = FINE_SOC_PCTS.index(50),reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,181,[100],i100 = FINE_SOC_PCTS.index(100),reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,182,[200],i200 = FINE_SOC_PCTS.index(200),reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,207,"[0.0, 0.0, 0.0]","econ_ref = EconParams(fert_price_shock=0.0, eps_F_PY=0.0, eps_F_N=0.0,",reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,208,"[0.0, 0.0, 0.0]","eps_LD_PL=0.0, eps_LD_PY=0.0, eps_LS_PL=0.0)",reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,213,[0],'yield_tha'].iloc[0],reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,220,[100.0],scale = soc_pct / 100.0,reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,229,[0],"y_s = df_s.loc[df_s['year'] == T_MAX_GRADIENT, 'yield_tha'].iloc[0]",reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,232,[0.0],econ_ns.fert_price_shock = 0.0,reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,240,[0],"y_n = df_n.loc[df_n['year'] == T_MAX_GRADIENT, 'yield_tha'].iloc[0]",reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,244,"[0.0, 0, 100, 1]",float((1 - y_s / ref_yield) * 100) if ref_yield > 0 else 0.0),reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,246,"[0.0, 0, 100, 1]",float((1 - y_s / y_n) * 100) if y_n > 0 else 0.0),reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,252,[0],"% (rn, -rec['ctrl_penalty'][0],",reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,253,[100],"-rec['ctrl_penalty'][GRADIENT_SOC_PCTS.index(100)],",reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,254,[1],-rec['ctrl_penalty'][-1])),reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,287,[1],indent=1),reviewed result-affecting/algebraic literal
-code/repro/run_price_shock_analysis.py,294,[1],indent=1),reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,78,"[10, 205, 5]","FINE_SOC_PCTS = list(range(10, 205, 5))       # Figure 1, step 5",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,79,"[10, 205, 10]","GRADIENT_SOC_PCTS = list(range(10, 205, 10))  # Figure 2a, step 10",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,80,[1.0],PRICE_SHOCK_FINE = 1.0                        # 100% fertilizer price spike,reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,81,[10],T_MAX_GRADIENT = 10,reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,117,[100.0],scale = soc_pct / 100.0,reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,131,[0],if price_shock_frac <= 0:,reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,132,"[0.0, 0.0, 0.0]","return dict(yield_pen=0.0, fert_red=0.0, margin_chg=0.0,",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,135,[0.0],"y_shock=y_base_soc, PY_hat=0.0)",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,137,[0.2],"eps_F_PF = rp.get('eps_F_PF', -0.20)",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,138,[0.1],"eps_F_PY = rp.get('eps_F_PY', 0.10)",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,139,[0.3],"eta = rp.get('eta', -0.30)",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,140,[1],PF_hat = np.log(1 + price_shock_frac),reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,152,[0.0],"F_try = max(0.0, base_fert * np.exp(eps_F_PF * PF_hat + eps_F_PY * PY))",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,156,[1e-09],"return eta * PY - np.log(max(y_try, 1e-9) / y_regional_baseline)",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,160,"[0.0, 1e-10]",if abs(denom) > 1e-10 else 0.0),reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,161,"[0.1, 0.1]","lo, hi = guess - 0.10, guess + 0.10",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,162,[12],for _ in range(12):,reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,163,[0],if _realized_residual(lo) * _realized_residual(hi) < 0:,reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,165,[0.1],lo -= 0.10,reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,166,[0.1],hi += 0.10,reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,169,[1e-12],"PY_hat = brentq(_realized_residual, lo, hi, xtol=1e-12)",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,171,[0.0],"F_shocked = max(0.0, base_fert * np.exp(F_hat))",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,175,"[0.0, 0, 100, 1]",yield_pen = (1 - y_shock / y_base_soc) * 100 if y_base_soc > 0 else 0.0,reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,176,"[0.0, 0, 100, 1]",fert_red = (1 - F_shocked / base_fert) * 100 if base_fert > 0 else 0.0,reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,183,[1],- F_shocked * pf_per_unit * (1 + price_shock_frac)),reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,184,"[100, 1]",margin_chg = ((margin_s / margin_b - 1) * 100,reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,185,"[0.0, 1e-10]",if abs(margin_b) > 1e-10 else 0.0),reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,206,[50],i50 = FINE_SOC_PCTS.index(50),reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,207,[100],i100 = FINE_SOC_PCTS.index(100),reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,208,[200],i200 = FINE_SOC_PCTS.index(200),reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,233,"[0.0, 0.0, 0.0]","econ_ref = EconParams(fert_price_shock=0.0, eps_F_PY=0.0, eps_F_N=0.0,",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,234,"[0.0, 0.0, 0.0]","eps_LD_PL=0.0, eps_LD_PY=0.0, eps_LS_PL=0.0)",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,239,[0],'yield_tha'].iloc[0],reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,246,[100.0],scale = soc_pct / 100.0,reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,255,[0],"y_s = df_s.loc[df_s['year'] == T_MAX_GRADIENT, 'yield_tha'].iloc[0]",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,258,[0.0],econ_ns.fert_price_shock = 0.0,reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,266,[0],"y_n = df_n.loc[df_n['year'] == T_MAX_GRADIENT, 'yield_tha'].iloc[0]",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,270,"[0.0, 0, 100, 1]",float((1 - y_s / ref_yield) * 100) if ref_yield > 0 else 0.0),reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,272,"[0.0, 0, 100, 1]",float((1 - y_s / y_n) * 100) if y_n > 0 else 0.0),reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,278,[0],"% (rn, -rec['ctrl_penalty'][0],",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,279,[100],"-rec['ctrl_penalty'][GRADIENT_SOC_PCTS.index(100)],",reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,280,[1],-rec['ctrl_penalty'][-1])),reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,313,[1],indent=1),reviewed result-affecting/algebraic literal
+code/repro/run_price_shock_analysis.py,320,[1],indent=1),reviewed result-affecting/algebraic literal
 code/repro/run_structural_sensitivity_sol.py,11,[0],"sys.path.insert(0, str(HERE.parent / ""model""))",reviewed result-affecting/algebraic literal
 code/repro/run_structural_sensitivity_sol.py,44,[30],"region=region, econ=scenario, region_key=key, t_max=30,",reviewed result-affecting/algebraic literal
 code/repro/run_structural_sensitivity_sol.py,48,"[0, 0]","frame.loc[frame.year == 0, ""yield_tha""].iloc[0]),",reviewed result-affecting/algebraic literal
@@ -1377,35 +1461,25 @@ code/repro/run_structural_sensitivity_sol.py,101,"[50, 100]","for soc_pct in (50
 code/repro/run_structural_sensitivity_sol.py,103,[1.0],"region, region_key, ym, mp, soc_pct, 1.0)",reviewed result-affecting/algebraic literal
 code/repro/run_structural_sensitivity_sol.py,114,[0],"writer = csv.DictWriter(handle, fieldnames=list(price_rows[0]))",reviewed result-affecting/algebraic literal
 code/repro/run_structural_sensitivity_sol.py,118,[0],return 0,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,59,[0],"sys.path.insert(0, os.path.join(HERE, '..', 'model'))",reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,76,[1e-12],STRUCT_TOL = 1e-12,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,79,[1e-10],ROOT_TOL = 1e-10,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,81,[1],MIN_BINDING_STEPS = 1,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,94,[1e-10],if abs(eps_LS_PL - eps_LD_PL) > 1e-10:,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,96,[0.0],return 0.0,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,133,"[1.0, 1.0]","lo, hi = -1.0, 1.0",reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,135,[0],tries = 0,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,136,"[0.0, 60]",while f_lo * f_hi > 0.0 and tries < 60:,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,137,[2.0],lo *= 2.0,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,138,[2.0],hi *= 2.0,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,140,[1],tries += 1,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,141,[0.0],if f_lo * f_hi > 0.0:,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,146,"[1e-15, 8.9e-16, 200]","return brentq(f, lo, hi, xtol=1e-15, rtol=8.9e-16, maxiter=200)",reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,169,"[0.0, 1e-10]",PY_hat = num / den if abs(den) > 1e-10 else 0.0,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,193,[0.0],worst_struct = 0.0,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,194,[0.0],worst_root = 0.0,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,196,[0],binding_steps = 0,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,203,[30.0],"t_max=30.0, yield_max_override=get_calibrated_ym(rk, mp))",reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,205,"[100, 1, 0]",per[rk] = {y: float((1 - df[df['year'] == y]['yield_fraction'].iloc[0]) * 100),reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,206,"[1, 10, 30]","for y in (1, 10, 30)}",reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,207,"[0, 0]",yb.append(float(df[df['year'] == 0]['yield_tha'].iloc[0])),reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,216,[1],"'beta': float(df['beta'].iloc[i - 1]),",reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,217,[1],'gamma': float(df['gamma'].iloc[i - 1])},reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,232,[1],binding_steps += 1,reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,239,"[1, 10, 30]","g = {y: float(sum(per[k][y] * W[j] for j, k in enumerate(RO))) for y in (1, 10, 30)}",reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,241,"[1, 10, 30]","% (name, g[1], g[10], g[30]))",reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,243,"[1, 10, 30]","lines.append(""    %-22s %6.2f %6.2f %6.2f"" % (k, per[k][1], per[k][10], per[k][30]))",reviewed result-affecting/algebraic literal
-code/repro/test_cap_market_clearing.py,267,"[0, 1]",return 0 if ok else 1,reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,51,[0],"sys.path.insert(0, os.path.join(HERE, '..', 'model'))",reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,70,[1e-08],STRUCT_TOL = 1e-8,reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,73,[0.001],DISCRIMINATION_MIN = 1e-3,reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,74,[1],MIN_BINDING_STEPS = 1,reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,78,[1e-10],if abs(m.eps_LS_PL - m.eps_LD_PL) > 1e-10:,reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,80,[0.0],return 0.0,reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,86,[0.0],worst = 0.0,reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,87,[0.0],lin_gap_max = 0.0,reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,88,[0],binding = 0,reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,89,[1],"for i in range(1, len(df)):",reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,99,[1],binding += 1,reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,101,[1e-06],"/ max(float(r['land_mha']), 1e-6))",reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,106,[1e-09],"r3 = m.eta * PY - (np.log(max(yf, 1e-9)) + m.alpha * L_hat)",reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,120,[0.2],s3.fert_price_shock = calibrate_price_shock(0.20),reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,124,[0.0],worst_all = 0.0,reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,125,[0.0],lin_max = 0.0,reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,126,[0],binding_total = 0,reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,130,[30.0],"t_max=30.0,",reviewed result-affecting/algebraic literal
+code/repro/test_cap_market_clearing.py,166,"[0, 1]",return 0 if ok else 1,reviewed result-affecting/algebraic literal
 code/repro/test_cross_document_consistency_sol.py,12,[2],ROOT = Path(__file__).resolve().parents[2],reviewed result-affecting/algebraic literal
 code/repro/test_cross_document_consistency_sol.py,13,[1],SUBMISSION = ROOT.parents[1],reviewed result-affecting/algebraic literal
 code/repro/test_cross_document_consistency_sol.py,88,"[0, 0]","if t.rows[0].cells[0].text.strip() == ""Region""",reviewed result-affecting/algebraic literal

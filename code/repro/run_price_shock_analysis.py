@@ -43,6 +43,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, '..', 'model'))
 
 import numpy as np
+from scipy.optimize import brentq
 
 from monthly_model_v3 import MonthlyNParams, apply_era5_climate_file
 from coupled_monthly import (CoupledMonthlyModel, MonthlyBiophysicalEngine,
@@ -138,9 +139,34 @@ def farm_sweep_single(region, rn, ym, mp, soc_pct, price_shock_frac):
     eta = rp.get('eta', -0.30)
     PF_hat = np.log(1 + price_shock_frac)
 
+    # Output-price recovery cleared on the REALIZED regional-mean yield
+    # response rather than on its gamma-linearization (F-025, following
+    # F-022/F-023: under a 100% spike the one-period move is large and the
+    # first-order expansion is at its worst there). Root-find PY such that
+    #     eta*PY = ln( y_regional(F(PY)) / y_regional_baseline ),
+    # evaluating each candidate with a fresh regional-mean engine step. The
+    # old closed form (gamma*eps_F_PF*PF_hat / (eta - gamma*eps_F_PY)) is the
+    # first-order version of exactly this equation and survives only as the
+    # bracket guess.
+    def _realized_residual(PY):
+        F_try = max(0.0, base_fert * np.exp(eps_F_PF * PF_hat + eps_F_PY * PY))
+        y_try = MonthlyBiophysicalEngine(
+            region, region_key=rn, monthly_params=mp,
+            yield_max_override=ym).step(F_try)['yield_tha']
+        return eta * PY - np.log(max(y_try, 1e-9) / y_regional_baseline)
+
     denom = eta - gamma_regional * eps_F_PY
-    PY_hat = (gamma_regional * eps_F_PF * PF_hat / denom
-              if abs(denom) > 1e-10 else 0.0)
+    guess = (gamma_regional * eps_F_PF * PF_hat / denom
+             if abs(denom) > 1e-10 else 0.0)
+    lo, hi = guess - 0.10, guess + 0.10
+    for _ in range(12):
+        if _realized_residual(lo) * _realized_residual(hi) < 0:
+            break
+        lo -= 0.10
+        hi += 0.10
+    else:
+        raise RuntimeError('no clearing bracket for %s' % rn)
+    PY_hat = brentq(_realized_residual, lo, hi, xtol=1e-12)
     F_hat = eps_F_PF * PF_hat + eps_F_PY * PY_hat
     F_shocked = max(0.0, base_fert * np.exp(F_hat))
 

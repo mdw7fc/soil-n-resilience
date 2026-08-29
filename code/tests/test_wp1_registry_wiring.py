@@ -289,12 +289,15 @@ else:
     log("  year 30 %.2f %%" % gl["30"])
     log("  NOTE: the reconstruction base (git 20defb2, pre-F-002) produces")
     log("        2.31 / 3.18 / 3.29. WP2's F-002 recalibration moved this to")
-    log("        2.32 / 3.20 / 3.31. The 3.03 year-10 figure quoted in HANDOFF")
-    log("        section 5 and in WP6's acceptance matches neither and is")
-    log("        owed a restatement -- see results/mutation_coverage_reconciliation.md.")
-    check(gl["1"] == 2.32 and gl["10"] == 3.20 and gl["30"] == 3.31,
-          "canonical global losses are %.2f/%.2f/%.2f, expected the post-WP2 "
-          "2.32/3.20/3.31" % (gl["1"], gl["10"], gl["30"]))
+    log("        2.32 / 3.20 / 3.31, and F-025's realized-yield clearing")
+    log("        (2026-08-29) to 2.32 / 3.18 / 3.30: clearing the market on the")
+    log("        biophysical response instead of its linearization shifts the")
+    log("        equilibrium fertilizer path slightly. The 3.03 year-10 figure")
+    log("        in HANDOFF section 5 matches none of these and is owed a")
+    log("        restatement -- see results/mutation_coverage_reconciliation.md.")
+    check(gl["1"] == 2.32 and gl["10"] == 3.18 and gl["30"] == 3.30,
+          "canonical global losses are %.2f/%.2f/%.2f, expected the post-F-025 "
+          "2.32/3.18/3.30" % (gl["1"], gl["10"], gl["30"]))
 
 
 # ---------------------------------------------------------------------------

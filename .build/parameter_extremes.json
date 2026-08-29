@@ -3,7 +3,7 @@
   "generator_sha": "6eaf049704a8e35108660f6a60af199c013bcc2f22ad8d6334371f889f6f62d7",
   "inputs": {
     "code/model/coupled_econ_biophysical.py": "123bb16cf7148c9f84b544ee7107dc497f94baeeced8804ea83d324e44fc8c63",
-    "code/model/coupled_monthly.py": "bc4b1ae1560a41d5da69df29622c16af723d86dcf814a14c65aead5f367d43ad",
+    "code/model/coupled_monthly.py": "1cf2ee293a03bd807cd354234e0d37ca22903e9e816a9eacadc0536fe5623f04",
     "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
     "code/model/parameter_registry.py": "0033a30e18a46cf7ab7cc8072e0ce4f85fa235fbac3d4c6977c0b7d81c7a6748",
     "code/model/prices.py": "9685f40ece2f5659bae91f9ec980ea9a76a8595e85f6cc823759cd8db7f78250",
@@ -14,9 +14,9 @@
   },
   "node": "parameter_extremes",
   "outputs": {
-    "outputs/parameter_extreme_acceptance_sol.csv": "e05c60edf973cc3fe87b71006e64d4194b42f08b8d2a503f538e2c7ffe77e102"
+    "outputs/parameter_extreme_acceptance_sol.csv": "93d23d63026bd464068ee927b5452138dcff56108a25f8f5f066fcacfd07b6a6"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-07-28T16:48:47Z",
-  "stamped_at_commit": "1a0d009"
+  "stamped_at": "2026-08-29T13:53:05Z",
+  "stamped_at_commit": "6c2cf9b"
 }

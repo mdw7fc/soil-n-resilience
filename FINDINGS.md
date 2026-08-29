@@ -1662,7 +1662,7 @@ and the residual between it and realized production is under 0.25 pp after year
 2 and up to 1.54 pp in year 1. Nothing about the yield trajectories changes,
 because they never came from the linearisation.
 
-Numbers in `results/econ_biophysical_yield_gap.csv`;
+Numbers in `baseline/f022_f025_evidence/econ_biophysical_yield_gap.csv`;
 `logs/run_224_yieldgap.log`.
 
 ## F-023 - 2026-08-29 - The yield gap decomposes into two offsetting terms, and the sign of the price bias depends on which output concept the market is asked to clear
@@ -1676,7 +1676,7 @@ told about sign.
 
 The gap between realized production (yield_fraction times land) and the
 econ-implied production (eta times PY_hat) is the sum of two terms
-(`results/yield_gap_decomposition.csv`, S3, `logs/run_226_decomp.log`):
+(`baseline/f022_f025_evidence/yield_gap_decomposition.csv`, S3, `logs/run_226_decomp.log`):
 
 The land term. The realized index credits land at elasticity 1, while the
 supply relation credits it at alpha, about 0.10. With land expanding up to 1.4
@@ -1704,7 +1704,7 @@ moves are large; corr(|gap|, squared move) = 0.35, so the second-order story
 is partial, consistent with the two-term decomposition.
 
 The consequence for price is concept-dependent
-(`results/price_error_econ_consistent.csv`, `logs/run_227_price_consistent.log`).
+(`baseline/f022_f025_evidence/price_error_econ_consistent.csv`, `logs/run_227_price_consistent.log`).
 Against a market that clears yield-times-land, reported price indices are HIGH
 by up to 4.35 pp in year 1 (F-022's numbers). Against the economically
 consistent concept, realized yield with land at alpha, reported prices are LOW:
@@ -1787,4 +1787,56 @@ becomes under a minute; the Monte Carlo ensemble is year-1-scoped and scales
 less than proportionally). Adopting it regenerates every price-bearing
 artifact, reopens C-060 and C-042 deliberately, and needs a FINDINGS entry
 plus refreeze when it lands. Not yet wired; awaiting Matthew and Dale's
-go-ahead. Numbers in `results/realized_clearing_comparison.csv`.
+go-ahead. Numbers in `baseline/f022_f025_evidence/realized_clearing_comparison.csv`.
+
+## F-025 - 2026-08-29 - The market now clears on the realized biogeochemical yield; the linearization Dale challenged is out of the model
+
+Matthew and Dale adopted the F-024 remedy. `CoupledMonthlyModel.run()` now
+root-finds the food price at which demand equals the production change the
+biophysical model actually delivers, eta*PY = ln(yield_frac(F(PY))) +
+alpha*lambda_L*PY, evaluating each candidate price by running the monthly
+nitrogen balance at that price's fertilizer rate from a soil-state snapshot.
+beta and gamma no longer enter the clearing anywhere; they are recorded
+diagnostics. The physical supply ceiling became a quantity constraint inside
+the residual, so the separate capped solver, the constrained-cap fix of v1.3
+and object of F-010, has nothing left to solve and no copy left to drift.
+
+`run_price_shock_analysis.py` got the same treatment: Figure 1's output-price
+recovery was its own closed-form linear clearing, and under a 100 percent
+spike the one-year move is exactly where F-023 showed the first-order
+expansion at its worst. Its closed form survives only as the bracket guess.
+
+`test_cap_market_clearing.py` is in its third form. It evaluates the three
+structural equations of the realized clearing from reported DataFrame columns
+at every step of every scenario, and it additionally REQUIRES the old linear
+supply relation to disagree with the clearing by more than 1e-3 somewhere:
+a check that cannot tell the new clearing from the old proves nothing. Worst
+structural residual 1.51e-13 over all steps, linear-relation gap reaches
+2.1e-2, 237 cap-binding steps (`logs/run_229_cap.log`).
+
+What moved (`logs/run_230_stale.log`, `run_231_stale2.log`, claim register):
+the canonical global loss path goes 2.32/3.20/3.31 to 2.32/3.18/3.30, and
+regional year-10 losses shift by up to 0.9 pp (South Asia 6.0 to 5.10), so a
+handful of yield sentences move at the manuscript's own precision even though
+the clearing change alone moved yields by under 0.06 pp; most of those
+sentences were already DRIFTED from earlier findings and are finally being
+restated. Food prices move the other way and further: year-10 indices are
+5.97 (NA), 11.00 (EU), 2.70 (EA), 8.89 (SA), 7.16 (SEA), 4.93 (LATAM), 7.19
+(SSA), 12.96 (FSU) percent, against a register that stated 5.0 global and
+10.3 FSU. Figure 1 margin gaps between mean and half-mean SOC now run 0.27
+to 0.99 pp across the four fine-sweep regions. The pulse year-5 residual is
+0.038 percent.
+
+Both gates that exist for exactly this moment fired and were answered with
+authorised refreezes rather than stamps: the WP1 pinned canonical delta
+(baseline/canonical_expected_delta.json, 49 moved fields re-frozen, hard-coded
+globals updated with the lineage comment) and the claims baseline, which
+records three checks newly drifted (C-033 farmer-paid net revenue, C-042
+year-1 regional min and max) on top of the standing document debt. The
+document edits themselves are executed in the tracked-changes batch that
+accompanies this entry.
+
+The lesson this entry adds to the ledger: a linearization can sit at the
+center of a model for three review rounds when every test compares the model
+to itself. What surfaced it was a coauthor asking which of two yields the
+price was clearing. The clearing now has no answer other than "the model's".

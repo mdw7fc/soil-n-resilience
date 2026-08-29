@@ -1,7 +1,7 @@
 {
   "generated_by": "code/repro/run_benchmarks.py",
   "spec": "FINDINGS.md F-008",
-  "git_commit": "1a0d009092a827da9e1b1e4e0bc5dc2e60fb44fa",
+  "git_commit": "6c2cf9b6ceb364a0580d56293aadeb977f7c33b5",
   "params_sha256": "830c8de251b8ba83bf5e2808b7b506df04290eebf2b537eafa88ce870421d0d4",
   "script_sha256": "7f9abde549b730a9742cdc80044287e9ff24cf127b04ca04286823551ec278e9",
   "observed_values_sha256": "2f094de971e1285ecc446b90f92dd3a4f5690742f18db60badc015c8ff55ef6f",

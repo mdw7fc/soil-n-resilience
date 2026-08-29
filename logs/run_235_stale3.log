@@ -1,0 +1,8 @@
+python3 code/build.py run --stale --log-dir logs/build
+running 2 node(s), about 0 min:
+  figure_1 claims_report
+
+--> figure_1                     code/repro/make_figure_1.py
+    ok   1.8s
+--> claims_report                code/repro/make_claim_report.py
+    ok   0.1s

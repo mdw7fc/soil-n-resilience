@@ -3,7 +3,7 @@
   "generator_sha": "05152989fe2f729965eae15a1a75f48d8171c59b3718131d165221e5c5035cf1",
   "inputs": {
     "code/model/coupled_econ_biophysical.py": "123bb16cf7148c9f84b544ee7107dc497f94baeeced8804ea83d324e44fc8c63",
-    "code/model/coupled_monthly.py": "bc4b1ae1560a41d5da69df29622c16af723d86dcf814a14c65aead5f367d43ad",
+    "code/model/coupled_monthly.py": "1cf2ee293a03bd807cd354234e0d37ca22903e9e816a9eacadc0536fe5623f04",
     "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
     "code/model/parameter_registry.py": "0033a30e18a46cf7ab7cc8072e0ce4f85fa235fbac3d4c6977c0b7d81c7a6748",
     "code/model/prices.py": "9685f40ece2f5659bae91f9ec980ea9a76a8595e85f6cc823759cd8db7f78250",
@@ -15,10 +15,10 @@
   "node": "figure_s11",
   "outputs": {
     "data/figS11_severity_sweep.json": "73c4473e4539128ef5258d7d1db9701dbfdbf0708b1e7fa1b6b0ac8c0482916e",
-    "figures/Figure_S11_severity_gradient.pdf": "fdd50d3bc6e12957fe4554f957a447c6cf0824ad32dbecc38f11406b47d387b2",
+    "figures/Figure_S11_severity_gradient.pdf": "964a24490c2eaeaaff919c73a5e2487eef92294950b2107aae5d8e486ed88a92",
     "figures/Figure_S11_severity_gradient.png": "a200dd92bb4755e18cfeb23976a8ab629566d24f56a533fb7e566af3296a1198"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-07-28T16:47:37Z",
-  "stamped_at_commit": "1a0d009"
+  "stamped_at": "2026-08-29T13:51:57Z",
+  "stamped_at_commit": "6c2cf9b"
 }

@@ -1,24 +1,28 @@
-SC1 production-weighted global loss  yr1/yr10/yr30 = 2.73 / 3.76 / 3.90 %
-    north_america            2.63   3.05   3.13
-    europe                   3.42   5.08   5.21
-    east_asia                1.18   1.31   1.32
-    south_asia               2.90   5.12   5.22
-    southeast_asia           3.14   3.84   3.98
-    latin_america            1.84   2.75   2.88
-    sub_saharan_africa       3.50   4.93   5.37
-    fsu_central_asia         5.10   6.46   6.84
-SC2 production-weighted global loss  yr1/yr10/yr30 = 2.59 / 1.92 / 0.04 %
-    north_america            2.49   1.49   0.02
-    europe                   3.23   2.52   0.03
-    east_asia                1.10   0.56   0.00
-    south_asia               2.76   2.65   0.03
-    southeast_asia           2.98   2.00   0.04
-    latin_america            1.74   1.43   0.04
-    sub_saharan_africa       3.35   2.87   0.16
-    fsu_central_asia         4.83   3.34   0.10
+S3                   north_america      worst residual 3.82e-16  linear-gap max 3.29e-03  binding 0
+S3                   europe             worst residual 2.57e-16  linear-gap max 4.75e-03  binding 0
+S3                   east_asia          worst residual 2.29e-14  linear-gap max 2.16e-03  binding 0
+S3                   south_asia         worst residual 1.17e-13  linear-gap max 9.05e-03  binding 0
+S3                   southeast_asia     worst residual 5.48e-16  linear-gap max 6.30e-03  binding 0
+S3                   latin_america      worst residual 4.14e-14  linear-gap max 4.91e-03  binding 0
+S3                   sub_saharan_africa worst residual 1.14e-15  linear-gap max 1.24e-02  binding 0
+S3                   fsu_central_asia   worst residual 3.26e-16  linear-gap max 1.18e-02  binding 0
+SC1_20pct            north_america      worst residual 5.34e-16  linear-gap max 1.58e-02  binding 30
+SC1_20pct            europe             worst residual 4.30e-16  linear-gap max 1.87e-02  binding 30
+SC1_20pct            east_asia          worst residual 2.50e-16  linear-gap max 1.56e-03  binding 30
+SC1_20pct            south_asia         worst residual 1.17e-13  linear-gap max 9.05e-03  binding 0
+SC1_20pct            southeast_asia     worst residual 5.48e-16  linear-gap max 6.30e-03  binding 0
+SC1_20pct            latin_america      worst residual 3.92e-16  linear-gap max 7.37e-03  binding 30
+SC1_20pct            sub_saharan_africa worst residual 1.14e-15  linear-gap max 1.24e-02  binding 0
+SC1_20pct            fsu_central_asia   worst residual 4.65e-16  linear-gap max 2.10e-02  binding 30
+SC2_20pct_recovery   north_america      worst residual 6.07e-14  linear-gap max 1.39e-02  binding 19
+SC2_20pct_recovery   europe             worst residual 3.37e-14  linear-gap max 1.69e-02  binding 19
+SC2_20pct_recovery   east_asia          worst residual 4.36e-15  linear-gap max 1.44e-03  binding 11
+SC2_20pct_recovery   south_asia         worst residual 1.51e-13  linear-gap max 8.62e-03  binding 0
+SC2_20pct_recovery   southeast_asia     worst residual 1.27e-13  linear-gap max 5.70e-03  binding 0
+SC2_20pct_recovery   latin_america      worst residual 1.29e-13  linear-gap max 6.42e-03  binding 19
+SC2_20pct_recovery   sub_saharan_africa worst residual 9.95e-14  linear-gap max 1.11e-02  binding 0
+SC2_20pct_recovery   fsu_central_asia   worst residual 8.36e-14  linear-gap max 1.84e-02  binding 19
 
-cap-binding steps checked            : 237
-worst structural residual (log-pts)  : 1.39e-17
-worst root gap on the food price     : 2.22e-16
-worst step                           : SC1/north_america year 20
-CONSTRAINED MARKET CLEARING: PASS
+worst structural residual 1.51e-13 (tol 1e-08)
+linear-relation gap reaches 2.10e-02: the check can fail
+cap-binding steps: 237

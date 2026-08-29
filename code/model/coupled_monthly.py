@@ -24,6 +24,8 @@ Key difference from coupled_econ_biophysical.py:
 Author: Matthew Wallenstein & Dale Manning
 """
 
+import copy
+
 import numpy as np
 import pandas as pd
 from dataclasses import dataclass
@@ -460,6 +462,74 @@ class CoupledMonthlyModel:
         F_hat = ln_c - L_hat
         return PY_hat, F_hat, L_hat
 
+    def _clear_market_realized(self, supply):
+        """Clear the food market on the realized biogeochemical yield (F-024).
+
+        Until v15 the equilibrium closed on the log-linear supply relation
+        Y_hat = alpha*L_hat + beta*N_hat + gamma*F_hat, so the reported food
+        price cleared a first-order expansion of the production response while
+        the reported production was the nonlinear one the biogeochemistry
+        delivered. F-022 measured the gap (1.54 pp worst, ~0.22 pp chronic) and
+        F-023 traced the price bias to about -1 pp at year 10. This method is
+        Dale Manning's remedy: root-find the food price at which demand equals
+        the production change the biophysical model actually delivers,
+
+            eta*PY = ln(yield_frac(F_level(PY))) + alpha*lambda_L*PY,
+
+        evaluating each candidate price by running the monthly biophysical
+        step for that price's fertilizer level from a snapshot of the soil
+        state. beta and gamma no longer enter the clearing at all; they are
+        recorded as diagnostics only. The physical supply ceiling is a
+        quantity constraint inside the residual, so no separate capped solver
+        exists to drift from this one.
+
+        The prototype behind this wiring reproduced the linear model to
+        0.0e+00 before its realized mode was believed, and the realized mode
+        converged in 8 brentq evaluations per step over 240 clearings
+        (logs/run_228_proto.log). Returns the achieved residual so that an
+        external check can fail if convergence ever degrades.
+        """
+        snap = copy.deepcopy(self.bio)
+
+        def implied(PY):
+            F_hat = (self.eps_F_PF * self.PF_hat + self.eps_F_PY * PY
+                     + self.eps_F_N * self.N_hat)
+            L_hat = self._lambda_L() * PY
+            F_level = max(0.0, self.F_baseline * np.exp(F_hat))
+            L_level = self.L_baseline * np.exp(L_hat)
+            capped = False
+            if supply.ceiling < 1.0:
+                F_max = (self.F_baseline * self.L_baseline * supply.ceiling
+                         / max(L_level, 1e-6))
+                if F_level > F_max:
+                    F_level, capped = F_max, True
+            return F_hat, L_hat, F_level, L_level, capped
+
+        def residual(PY):
+            _, L_hat, F_level, _, _ = implied(PY)
+            trial = copy.deepcopy(snap)
+            yf = max(trial.step(F_level)['yield_fraction'], 1e-9)
+            return self.eta * PY - (np.log(yf) + self.alpha * L_hat)
+
+        lo, hi = self.PY_hat - 0.10, self.PY_hat + 0.10
+        for _ in range(12):
+            if residual(lo) * residual(hi) < 0:
+                break
+            lo -= 0.10
+            hi += 0.10
+        else:
+            raise RuntimeError(
+                'realized clearing found no bracket for region %r; the food '
+                'market did not clear' % (self.region_key,))
+        PY_hat = brentq(residual, lo, hi, xtol=1e-12)
+        F_hat, L_hat, F_level, L_level, capped = implied(PY_hat)
+        self.bio = snap
+        bio_state = self.bio.step(F_level)
+        resid = self.eta * PY_hat - (
+            np.log(max(bio_state['yield_fraction'], 1e-9))
+            + self.alpha * L_hat)
+        return PY_hat, F_hat, L_hat, F_level, L_level, capped, bio_state, resid
+
     def run(self) -> pd.DataFrame:
         """Run the coupled simulation."""
         n_steps = int(self.t_max / self.dt) + 1
@@ -582,57 +652,19 @@ class CoupledMonthlyModel:
             supply = supply_state(self.econ, t)
             self.PF_hat = self.PF_hat_base * supply.price_frac
 
-            # Get elasticities from previous step
+            # The food market clears on the realized biogeochemical yield;
+            # see _clear_market_realized. The linearized solve survives only
+            # as the bracket guess, and beta/gamma are diagnostics.
             beta = results['beta'][i-1]
             gamma = results['gamma'][i-1]
-
-            # Solve the unconstrained equilibrium
-            PY_hat, F_hat, L_hat = self._solve_equilibrium(beta, gamma)
-            F_level = max(0.0, self.F_baseline * np.exp(F_hat))
-            L_level = self.L_baseline * np.exp(L_hat)
-            cap_binding = False
-            clearing_residual = 0.0
-            ln_cap_i = np.nan
-
-            # Physical supply ceiling. If the cap binds, RE-SOLVE the
-            # equilibrium with fertilizer set by physical availability so that
-            # food price and land clear the market for the fertilizer actually
-            # available (constrained-cap fix); otherwise keep the unconstrained
-            # solution.
-            if supply.ceiling < 1.0:
-                ceiling = supply.ceiling
-                F_max = self.F_baseline * self.L_baseline * ceiling / max(L_level, 1e-6)
-                if F_level > F_max * (1.0 + 1e-9):
-                    PY_hat, F_hat, L_hat = self._solve_equilibrium_capped(
-                        beta, gamma, np.log(ceiling))
-                    F_level = max(0.0, self.F_baseline * np.exp(F_hat))
-                    L_level = self.L_baseline * np.exp(L_hat)
-                    cap_binding = True
-                    ln_cap_i = np.log(ceiling)
-                    # Clearing diagnostic. With the cap binding, the fertilizer
-                    # consistent with the reported food price is
-                    # ln(c_t) - lambda_L*PY_hat. clearing_residual is the
-                    # supply-side error gamma*(F_realised - F_implied).
-                    #
-                    # F-010 (2026-07-25): THIS COLUMN IS AN IDENTITY, NOT A
-                    # TEST. The capped solver sets F_hat = ln(c) - lambda_L*
-                    # PY_hat, which is exactly F_implied, so this residual is
-                    # zero by algebra for every possible value of alpha, beta,
-                    # gamma, eta and lambda_L, correct or not. It is retained
-                    # as a cheap regression guard against a future reversion to
-                    # post-hoc clipping, under which it does become non-zero.
-                    # It is not evidence that the equilibrium is right; the
-                    # external re-solve in code/repro/test_cap_market_clearing.py
-                    # is.
-                    F_implied = ln_cap_i - self._lambda_L() * PY_hat
-                    clearing_residual = gamma * (F_hat - F_implied)
+            self.PY_hat = self._solve_equilibrium(beta, gamma)[0]
+            (PY_hat, F_hat, L_hat, F_level, L_level, cap_binding,
+             bio_state, clearing_residual) = self._clear_market_realized(supply)
+            ln_cap_i = np.log(supply.ceiling) if cap_binding else np.nan
 
             self.PY_hat = PY_hat
             self.F_hat = F_hat
             self.L_hat = L_hat
-
-            # Advance biophysical model
-            bio_state = self.bio.step(F_level)
 
             # Total production index
             yield_frac = bio_state['yield_fraction']

@@ -481,7 +481,11 @@ CACHES: Dict[str, str] = {
 # that survived the crashed v15 session and whose generators did not, frozen
 # before this package regenerated the chain over them (see
 # results/build_reconciliation.md).
-PRESERVED_PREFIXES = ("baseline/surviving_v15/",)
+# `baseline/f022_f025_evidence/` holds the pre-F-025 diagnostics that justified
+# adopting realized market clearing; rerunning their generators against the
+# current model would measure a gap the model no longer has, so they are
+# frozen evidence, not regenerable artifacts (see the README there).
+PRESERVED_PREFIXES = ("baseline/surviving_v15/", "baseline/f022_f025_evidence/")
 
 # Hand-written prose. Reconciliation notes are arguments about artifacts, not
 # artifacts. They are listed rather than pattern-matched so that a generated

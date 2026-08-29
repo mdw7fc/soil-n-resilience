@@ -1,6 +1,6 @@
 ========================================================================
 CHECK 1 -- canonical diff against a freshly regenerated artifact
-  123 fields compared, 50 moved, 50 pinned as expected
+  123 fields compared, 49 moved, 49 pinned as expected
 ========================================================================
 CHECK 2 -- field-by-field equality over every regional field
   RegionParams: 152 fields over 8 regions, 0 moved
@@ -13,13 +13,16 @@ CHECK 2 -- field-by-field equality over every regional field
 ========================================================================
 CHECK 3 -- global S3 production-weighted yield loss
   year 1  2.32 %
-  year 10 3.20 %
-  year 30 3.31 %
+  year 10 3.18 %
+  year 30 3.30 %
   NOTE: the reconstruction base (git 20defb2, pre-F-002) produces
         2.31 / 3.18 / 3.29. WP2's F-002 recalibration moved this to
-        2.32 / 3.20 / 3.31. The 3.03 year-10 figure quoted in HANDOFF
-        section 5 and in WP6's acceptance matches neither and is
-        owed a restatement -- see results/mutation_coverage_reconciliation.md.
+        2.32 / 3.20 / 3.31, and F-025's realized-yield clearing
+        (2026-08-29) to 2.32 / 3.18 / 3.30: clearing the market on the
+        biophysical response instead of its linearization shifts the
+        equilibrium fertilizer path slightly. The 3.03 year-10 figure
+        in HANDOFF section 5 matches none of these and is owed a
+        restatement -- see results/mutation_coverage_reconciliation.md.
 ========================================================================
 CHECK 4 -- registry load-time contract
   entries 53, mutable leaves 55
