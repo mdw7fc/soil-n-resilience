@@ -68,24 +68,36 @@ def main() -> None:
         "6.198", "6.022", "6.220", "3.773", "4.874", "5.414", "3.967", "4.318",
         "ρ = +0.19",
         "2.6% (East Asia) to 11.9%",
-        "0.1% of draws",
+        "in none of the 1,000 draws",
         "default −0.50",
+        "31.9",                      # derived BNF, Table 1 and prose
+        "y_max = 3.97",
+        "withdrawn in this revision",
+        "ρ = +0.54",                 # fert-elasticity yr10, Note 3
     ], "SI")
     require(response, [
         "ε_F,N = −0.50, active in S3, SC1 and SC2",
         "~50%",
         "0.3–1.0 percentage points",
         "ρ = +0.19",
+        "0.62 percentage points",
+        "y_max = 3.97",
     ], "response")
 
     stale = [
-        "6.277", "3.876",
-        "ρ = +0.02", "ρ = +0.07",
+        "6.277", "3.876", "6.119", "6.095",
+        "ρ = +0.02", "ρ = +0.07", "ρ = +0.60", "ρ = −0.86", "ρ = −0.45",
         "yield loss by approximately 55%",
         "one-third of global fertilizer trade",
         "2.6–4.6 percentage points",
         "~25%",
         "8.4 mm WHC",
+        "y_max = 3.88",
+        "0.54 percentage points",
+        "roughly ten times",
+        "roughly twice the year-30",
+        "83.7% of draws despite",
+        "2.6 to 10.3 percentage points",
     ]
     forbid(manuscript + "\n" + si + "\n" + response, stale, "all documents")
 
@@ -94,7 +106,7 @@ def main() -> None:
     si_doc = Document(SI)
     table_s4 = next(
         t for t in si_doc.tables
-        if len(t.rows[0].cells) >= 8
+        if len(t.rows) > 0 and len(t.rows[0].cells) >= 8
         and t.rows[0].cells[0].text.strip() == "Region"
         and "y_max" in t.rows[0].cells[4].text
     )
@@ -121,6 +133,8 @@ def main() -> None:
         (SI, "word/media/image10.png", ROOT / "figures/Figure_S10_nue_sensitivity.png"),
         (SI, "word/media/image12.png", ROOT / "figures/Figure_S12_crop_response_calibration.png"),
         (SI, "word/media/image13.png", ROOT / "figures/Figure_S13_OFRA_SSA_validation.png"),
+        (SI, "word/media/image9.png", ROOT / "figures/Figure_S9_mc_ensemble.png"),
+        (MANUSCRIPT, "word/media/image3.png", ROOT / "figures/Figure_3_mechanism_screen.png"),
     ]
     for docx, internal, source in media:
         assert embedded_sha(docx, internal) == file_sha(source), (

@@ -21,15 +21,17 @@
 #   does a parameter that names a claim which does not exist here.
 #
 # DOCUMENT BASIS
-#   Unless a claim says otherwise, `location` refers to the v14 submission set
-#   (`resumbission/v14/Wallenstein-Manning_ERFS_{manuscript,SI}_v14-clean.docx`,
-#   `Author_Response_ERFS-100341_v14-clean.docx`). Paragraph numbers are the
+#   Unless a claim says otherwise, `location` refers to the v17 release set
+#   (`resumbission/v17/Wallenstein-Manning_ERFS_{manuscript,SI}_v17-clean.docx`,
+#   `Author_Response_ERFS-100341_v17-clean.docx`), rebased 2026-08-29 under
+#   F-026. Paragraph indices carried over from v14 are approximate where v17
+#   inserted paragraphs and are re-verified claim by claim. Paragraph numbers are the
 #   1-based index over all paragraphs minus one, which is the numbering used
 #   throughout FINDINGS.md. C-033 is the one exception and says so.
 
 schema_version: 1
-register_version: "v15-wp5"
-document_basis: v14
+register_version: "v17-f026"
+document_basis: v17
 claim_count: 19
 check_count: 70
 
@@ -351,7 +353,7 @@ claims:
     checks:
       - {id: shock_pct,             stated: 104.0, tol: 1.0, units: "% price increase",   select: {kind: derived, name: s3_solved_shock_pct}}
       - {id: s1_reduction_pct,      stated: 20.0,  tol: 1.0, units: "% N-tonnage cut",    select: {kind: derived, name: s3_global_reduction, args: {column: s1_reduction_yr1}}}
-      - {id: s3_sustained_mean_pct, stated: 20.0,  tol: 1.0, units: "% N-tonnage cut",    select: {kind: derived, name: s3_global_reduction, args: {column: s3_reduction_mean}}}
+      - {id: s3_sustained_mean_pct, stated: 19.0,  tol: 1.0, units: "% N-tonnage cut",    select: {kind: derived, name: s3_global_reduction, args: {column: s3_reduction_mean}}}
 
   # ------------------------------------ 06x: headline losses, pulse and rankings
   - id: C-060

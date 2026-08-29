@@ -2,7 +2,7 @@
   "generator": "code/repro/compute_figS8_curves.py",
   "generator_sha": "d50d0bdb39dce0030406c35b0b0ed1fd138c5d710fe973246a1488d35a65b579",
   "inputs": {
-    "code/model/coupled_econ_biophysical.py": "123bb16cf7148c9f84b544ee7107dc497f94baeeced8804ea83d324e44fc8c63",
+    "code/model/coupled_econ_biophysical.py": "f60020c4b556d77b267dd508fdb1e097415fdc3e89c979a568719a05d27d6ba4",
     "code/model/coupled_monthly.py": "d69c8ba2e75dad66c184935b27218a3dce194df61851db259911263606c090b9",
     "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
     "code/model/parameter_registry.py": "dcb0e6aec9d1ab6383ffe695ef8ea19cda698a2caae3becfb4314c4771de2f5b",
@@ -17,6 +17,6 @@
     "data/figS8_curves.json": "03f71dd45ddd10829d30124ba61645dd791e7da6ef0dee73f0c6e168dd3653e0"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T15:21:06Z",
-  "stamped_at_commit": "063c94e"
+  "stamped_at": "2026-08-29T17:00:57Z",
+  "stamped_at_commit": "0e834ce"
 }

@@ -1,0 +1,75 @@
+python3 code/build.py run --stale --log-dir logs/build
+running 24 node(s), about 35 min:
+  canonical scenario_trajectories s3_shock_calibration soc_trajectories sc_trajectories climate_swap price_shock figure_2 figS8_curves figure_s7 table_s4 figure_s10 figure_s11 food_price_table broadbalk_benchmark hindcast_benchmark benchmarks zero_shock_invariance structural_sensitivity parameter_extremes calibration_production_path parameter_ledger claims_report claim_strength
+
+--> canonical                    code/repro/run_canonical.py
+    ok   10.1s
+--> scenario_trajectories        code/repro/make_scenario_trajectories.py
+    ok   13.5s
+--> s3_shock_calibration         code/repro/make_s3_shock_calibration.py
+    ok   11.2s
+--> soc_trajectories             code/repro/make_soc_trajectories.py
+    ok   10.2s
+--> sc_trajectories              code/repro/make_sc_trajectories.py
+    ok   11.1s
+--> climate_swap                 code/repro/climate_comparison.py
+    ok   11.1s
+--> price_shock                  code/repro/run_price_shock_analysis.py
+    ok   222.1s
+--> figure_2                     code/repro/make_figure_2.py
+    ok   15.0s
+--> figS8_curves                 code/repro/compute_figS8_curves.py
+    ok   12.4s
+--> figure_s7                    code/repro/make_figure_s7.py
+    ok   350.1s
+--> table_s4                     code/repro/make_table_s4_sol.py
+    ok   9.0s
+--> figure_s10                   code/repro/make_figure_s10.py
+    ok   16.0s
+--> figure_s11                   code/repro/make_figure_s11.py
+    ok   173.5s
+--> food_price_table             code/repro/make_food_price_table.py
+    ok   10.0s
+--> broadbalk_benchmark          code/repro/make_broadbalk_benchmark.py
+    ok   2.7s
+--> hindcast_benchmark           code/repro/make_hindcast_benchmark.py
+    ok   30.3s
+--> benchmarks                   code/repro/run_benchmarks.py
+    ok   10.2s
+--> zero_shock_invariance        code/repro/test_zero_shock_invariance.py
+    ok   10.6s
+--> structural_sensitivity       code/repro/run_structural_sensitivity_sol.py
+    ok   33.5s
+--> parameter_extremes           code/repro/test_parameter_extremes_sol.py
+    ok   30.2s
+--> calibration_production_path  code/repro/make_calibration_production_path.py
+    ok   10.2s
+--> parameter_ledger             code/repro/make_parameter_ledger_sol.py
+    ok   9.4s
+--> claims_report                code/repro/make_claim_report.py
+    ok   0.2s
+--> claim_strength               code/repro/make_claim_strength.py
+    ok   0.3s
+code/tests/test_seam_contracts.py                         ok
+code/tests/test_calibration_fingerprint.py                ok
+code/tests/test_claims.py                                 ok
+code/repro/test_parameter_boundaries_sol.py               ok
+code/repro/test_dimensional_consistency_sol.py            ok
+code/repro/test_zero_shock_invariance.py                  ok
+code/repro/test_full_zero_shock_sol.py                    ok
+code/repro/test_cap_market_clearing.py                    ok
+code/repro/test_mc_robustness_sol.py                      ok
+code/tests/test_benchmark_baseline.py                     ok
+code/tests/test_spinup_partition_independence.py          ok
+code/tests/test_wp1_registry_wiring.py                    ok
+code/tests/test_soc_trajectories.py                       ok
+code/tests/test_supply_state.py                           ok
+code/repro/test_parameter_consistency_sol.py              ok
+code/repro/test_cross_document_consistency_sol.py         ok
+code/repro/test_parameter_extremes_sol.py                 ok
+
+build graph: 32 nodes -- OK 31, UNSTAMPED_BASELINE 1
+  (1 node(s) still carry the pre-graph exemption; they have never been regenerated under this graph)
+  0 orphan(s) and 0 unsourced input(s) allowed by name on the command line
+
+verify: 17 suites and the build graph, exit 0

@@ -105,7 +105,7 @@ a disclosed evidentiary decision, not a hidden test failure.
 | Soil-N buffer ratio (%), NA→FSU | **43.2, 33.6, 19.3, 31.4, 49.6, 54.0, 45.0, 44.8** | Supplementary table 1 |
 | Buffer ratio vs year-10 penalty | Spearman ρ = **+0.19**, Pearson R² = **0.06** | Note 3, Figure S6f, table 3 |
 | Fig S6 panel ρ (a–f) | −0.61, +0.70, −0.81, −0.28, +0.58, +0.19 | Figure S6 |
-| Climate robustness (expert vs ERA5) | max year-10 shift **0.70 pp**; Spearman ρ = **0.98** | Response letter, `results/climate_swap_stats.txt` |
+| Climate robustness (expert vs ERA5) | max year-10 shift **0.62 pp**; Spearman ρ = **0.98** | Response letter, `results/climate_swap_stats.txt` |
 | Figure 1 net revenue at regional mean SOC | SSA **+0.31 %**, SA −5.36, LATAM −1.06, NA −1.68 | Figure 1b |
 | Figure 2b year-10 SOM-depletion share (global) | 0.32 of 3.18 pp | Figure 2b |
 | Figure S7 halved-elasticity net-revenue penalty | **1.5–6.2 pp** deeper across regions/SOC; SSA yield improves **2.31 pp** from 10 % to 200 % SOC | Figure S7 |

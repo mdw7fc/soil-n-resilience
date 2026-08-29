@@ -1,4 +1,4 @@
 family,claim_id,location,question,n,leader,p,runner_up,p_runner_up,pair_p,band,stated_region,region_agrees,n_regions_scored,n_regions_in_ensemble,licensed
 P3,C-062,SI [163],highest year-1 yield loss,1000,fsu_central_asia,0.998,southeast_asia,0.002,1.0,state,fsu_central_asia,True,8,8,state the ranking outright
-P4,C-063,SI [163],worst year-1 net-revenue change,1000,south_asia,0.961,latin_america,0.032,0.993,state,sub_saharan_africa,False,4,8,state the ranking outright
+P4,C-063,SI [163],worst year-1 net-revenue change,1000,south_asia,1.0,,0.0,1.0,state,sub_saharan_africa,False,4,8,state the ranking outright
 P4b,C-064,SI [163],highest derived nitrogen cost share,1000,south_asia,1.0,,0.0,1.0,state,sub_saharan_africa,False,4,8,state the ranking outright

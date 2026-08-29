@@ -1,6 +1,6 @@
 # Parameter ledger (completed SOL audit)
 
-The authoritative CSV contains **582 semantic entries**. The companion numeric-literal audit contains **2198 code-line entries**.
+The authoritative CSV contains **582 semantic entries**. The companion numeric-literal audit contains **2216 code-line entries**.
 
 ## Scope and completeness rule
 

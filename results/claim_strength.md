@@ -10,11 +10,11 @@ Licensed: state the ranking outright.
 
 ## P4: worst year-1 net-revenue change
 
-Leader **south_asia**, p = 0.961 (n = 1000). Runner-up latin_america, p = 0.032.
+Leader **south_asia**, p = 1.000 (n = 1000).
 
 Licensed: state the ranking outright.
 
-**Overstated.** The sentence names sub_saharan_africa, which the ensemble puts first in 0.001 of draws. A threshold check alone would have passed this; the claim is wrong about *which* region, not about how strongly to say it.
+**Overstated.** The sentence names sub_saharan_africa, which the ensemble puts first in 0.000 of draws. A threshold check alone would have passed this; the claim is wrong about *which* region, not about how strongly to say it.
 
 **Scored over 4 of 8 regions.** The registry prices north_america, south_asia, latin_america, sub_saharan_africa and raises for the rest, so this probability is conditional on the four audited price pairs. See `v15/RECONSTRUCTION_GAPS.md` G-4.
 

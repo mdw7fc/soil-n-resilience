@@ -114,15 +114,15 @@ tests:
 
 verify: tests
 	@echo ""
-	@$(BUILD) verify \
-		--allow-unsourced results/s3_shock_calibration.csv
+	@$(BUILD) verify
 	@echo ""
 	@echo "verify: $(words $(TESTS)) suites and the build graph, exit 0"
 
 # The two allowances above are debts, not exemptions. Each is an artifact the
 # manuscript cites whose generator does not exist in this tree:
 #
-#   results/s3_shock_calibration.csv     make_s3_shock_calibration.py (F-015)
+#   (none -- the last unsourced-input debt was retired by F-027,
+#    which gave results/s3_shock_calibration.csv its generator)
 #
 # data/soc_trajectories.csv|.json was the second line. The generator was written
 # in the lost v15 tree, recovered verbatim from the session transcript and

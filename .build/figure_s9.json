@@ -2,14 +2,14 @@
   "generator": "code/repro/make_figure_s9.py",
   "generator_sha": "9940bb1368f17eb7f4ccf0968ce6ca06a43af2a5e7fc039b6aa4b3effd33a114",
   "inputs": {
-    "data/mc_ensemble/mc_posterior.csv.gz": "8003922071edbbfdb79db351e72b7eb33e4bc1299bafdc99e6b4e322d1c73b00"
+    "data/mc_ensemble/mc_posterior.csv.gz": "30b0b1bb8b0d85b22561f5caf3cfc707c56e58c767b61c6944cf3ea5badb0e2b"
   },
   "node": "figure_s9",
   "outputs": {
-    "figures/Figure_S9_mc_ensemble.pdf": "70caea79070c13c33163ceb250d5a4f6cd665c8359611efab405161c88feb4b3",
-    "figures/Figure_S9_mc_ensemble.png": "e8808d62f691bd4a9b706d11db6e1d2df8eced4f63b163e507d7f2955cbeb418"
+    "figures/Figure_S9_mc_ensemble.pdf": "ecebb3b8f00f5fa217391e8b421c716723702fade24e24cf29419b4905df3354",
+    "figures/Figure_S9_mc_ensemble.png": "f25bb0bbbef5a751f6b76b44cae5ed3d04a3c6efbaa4ae70a72eb5eddbb2708c"
   },
   "params_fingerprint": null,
-  "stamped_at": "2026-07-26T01:58:41Z",
-  "stamped_at_commit": "unknown"
+  "stamped_at": "2026-08-29T17:29:48Z",
+  "stamped_at_commit": "0e834ce"
 }

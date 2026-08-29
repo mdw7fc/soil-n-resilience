@@ -1,6 +1,4 @@
 {
   "reason": "pruned on a successful verify; a stamped node cannot regress",
-  "nodes": [
-    "mc_ensemble"
-  ]
+  "nodes": []
 }

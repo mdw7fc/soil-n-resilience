@@ -1907,3 +1907,70 @@ each sentence's own precision, two tolerance-hygiene gates (G6) answered by
 tightening rather than noting, and the claims baseline refrozen: 19 claims,
 70 checks, 70 AGREES, 0 DRIFTED. The remaining debt is now entirely in the
 documents, which the accompanying tracked pass brings to the register.
+
+## F-027 - 2026-08-29 - The second audit round: clean files that lost their mathematics, tables nobody re-read, and the last unsourced input finally gets a generator
+
+The second external audit declared the v17 folder no-go on eight grounds. As
+with the first round, each claim was verified before being acted on; this
+round all eight were substantively right, and two exposed defects in the
+release TOOLING rather than in the documents.
+
+**The clean files were mathematically blank.** The LibreOffice accept path
+used to produce clean copies drops OMML equation objects: the clean SI carried
+zero of the tracked SI's 103 equations, and inline symbols vanished with them.
+The replacement is an XML-level accepter (`/tmp` tooling, recorded here
+because the lesson matters more than the path) that touches only revision
+markup. Writing it surfaced three regex traps in sequence, each caught by
+schema validation: a self-closed `<w:ins/>` matched by the unwrap pattern and
+swallowing its neighbours; the same class of bug for `<w:del/>` paragraph
+marks; and tracked table-row deletion leaving doubled `trPr` elements. The
+final clean files carry all 103 equations byte-identical to the tracked
+copies, zero revision markup, and zero comments; the blank equations in
+locally rendered PDFs are a LibreOffice rendering limitation, and the one
+check this container cannot run is opening the files in Word, which is
+Matthew's.
+
+**Tables nobody re-read.** Supplementary Table 1's BNF row still carried the
+legacy static parameterisation (25/25/20/...) rather than the derived
+per-cereal-hectare values (31.9/18.3/13.8/22.1/23.0/37.7/15.0/13.8) and its
+buffer-ratio row the pre-audit percentages; Supplementary Table 3 and the
+Note 3 prose carried pre-F-026 Spearman values (eight cells and four prose
+rhos updated); Table S4 prose still said y_max = 3.88 where the table said
+3.967; the response letter said 0.54 pp where the climate swap now gives
+0.62, said "roughly twice" where the SC1/SC2 year-30 contrast is 3.8 percent
+against 0.02 (stated as values now, since a ratio against a near-zero
+denominator means nothing), and claimed an abstract range that was two
+revisions old. Figure S9 was still the pre-audit ensemble figure claiming
+SSA-worst in 83.7 percent of draws; the regenerated figure and caption say
+0.1 percent. The MS's NUE claim said a capture-efficiency increase cuts SSA
+year-10 loss by ~55 percent; the artifact says 8 percent, at both places the
+sentence appeared.
+
+**The four-pool contradiction is resolved by withdrawal.** Figure S5,
+Supplementary table 2 and the 0.9x-2.5x ratios were tracked-deleted; Note 2
+now states the withdrawal and keeps the mechanism qualitative; the MS
+sentence says the quantitative comparison is withdrawn because the engine is
+not in the deposit. This follows the recommendation Matthew forwarded.
+
+**The last unsourced input has a generator.** `results/s3_shock_calibration.csv`
+was a deposit from the lost v15 tree that nothing regenerated, and it was
+stale in exactly the way an unsourced input goes stale: computed under the
+zero central, it let C-050 read a 19.1 percent realized reduction while the
+actual value under -0.50 is 18.7. `make_s3_shock_calibration.py` now
+generates it as a build node, the Makefile's `--allow-unsourced` flag is
+gone, and C-050 is restated to 19 (18.74 within its stated tolerance).
+
+**Register and packaging honesty.** The register's document_basis edit from
+the first round had been lost in a crashed heredoc and the generated report
+still said v14; it is now genuinely v17-f026 and the report says so. The
+release bundle was incremental (unclonable alone) and the zip omitted
+directories its own README promised; both are rebuilt self-contained. The
+submission checklist was the v10 relic and is rewritten. The scenario
+docstring still describing a zero central is fixed. README's climate figure
+0.70 goes to 0.62.
+
+The lesson this round adds: a release gate that does not read the released
+files is a gate on something else. The cross-document test now requires the
+corrected values, forbids twenty stale fragments, and hash-checks ten
+embedded figures against the deposited renders, so each of this round's
+findings is a permanent regression check rather than a memory.

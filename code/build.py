@@ -212,6 +212,12 @@ NODES: List[Node] = [
               "now scored against the same family as everything else (F-021). "
               "Frozen pre-regeneration copy: "
               "baseline/surviving_v15/scenario_trajectories.csv"),
+    Node("s3_shock_calibration", "code/repro/make_s3_shock_calibration.py",
+         outputs=("results/s3_shock_calibration.csv",), inputs=(ERA5,),
+         minutes=8.0,
+         note="per-region shock-calibration diagnostics C-050 reads; was the "
+              "last unsourced input (a deposit from the lost v15 tree, stale "
+              "at the zero eps_F_N central) until F-027 gave it a generator"),
     Node("soc_trajectories", "code/repro/make_soc_trajectories.py",
          outputs=("data/soc_trajectories.csv", "data/soc_trajectories.json"),
          inputs=(ERA5,), minutes=2.0,

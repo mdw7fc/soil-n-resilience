@@ -588,9 +588,10 @@ def get_scenario_params() -> Dict[str, EconParams]:
         - Land market active
         - As food prices rise, farmers source more fert (other suppliers,
           organic sources, etc.)
-        - The soil-N response elasticity is zero in the central case because
-          no empirical regional estimate is available. Negative values are
-          evaluated separately as structural sensitivities.
+        - The soil-N response elasticity is the global expert-elicited
+          central of -0.50 (F-026); it is not regionalized because no
+          empirical regional estimates exist, and 0 to -1.0 is evaluated
+          as a structural sensitivity.
     """
     shock = calibrate_price_shock(0.20)
 

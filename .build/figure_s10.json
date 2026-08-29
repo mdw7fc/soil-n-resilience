@@ -2,7 +2,7 @@
   "generator": "code/repro/make_figure_s10.py",
   "generator_sha": "893632b948b93e73f5e5755709dd1f2b88e15575cd02125dea7c7486657b960a",
   "inputs": {
-    "code/model/coupled_econ_biophysical.py": "123bb16cf7148c9f84b544ee7107dc497f94baeeced8804ea83d324e44fc8c63",
+    "code/model/coupled_econ_biophysical.py": "f60020c4b556d77b267dd508fdb1e097415fdc3e89c979a568719a05d27d6ba4",
     "code/model/coupled_monthly.py": "d69c8ba2e75dad66c184935b27218a3dce194df61851db259911263606c090b9",
     "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
     "code/model/parameter_registry.py": "dcb0e6aec9d1ab6383ffe695ef8ea19cda698a2caae3becfb4314c4771de2f5b",
@@ -15,10 +15,10 @@
   "node": "figure_s10",
   "outputs": {
     "data/figS10_nue_sensitivity.json": "bf0ccbdbbd03baeb5905341e51c9f623bfaa41b8043696ba991daffd336daa37",
-    "figures/Figure_S10_nue_sensitivity.pdf": "2ae2343662e000e618791ef2d2954646c68abebc4a66bfb268eedb610f7f9ead",
+    "figures/Figure_S10_nue_sensitivity.pdf": "0dbdc371cb444f28a1fc4a87c70d633ad55b18095a91f819d7fac529977a0fa6",
     "figures/Figure_S10_nue_sensitivity.png": "9815b3d42d4fab14e22a2d9440e057f778a01546be71f8070c4813efeb6b62ca"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T15:27:43Z",
-  "stamped_at_commit": "063c94e"
+  "stamped_at": "2026-08-29T17:07:12Z",
+  "stamped_at_commit": "0e834ce"
 }
