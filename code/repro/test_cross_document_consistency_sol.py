@@ -10,11 +10,15 @@ import pandas as pd
 from docx import Document
 
 ROOT = Path(__file__).resolve().parents[2]
-SUBMISSION = ROOT.parents[1]
+# The v17 release documents live in the tree, so this test runs from any
+# checkout (F-026); it reads the CLEAN copies because python-docx does not
+# surface text inside <w:ins> runs, so a tracked file under-reports its own
+# accepted content.
+SUBMISSION = ROOT / "resumbission" / "v17"
 
-MANUSCRIPT = SUBMISSION / "Wallenstein-Manning_ERFS_manuscript_v14_sol.docx"
-SI = SUBMISSION / "Wallenstein-Manning_ERFS_SI_v14_sol.docx"
-RESPONSE = SUBMISSION / "Author_Response_ERFS-100341_v14_sol.docx"
+MANUSCRIPT = SUBMISSION / "Wallenstein-Manning_ERFS_manuscript_v17-clean.docx"
+SI = SUBMISSION / "Wallenstein-Manning_ERFS_SI_v17-clean.docx"
+RESPONSE = SUBMISSION / "Author_Response_ERFS-100341_v17-clean.docx"
 
 
 def all_text(path: Path) -> str:
@@ -51,41 +55,47 @@ def main() -> None:
     response = all_text(RESPONSE)
 
     require(manuscript, [
-        "2.3%", "3.18%", "3.3%",
-        "ρ = +0.19", "Pearson R² = 0.06",
-        "5.55%", "5.13%", "an 8% reduction",
-        "unsupported εF,N values −0.50 and −1.00",
+        "3.0% by year 10",
+        "5.1% (FSU/Central Asia)",
+        "0.3–1.0 percentage points",
+        "approximately 19%",
+        "one-fifth of global seaborne fertilizer trade",
+        "3.5 mm",
+        "reduces Sub-Saharan African year-10 yield loss by approximately 8%",
+        "ε_F,N = −0.50",
     ], "manuscript")
     require(si, [
-        "31.9", "18.3", "13.8", "22.1", "23.0", "37.7", "15.0",
-        "43.2", "33.6", "19.3", "31.4", "49.6", "54.0", "45.0", "44.8",
-        "ρ = +0.19", "Pearson R² = 0.06",
-        "ρ = +0.40", "Pearson R² = 0.11",
-        "4.47 t ha⁻¹", "3.07–6.73",
-        "5.55%", "5.13%", "4.13%", "2.90%",
-        "reverses in SSA at −0.50 and −1.00",
+        "6.198", "6.022", "6.220", "3.773", "4.874", "5.414", "3.967", "4.318",
+        "ρ = +0.19",
+        "2.6% (East Asia) to 11.9%",
+        "0.1% of draws",
+        "default −0.50",
     ], "SI")
     require(response, [
-        "independent benchmark", "4.47 t ha⁻¹", "3.07–6.73",
-        "ρ = +0.19", "R² = 0.06", "ρ = +0.40", "R² = 0.11",
-        "εF,N = −0.50 and −1.00",
+        "ε_F,N = −0.50, active in S3, SC1 and SC2",
+        "~50%",
+        "0.3–1.0 percentage points",
+        "ρ = +0.19",
     ], "response")
 
     stale = [
-        "reduces Sub-Saharan African year-10 yield loss from 20.8%",
-        "reduces SSA year-10 yield loss from 20.81%",
-        "a 57% reduction",
-        "ρ = +0.07; Pearson R² = 0.05",
-        "year 1 is ρ = +0.29",
-        "We additionally validated the modelled Sub-Saharan",
+        "6.277", "3.876",
+        "ρ = +0.02", "ρ = +0.07",
+        "yield loss by approximately 55%",
+        "one-third of global fertilizer trade",
+        "2.6–4.6 percentage points",
+        "~25%",
+        "8.4 mm WHC",
     ]
     forbid(manuscript + "\n" + si + "\n" + response, stale, "all documents")
 
     table = pd.read_csv(ROOT / "outputs" / "Table_S4_calibration_sol.csv")
+    table = table.drop_duplicates(subset="region", keep="first").reset_index(drop=True)
     si_doc = Document(SI)
     table_s4 = next(
         t for t in si_doc.tables
-        if t.rows[0].cells[0].text.strip() == "Region"
+        if len(t.rows[0].cells) >= 8
+        and t.rows[0].cells[0].text.strip() == "Region"
         and "y_max" in t.rows[0].cells[4].text
     )
     labels = [
@@ -103,10 +113,13 @@ def main() -> None:
         ) <= .01
 
     media = [
-        (MANUSCRIPT, "word/media/image3.png", ROOT / "figures/Figure_3_mechanism_screen.png"),
-        (SI, "word/media/image2.png", ROOT / "figures/Figure_S2_broadbalk_benchmark.png"),
+        (MANUSCRIPT, "word/media/image1.png", ROOT / "figures/Figure_1_farm_buffering.png"),
+        (MANUSCRIPT, "word/media/image2.png", ROOT / "figures/Figure_2_regional_vulnerability.png"),
         (SI, "word/media/image4.png", ROOT / "figures/Figure_S4_hindcast_sensitivity.png"),
+        (SI, "word/media/image6.png", ROOT / "figures/Figure_S6_pairwise_diagnostics.png"),
+        (SI, "word/media/image8.png", ROOT / "figures/Figure_S8_elasticity_sensitivity.png"),
         (SI, "word/media/image10.png", ROOT / "figures/Figure_S10_nue_sensitivity.png"),
+        (SI, "word/media/image12.png", ROOT / "figures/Figure_S12_crop_response_calibration.png"),
         (SI, "word/media/image13.png", ROOT / "figures/Figure_S13_OFRA_SSA_validation.png"),
     ]
     for docx, internal, source in media:

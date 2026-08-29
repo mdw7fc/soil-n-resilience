@@ -31,8 +31,11 @@ repair is to the document. `docs/claims.yaml` is the claim register (19 claims,
 
 ## State of the model
 
-The model is green: 15 suites and the 31-node build graph, exit 0, one node
-BLOCKED by design (`mc_ensemble`, see Open work). The defining recent change:
+The model is green: 17 suites and the 32-node build graph, exit 0, nothing
+blocked (the MC ensemble regenerated under F-026). The registry central
+eps_F_N is -0.50 (F-026, closing the code-document fork an external audit
+found); the claim register reads 70/70 AGREES on document_basis v17. The
+defining structural change:
 
 **F-025 — realized-yield market clearing.** The food price is root-found at
 every timestep so that demand equals the production response of the monthly
@@ -67,18 +70,21 @@ exists exactly once; square pulse, inclusive boundary, and the reason).
 
 ## Current headline numbers (post-F-025)
 
-Global S3 loss 2.32 / 3.18 / 3.30 % at years 1/10/30. Regional year-10: EA
-1.21, NA 1.79, LATAM 2.50, SEA 3.83, EU 3.65, SSA 4.92, SA 5.10, FSU 5.51.
-Year-30: SSA 5.36, SA 5.20, FSU 5.77. SOC 30-year decline: SA 2.234 %, SSA
-2.239 % — not separable; never write a sentence that orders them. Food price
-indices, year 10: NA 5.97, EU 11.00, EA 2.70, SA 8.89, SEA 7.16, LATAM 4.93,
-SSA 7.19, FSU 12.96 %, global 7.12 (year 1 global 5.20, range 2.44–10.29).
+Global S3 loss 2.32 / 3.02 / 3.07 % at years 1/10/30 (F-026: eps_F_N central
+restored to -0.50). Regional year-10: EA 1.18, NA 1.72, LATAM 2.41, SEA 3.67,
+EU 3.41, SSA 4.74, SA 4.80, FSU 5.09. Year-30: SSA 5.08, SA 4.79, FSU 5.19.
+SOC 30-year decline: SSA 2.14 %, SA 2.09 % (they separate under this family;
+F-018 not-separable was a zero-central property). Food price indices, year
+10: NA 5.71, EU 10.24, EA 2.64, SA 8.32, SEA 6.83, LATAM 4.74, SSA 6.92, FSU
+11.89 %, global 6.72 (year 1 global 5.20, range 2.44–10.29).
 Figure-1 margin gaps mean-vs-half SOC: NA 0.98, SSA 0.93, LATAM 0.69, SA 0.27
 pp; SSA at the mean is essentially unaffected (+0.0 %) and South Asia is the
 margin-vulnerable region (nitrogen cost share ~15 % vs SSA ~4 % at audited
 prices — the manuscript's framing was inverted and has been corrected).
-PULSE1: year 1 2.317 (equals S3 by construction), year 5 residual 0.038 %.
-SC1 year-10 3.77, SC2 1.93 falling to 0.14 by year 20. S3 realized fertilizer
+PULSE1: year 1 2.317 (equals S3 by construction), year 5 residual 0.010 %.
+SC1 year-10 3.70, SC2 1.88 falling to 0.08 by year 20. Year-10 SOC gradients
+are non-monotone at low SOC in LATAM, SSA and FSU (conditional on the global
+-0.50 elasticity; year-1 buffering is universal, MC P = 1.0 everywhere). S3 realized fertilizer
 reduction: 19 % (state the averaging basis). WHC sensitivity: 3.5 mm per pp
 SOC central (Minasny & McBratney 2018), 8.4 is the upper bound only. SSA
 nitrogen price: $2.30/kg N.

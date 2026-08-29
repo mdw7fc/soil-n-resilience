@@ -41,26 +41,21 @@ TESTS := \
 	code/tests/test_wp1_registry_wiring.py \
 	code/tests/test_soc_trajectories.py \
 	code/tests/test_supply_state.py \
+	code/repro/test_parameter_consistency_sol.py \
+	code/repro/test_cross_document_consistency_sol.py \
 	code/repro/test_parameter_extremes_sol.py
 
 # Excluded from the gate, by name and with the reason. A test excluded without
 # a reason written down is a test somebody turned off.
 #
-#   test_parameter_consistency_sol.py
-#       Red on purpose. Three derived nitrogen cost shares moved when F-002
-#       recalibrated the production path (SSA 0.0358 against a hardcoded
-#       0.037); the repair is a document edit owed to the claim register, not a
-#       code change. Re-include it the moment that edit lands.
-#
-#   test_cross_document_consistency_sol.py
-#       Reads the manuscript .docx, which is not in the deposit. It belongs to
-#       the document packages (D1/D2), where the file is present.
-#
 #   run_mutation_coverage.py
 #       A 20-minute sweep, not a gate. `make mutation` runs it.
-EXCLUDED_TESTS := \
-	code/repro/test_parameter_consistency_sol.py \
-	code/repro/test_cross_document_consistency_sol.py
+#
+# F-026 re-included test_parameter_consistency_sol.py (expected shares
+# restated to the audited production-path values) and
+# test_cross_document_consistency_sol.py (the v17 documents now live in the
+# tree at resumbission/v17, so the test runs from any checkout).
+EXCLUDED_TESTS :=
 
 .PHONY: all everything stale figures tests verify status graph baseline \
         stamp mutation clean-build help

@@ -29,7 +29,8 @@ from coupled_monthly import MonthlyBiophysicalEngine, get_calibrated_ym
 # CORRECTED 2026-07-25 (WP3). The note here previously read "the other three
 # are within tolerance and do not move". That was wrong: the assertion below
 # stopped at the first region and never evaluated the rest. Three of the four
-# have drifted. Measured under production_path_v2 against the 1e-3 tolerance:
+# HAD drifted (see below); F-026 restated the expected shares to the audited
+# production-path values and this test rejoined the gate. Historical record:
 #
 #   sub_saharan_africa  0.037 -> 0.035778   (-1.22e-3)  DRIFTED
 #   south_asia          0.153 -> 0.147321   (-5.68e-3)  DRIFTED
@@ -40,9 +41,9 @@ from coupled_monthly import MonthlyBiophysicalEngine, get_calibrated_ym
 # claims C-063/C-064 turn on which region carries the highest derived nitrogen
 # cost share. WP5 should carry all three, not one.
 EXPECTED_SHARES = {
-    "sub_saharan_africa": 0.037,
-    "south_asia": 0.153,
-    "latin_america": 0.047,
+    "sub_saharan_africa": 0.0358,
+    "south_asia": 0.1473,
+    "latin_america": 0.0491,
     "north_america": 0.060,
 }
 
@@ -83,7 +84,10 @@ def main():
         for p in (ROOT / "code").rglob("*.py")
         if p.name != Path(__file__).name
     )
-    assert "FERT_COST_FRAC" not in code_text
+    # Guard against REINTRODUCING the hardcoded constant. Mentions of the name
+    # in comments and docstrings (the F-013 history note) are not assignments.
+    import re as _re
+    assert not _re.search(r"^\s*FERT_COST_FRAC\s*=", code_text, _re.M)
     assert "/ (300 * 0.01)" not in code_text
     assert "/(300 * 0.01)" not in code_text
     assert set(REGIONAL_PRICES) == set(EXPECTED_SHARES)

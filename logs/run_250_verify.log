@@ -1,0 +1,23 @@
+code/tests/test_seam_contracts.py                         ok
+code/tests/test_calibration_fingerprint.py                ok
+code/tests/test_claims.py                                 ok
+code/repro/test_parameter_boundaries_sol.py               ok
+code/repro/test_dimensional_consistency_sol.py            ok
+code/repro/test_zero_shock_invariance.py                  ok
+code/repro/test_full_zero_shock_sol.py                    ok
+code/repro/test_cap_market_clearing.py                    ok
+code/repro/test_mc_robustness_sol.py                      ok
+code/tests/test_benchmark_baseline.py                     ok
+code/tests/test_spinup_partition_independence.py          ok
+code/tests/test_wp1_registry_wiring.py                    ok
+code/tests/test_soc_trajectories.py                       ok
+code/tests/test_supply_state.py                           ok
+code/repro/test_parameter_consistency_sol.py              ok
+code/repro/test_cross_document_consistency_sol.py         ok
+code/repro/test_parameter_extremes_sol.py                 ok
+
+build graph: 31 nodes -- OK 30, UNSTAMPED_BASELINE 1
+  (1 node(s) still carry the pre-graph exemption; they have never been regenerated under this graph)
+  0 orphan(s) and 1 unsourced input(s) allowed by name on the command line
+
+verify: 17 suites and the build graph, exit 0
