@@ -3,9 +3,9 @@
   "generator_sha": "e1bf64888c9f32b532ffcbba51aa0cc1a45f64ed7de6d7d548d5a14502f56793",
   "inputs": {
     "code/model/coupled_econ_biophysical.py": "123bb16cf7148c9f84b544ee7107dc497f94baeeced8804ea83d324e44fc8c63",
-    "code/model/coupled_monthly.py": "1cf2ee293a03bd807cd354234e0d37ca22903e9e816a9eacadc0536fe5623f04",
+    "code/model/coupled_monthly.py": "d69c8ba2e75dad66c184935b27218a3dce194df61851db259911263606c090b9",
     "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
-    "code/model/parameter_registry.py": "0033a30e18a46cf7ab7cc8072e0ce4f85fa235fbac3d4c6977c0b7d81c7a6748",
+    "code/model/parameter_registry.py": "dcb0e6aec9d1ab6383ffe695ef8ea19cda698a2caae3becfb4314c4771de2f5b",
     "code/model/prices.py": "9685f40ece2f5659bae91f9ec980ea9a76a8595e85f6cc823759cd8db7f78250",
     "code/model/registry.py": "0ad6974d63de654822aa0b456a1b92a57052bf0092efc1ab3863b4f1dd45546f",
     "code/model/seams.py": "5203d7d1a0f8a88ce5b94b5394e1ecc6aea8dee9d95a2df76b023572a4ad85e2",
@@ -15,10 +15,10 @@
   "node": "hindcast_benchmark",
   "outputs": {
     "data/benchmarks/hindcast_benchmark_sol.csv": "6937eece7145c5cda674009d04944af238463d38d112c071b727c326fafb2a18",
-    "figures/Figure_S4_hindcast_sensitivity.pdf": "c75a3082f722147a0ae5dd941398ad689407d66c2f3929c5bdf86f6fd39f8f04",
+    "figures/Figure_S4_hindcast_sensitivity.pdf": "a6909e30811485c47c19493e9864c41d26dc813cdb05ff16e706a8fd7b49fe31",
     "figures/Figure_S4_hindcast_sensitivity.png": "f19065e09d354ee2d147891f6c77a0eed42928fbebc1fbaeb9fd11000660999a"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T13:52:20Z",
-  "stamped_at_commit": "6c2cf9b"
+  "stamped_at": "2026-08-29T15:31:23Z",
+  "stamped_at_commit": "063c94e"
 }

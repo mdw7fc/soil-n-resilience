@@ -53,11 +53,11 @@ checks:
   - section: D3
     check: "year 10 headline agrees at 2 dp"
     pass: true
-    detail: "recomputed 3.1846 vs deposited 3.18 (gap 0.0046 pp)"
+    detail: "recomputed 3.0205 vs deposited 3.02 (gap 0.0005 pp)"
   - section: D3
     check: "year 30 headline agrees at 2 dp"
     pass: true
-    detail: "recomputed 3.2974 vs deposited 3.30 (gap 0.0026 pp)"
+    detail: "recomputed 3.0710 vs deposited 3.07 (gap 0.0010 pp)"
   - section: INV
     check: "calibrate_price_shock(0.20) unchanged"
     pass: true

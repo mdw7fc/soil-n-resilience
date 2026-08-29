@@ -295,9 +295,11 @@ else:
     log("        equilibrium fertilizer path slightly. The 3.03 year-10 figure")
     log("        in HANDOFF section 5 matches none of these and is owed a")
     log("        restatement -- see results/mutation_coverage_reconciliation.md.")
-    check(gl["1"] == 2.32 and gl["10"] == 3.18 and gl["30"] == 3.30,
-          "canonical global losses are %.2f/%.2f/%.2f, expected the post-F-025 "
-          "2.32/3.18/3.30" % (gl["1"], gl["10"], gl["30"]))
+    log("        F-026 (2026-08-29) restored the eps_F_N central to -0.50,")
+    log("        moving the family to 2.32 / 3.02 / 3.07.")
+    check(gl["1"] == 2.32 and gl["10"] == 3.02 and gl["30"] == 3.07,
+          "canonical global losses are %.2f/%.2f/%.2f, expected the post-F-026 "
+          "2.32/3.02/3.07" % (gl["1"], gl["10"], gl["30"]))
 
 
 # ---------------------------------------------------------------------------

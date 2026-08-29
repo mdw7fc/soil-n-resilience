@@ -3,9 +3,9 @@
   "generator_sha": "1ee5bc1e191318b9f14a288ec443619cd6999e0ca9255d9ed3d91eb0c58b88b8",
   "inputs": {
     "code/model/coupled_econ_biophysical.py": "123bb16cf7148c9f84b544ee7107dc497f94baeeced8804ea83d324e44fc8c63",
-    "code/model/coupled_monthly.py": "1cf2ee293a03bd807cd354234e0d37ca22903e9e816a9eacadc0536fe5623f04",
+    "code/model/coupled_monthly.py": "d69c8ba2e75dad66c184935b27218a3dce194df61851db259911263606c090b9",
     "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
-    "code/model/parameter_registry.py": "0033a30e18a46cf7ab7cc8072e0ce4f85fa235fbac3d4c6977c0b7d81c7a6748",
+    "code/model/parameter_registry.py": "dcb0e6aec9d1ab6383ffe695ef8ea19cda698a2caae3becfb4314c4771de2f5b",
     "code/model/prices.py": "9685f40ece2f5659bae91f9ec980ea9a76a8595e85f6cc823759cd8db7f78250",
     "code/model/registry.py": "0ad6974d63de654822aa0b456a1b92a57052bf0092efc1ab3863b4f1dd45546f",
     "code/model/seams.py": "5203d7d1a0f8a88ce5b94b5394e1ecc6aea8dee9d95a2df76b023572a4ad85e2",
@@ -14,11 +14,11 @@
   },
   "node": "figure_s7",
   "outputs": {
-    "data/figS7_farm_elasticity_gradient.json": "6906e16ef0cf2b96393fd5dae7c64a3efcc7608a2187a0fe19993f8e6766ff2d",
-    "figures/Figure_S7_farm_elasticity_gradient.pdf": "9dddce6e143909f60c6b0da72745fa0965b3f1480cdaa90cf2d51a038ec0e943",
-    "figures/Figure_S7_farm_elasticity_gradient.png": "c382eacc6774f03e3f534c2f3ac385988326ed2d5c02c7fe36cc9e33617bef11"
+    "data/figS7_farm_elasticity_gradient.json": "f3d742252e9a7f5a0bbdce091e446d5b546d39deb5490808cd51d8953922f1fe",
+    "figures/Figure_S7_farm_elasticity_gradient.pdf": "d5985d33b793ed50c59ff639bc997c55547b7d1a5865e5bd0a2926c532c781cf",
+    "figures/Figure_S7_farm_elasticity_gradient.png": "8e864e7764c0e8ce64f3a5b63882ed432417a1a39203b52069522e102418c6e6"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T13:51:09Z",
-  "stamped_at_commit": "6c2cf9b"
+  "stamped_at": "2026-08-29T15:27:14Z",
+  "stamped_at_commit": "063c94e"
 }

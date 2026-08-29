@@ -48,13 +48,20 @@ _WHC_UNC = _reg.uncertainty('whc_sensitivity')
 WHC_MM_PER_SOC_PCT_LOW, WHC_MM_PER_SOC_PCT_HIGH = _WHC_UNC['declared_absolute_bounds']
 
 
-# No clean empirical estimate exists for fertilizer demand's response to
-# changes in mineralized soil N. It is zero in the central run and examined
-# only as a structural sensitivity. The registered eps_F_N (-0.5) is the S4
-# setting; S1-S3 hold the elasticity at the central value below. F-011 scores
-# eps_F_N DECLARED_NOT_WIRED for exactly this reason and that verdict is right:
-# it is the scenario dial, not a model constant.
-SOIL_N_RESPONSE_ELASTICITY_CENTRAL = 0.0
+# Fertilizer demand's response to changes in mineralized soil N. No clean
+# empirical estimate exists; the central value is the global expert-elicited
+# -0.50, restored 2026-08-29 (F-026) to close the code-document fork the
+# release audit found: the manuscript, SI and registered parameter all
+# specified -0.50 as the value active in S3, SC1 and SC2, while this constant
+# sat at 0.0, so every published trajectory came from a family the documents
+# did not describe. The v15 line's earlier 0.0 central (recorded in F-018's
+# family signature) treated the channel as an S4 sensitivity; the released
+# documents never did, and the register's rule is that documents and model
+# must agree with the model as the arbiter of numbers and the documents as
+# the arbiter of which model was declared. Structural sensitivity spans 0 to
+# -1.0 and is reported as such; the value is not regionalized because the
+# evidence cannot support regional estimates.
+SOIL_N_RESPONSE_ELASTICITY_CENTRAL = -0.50
 SOIL_N_RESPONSE_ELASTICITY_SENSITIVITY = (0.0, -0.25, -0.50, -1.0)
 
 

@@ -3,32 +3,32 @@
   "generator_sha": "524e3cc5ad94f83acd3e333be564679a1f0eb676d9a30f31c6a5bf40932f275e",
   "inputs": {
     "code/model/coupled_econ_biophysical.py": "123bb16cf7148c9f84b544ee7107dc497f94baeeced8804ea83d324e44fc8c63",
-    "code/model/coupled_monthly.py": "1cf2ee293a03bd807cd354234e0d37ca22903e9e816a9eacadc0536fe5623f04",
+    "code/model/coupled_monthly.py": "d69c8ba2e75dad66c184935b27218a3dce194df61851db259911263606c090b9",
     "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
-    "code/model/parameter_registry.py": "0033a30e18a46cf7ab7cc8072e0ce4f85fa235fbac3d4c6977c0b7d81c7a6748",
+    "code/model/parameter_registry.py": "dcb0e6aec9d1ab6383ffe695ef8ea19cda698a2caae3becfb4314c4771de2f5b",
     "code/model/prices.py": "9685f40ece2f5659bae91f9ec980ea9a76a8595e85f6cc823759cd8db7f78250",
     "code/model/registry.py": "0ad6974d63de654822aa0b456a1b92a57052bf0092efc1ab3863b4f1dd45546f",
     "code/model/seams.py": "5203d7d1a0f8a88ce5b94b5394e1ecc6aea8dee9d95a2df76b023572a4ad85e2",
     "code/model/soil_n_model.py": "ea7ffb4e0db8a4ce2dbc921006819db711dad382f759f5da22399ac28d003aa8",
-    "data/figS11_severity_sweep.json": "73c4473e4539128ef5258d7d1db9701dbfdbf0708b1e7fa1b6b0ac8c0482916e",
-    "data/figS8_curves.json": "1d3b17dac1a83f33e88ab4c2bf2da210e290ff6fa3b04308e36274c9cfe4d19c",
+    "data/figS11_severity_sweep.json": "825a102d0de4e032f278779bee62032d1d80fdb9ed74f7a0fd64036758d5e78c",
+    "data/figS8_curves.json": "03f71dd45ddd10829d30124ba61645dd791e7da6ef0dee73f0c6e168dd3653e0",
     "data/figure1_farm_gradient.json": "0444c419beec386958a7db6c3c009d2fe4e2267b7215aa94d0d2e1ce35dcb811",
-    "data/figure2_panels.json": "2c5d8c8b4bf0680965f267a84e6fb6ffcdf09b19e54026c724634e82eb2db6e1",
-    "data/food_price_response.csv": "c1c684683ad97203977a41bf8f30d11b53bb9d85049be7435d9f7c8ba530866a",
+    "data/figure2_panels.json": "56decfffbb36754ae61ae977b6983834cf1c3df5363f67716a716d38cb0656dd",
+    "data/food_price_response.csv": "10c44a587516cc63e941744b3511d0252f6a222595bf4371a1b29a0e21ac0a18",
     "data/mc_ensemble/mc_probabilities.csv": "a758459fc60a1f37cbcc21048ca39cffe893cd2cc639577b15887ad56eaf8fbf",
-    "data/scenario_trajectories.csv": "51b22f1f22564d078e0e7af3668a40fe543fa66a61e5af070cd605bf13a3e269",
-    "data/soc_trajectories.json": "af739811631db47c9306d007f7f79c1c7ac9ad05de4065a9cc4c646a88c76fee",
-    "docs/claims.yaml": "1555ed1f561d45520728e8d9f674e6bca278aac8d18ce7352bb7e5739c49b39c",
+    "data/scenario_trajectories.csv": "b0b21006655c25dd3dc540d441c721b65da671f6bdd391c571579ed8a069dc5d",
+    "data/soc_trajectories.json": "2b03de28bf2576b8762d06578893ef6fd4a5af25fbb1e4e420e9503ba5e89af8",
+    "docs/claims.yaml": "a34373ca21cfc94a9e03bf22ebe6172a5c95408a2202a9579a4c57239b47b07e",
     "outputs/price_convention_sensitivity_sol.csv": "b0a1c6d3b71c4f01e27bfcb8e92f8e0670828b4ec00077ef0b37e4d98c087c10",
     "results/calibration_production_path.csv": "4f445e4445e439ef857952a9e6a7a772ed0d4c9a1f6b683227cbeb422238d666",
     "results/s3_shock_calibration.csv": "61db4c6577676abbcb83ca3461afe18957fe147f82057b29800a6960a5199945"
   },
   "node": "claims_report",
   "outputs": {
-    "outputs/claims_status.csv": "3656ffca6e59e262478830216eb714149a76934ebbff75ce8b051d2fd4b2f47d",
-    "results/claims_report.md": "f3a93549b4741a34881e22ba5c99480240bf18bfcf14515ca373f2328ce3ffa6"
+    "outputs/claims_status.csv": "f4e2813e12675c484f4c39043991a999bc2bf50ec1d182f035ab85a0712fe7c7",
+    "results/claims_report.md": "d77676e9c279d3567894955acd70ceb870d3c77da592e16411a4c29ed0abf17e"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T14:02:05Z",
-  "stamped_at_commit": "6c2cf9b"
+  "stamped_at": "2026-08-29T15:43:36Z",
+  "stamped_at_commit": "063c94e"
 }

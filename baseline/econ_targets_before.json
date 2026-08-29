@@ -12,7 +12,7 @@
  "REGIONAL_ECON_PARAMS": {
   "east_asia": {
    "alpha": 0.1,
-   "eps_F_N": 0.0,
+   "eps_F_N": -0.5,
    "eps_F_PF": -0.3,
    "eps_F_PY": 0.1,
    "eps_LD_PL": -0.3,
@@ -22,7 +22,7 @@
   },
   "europe": {
    "alpha": 0.08,
-   "eps_F_N": 0.0,
+   "eps_F_N": -0.5,
    "eps_F_PF": -0.25,
    "eps_F_PY": 0.1,
    "eps_LD_PL": -0.3,
@@ -32,7 +32,7 @@
   },
   "fsu_central_asia": {
    "alpha": 0.12,
-   "eps_F_N": 0.0,
+   "eps_F_N": -0.5,
    "eps_F_PF": -0.3,
    "eps_F_PY": 0.1,
    "eps_LD_PL": -0.3,
@@ -42,7 +42,7 @@
   },
   "latin_america": {
    "alpha": 0.15,
-   "eps_F_N": 0.0,
+   "eps_F_N": -0.5,
    "eps_F_PF": -0.3,
    "eps_F_PY": 0.1,
    "eps_LD_PL": -0.3,
@@ -52,7 +52,7 @@
   },
   "north_america": {
    "alpha": 0.1,
-   "eps_F_N": 0.0,
+   "eps_F_N": -0.5,
    "eps_F_PF": -0.2,
    "eps_F_PY": 0.1,
    "eps_LD_PL": -0.3,
@@ -62,7 +62,7 @@
   },
   "south_asia": {
    "alpha": 0.12,
-   "eps_F_N": 0.0,
+   "eps_F_N": -0.5,
    "eps_F_PF": -0.4,
    "eps_F_PY": 0.1,
    "eps_LD_PL": -0.3,
@@ -72,7 +72,7 @@
   },
   "southeast_asia": {
    "alpha": 0.12,
-   "eps_F_N": 0.0,
+   "eps_F_N": -0.5,
    "eps_F_PF": -0.4,
    "eps_F_PY": 0.1,
    "eps_LD_PL": -0.3,
@@ -82,7 +82,7 @@
   },
   "sub_saharan_africa": {
    "alpha": 0.15,
-   "eps_F_N": 0.0,
+   "eps_F_N": -0.5,
    "eps_F_PF": -0.5,
    "eps_F_PY": 0.03,
    "eps_LD_PL": -0.3,
@@ -90,5 +90,6 @@
    "eps_LS_PL": 0.7,
    "eta": -0.7
   }
- }
+ },
+ "_note_F026": "eps_F_N updated 0.0 -> -0.5 in all eight regions on 2026-08-29 under F-026: the central was restored to the global expert-elicited -0.50 to close the code-document fork the release audit found. Authorised by FINDINGS.md F-026."
 }

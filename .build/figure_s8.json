@@ -2,13 +2,13 @@
   "generator": "code/repro/make_figure_s8.py",
   "generator_sha": "731cc0f1178d9ca397afe53b1a2542e8b94f891a2d711661911c926f48cf9e28",
   "inputs": {
-    "data/figS8_curves.json": "1d3b17dac1a83f33e88ab4c2bf2da210e290ff6fa3b04308e36274c9cfe4d19c"
+    "data/figS8_curves.json": "03f71dd45ddd10829d30124ba61645dd791e7da6ef0dee73f0c6e168dd3653e0"
   },
   "node": "figure_s8",
   "outputs": {
-    "figures/Figure_S8_elasticity_sensitivity.png": "49eb416234ce76f7bb834093eac9773ef1df5419aa358947e64d9f1362e8c0c7"
+    "figures/Figure_S8_elasticity_sensitivity.png": "4877a61df8dc9d35761fbdac6aeb06a6a479d685e2e642dc43b71ffad8e7fd3a"
   },
   "params_fingerprint": null,
-  "stamped_at": "2026-08-29T13:55:08Z",
-  "stamped_at_commit": "6c2cf9b"
+  "stamped_at": "2026-08-29T15:43:36Z",
+  "stamped_at_commit": "063c94e"
 }

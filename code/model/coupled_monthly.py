@@ -511,12 +511,19 @@ class CoupledMonthlyModel:
             yf = max(trial.step(F_level)['yield_fraction'], 1e-9)
             return self.eta * PY - (np.log(yf) + self.alpha * L_hat)
 
-        lo, hi = self.PY_hat - 0.10, self.PY_hat + 0.10
-        for _ in range(12):
+        # Geometric bracket expansion. A fixed +/-1.2 window failed on the
+        # figS11 severity gradient's 10-percent-of-mean-SOC farms, whose
+        # production shortfall under an inelastic eta puts the clearing price
+        # several log-points from the linearized guess (F-026); the root is
+        # real, the window was not wide enough to see it.
+        step = 0.10
+        lo, hi = self.PY_hat - step, self.PY_hat + step
+        for _ in range(24):
             if residual(lo) * residual(hi) < 0:
                 break
-            lo -= 0.10
-            hi += 0.10
+            step *= 1.6
+            lo -= step
+            hi += step
         else:
             raise RuntimeError(
                 'realized clearing found no bracket for region %r; the food '

@@ -1840,3 +1840,70 @@ The lesson this entry adds to the ledger: a linearization can sit at the
 center of a model for three review rounds when every test compares the model
 to itself. What surfaced it was a coauthor asking which of two yields the
 price was clearing. The clearing now has no answer other than "the model's".
+
+## F-026 - 2026-08-29 - The eps_F_N central is restored to -0.50, closing the code-document fork the release audit found, and the register reads 70 of 70 for the first time
+
+An external audit of the release (run with a second AI system, Codex, whose
+disclosure status in the AI-use statement is Matthew's decision) made eight
+substantive claims. Each was verified against the tree before anything was
+changed. Five were confirmed, two refuted, one was already-known debt.
+
+**Confirmed, and the blocker: the fork.** `SOIL_N_RESPONSE_ELASTICITY_CENTRAL`
+sat at 0.0 while the SI stated "default -0.50; active in S3, SC1 and SC2", the
+manuscript attributed the 20-to-19-percent realized-reduction gap to the
+depletion channel, and params.yaml registered -0.5. Under a zero central that
+attribution was false (the gap came from the food-price cross-elasticity), and
+every published trajectory came from a family the documents did not describe.
+The audit's predicted post-restore family, 2.32/3.02/3.07, was confirmed
+against our own structural-sensitivity output before the change and reproduced
+exactly by the regenerated canonical after it. The central is now -0.50, the
+registry comment records the decision, and the registered parameter is wired
+(used_by names the central constant).
+
+**Also confirmed.** Table S4's y_max values in the SI were stale (6.277/3.876
+against live 6.198/3.967); embedded Figures S12 and S13 differ from the live
+renders; Figure S6's buffer-panel correlation disagreed three ways (live
++0.19/0.10, SI text +0.02, response letter +0.07/0.03); the response letter
+still said halving elasticities compresses year-10 loss by ~25 percent (it is
+~50) and claimed the abstract range was 2.6-4.6 pp (it is 0.3-1.0); and the
+SI sentence that "every number has been regenerated" was false while the
+ensemble and four-pool results stood un-rerun. Typos confirmed: 0.65reduces,
+whilecompressing, S11).The, region.Larger. All are repaired in the document
+pass accompanying this entry.
+
+**Refuted.** `make verify` from a clean checkout exits 0 with 15 suites; the
+audit's claim that the gate errors did not reproduce. The two excluded tests
+are excluded with written reasons, one red-on-purpose pending a document edit
+that has now landed; both are being repaired and re-included rather than left
+out.
+
+**The consequences of the restore.** The graph regenerated in full (23 nodes,
+logs/run_242_stale_eps3.log). Yield losses shrink because farmers partially
+compensate declining soil N: global 2.32/3.02/3.07, South Asia year-10 4.80,
+SSA 4.74, FSU 5.09. Food prices ease similarly (FSU year-10 11.89, global
+6.72). The one-year pulse residual falls to 0.010 percent. SOC declines
+soften (SSA 2.14, South Asia 2.09: under this family they separate, SSA
+higher, reversing F-018's not-separable finding, which was a property of the
+zero-central family). And the depletion channel produces year-10 low-SOC
+non-monotonicity in three regions (LATAM, SSA, FSU), the behaviour v16_sol
+documented as conditional on the global elasticity: C-001's year-10 gradient
+checks are restated to the observed pattern and the documents carry the
+year-1-universal, year-10-conditional scope statement. The realized clearing
+survived one repair: the severity gradient's 10-percent-SOC farms put the
+clearing price outside the fixed bracket, which now expands geometrically.
+
+**The Monte Carlo is rerun, not retained.** The realized clearing was wired
+into the ensemble's per-draw price (the same first-order closed form survives
+only as the bracket guess), and 1,000 joint draws regenerated in 20 minutes.
+Buffering is universal (P = 1.0 in every region), the median cross-region
+buffer is 0.88 pp, the global median year-1 loss is 2.51 percent, and
+P(SSA worst net revenue among priced regions) is 0.001 against the withdrawn
+claim's 83.7 percent, closing that retraction with a number. The pre-rerun
+deposit is snapshotted outside the tree.
+
+**The register is rebased.** document_basis v14 -> v17, register_version
+v17-f026, all 34 drifted checks restated to the regenerated artifacts at
+each sentence's own precision, two tolerance-hygiene gates (G6) answered by
+tightening rather than noting, and the claims baseline refrozen: 19 claims,
+70 checks, 70 AGREES, 0 DRIFTED. The remaining debt is now entirely in the
+documents, which the accompanying tracked pass brings to the register.

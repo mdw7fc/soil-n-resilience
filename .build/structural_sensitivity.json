@@ -3,9 +3,9 @@
   "generator_sha": "a3c5f8ef02b27dac4063ea720911c7a329f446680a0a63a50695c6ff1ae44c5c",
   "inputs": {
     "code/model/coupled_econ_biophysical.py": "123bb16cf7148c9f84b544ee7107dc497f94baeeced8804ea83d324e44fc8c63",
-    "code/model/coupled_monthly.py": "1cf2ee293a03bd807cd354234e0d37ca22903e9e816a9eacadc0536fe5623f04",
+    "code/model/coupled_monthly.py": "d69c8ba2e75dad66c184935b27218a3dce194df61851db259911263606c090b9",
     "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
-    "code/model/parameter_registry.py": "0033a30e18a46cf7ab7cc8072e0ce4f85fa235fbac3d4c6977c0b7d81c7a6748",
+    "code/model/parameter_registry.py": "dcb0e6aec9d1ab6383ffe695ef8ea19cda698a2caae3becfb4314c4771de2f5b",
     "code/model/prices.py": "9685f40ece2f5659bae91f9ec980ea9a76a8595e85f6cc823759cd8db7f78250",
     "code/model/registry.py": "0ad6974d63de654822aa0b456a1b92a57052bf0092efc1ab3863b4f1dd45546f",
     "code/model/seams.py": "5203d7d1a0f8a88ce5b94b5394e1ecc6aea8dee9d95a2df76b023572a4ad85e2",
@@ -18,6 +18,6 @@
     "outputs/structural_sensitivity_sol.csv": "89da39f43b4aa542d176a051255ce32e4f02c4e72584bf110f01741528272da9"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T13:52:48Z",
-  "stamped_at_commit": "6c2cf9b"
+  "stamped_at": "2026-08-29T15:32:17Z",
+  "stamped_at_commit": "063c94e"
 }

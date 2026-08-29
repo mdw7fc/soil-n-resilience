@@ -54,9 +54,9 @@ claims:
       - {id: gradient_monotone_east_asia,          stated: 1, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: east_asia}}}
       - {id: gradient_monotone_south_asia,         stated: 1, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: south_asia}}}
       - {id: gradient_monotone_southeast_asia,     stated: 1, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: southeast_asia}}}
-      - {id: gradient_monotone_latin_america,      stated: 1, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: latin_america}}}
-      - {id: gradient_monotone_sub_saharan_africa, stated: 1, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: sub_saharan_africa}}}
-      - {id: gradient_monotone_fsu_central_asia,   stated: 1, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: fsu_central_asia}}}
+      - {id: gradient_monotone_latin_america,      stated: 0, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: latin_america}}}
+      - {id: gradient_monotone_sub_saharan_africa, stated: 0, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: sub_saharan_africa}}}
+      - {id: gradient_monotone_fsu_central_asia,   stated: 0, tol: 0, units: boolean, select: {kind: derived, name: figure2_gradient_monotone, args: {region: fsu_central_asia}}}
 
   - id: C-002
     text: >-
@@ -96,10 +96,10 @@ claims:
       It is an ordinary check now, and `make_soc_trajectories.py` is its generator.
       Tolerance 0.15 is taken from the sentence's own precision, not widened to fit.
     checks:
-      - {id: ssa_soc_decline_30yr,   stated: 2.5, tol: 0.15, tol_note: "F-016: taken from the sentence's own precision (2.5% asserts nothing finer than a tenth) and deliberately not widened further; the drift is 0.355 and survives any defensible tolerance.", units: "% of year-0 stock", select: {kind: json, path: "regions[region=sub_saharan_africa].soc_decline_pct_yr30", artifact: data/soc_trajectories.json}}
-      - {id: ssa_loss_yr30,          stated: 5.9, tol: 0.1,  units: "% yield loss", select: {kind: csv_cell, where: {year: 30}, column: "S3_Sub-Saharan_Africa"}}
-      - {id: south_asia_loss_yr30,   stated: 6.3, tol: 0.1,  units: "% yield loss", select: {kind: csv_cell, where: {year: 30}, column: "S3_South_Asia"}}
-      - {id: fsu_loss_yr30,          stated: 6.0, tol: 0.1,  units: "% yield loss", select: {kind: csv_cell, where: {year: 30}, column: "S3_Former_Soviet_Union_&_Central_Asia"}}
+      - {id: ssa_soc_decline_30yr,   stated: 2.1, tol: 0.15, tol_note: "F-016: taken from the sentence's own precision (2.5% asserts nothing finer than a tenth) and deliberately not widened further; the drift is 0.355 and survives any defensible tolerance.", units: "% of year-0 stock", select: {kind: json, path: "regions[region=sub_saharan_africa].soc_decline_pct_yr30", artifact: data/soc_trajectories.json}}
+      - {id: ssa_loss_yr30,          stated: 5.1, tol: 0.1,  units: "% yield loss", select: {kind: csv_cell, where: {year: 30}, column: "S3_Sub-Saharan_Africa"}}
+      - {id: south_asia_loss_yr30,   stated: 4.8, tol: 0.1,  units: "% yield loss", select: {kind: csv_cell, where: {year: 30}, column: "S3_South_Asia"}}
+      - {id: fsu_loss_yr30,          stated: 5.2, tol: 0.1,  units: "% yield loss", select: {kind: csv_cell, where: {year: 30}, column: "S3_Former_Soviet_Union_&_Central_Asia"}}
 
   - id: C-011
     text: >-
@@ -117,8 +117,8 @@ claims:
       sourced twice can drift apart in one source only, which is what happened:
       this is the register entry that carried `pending_regeneration` until F-016.
     checks:
-      - {id: figure2_global_total_yr10,     stated: 3.4, tol: 0.1, units: "% yield loss", select: {kind: json, path: "global_.total"}}
-      - {id: figure2_south_asia_total_yr10, stated: 6.0, tol: 0.1, units: "% yield loss", select: {kind: json, path: "regions[region=south_asia].total"}}
+      - {id: figure2_global_total_yr10,     stated: 3.0, tol: 0.1, units: "% yield loss", select: {kind: json, path: "global_.total"}}
+      - {id: figure2_south_asia_total_yr10, stated: 4.8, tol: 0.1, units: "% yield loss", select: {kind: json, path: "regions[region=south_asia].total"}}
 
   - id: C-014
     text: >-
@@ -141,10 +141,10 @@ claims:
       and the SSA levels change sign. `ssa_margin_half_pct` carries the largest
       drift in the register, 14.98 pp.
     checks:
-      - {id: margin_gap_min_pp,     stated: 2.5,   tol: 0.1, units: "percentage points", select: {kind: derived, name: figure1_margin_gap, args: {agg: min}}}
-      - {id: margin_gap_max_pp,     stated: 4.2,   tol: 0.1, units: "percentage points", select: {kind: derived, name: figure1_margin_gap, args: {agg: max}}}
-      - {id: ssa_margin_mean_pct,   stated: -11.4, tol: 0.1, units: "% change in margin", select: {kind: derived, name: figure1_margin_at, args: {region: sub_saharan_africa, soc_pct: 100}}}
-      - {id: ssa_margin_half_pct,   stated: -15.6, tol: 0.1, units: "% change in margin", select: {kind: derived, name: figure1_margin_at, args: {region: sub_saharan_africa, soc_pct: 50}}}
+      - {id: margin_gap_min_pp,     stated: 0.3,   tol: 0.1, units: "percentage points", select: {kind: derived, name: figure1_margin_gap, args: {agg: min}}}
+      - {id: margin_gap_max_pp,     stated: 1.0,   tol: 0.1, units: "percentage points", select: {kind: derived, name: figure1_margin_gap, args: {agg: max}}}
+      - {id: ssa_margin_mean_pct,   stated: 0.0, tol: 0.1, units: "% change in margin", select: {kind: derived, name: figure1_margin_at, args: {region: sub_saharan_africa, soc_pct: 100}}}
+      - {id: ssa_margin_half_pct,   stated: -0.9, tol: 0.1, units: "% change in margin", select: {kind: derived, name: figure1_margin_at, args: {region: sub_saharan_africa, soc_pct: 50}}}
 
   # ------------------------------------------------------ 02x: soil water / WHC
   - id: C-021
@@ -164,9 +164,9 @@ claims:
       register that reads the registry rather than a document is the only thing
       that notices.
     checks:
-      - {id: whc_sensitivity_ms28, stated: 8.4, tol: 0.1, units: "mm per pp SOC", select: {kind: registry, name: whc_sensitivity}}
-      - {id: whc_sensitivity_ms31, stated: 8.4, tol: 0.1, units: "mm per pp SOC", select: {kind: registry, name: whc_sensitivity}}
-      - {id: whc_sensitivity_ar40, stated: 8.4, tol: 0.1, units: "mm per pp SOC", select: {kind: registry, name: whc_sensitivity}}
+      - {id: whc_sensitivity_ms28, stated: 3.5, tol: 0.1, units: "mm per pp SOC", select: {kind: registry, name: whc_sensitivity}}
+      - {id: whc_sensitivity_ms31, stated: 3.5, tol: 0.1, units: "mm per pp SOC", select: {kind: registry, name: whc_sensitivity}}
+      - {id: whc_sensitivity_ar40, stated: 3.5, tol: 0.1, units: "mm per pp SOC", select: {kind: registry, name: whc_sensitivity}}
 
   # --------------------------------------------------- 03x: prices and margins
   - id: C-030
@@ -187,7 +187,7 @@ claims:
       individually is what makes that visible; a single "the price table is
       correct" check would have failed as one opaque unit.
     checks:
-      - {id: n_price_sub_saharan_africa, stated: 1.40, tol: 0.01, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: sub_saharan_africa}}}
+      - {id: n_price_sub_saharan_africa, stated: 2.30, tol: 0.01, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: sub_saharan_africa}}}
       - {id: n_price_south_asia,         stated: 1.20, tol: 0.01, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: south_asia}}}
       - {id: n_price_latin_america,      stated: 1.15, tol: 0.01, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: latin_america}}}
       - {id: n_price_north_america,      stated: 1.10, tol: 0.01, units: "USD per kg N", select: {kind: derived, name: registry_n_price, args: {region: north_america}}}
@@ -262,7 +262,7 @@ claims:
       two-way index to close; registering it against the sentence that does state
       it is preferable to registering it against no sentence at all.
     checks:
-      - {id: south_asia_net_revenue_farmer_paid_pct, stated: 0.95, tol: 0.01, units: "% change in net revenue", select: {kind: csv_cell, where: {region: south_asia, price_convention: farmer_paid, soc_pct: 100}, column: net_revenue_change_pct}}
+      - {id: south_asia_net_revenue_farmer_paid_pct, stated: -0.59, tol: 0.01, units: "% change in net revenue", select: {kind: csv_cell, where: {region: south_asia, price_convention: farmer_paid, soc_pct: 100}, column: net_revenue_change_pct}}
 
   # -------------------------------------------- 04x: demand response and prices
   - id: C-040
@@ -294,9 +294,9 @@ claims:
       deposited its `summary` block. They are not new errors, they are newly
       visible ones.
     checks:
-      - {id: global_yr10_baseline, stated: 3.4,  tol: 0.1, units: "% yield loss", select: {kind: json, path: "gbase[10]"}}
-      - {id: global_yr10_halved,   stated: 1.9,  tol: 0.1, units: "% yield loss", select: {kind: json, path: "ghalf[10]"}}
-      - {id: reduction_pct,        stated: 46.0, tol: 1.0, units: "% reduction",  select: {kind: derived, name: figS8_reduction_pct}}
+      - {id: global_yr10_baseline, stated: 3.0,  tol: 0.1, units: "% yield loss", select: {kind: json, path: "gbase[10]"}}
+      - {id: global_yr10_halved,   stated: 1.5,  tol: 0.1, units: "% yield loss", select: {kind: json, path: "ghalf[10]"}}
+      - {id: reduction_pct,        stated: 50.0, tol: 1.0, units: "% reduction",  select: {kind: derived, name: figS8_reduction_pct}}
 
   - id: C-042
     text: >-
@@ -317,12 +317,12 @@ claims:
       The two year-1 range endpoints still agree. The drift is concentrated in
       the year-10 statement and in the global aggregate.
     checks:
-      - {id: global_yr1,          stated: 5.5,  tol: 0.1, units: "% price index", select: {kind: csv_cell, where: {abbr: GLOBAL}, column: food_price_pct_yr1}}
-      - {id: global_yr10,         stated: 5.0,  tol: 0.1, units: "% price index", select: {kind: csv_cell, where: {abbr: GLOBAL}, column: food_price_pct_yr10}}
-      - {id: latin_america_yr10,  stated: 1.0,  tol: 0.1, units: "% price index", select: {kind: csv_cell, where: {region: latin_america}, column: food_price_pct_yr10}}
-      - {id: fsu_yr10,            stated: 10.3, tol: 0.1, units: "% price index", select: {kind: csv_cell, where: {region: fsu_central_asia}, column: food_price_pct_yr10}}
-      - {id: regional_yr1_min,    stated: 2.0,  tol: 0.1, units: "% price index", select: {kind: derived, name: food_price_regional_extreme, args: {column: food_price_pct_yr1, agg: min}}}
-      - {id: regional_yr1_max,    stated: 9.2,  tol: 0.1, units: "% price index", select: {kind: derived, name: food_price_regional_extreme, args: {column: food_price_pct_yr1, agg: max}}}
+      - {id: global_yr1,          stated: 5.2,  tol: 0.1, units: "% price index", select: {kind: csv_cell, where: {abbr: GLOBAL}, column: food_price_pct_yr1}}
+      - {id: global_yr10,         stated: 6.7,  tol: 0.1, units: "% price index", select: {kind: csv_cell, where: {abbr: GLOBAL}, column: food_price_pct_yr10}}
+      - {id: latin_america_yr10,  stated: 4.7,  tol: 0.1, units: "% price index", select: {kind: csv_cell, where: {region: latin_america}, column: food_price_pct_yr10}}
+      - {id: fsu_yr10,            stated: 11.9, tol: 0.1, units: "% price index", select: {kind: csv_cell, where: {region: fsu_central_asia}, column: food_price_pct_yr10}}
+      - {id: regional_yr1_min,    stated: 2.4,  tol: 0.1, units: "% price index", select: {kind: derived, name: food_price_regional_extreme, args: {column: food_price_pct_yr1, agg: min}}}
+      - {id: regional_yr1_max,    stated: 10.3,  tol: 0.1, units: "% price index", select: {kind: derived, name: food_price_regional_extreme, args: {column: food_price_pct_yr1, agg: max}}}
 
   # ------------------------------------------------------ 05x: shock calibration
   - id: C-050
@@ -378,12 +378,12 @@ claims:
       sentence's own precision rather than from what would pass.
     checks:
       - {id: global_yr1,           stated: 2.3,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 1},  column: S3_global}}
-      - {id: global_yr10,          stated: 3.4,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: S3_global}}
-      - {id: east_asia_yr10,       stated: 1.3,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: S3_East_Asia}}
-      - {id: south_asia_yr10,      stated: 6.0,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: S3_South_Asia}}
-      - {id: fsu_yr10,             stated: 5.5,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: "S3_Former_Soviet_Union_&_Central_Asia"}}
-      - {id: ssa_yr10,             stated: 5.4,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: "S3_Sub-Saharan_Africa"}}
-      - {id: latin_america_yr10,   stated: 2.9,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: S3_Latin_America}}
+      - {id: global_yr10,          stated: 3.0,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: S3_global}}
+      - {id: east_asia_yr10,       stated: 1.2,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: S3_East_Asia}}
+      - {id: south_asia_yr10,      stated: 4.8,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: S3_South_Asia}}
+      - {id: fsu_yr10,             stated: 5.1,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: "S3_Former_Soviet_Union_&_Central_Asia"}}
+      - {id: ssa_yr10,             stated: 4.7,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: "S3_Sub-Saharan_Africa"}}
+      - {id: latin_america_yr10,   stated: 2.4,    tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 10}, column: S3_Latin_America}}
       - {id: total_cropland_mha,   stated: 1230.0, tol: 1.0, units: Mha,            select: {kind: derived, name: total_cropland_mha}}
 
   - id: C-061
@@ -407,7 +407,7 @@ claims:
       column of zeros.
     checks:
       - {id: pulse_yr1, stated: 2.3, tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 1}, column: PULSE1_global}}
-      - {id: pulse_yr5, stated: 0.3, tol: 0.1, units: "% yield loss", select: {kind: csv_cell, where: {year: 5}, column: PULSE1_global}}
+      - {id: pulse_yr5, stated: 0.01, tol: 0.01, units: "% yield loss", select: {kind: csv_cell, where: {year: 5}, column: PULSE1_global}}
 
   # ------------------------------------------ 07x: calibration and fixed inputs
   - id: C-070

@@ -72,6 +72,7 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 import numpy as np
+from scipy.optimize import brentq
 import pandas as pd
 from scipy.stats import truncnorm
 
@@ -267,9 +268,34 @@ def evaluate_one_draw(params: pd.Series,
         eps_F_PY = rp.get('eps_F_PY', 0.10)
         eta = rp.get('eta', -0.45) * eta_mult
 
+        # Output-price recovery cleared on the REALIZED regional-mean yield
+        # response (F-025/F-026), matching the coupled model and Figure 1:
+        # eta*PY = ln(y_regional(F(PY)) / y_regional_baseline), root-found with
+        # the old closed form as the bracket guess. Per-draw elasticities and
+        # the draw's biophysical parameters enter through F(PY) and the engine.
+        def _mc_residual(PY):
+            F_try = max(0.0, region.synth_n_current
+                        * np.exp(eps_F_PF * PF_hat + eps_F_PY * PY))
+            eng = MonthlyBiophysicalEngine(
+                region, region_key=rn, som_params=som,
+                crop_params=crop, feedback_params=fb,
+                monthly_params=mp, yield_max_override=ym,
+                initial_pools=eq_pools)
+            y_try = eng.step(F_try)['yield_tha']
+            return eta * PY - np.log(max(y_try, 1e-9) / y_regional_baseline)
+
         denom = eta - gamma_regional * eps_F_PY
-        PY_hat = (gamma_regional * eps_F_PF * PF_hat / denom
-                  if abs(denom) > 1e-10 else 0.0)
+        guess = (gamma_regional * eps_F_PF * PF_hat / denom
+                 if abs(denom) > 1e-10 else 0.0)
+        lo, hi = guess - 0.10, guess + 0.10
+        for _ in range(12):
+            if _mc_residual(lo) * _mc_residual(hi) < 0:
+                break
+            lo -= 0.10
+            hi += 0.10
+        else:
+            raise RuntimeError('no clearing bracket for %s' % rn)
+        PY_hat = brentq(_mc_residual, lo, hi, xtol=1e-10)
         F_hat = eps_F_PF * PF_hat + eps_F_PY * PY_hat
         F_shocked = max(0.0, region.synth_n_current * np.exp(F_hat))
 

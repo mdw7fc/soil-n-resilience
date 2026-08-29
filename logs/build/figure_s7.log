@@ -4,32 +4,32 @@ wrote data/figS7_farm_elasticity_gradient.json
 wrote figures/Figure_S7_farm_elasticity_gradient.png/.pdf
 
 region               series       soc10    soc50   soc100   soc200
-latin_america/yield  baseline     -2.63    -2.12    -1.64    -1.01
-latin_america/yield  halved       -1.36    -1.09    -0.85    -0.52
-latin_america/margin baseline     -2.53    -1.79    -1.10    -0.20
-latin_america/margin halved       -4.12    -3.60    -3.11    -2.49
-north_america/yield  baseline     -2.95    -2.19    -1.54    -0.78
-north_america/yield  halved       -1.48    -1.10    -0.77    -0.39
-north_america/margin baseline     -3.85    -2.70    -1.71    -0.60
-north_america/margin halved       -5.51    -4.74    -4.08    -3.34
-south_asia/yield     baseline     -3.09    -2.97    -2.83    -2.56
-south_asia/yield     halved       -1.57    -1.51    -1.43    -1.30
-south_asia/margin    baseline     -5.57    -5.34    -5.06    -4.58
-south_asia/margin    halved      -11.34   -11.15   -10.92   -10.52
+latin_america/yield  baseline     -2.64    -2.13    -1.65    -1.01
+latin_america/yield  halved       -1.36    -1.10    -0.85    -0.52
+latin_america/margin baseline     -2.93    -2.19    -1.50    -0.60
+latin_america/margin halved       -4.27    -3.75    -3.26    -2.64
+north_america/yield  baseline     -2.94    -2.18    -1.53    -0.78
+north_america/yield  halved       -1.47    -1.09    -0.77    -0.39
+north_america/margin baseline     -3.10    -1.94    -0.96     0.15
+north_america/margin halved       -5.14    -4.37    -3.71    -2.97
+south_asia/yield     baseline     -3.10    -2.98    -2.84    -2.58
+south_asia/yield     halved       -1.57    -1.51    -1.44    -1.31
+south_asia/margin    baseline     -7.26    -7.03    -6.76    -6.27
+south_asia/margin    halved      -12.16   -11.97   -11.74   -11.33
 sub_saharan_africa/yield baseline     -4.82    -4.10    -3.42    -2.50
 sub_saharan_africa/yield halved       -2.60    -2.22    -1.85    -1.35
-sub_saharan_africa/margin baseline     -1.61    -0.61     0.32     1.57
-sub_saharan_africa/margin halved       -3.19    -2.44    -1.74    -0.79
+sub_saharan_africa/margin baseline     -1.91    -0.92     0.01     1.26
+sub_saharan_africa/margin halved       -3.16    -2.41    -1.70    -0.76
 
 SSA yield improvement, 10% -> 200% SOC (baseline): 2.33 pp
-net-revenue penalty from halving (pp deeper), range over regions and SOC: 1.59 to 5.95
-  latin_america         1.59 -  2.29 pp
-  north_america         1.66 -  2.74 pp
-  south_asia            5.77 -  5.95 pp
-  sub_saharan_africa    1.59 -  2.36 pp
+net-revenue penalty from halving (pp deeper), range over regions and SOC: 1.25 to 5.06
+  latin_america         1.34 -  2.04 pp
+  north_america         2.04 -  3.12 pp
+  south_asia            4.89 -  5.06 pp
+  sub_saharan_africa    1.25 -  2.02 pp
 
 SOC 50%% vs 100%% gap (yield, pp):
   latin_america        baseline  0.48   halved  0.25
-  north_america        baseline  0.66   halved  0.33
+  north_america        baseline  0.65   halved  0.33
   south_asia           baseline  0.14   halved  0.07
   sub_saharan_africa   baseline  0.68   halved  0.37

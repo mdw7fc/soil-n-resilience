@@ -1,0 +1,50 @@
+python3 code/build.py run --stale --log-dir logs/build
+running 23 node(s), about 27 min:
+  canonical scenario_trajectories soc_trajectories sc_trajectories climate_swap price_shock figure_2 figS8_curves figure_s7 table_s4 figure_s10 figure_s11 food_price_table broadbalk_benchmark hindcast_benchmark benchmarks zero_shock_invariance structural_sensitivity parameter_extremes calibration_production_path parameter_ledger claims_report claim_strength
+
+--> canonical                    code/repro/run_canonical.py
+    ok   10.2s
+--> scenario_trajectories        code/repro/make_scenario_trajectories.py
+    ok   13.3s
+--> soc_trajectories             code/repro/make_soc_trajectories.py
+    ok   10.3s
+--> sc_trajectories              code/repro/make_sc_trajectories.py
+    ok   11.2s
+--> climate_swap                 code/repro/climate_comparison.py
+    ok   11.3s
+--> price_shock                  code/repro/run_price_shock_analysis.py
+    ok   213.6s
+--> figure_2                     code/repro/make_figure_2.py
+    ok   13.4s
+--> figS8_curves                 code/repro/compute_figS8_curves.py
+    ok   11.2s
+--> figure_s7                    code/repro/make_figure_s7.py
+    ok   368.0s
+--> table_s4                     code/repro/make_table_s4_sol.py
+    ok   10.1s
+--> figure_s10                   code/repro/make_figure_s10.py
+    ok   18.1s
+--> figure_s11                   code/repro/make_figure_s11.py
+    ok   176.7s
+--> food_price_table             code/repro/make_food_price_table.py
+    ok   10.3s
+--> broadbalk_benchmark          code/repro/make_broadbalk_benchmark.py
+    ok   2.7s
+--> hindcast_benchmark           code/repro/make_hindcast_benchmark.py
+    ok   30.5s
+--> benchmarks                   code/repro/run_benchmarks.py
+    ok   9.9s
+--> zero_shock_invariance        code/repro/test_zero_shock_invariance.py
+    ok   10.7s
+--> structural_sensitivity       code/repro/run_structural_sensitivity_sol.py
+    ok   33.5s
+--> parameter_extremes           code/repro/test_parameter_extremes_sol.py
+    ok   30.5s
+--> calibration_production_path  code/repro/make_calibration_production_path.py
+    ok   10.4s
+--> parameter_ledger             code/repro/make_parameter_ledger_sol.py
+    ok   9.5s
+--> claims_report                code/repro/make_claim_report.py
+    ok   0.2s
+--> claim_strength               code/repro/make_claim_strength.py
+    ok   0.3s

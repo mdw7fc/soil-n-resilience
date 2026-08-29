@@ -1,0 +1,21 @@
+python3 code/build.py run --stale --log-dir logs/build
+running 25 node(s), about 27 min:
+  canonical table_s3 figure_s6 scenario_trajectories soc_trajectories sc_trajectories climate_swap price_shock figure_2 figS8_curves figure_s7 table_s4 figure_s10 figure_s11 food_price_table broadbalk_benchmark hindcast_benchmark benchmarks zero_shock_invariance structural_sensitivity parameter_extremes calibration_production_path parameter_ledger claims_report claim_strength
+
+--> canonical                    code/repro/run_canonical.py
+    ok   10.6s
+--> table_s3                     code/repro/make_table_s3.py
+    ok   1.5s
+--> figure_s6                    code/repro/make_figure_s6.py
+    ok   3.3s
+--> scenario_trajectories        code/repro/make_scenario_trajectories.py
+    ok   13.7s
+--> soc_trajectories             code/repro/make_soc_trajectories.py
+    ok   10.5s
+--> sc_trajectories              code/repro/make_sc_trajectories.py
+    ok   11.2s
+--> climate_swap                 code/repro/climate_comparison.py
+    ok   11.8s
+--> price_shock                  code/repro/run_price_shock_analysis.py
+    FAIL exit 1 after 178.8s
+make: *** [Makefile:95: stale] Error 1

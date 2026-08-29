@@ -973,8 +973,8 @@ parameters:
     value: -0.5
     units: dimensionless
     category: judgment
-    source: No clean regional estimates exist; chosen for the S4 feedback channel
-    used_by: []
+    source: Global expert-elicited value; no clean regional estimates exist, so it is not regionalized
+    used_by: [parameter_registry.SOIL_N_RESPONSE_ELASTICITY_CENTRAL]
     affects_claims: [C-040, C-050]
     benchmark: [B5]
     mc: declared_fixed

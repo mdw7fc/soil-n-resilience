@@ -3,10 +3,10 @@
   "generator_sha": "daf97404b8eb1047d6822eccafbe705d82783451e2be2bdde2128ce39b653036",
   "inputs": {
     "code/model/coupled_econ_biophysical.py": "123bb16cf7148c9f84b544ee7107dc497f94baeeced8804ea83d324e44fc8c63",
-    "code/model/coupled_monthly.py": "1cf2ee293a03bd807cd354234e0d37ca22903e9e816a9eacadc0536fe5623f04",
+    "code/model/coupled_monthly.py": "d69c8ba2e75dad66c184935b27218a3dce194df61851db259911263606c090b9",
     "code/model/data/benchmark_broadbalk/soc_trajectories_broadbalk.csv": "7f375cb70bcce31946ad1f4b7a0330d295336550bc2a4c8c6b594c807e25f26f",
     "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
-    "code/model/parameter_registry.py": "0033a30e18a46cf7ab7cc8072e0ce4f85fa235fbac3d4c6977c0b7d81c7a6748",
+    "code/model/parameter_registry.py": "dcb0e6aec9d1ab6383ffe695ef8ea19cda698a2caae3becfb4314c4771de2f5b",
     "code/model/prices.py": "9685f40ece2f5659bae91f9ec980ea9a76a8595e85f6cc823759cd8db7f78250",
     "code/model/registry.py": "0ad6974d63de654822aa0b456a1b92a57052bf0092efc1ab3863b4f1dd45546f",
     "code/model/seams.py": "5203d7d1a0f8a88ce5b94b5394e1ecc6aea8dee9d95a2df76b023572a4ad85e2",
@@ -15,10 +15,10 @@
   "node": "broadbalk_benchmark",
   "outputs": {
     "data/benchmarks/broadbalk_yield_benchmark_sol.csv": "45688928489466eb0e19d70c35144450367d92bdfca91fdee9259ca2247b529d",
-    "figures/Figure_S2_broadbalk_benchmark.pdf": "3d1ca4940c85bfc7a17c744ea0e95c31ee3f812d5a7935149922e81d0cc45b68",
+    "figures/Figure_S2_broadbalk_benchmark.pdf": "3831d8fb8fc6b13a5a6f9920a2af8e393599aacc91b8ec9c93e75aecf1f9e2e1",
     "figures/Figure_S2_broadbalk_benchmark.png": "58c5b98182951c1b7282b400a90e1e6222dd63031d5c5f011aee38debf21bf75"
   },
   "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
-  "stamped_at": "2026-08-29T13:52:04Z",
-  "stamped_at_commit": "6c2cf9b"
+  "stamped_at": "2026-08-29T15:30:53Z",
+  "stamped_at_commit": "063c94e"
 }

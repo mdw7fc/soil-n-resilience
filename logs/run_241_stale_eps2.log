@@ -1,0 +1,6 @@
+python3 code/build.py run --stale --log-dir logs/build
+  File "/tmp/repo19/code/build.py", line 287
+    note="Regenerated 2026-08-29 under F-026: the eps_F_N central is restored to -0.50 and the clearing is realized-yield (F-025), so the deposited ensemble was superseded on both counts. The pre-rerun deposit is snapshotted outside the tree; F-013 claim strength reproduces against the regenerated ensemble from this run onward. ~20 min at 2 workers."),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: keyword argument repeated: note
+make: *** [Makefile:95: stale] Error 1

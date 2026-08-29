@@ -283,16 +283,7 @@ NODES: List[Node] = [
                   "data/mc_ensemble/mc_summary.txt",
                   "data/mc_ensemble/mc_priors.json"),
          inputs=(ERA5,), minutes=90.0,
-         note="1,000 joint-prior draws; the expensive node",
-         blocked=("the deposited ensemble is the only surviving v15 one and is "
-                  "what F-013's claim strength reproduces against (P3 0.998); "
-                  "rerunning costs ~90 min and overwrites it. It is a "
-                  "year-1 ensemble, so the eps_F_N question does not reach it "
-                  "-- year 1 is identical at 0 and at -0.5 to five decimals. "
-                  "What it IS owed is a rerun as a CHECK, because WP2's "
-                  "recalibration moved year 1 by 0.01 pp and F-014's "
-                  "bit-for-bit reproduction predates that. Snapshot it first. "
-                  "See results/build_reconciliation.md sec 6.")),
+         note="1,000 joint-prior draws; the expensive node. Regenerated 2026-08-29 under F-026: the eps_F_N central is restored to -0.50 and the clearing is realized-yield (F-025), so the deposited ensemble was superseded on both counts. The pre-rerun deposit is snapshotted outside the tree; F-013 claim strength reproduces against the regenerated ensemble from this run onward. ~20 min at 2 workers."),
     Node("figure_s9", "code/repro/make_figure_s9.py",
          outputs=("figures/Figure_S9_mc_ensemble.png",
                   "figures/Figure_S9_mc_ensemble.pdf"),

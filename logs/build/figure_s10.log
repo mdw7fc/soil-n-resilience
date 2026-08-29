@@ -1,4 +1,4 @@
-Running NUE sweep with S3 (ε_F,N = 0.0)...
-Sweep done in 6.3s
-SSA: NUE = 0.45 → 5.49%; NUE = 0.65 → 5.06% (8% reduction)
+Running NUE sweep with S3 (ε_F,N = -0.5)...
+Sweep done in 14.6s
+SSA: NUE = 0.45 → 5.28%; NUE = 0.65 → 4.88% (8% reduction)
 Saved figures/Figure_S10_nue_sensitivity.png/.pdf and data/figS10_nue_sensitivity.json
