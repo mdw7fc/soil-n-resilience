@@ -1,0 +1,18 @@
+{
+  "generated_by": "code/repro/make_claim_report.py --freeze",
+  "spec": [
+    "F-012",
+    "F-015",
+    "F-016"
+  ],
+  "rule": "This list may only shrink. A check that comes into line without this file being regenerated fails the build, and regenerating it requires an entry in FINDINGS.md saying why.",
+  "register_version": "v17-f026",
+  "n_claims": 19,
+  "n_checks": 70,
+  "n_agrees": 70,
+  "n_drifted": 0,
+  "drifted_claims": [],
+  "drifted_checks": [],
+  "owed_generators": [],
+  "owed_count": 0
+}

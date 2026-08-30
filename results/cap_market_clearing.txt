@@ -1,0 +1,28 @@
+S3                   north_america      worst residual 2.88e-16  linear-gap max 3.29e-03  binding 0
+S3                   europe             worst residual 3.12e-16  linear-gap max 4.75e-03  binding 0
+S3                   east_asia          worst residual 2.29e-14  linear-gap max 2.16e-03  binding 0
+S3                   south_asia         worst residual 1.17e-13  linear-gap max 9.05e-03  binding 0
+S3                   southeast_asia     worst residual 3.05e-16  linear-gap max 6.30e-03  binding 0
+S3                   latin_america      worst residual 4.14e-14  linear-gap max 4.90e-03  binding 0
+S3                   sub_saharan_africa worst residual 1.14e-15  linear-gap max 1.24e-02  binding 0
+S3                   fsu_central_asia   worst residual 3.54e-16  linear-gap max 1.18e-02  binding 0
+SC1_20pct            north_america      worst residual 2.98e-16  linear-gap max 1.62e-02  binding 30
+SC1_20pct            europe             worst residual 3.96e-16  linear-gap max 2.13e-02  binding 30
+SC1_20pct            east_asia          worst residual 4.49e-15  linear-gap max 1.56e-03  binding 30
+SC1_20pct            south_asia         worst residual 1.17e-13  linear-gap max 9.05e-03  binding 0
+SC1_20pct            southeast_asia     worst residual 3.05e-16  linear-gap max 6.30e-03  binding 0
+SC1_20pct            latin_america      worst residual 1.30e-14  linear-gap max 7.55e-03  binding 30
+SC1_20pct            sub_saharan_africa worst residual 1.14e-15  linear-gap max 1.24e-02  binding 0
+SC1_20pct            fsu_central_asia   worst residual 4.44e-16  linear-gap max 2.32e-02  binding 30
+SC2_20pct_recovery   north_america      worst residual 6.57e-14  linear-gap max 1.39e-02  binding 19
+SC2_20pct_recovery   europe             worst residual 7.37e-14  linear-gap max 1.69e-02  binding 19
+SC2_20pct_recovery   east_asia          worst residual 8.13e-16  linear-gap max 1.44e-03  binding 19
+SC2_20pct_recovery   south_asia         worst residual 1.41e-13  linear-gap max 8.62e-03  binding 2
+SC2_20pct_recovery   southeast_asia     worst residual 1.20e-13  linear-gap max 5.70e-03  binding 1
+SC2_20pct_recovery   latin_america      worst residual 1.28e-13  linear-gap max 6.42e-03  binding 19
+SC2_20pct_recovery   sub_saharan_africa worst residual 1.80e-13  linear-gap max 1.11e-02  binding 1
+SC2_20pct_recovery   fsu_central_asia   worst residual 4.73e-14  linear-gap max 1.84e-02  binding 19
+
+worst structural residual 1.80e-13 (tol 1e-08)
+linear-relation gap reaches 2.32e-02: the check can fail
+cap-binding steps: 249

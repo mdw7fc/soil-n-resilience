@@ -1,0 +1,114 @@
+[baseline] building reference sandbox (55 leaves, 2 jobs)
+[baseline] 266 model-state fields, 587 published fields
+[baseline] 11 tests green, 2 excluded as already red:
+           test_cross_document_consistency_sol.py  (rc=1)
+           test_parameter_consistency_sol.py  (rc=1)
+  [ 1/55] alpha                                        COVERED
+  [ 2/55] atm_n_deposition                             COVERED
+  [ 3/55] bnf_potential                                INERT
+  [ 4/55] bnf_ramp_years                               INERT
+  [ 5/55] baseline_water_deficit                       COVERED
+  [ 6/55] cm2_per_ha                                   COVERED
+  [ 7/55] cre_allocation.cre_to_active                 GUARDED_AT_LOAD
+  [ 8/55] cre_allocation.cre_to_slow                   GUARDED_AT_LOAD
+  [ 9/55] cn_bulk                                      COVERED
+  [10/55] cre_regional                                 COVERED
+  [11/55] crop_price_usd_t                             UNTESTED
+  [12/55] eps_F_N                                      DECLARED_NOT_WIRED
+  [13/55] cropland_mha                                 COVERED
+  [14/55] eps_F_PF                                     COVERED
+  [15/55] eps_F_PY                                     COVERED
+  [16/55] eps_LD_PL                                    COVERED
+  [17/55] eps_LD_PY                                    COVERED
+  [18/55] eps_LS_PL                                    COVERED
+  [19/55] eta                                          COVERED
+  [20/55] fert_reduction_target                        DECLARED_NOT_WIRED
+  [21/55] faostat_yield_target                         COVERED
+  [22/55] g_per_t                                      COVERED
+  [23/55] laub_tropical_ratios.k_passive_ratio         COVERED
+  [24/55] laub_tropical_ratios.k_slow_ratio            COVERED
+  [25/55] n_benchmark_usd_kg                           UNTESTED
+  [26/55] n_price_usd_kg_farmer_paid                   INERT
+  [27/55] n_price_wedge                                UNTESTED
+  [28/55] pct_to_fraction                              COVERED
+  [29/55] pop_supported                                INERT
+  [30/55] physical_feedback_strength                   COVERED
+  [31/55] price_benchmark_max_factor                   INERT
+  [32/55] residue_c_to_active_fraction                 COVERED
+  [33/55] residue_retention                            COVERED
+  [34/55] root_shoot_c_ratio                           COVERED
+  [35/55] soc_bulk_density                             COVERED
+  [36/55] soc_profile_depth_cm                         GUARDED_AT_LOAD
+  [37/55] som_decay_rates.k_active                     COVERED
+  [38/55] soc_initial                                  COVERED
+  [39/55] som_decay_rates.k_passive                    COVERED
+  [40/55] som_decay_rates.k_slow                       COVERED
+  [41/55] som_humification.h_active_to_slow            COVERED
+  [42/55] som_humification.h_slow_to_passive           COVERED
+  [43/55] som_pool_cn.cn_active                        INERT
+  [44/55] som_pool_cn.cn_passive                       INERT
+  [45/55] som_pool_fractions.f_active                  GUARDED_AT_LOAD
+  [46/55] som_pool_fractions.f_passive                 GUARDED_AT_LOAD
+  [47/55] som_pool_fractions.f_slow                    GUARDED_AT_LOAD
+  [48/55] som_pool_cn.cn_slow                          INERT
+  [49/55] texture_class                                INERT
+  [50/55] synth_n_current                              COVERED
+  [51/55] urea_n_fraction                              INERT
+  [52/55] water_stress_coeff                           COVERED
+  [53/55] whc_sensitivity                              COVERED
+  [54/55] yield_max_regional                           INERT
+  [55/55] yield_min_regional                           INERT
+
+MUTATION COVERAGE OVER THE PARAMETER REGISTRY (F-011)
+
+leaves          55
+delta           +10% relative, additive on a zero-valued leaf
+published set   587 numeric fields of data/canonical_ERA5_y30.json
+model state     266 numeric fields
+elapsed         64.2 min
+
+    COVERED               32
+    UNTESTED               3
+    DECLARED_NOT_WIRED     2
+    GUARDED_AT_LOAD        6
+    INERT                 12
+    ------------------------
+                          55
+
+TESTS EXCLUDED FROM CATCH (already red on the unmutated tree)
+    code/repro/test_cross_document_consistency_sol.py  rc=1
+    code/repro/test_parameter_consistency_sol.py  rc=1
+
+NOT PROBED. These are wired and move gross margins, prices or
+cost shares, none of which the canonical artifact carries. Read
+their INERT verdict as 'not probed', not as 'irrelevant'.
+
+UNTESTED -- a published number moves and nothing objects.
+    crop_price_usd_t  (164 fields, worst price.sub_saharan_africa.crop_usd_per_t 30)
+    n_benchmark_usd_kg  (164 fields, worst margin.south_asia.margin_chg@10 1.042)
+    n_price_wedge  (164 fields, worst margin.south_asia.margin_chg@10 1.042)
+
+COVERAGE DEPTH -- how many tests object, not whether any does.
+    12 of 32 COVERED leaves rest on a single test.
+
+     32  test_wp1_registry_wiring.py
+     15  test_spinup_partition_independence.py
+      4  test_dimensional_consistency_sol.py
+      1  test_seam_contracts.py
+
+    Caught ONLY by test_wp1_registry_wiring.py (12). If that test is ever retired or
+    rebaselined away, these return to UNTESTED:
+        alpha
+        cropland_mha
+        eps_F_PY
+        eps_LD_PL
+        eps_LD_PY
+        eps_LS_PL
+        eta
+        faostat_yield_target
+        laub_tropical_ratios.k_passive_ratio
+        laub_tropical_ratios.k_slow_ratio
+        physical_feedback_strength
+        whc_sensitivity
+
+wrote /tmp/repo16/results/mutation_coverage.csv

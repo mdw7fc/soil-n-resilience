@@ -1,0 +1,38 @@
+N0  unmodified tree
+    exit 0
+
+N1  params.yaml names a claim claims.yaml does not carry
+    exit 1
+    FAIL  G5 params.yaml names claims that do not exist in claims.yaml: ['C-999']
+
+N2  claims.yaml names a parameter that does not name it back
+    exit 1
+    FAIL  G5 C-042 lists ['eps_F_PY'] but those parameters do not declare affects_claims: [C-042] in params.yaml
+    FAIL  G5 the claim/parameter index changed without docs/claims_index_baseline.json being regenerated. A documentation edit that moves the index moves which published sentences a parameter change is known to touch.
+
+N3  a drifted check silently comes into line
+    exit 1
+    FAIL  G3 these checks came into line without the baseline being regenerated: ['C-021/whc_sensitivity_ms28']. Regenerate docs/claims_baseline.json and say why in FINDINGS.md.
+    FAIL  G6 C-021/whc_sensitivity_ms28 carries tol 0.1 against a value written to 0.01, with no `tol_note`. A tolerance may not be widened past a sentence's own precision without saying why, and never past twice it.
+
+N4  a new drift appears
+    exit 1
+    FAIL  G3 the drifted set grew: ['C-061/pulse_yr1']
+
+N5  a tolerance is widened past the sentence's own precision
+    exit 1
+    FAIL  G3 these checks came into line without the baseline being regenerated: ['C-060/east_asia_yr10']. Regenerate docs/claims_baseline.json and say why in FINDINGS.md.
+    FAIL  G6 C-060/east_asia_yr10 carries tol 0.5 against a value written to 0.1, with no `tol_note`. A tolerance may not be widened past a sentence's own precision without saying why, and never past twice it.
+
+N6  a claim carries an `owed:` note while status says current
+    exit 1
+    FAIL  G1 C-050 carries an `owed:` note while status says `current`. That is the F-016 shape: a debt on a claim nothing counts.
+
+N7  a check's artifact is missing
+    exit 1
+    FAIL  G2 unresolved check: artifact not found: results/s3_shock_calibration.csv
+
+N8  tree restored
+    exit 0
+
+ALL NEGATIVE CONTROLS FIRED

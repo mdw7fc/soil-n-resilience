@@ -1,0 +1,9 @@
+region,century_soc_loss_yr30_pct,fourpool_soc_loss_yr30_pct,ratio30,cue_contribution_pct_of_engine_difference,noncue_pct_of_engine_difference,excluded_reason
+North America,1.03,2.13,2.06,8.6,91.4,
+Europe,1.65,2.6,1.57,12.9,87.1,
+East Asia,0.48,1.04,2.16,42.0,58.0,
+South Asia,2.09,2.59,1.24,59.1,40.9,
+Southeast Asia,1.64,3.1,1.89,15.5,84.5,
+Latin America,1.28,2.22,1.73,6.4,93.6,
+Sub-Saharan Africa,2.14,1.94,0.9,,,engine difference non-positive (ratio < 1)
+Former Soviet Union,2.14,3.04,1.42,5.8,94.2,

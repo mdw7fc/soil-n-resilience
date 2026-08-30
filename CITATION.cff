@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+title: "Soil organic matter buffers fertilizer supply disruptions — model code and canonical reproducibility deposit"
+message: "If you use this software or data, please cite the associated article and this deposit."
+type: software
+authors:
+  - family-names: Wallenstein
+    given-names: Matthew D.
+    affiliation: "Syngenta Group; Colorado State University"
+  - family-names: Manning
+    given-names: Dale T.
+    affiliation: "University of Tennessee, Knoxville"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.19699772
+    description: Zenodo deposit
+repository-code: "https://github.com/mdw7fc/soil-n-resilience"
+license: MIT
+version: "v14-canonical"
+date-released: 2026-07-24
+keywords:
+  - soil organic matter
+  - fertilizer supply disruption
+  - biogeochemical-economic modeling
+  - nitrogen
+  - food security

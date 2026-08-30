@@ -1,0 +1,9 @@
+region,price_convention,nitrogen_usd_per_kg_n,soc_pct,yield_change_pct,net_revenue_change_pct
+south_asia,market_replacement,1.2,50,-2.98397,-7.03496
+south_asia,market_replacement,1.2,100,-2.84035,-6.7617
+south_asia,farmer_paid,0.39,50,-2.98397,-0.776403
+south_asia,farmer_paid,0.39,100,-2.84035,-0.593005
+sub_saharan_africa,audited_retail,2.3,50,-4.10229,-0.917289
+sub_saharan_africa,audited_retail,2.3,100,-3.42086,0.0139064
+sub_saharan_africa,old_SI_price,1.4,50,-4.10229,-0.233827
+sub_saharan_africa,old_SI_price,1.4,100,-3.42086,0.609538

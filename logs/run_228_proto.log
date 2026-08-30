@@ -1,0 +1,15 @@
+linear-mode reproduction gate: worst |diff| 0.000e+00 PASS
+solver: 240 clearings, evals/step mean 8.0 max 8
+price change (realized minus linear): mean +0.834 pp  range [-1.515, +2.769]
+yield change: mean +0.0121 pp  max|.| 0.0540 pp
+fertilizer change: max|.| 0.252 %
+year 10:
+  north_america        price 1.0508 -> 1.0597 (+0.888 pp)   yloss 1.800 -> 1.789
+  europe               price 1.1001 -> 1.1100 (+0.993 pp)   yloss 3.668 -> 3.648
+  east_asia            price 1.0306 -> 1.0270 (-0.359 pp)   yloss 1.210 -> 1.212
+  south_asia           price 1.0791 -> 1.0889 (+0.977 pp)   yloss 5.121 -> 5.103
+  southeast_asia       price 1.0634 -> 1.0716 (+0.824 pp)   yloss 3.844 -> 3.833
+  latin_america        price 1.0411 -> 1.0493 (+0.814 pp)   yloss 2.508 -> 2.499
+  sub_saharan_africa   price 1.0576 -> 1.0719 (+1.430 pp)   yloss 4.926 -> 4.921
+  fsu_central_asia     price 1.1103 -> 1.1296 (+1.923 pp)   yloss 5.553 -> 5.507
+wrote results/realized_clearing_comparison.csv

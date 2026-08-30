@@ -1,0 +1,51 @@
+MUTATION COVERAGE OVER THE PARAMETER REGISTRY (F-011)
+
+leaves          55
+delta           +10% relative, additive on a zero-valued leaf
+published set   587 numeric fields of data/canonical_ERA5_y30.json
+model state     266 numeric fields
+elapsed         64.2 min
+
+    COVERED               32
+    UNTESTED               3
+    DECLARED_NOT_WIRED     2
+    GUARDED_AT_LOAD        6
+    INERT                 12
+    ------------------------
+                          55
+
+TESTS EXCLUDED FROM CATCH (already red on the unmutated tree)
+    code/repro/test_cross_document_consistency_sol.py  rc=1
+    code/repro/test_parameter_consistency_sol.py  rc=1
+
+NOT PROBED. These are wired and move gross margins, prices or
+cost shares, none of which the canonical artifact carries. Read
+their INERT verdict as 'not probed', not as 'irrelevant'.
+
+UNTESTED -- a published number moves and nothing objects.
+    crop_price_usd_t  (164 fields, worst price.sub_saharan_africa.crop_usd_per_t 30)
+    n_benchmark_usd_kg  (164 fields, worst margin.south_asia.margin_chg@10 1.042)
+    n_price_wedge  (164 fields, worst margin.south_asia.margin_chg@10 1.042)
+
+COVERAGE DEPTH -- how many tests object, not whether any does.
+    12 of 32 COVERED leaves rest on a single test.
+
+     32  test_wp1_registry_wiring.py
+     15  test_spinup_partition_independence.py
+      4  test_dimensional_consistency_sol.py
+      1  test_seam_contracts.py
+
+    Caught ONLY by test_wp1_registry_wiring.py (12). If that test is ever retired or
+    rebaselined away, these return to UNTESTED:
+        alpha
+        cropland_mha
+        eps_F_PY
+        eps_LD_PL
+        eps_LD_PY
+        eps_LS_PL
+        eta
+        faostat_yield_target
+        laub_tropical_ratios.k_passive_ratio
+        laub_tropical_ratios.k_slow_ratio
+        physical_feedback_strength
+        whc_sensitivity

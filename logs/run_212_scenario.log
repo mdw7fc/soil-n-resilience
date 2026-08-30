@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/repo16/code/repro/make_scenario_trajectories.py", line 40, in <module>
+    assert abs(gp[1]-g3[1])<1e-6, 'PULSE1 year 1 must equal S3 year 1; got %r vs %r'%(gp[1],g3[1])
+           ^^^^^^^^^^^^^^^^^^^^^
+AssertionError: PULSE1 year 1 must equal S3 year 1; got np.float64(2.4000745896766987e-05) vs np.float64(2.3162183387621593)

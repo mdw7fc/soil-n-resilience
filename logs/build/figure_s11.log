@@ -1,0 +1,5 @@
+sub_saharan_africa   spread(25-100%) @100%=1.11 @150%=1.40 @300%=1.91 pp
+south_asia           spread(25-100%) @100%=0.22 @150%=0.29 @300%=0.42 pp
+latin_america        spread(25-100%) @100%=0.78 @150%=1.01 @300%=1.47 pp
+north_america        spread(25-100%) @100%=1.09 @150%=1.44 @300%=2.16 pp
+wrote figures/Figure_S11_severity_gradient.png/.pdf

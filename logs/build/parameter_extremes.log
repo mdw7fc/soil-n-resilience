@@ -1,0 +1,37 @@
+One-at-a-time joint-prior bounds:
+  MC_central: PASS
+  MC_max_uptake_frac_lo: PASS
+  MC_max_uptake_frac_hi: PASS
+  MC_mitscherlich_c_mult_lo: PASS
+  MC_mitscherlich_c_mult_hi: PASS
+  MC_k_slow_mult_lo: PASS
+  MC_k_slow_mult_hi: PASS
+  MC_cre_regional_mult_lo: PASS
+  MC_cre_regional_mult_hi: PASS
+  MC_residue_retention_mult_lo: PASS
+  MC_residue_retention_mult_hi: PASS
+  MC_eps_F_PF_mult_lo: PASS
+  MC_eps_F_PF_mult_hi: PASS
+  MC_eta_mult_lo: PASS
+  MC_eta_mult_hi: PASS
+  MC_fert_price_shock_mult_lo: PASS
+  MC_fert_price_shock_mult_hi: PASS
+WHC x soil-N-response structural grid:
+  WHC_2.3_epsFN_0: PASS
+  WHC_2.3_epsFN_-0.25: PASS
+  WHC_2.3_epsFN_-0.5: PASS
+  WHC_2.3_epsFN_-1: FAIL (1)
+  WHC_3.48_epsFN_0: PASS
+  WHC_3.48_epsFN_-0.25: PASS
+  WHC_3.48_epsFN_-0.5: PASS
+  WHC_3.48_epsFN_-1: FAIL (1)
+  WHC_8.4_epsFN_0: PASS
+  WHC_8.4_epsFN_-0.25: PASS
+  WHC_8.4_epsFN_-0.5: PASS
+  WHC_8.4_epsFN_-1: FAIL (1)
+PARAMETER EXTREME AUDIT: COMPLETE (232 region-case checks)
+  monotonic robustness threshold NOT MET in 3 checks
+    WHC_2.3_epsFN_-1 sub_saharan_africa: 3.876102 < 4.721489
+    WHC_3.48_epsFN_-1 sub_saharan_africa: 3.878434 < 4.720957
+    WHC_8.4_epsFN_-1 sub_saharan_africa: 3.888175 < 4.718742
+wrote /tmp/repo19/outputs/parameter_extreme_acceptance_sol.csv

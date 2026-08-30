@@ -1,0 +1,161 @@
+row_id,family,quantity,model_value,observed_low,observed_high,units,horizon_years,n_rate_kg_ha,verdict,informativeness,quantity_kind,observed_status,note,source
+B1-SSA-MPP,B1,marginal physical product of applied N at the regional mean rate,24.7161,7.7,20.0,kg_grain_per_kg_N,1,7.0,MARGINAL,WEAK,derivative,UNSOURCED,"WEAK for three reasons, any one of which is disqualifying for a STRONG verdict. (1) The rate is not matched: a marginal product is a derivative at a point, 7 kg N/ha is the steepest part of the response curve, and the surveys measured wherever those farmers actually were. (2) The envelope mixes true marginal products (Sheahan, Liverpool-Tasie) with agronomic efficiencies (Vanlauwe, Ichami, Chivenge), which are averages; for a concave response the average exceeds the derivative, biasing the envelope upward. (3) observed_values.yaml records the envelope itself as UNSOURCED — no publication states it. See B1-SSA-IMPLIED-RATE-RANGE, which settles the comparison without inventing an observation.","Endpoints as recorded in F-008. Both trace to a single comparison paragraph in Liverpool-Tasie, Omonona, Sanou & Ogunleye (2017), ""Is increasing inorganic fertilizer use for maize production in SSA a profitable proposition? Evidence from Nigeria"", Food Policy 67: 41-51, doi:10.1016/j.foodpol.2016.09.011 (free full text: PMC5384440). The 7.7 is that paper's own Nigerian MPP; the 20 is the upper bound of the Matsumoto & Yamano range it cites.
+"
+B1-SSA-IMPLIED-RATE-RANGE,B1,N rate at which the model reproduces each end of the observed MPP envelope,,,,kg_N_per_ha,1,,INFORMATIVE,NONE,,,"An inversion, not a test — it carries no verdict by construction. It settles B1-SSA-MPP without inventing an observation: the Kenyan estimates correspond to model rates in the mid-twenties kg N/ha, which is where Kenyan maize farmers who fertilize actually are (Sheahan et al. put the sample mean at 25.2). The Nigerian plot-level estimate would require a rate near the model's upper root, which those farmers are not at (Liverpool-Tasie et al. report 40-47 kg N/ha). So the model's nitrogen response in SSA agrees with the Kenyan on-farm evidence and disagrees with the single Nigerian estimate, which is the one whose gap most plausibly reflects constraints this model does not represent.","Endpoints as recorded in F-008. Both trace to a single comparison paragraph in Liverpool-Tasie, Omonona, Sanou & Ogunleye (2017), ""Is increasing inorganic fertilizer use for maize production in SSA a profitable proposition? Evidence from Nigeria"", Food Policy 67: 41-51, doi:10.1016/j.foodpol.2016.09.011 (free full text: PMC5384440). The 7.7 is that paper's own Nigerian MPP; the 20 is the upper bound of the Matsumoto & Yamano range it cites.
+"
+B2-BROADBALK-FERT-MINUS-NIL-YR96,B2,soil carbon under fertilization as an excess over soil carbon without it,38.4936,9.3,37.2,percent,96,144.0,MARGINAL,STRONG,ratio,VERIFIED_DERIVED,"Scored against a half-to-twice band because the observation is a single value, not an interval. The comparison is a difference, never a level: absolute soil carbon in this model is an initialisation and not a prediction (F-001), so the model's 42 Mg C/ha temperate start and Broadbalk's 28.8 are not comparable quantities and their difference under a treatment contrast is. This row and B3-europe-YR30 agree on direction and roughly on magnitude, at two sites, in two different quantities, one a yield and one a carbon stock. They are one mechanism seen twice, not two independent failures.","Derived from the two stocks above: 30.0 / 25.3 - 1. A single observed value, so scored against a half-to-twice band rather than a published interval.
+"
+B2-BROADBALK-FERT-MINUS-NIL-YR30,B2,soil carbon under fertilization as an excess over soil carbon without it,20.9797,9.3,37.2,percent,30,144.0,PASS,STRONG,ratio,VERIFIED_DERIVED,"Scored against a half-to-twice band because the observation is a single value, not an interval. The comparison is a difference, never a level: absolute soil carbon in this model is an initialisation and not a prediction (F-001), so the model's 42 Mg C/ha temperate start and Broadbalk's 28.8 are not comparable quantities and their difference under a treatment contrast is. At the manuscript's own 30-year horizon the model is inside the band; the discrepancy is in the extrapolation, not at the published horizon.","Derived from the two stocks above: 30.0 / 25.3 - 1. A single observed value, so scored against a half-to-twice band rather than a published interval.
+"
+B2-EUROPE-DRIFT-FERT,B2,96-year soil carbon drift under unchanged current management,-0.2096,-8.3,4.5,percent,96,85.0,INFORMATIVE,WEAK,rate,SECONDARY_ONLY,"This is the worked example of why the informativeness column exists. The model lands inside the observed envelope, which looks like a pass and is worth nothing: the engine is initialised at a spun-up equilibrium, so near-zero drift under unchanged management is a property of the initialisation, and any model with a spin-up would reproduce it. It is marked WEAK and carries no verdict. Reporting it as a pass would be the same defect as a test that compares the model to itself.","Broadbalk mineral-fertilized plots, long-run soil carbon drift under unchanged management, e-RA dataset 02-BKSOC1843 v2. Envelope as recorded in F-008.
+"
+B2-EUROPE-DRIFT-NIL,B2,96-year soil carbon drift with no synthetic nitrogen,-27.9459,,,percent,96,0.0,INFORMATIVE,NONE,rate,,"No matched observation — Broadbalk plot 3 was rejected as a comparator because it drifts around its own low equilibrium rather than through a withdrawal transient. Reported because it is what makes B3-europe-YR30 and B2-BROADBALK-FERT-MINUS-NIL one finding rather than two: a nil-N soil carbon loss of this size is internally consistent with a yield ratio near 0.36 halving residue inputs, so the carbon side and the yield side are not independent failures.",no comparator; see observed_values.yaml rejected_comparators
+B2-BROADBALK-FYM,B2,soil carbon under farmyard manure,,73.3,73.3,Mg_C_per_ha,167,,NOT_APPLICABLE,NONE,stock,SECONDARY_ONLY,"The model has no organic amendment pathway at all: carbon enters only as crop residue and roots. The manure plot holds 73.3 Mg C/ha against 30.0 on the inorganic plot, so the omitted pathway is large — larger than the treatment effect the model does represent. The manuscript must not claim the model represents organic amendment. Recorded as NOT_APPLICABLE rather than omitted so that the omission is visible in the suite.","Rothamsted Broadbalk farmyard-manure plot, 2010, e-RA dataset 02-BKSOC1843 v2. Value as recorded in F-008.
+"
+B3-europe-YR1,B3,nil-N yield as a fraction of yield at the current rate,0.7677,,,dimensionless,1,85.0,INFORMATIVE,NONE,ratio,,"No matched observation at this horizon; the Prague-Ruzyne windows are 7-27 and 29-66 years. Reported because the shape of the trajectory is itself the diagnostic: the model front-loads the collapse, spending most of the loss in the first three decades and then flattening, while Prague declines gently and is still declining at 66 years. Whatever is too strong is therefore in the fast part of the coupling — the residue-to-active-pool and mineralization feedback on 3- and 27-year turnover — rather than in the slow carbon kinetics.",no matched observation
+B3-europe-YR30,B3,nil-N yield as a fraction of yield at the current rate,0.4063,0.681,0.776,dimensionless,30,85.0,FAIL,STRONG,ratio,VERIFIED_PRIMARY,"The suite's only failure, and the row the manuscript's S3 temperate yield losses bear on directly. Yield with no synthetic nitrogen as a fraction of yield at the region's current rate, read at the same elapsed year from a common spun-up equilibrium — the paired-plot design of a long-term experiment. The observed arm is Prague-Ruzyne, unfertilized since 1954, against its NPK4 arm at 95 kg N/ha, close to the model's European regional mean of 85. The model loses about 59 percent of yield where the experiment lost 22 to 32 percent: the mechanism runs about twice as hard as the field record shows. The tolerance of 0.02 is the published table's own reporting precision (one decimal place on yields of 3.8 to 6.9 t/ha), not a widening chosen to change the verdict — the model is far outside the band either way. It is scored against one site. Broadbalk plot 3 has been unfertilized since 1843 and its soil carbon is already compiled, but its grain yields are not; see B3-OWED-BROADBALK-YIELD-RATIO. Until they are compiled this is a failure against one observation and should be reported as one. What the benchmark constrains is the size of the yield penalty when nitrogen is withdrawn, not whether soil organic matter cushions it. The buffering claim itself is not contradicted by any row in this suite.","Hlisnikovsky, Ivicic, Barlog, Grzebisz, Mensik & Kunzova (2022), ""The Effects of Weather and Fertilization on Grain Yield and Stability of Winter Wheat Growing on Orthic Luvisol - Analysis of Long-Term Field Experiment"", Plants 11(14): 1825, doi:10.3390/plants11141825 (open access), Table 1 ""The effect of fertilizer treatments on GY (t/ha) of long- and short-strawed wheat varieties"":
+  Control  3.8 A (1961-1981)   4.7 A (1983-2020)
+  NPK4     4.9 B (1961-1981)   6.9 D (1983-2020)
+Ratios derived: 3.8/4.9 = 0.7755; 4.7/6.9 = 0.6812. Treatment rates, Materials and Methods: ""NPK4 - 95, 60, 120 kg ha-1"" (N, P, K per wheat crop). Site: Ruzyne Fertilizer Experiment, Prague-Ruzyne, Crop Research Institute (VURV), Czechia. GLTEN experiment 236.
+"
+B3-europe-YR96,B3,nil-N yield as a fraction of yield at the current rate,0.3655,,,dimensionless,96,85.0,INFORMATIVE,NONE,ratio,,"No matched observation at this horizon; the Prague-Ruzyne windows are 7-27 and 29-66 years. Reported because the shape of the trajectory is itself the diagnostic: the model front-loads the collapse, spending most of the loss in the first three decades and then flattening, while Prague declines gently and is still declining at 66 years. Whatever is too strong is therefore in the fast part of the coupling — the residue-to-active-pool and mineralization feedback on 3- and 27-year turnover — rather than in the slow carbon kinetics.",no matched observation
+B3-north_america-YR30,B3,nil-N yield as a fraction of yield at the current rate,0.602,,,dimensionless,30,76.0,INFORMATIVE,NONE,ratio,,"No long-term nitrogen-withdrawal experiment was located for this region at a matched horizon, so the row carries no verdict. Reported at the manuscript's own horizon so that the one region that does have a comparator can be seen in context: europe is the model's most severe temperate response, and it is the one that fails.",no comparator located
+B3-east_asia-YR30,B3,nil-N yield as a fraction of yield at the current rate,0.5169,,,dimensionless,30,250.0,INFORMATIVE,NONE,ratio,,"No long-term nitrogen-withdrawal experiment was located for this region at a matched horizon, so the row carries no verdict. Reported at the manuscript's own horizon so that the one region that does have a comparator can be seen in context: europe is the model's most severe temperate response, and it is the one that fails.",no comparator located
+B3-south_asia-YR30,B3,nil-N yield as a fraction of yield at the current rate,0.5729,,,dimensionless,30,110.0,INFORMATIVE,NONE,ratio,,"No long-term nitrogen-withdrawal experiment was located for this region at a matched horizon, so the row carries no verdict. Reported at the manuscript's own horizon so that the one region that does have a comparator can be seen in context: europe is the model's most severe temperate response, and it is the one that fails.",no comparator located
+B3-southeast_asia-YR30,B3,nil-N yield as a fraction of yield at the current rate,0.6966,,,dimensionless,30,89.0,INFORMATIVE,NONE,ratio,,"No long-term nitrogen-withdrawal experiment was located for this region at a matched horizon, so the row carries no verdict. Reported at the manuscript's own horizon so that the one region that does have a comparator can be seen in context: europe is the model's most severe temperate response, and it is the one that fails.",no comparator located
+B3-latin_america-YR30,B3,nil-N yield as a fraction of yield at the current rate,0.8359,,,dimensionless,30,50.0,INFORMATIVE,NONE,ratio,,"No long-term nitrogen-withdrawal experiment was located for this region at a matched horizon, so the row carries no verdict. Reported at the manuscript's own horizon so that the one region that does have a comparator can be seen in context: europe is the model's most severe temperate response, and it is the one that fails.",no comparator located
+B3-sub_saharan_africa-YR30,B3,nil-N yield as a fraction of yield at the current rate,0.8035,,,dimensionless,30,7.0,INFORMATIVE,NONE,ratio,,"No long-term nitrogen-withdrawal experiment was located for this region at a matched horizon, so the row carries no verdict. Reported at the manuscript's own horizon so that the one region that does have a comparator can be seen in context: europe is the model's most severe temperate response, and it is the one that fails.",no comparator located
+B3-fsu_central_asia-YR30,B3,nil-N yield as a fraction of yield at the current rate,0.5383,,,dimensionless,30,38.0,INFORMATIVE,NONE,ratio,,"No long-term nitrogen-withdrawal experiment was located for this region at a matched horizon, so the row carries no verdict. Reported at the manuscript's own horizon so that the one region that does have a comparator can be seen in context: europe is the model's most severe temperate response, and it is the one that fails.",no comparator located
+B3-sub_saharan_africa-IMPLIED-RATE,B3,N rate at which the model reproduces the observed nil-to-fertilized ratio,47.5909,,,kg_N_per_ha,1,,INFORMATIVE,NONE,ratio,UNSOURCED,"An inversion, and it carries no verdict for two separate reasons. First, the compilation does not record the nitrogen rate on the trials' fertilized arm, which is what would turn this into a verdict — see B3-OWED-SSA-TRIAL-RATE, the single most valuable missing number in the whole compilation. Second, and newly, WP4 could not source the 0.572 ratio at all: no publication reports it. The implied rate below is therefore an inversion of an unsourced target and must not be read as agreement. The rate it returns is nonetheless inside the range of recommended maize rates that on-farm trials in the region would have used, which is the reading F-008 gave it.","Response-ratio meta-analysis of sub-Saharan African on-farm maize trials, as recorded in F-008. The specific synthesis is not named in any surviving artifact.
+"
+B4-WHC-SENSITIVITY,B4,water-holding-capacity gain per percentage point of SOC over the profile,3.48,3.48,3.48,mm_water_per_pct_SOC_per_300mm,,,PASS,STRONG,arithmetic,,"An arithmetic check, not a field comparison: does the registered parameter equal the conversion the cited meta-analysis implies? 1.16 mm per 100 mm of soil per percentage point of SOC, over a 300 mm profile, is 3.48. The registry carries 3.48. The tolerance is half of the last printed digit of the source value, nothing more. F-008 records the registry as carrying 3.5; it does not, and RECONSTRUCTION_GAPS.md G-1 records why registering 3.5 was rejected — it moves sixteen of the 123 canonical fields and would have failed WP1's own acceptance. The manuscript states 3.5, which is 3.48 at the two significant figures it uses.","Minasny & McBratney (2018), ""Limited effect of organic matter on soil available water capacity"", European Journal of Soil Science 69: 39-47, doi:10.1111/ejss.12475 — meta-analysis of ~50 studies. The engine's docstrings cite this together with Hudson (1994), J Soil Water Conserv 49: 189-194. 1.16 mm per 100 mm of soil per percentage point of SOC, over a 300 mm profile, is 3.48 mm per percentage point.
+"
+B5-north_america-OWN-PRICE,B5,own-price elasticity of fertilizer demand,-0.2,-1.87,-0.21,dimensionless,,,MARGINAL,STRONG,elasticity,VERIFIED_PRIMARY,"The model's regional own-price elasticity of fertilizer demand against the range spanned by the retrieved literature. Outside the extreme retrieved estimate by 0.01, and reported MARGINAL rather than FAIL because that endpoint is itself an estimate carrying standard errors of 0.14 to 0.84; an excursion of 0.01 is inside the reporting precision of the band, not evidence of disagreement.","Range as recorded in F-008. WP4 traced both endpoints:
+  -1.87  Williamson (2011), ""Examining Linkages between Soil
+         Conservation Practices and Commercial Fertilizer
+         Application"", J Agricultural and Resource Economics 36(3):
+         552-572. US nitrogen, ARMS field-level, 2SLS/IV;
+         -1.87 (SE 0.41) for commercial-N-only users. The published
+         abstract states the range as -1.67 to -1.87.
+  -0.21  Denbaly & Vroomen (1993), ""Dynamic Fertilizer Nutrient
+         Demands for Corn: A Cointegrated and Error-Correcting
+         System"", American Journal of Agricultural Economics 75(1):
+         203-209, doi:10.2307/1242968. US corn nitrogen, short run;
+         -0.23 in the ERS working-paper version (Staff Report
+         AGES 9137), tabulated as -0.21 to -0.25 by Nicolella,
+         Dragone & Bacha (2005).
+"
+B5-europe-OWN-PRICE,B5,own-price elasticity of fertilizer demand,-0.25,-1.87,-0.21,dimensionless,,,PASS,STRONG,elasticity,VERIFIED_PRIMARY,The model's regional own-price elasticity of fertilizer demand against the range spanned by the retrieved literature.,"Range as recorded in F-008. WP4 traced both endpoints:
+  -1.87  Williamson (2011), ""Examining Linkages between Soil
+         Conservation Practices and Commercial Fertilizer
+         Application"", J Agricultural and Resource Economics 36(3):
+         552-572. US nitrogen, ARMS field-level, 2SLS/IV;
+         -1.87 (SE 0.41) for commercial-N-only users. The published
+         abstract states the range as -1.67 to -1.87.
+  -0.21  Denbaly & Vroomen (1993), ""Dynamic Fertilizer Nutrient
+         Demands for Corn: A Cointegrated and Error-Correcting
+         System"", American Journal of Agricultural Economics 75(1):
+         203-209, doi:10.2307/1242968. US corn nitrogen, short run;
+         -0.23 in the ERS working-paper version (Staff Report
+         AGES 9137), tabulated as -0.21 to -0.25 by Nicolella,
+         Dragone & Bacha (2005).
+"
+B5-east_asia-OWN-PRICE,B5,own-price elasticity of fertilizer demand,-0.3,-1.87,-0.21,dimensionless,,,PASS,STRONG,elasticity,VERIFIED_PRIMARY,The model's regional own-price elasticity of fertilizer demand against the range spanned by the retrieved literature.,"Range as recorded in F-008. WP4 traced both endpoints:
+  -1.87  Williamson (2011), ""Examining Linkages between Soil
+         Conservation Practices and Commercial Fertilizer
+         Application"", J Agricultural and Resource Economics 36(3):
+         552-572. US nitrogen, ARMS field-level, 2SLS/IV;
+         -1.87 (SE 0.41) for commercial-N-only users. The published
+         abstract states the range as -1.67 to -1.87.
+  -0.21  Denbaly & Vroomen (1993), ""Dynamic Fertilizer Nutrient
+         Demands for Corn: A Cointegrated and Error-Correcting
+         System"", American Journal of Agricultural Economics 75(1):
+         203-209, doi:10.2307/1242968. US corn nitrogen, short run;
+         -0.23 in the ERS working-paper version (Staff Report
+         AGES 9137), tabulated as -0.21 to -0.25 by Nicolella,
+         Dragone & Bacha (2005).
+"
+B5-south_asia-OWN-PRICE,B5,own-price elasticity of fertilizer demand,-0.4,-1.87,-0.21,dimensionless,,,PASS,STRONG,elasticity,VERIFIED_PRIMARY,The model's regional own-price elasticity of fertilizer demand against the range spanned by the retrieved literature.,"Range as recorded in F-008. WP4 traced both endpoints:
+  -1.87  Williamson (2011), ""Examining Linkages between Soil
+         Conservation Practices and Commercial Fertilizer
+         Application"", J Agricultural and Resource Economics 36(3):
+         552-572. US nitrogen, ARMS field-level, 2SLS/IV;
+         -1.87 (SE 0.41) for commercial-N-only users. The published
+         abstract states the range as -1.67 to -1.87.
+  -0.21  Denbaly & Vroomen (1993), ""Dynamic Fertilizer Nutrient
+         Demands for Corn: A Cointegrated and Error-Correcting
+         System"", American Journal of Agricultural Economics 75(1):
+         203-209, doi:10.2307/1242968. US corn nitrogen, short run;
+         -0.23 in the ERS working-paper version (Staff Report
+         AGES 9137), tabulated as -0.21 to -0.25 by Nicolella,
+         Dragone & Bacha (2005).
+"
+B5-southeast_asia-OWN-PRICE,B5,own-price elasticity of fertilizer demand,-0.4,-1.87,-0.21,dimensionless,,,PASS,STRONG,elasticity,VERIFIED_PRIMARY,The model's regional own-price elasticity of fertilizer demand against the range spanned by the retrieved literature.,"Range as recorded in F-008. WP4 traced both endpoints:
+  -1.87  Williamson (2011), ""Examining Linkages between Soil
+         Conservation Practices and Commercial Fertilizer
+         Application"", J Agricultural and Resource Economics 36(3):
+         552-572. US nitrogen, ARMS field-level, 2SLS/IV;
+         -1.87 (SE 0.41) for commercial-N-only users. The published
+         abstract states the range as -1.67 to -1.87.
+  -0.21  Denbaly & Vroomen (1993), ""Dynamic Fertilizer Nutrient
+         Demands for Corn: A Cointegrated and Error-Correcting
+         System"", American Journal of Agricultural Economics 75(1):
+         203-209, doi:10.2307/1242968. US corn nitrogen, short run;
+         -0.23 in the ERS working-paper version (Staff Report
+         AGES 9137), tabulated as -0.21 to -0.25 by Nicolella,
+         Dragone & Bacha (2005).
+"
+B5-latin_america-OWN-PRICE,B5,own-price elasticity of fertilizer demand,-0.3,-1.87,-0.21,dimensionless,,,PASS,STRONG,elasticity,VERIFIED_PRIMARY,The model's regional own-price elasticity of fertilizer demand against the range spanned by the retrieved literature.,"Range as recorded in F-008. WP4 traced both endpoints:
+  -1.87  Williamson (2011), ""Examining Linkages between Soil
+         Conservation Practices and Commercial Fertilizer
+         Application"", J Agricultural and Resource Economics 36(3):
+         552-572. US nitrogen, ARMS field-level, 2SLS/IV;
+         -1.87 (SE 0.41) for commercial-N-only users. The published
+         abstract states the range as -1.67 to -1.87.
+  -0.21  Denbaly & Vroomen (1993), ""Dynamic Fertilizer Nutrient
+         Demands for Corn: A Cointegrated and Error-Correcting
+         System"", American Journal of Agricultural Economics 75(1):
+         203-209, doi:10.2307/1242968. US corn nitrogen, short run;
+         -0.23 in the ERS working-paper version (Staff Report
+         AGES 9137), tabulated as -0.21 to -0.25 by Nicolella,
+         Dragone & Bacha (2005).
+"
+B5-sub_saharan_africa-OWN-PRICE,B5,own-price elasticity of fertilizer demand,-0.5,-1.87,-0.21,dimensionless,,,PASS,STRONG,elasticity,VERIFIED_PRIMARY,The model's regional own-price elasticity of fertilizer demand against the range spanned by the retrieved literature.,"Range as recorded in F-008. WP4 traced both endpoints:
+  -1.87  Williamson (2011), ""Examining Linkages between Soil
+         Conservation Practices and Commercial Fertilizer
+         Application"", J Agricultural and Resource Economics 36(3):
+         552-572. US nitrogen, ARMS field-level, 2SLS/IV;
+         -1.87 (SE 0.41) for commercial-N-only users. The published
+         abstract states the range as -1.67 to -1.87.
+  -0.21  Denbaly & Vroomen (1993), ""Dynamic Fertilizer Nutrient
+         Demands for Corn: A Cointegrated and Error-Correcting
+         System"", American Journal of Agricultural Economics 75(1):
+         203-209, doi:10.2307/1242968. US corn nitrogen, short run;
+         -0.23 in the ERS working-paper version (Staff Report
+         AGES 9137), tabulated as -0.21 to -0.25 by Nicolella,
+         Dragone & Bacha (2005).
+"
+B5-fsu_central_asia-OWN-PRICE,B5,own-price elasticity of fertilizer demand,-0.3,-1.87,-0.21,dimensionless,,,PASS,WEAK,elasticity,VERIFIED_PRIMARY,"The model's regional own-price elasticity of fertilizer demand against the range spanned by the retrieved literature. WEAK: WP4 searched in English and Russian across six countries and found no published own-price elasticity of fertilizer demand for this region at all. The value is therefore scored against a range assembled entirely from other regions, which tests only that it is not implausible globally. See B5-OWED-FSU-ELASTICITY.","Range as recorded in F-008. WP4 traced both endpoints:
+  -1.87  Williamson (2011), ""Examining Linkages between Soil
+         Conservation Practices and Commercial Fertilizer
+         Application"", J Agricultural and Resource Economics 36(3):
+         552-572. US nitrogen, ARMS field-level, 2SLS/IV;
+         -1.87 (SE 0.41) for commercial-N-only users. The published
+         abstract states the range as -1.67 to -1.87.
+  -0.21  Denbaly & Vroomen (1993), ""Dynamic Fertilizer Nutrient
+         Demands for Corn: A Cointegrated and Error-Correcting
+         System"", American Journal of Agricultural Economics 75(1):
+         203-209, doi:10.2307/1242968. US corn nitrogen, short run;
+         -0.23 in the ERS working-paper version (Staff Report
+         AGES 9137), tabulated as -0.21 to -0.25 by Nicolella,
+         Dragone & Bacha (2005).
+"
+B5-TIGHT-RANGE-ALL,B5,regional elasticities against the tighter multi-study range,8.0,-0.7,-0.2,count_of_regions_inside,,,INFORMATIVE,WEAK,elasticity,SECONDARY_ONLY,"Carries no verdict because it is nested inside the eight B5-<region>-OWN-PRICE rows and would double-count them. Reported because the tighter range is where the central mass of national aggregate estimates actually sits, and because the provenance of the 14-study count could not be verified: no review reporting exactly fourteen studies spanning -0.7 to -0.2 was found. The best candidate is a count over Nicolella, Dragone & Bacha (2005), recorded in observed_values.yaml as a hypothesis and not as a citation.","The tighter 14-study range recorded in F-008. Best candidate provenance: Nicolella, Dragone & Bacha (2005), ""Determinantes da demanda por fertilizantes no Brasil, no periodo de 1970 a 2002"", Revista de Economia e Sociologia Rural 43(1): 82-100, whose Quadro 1 and Quadro 2 tabulate 19 prior studies. Counting the short-run estimates falling in [-0.7, -0.2] gives about 14: England -0.60, Boyle -0.24, Higgins -0.47/-0.50, Dubgaard -0.33, Denbaly & Vroomen -0.21/-0.25, Mergos & Stoforos -0.36, Soares et al. x3, Cibantos x2, Pescarin x2. Ray (-0.19), Weaver (-0.19) and Burrell (-0.08/-0.13) fall just outside.
+"
+B1-OWED-SURVEY-RATE,B1,observation owed by the compilation,,,,,,,OWED,NONE,,,"The nitrogen rate on the surveyed plots behind the SSA marginal product estimates. Without it, a model derivative cannot be evaluated at the matched point and B1-SSA-MPP compares a derivative at 7 kg N/ha to survey estimates from wherever those farmers actually were.",
+B3-OWED-SSA-TRIAL-RATE,B3,observation owed by the compilation,,,,,,,OWED,NONE,,,"The nitrogen rate on the fertilized arm of the trials behind the SSA response ratio. F-008 calls this the single most valuable missing number in the whole compilation, because it is what would turn B3-sub_saharan_africa from an inversion into a verdict.",
+B3-OWED-BROADBALK-YIELD-RATIO,B3,observation owed by the compilation,,,,,,,OWED,NONE,,,"Broadbalk plot 3 grain yields, as a second temperate comparator for B3-europe-YR30. Plot 3 has been unfertilized since 1843 and its soil carbon is already compiled here; its yields are not. Until they are, the model's temperate failure is scored against one site.",
+B5-EPS-F-N-NO-ANALOGUE,B5,observation owed by the compilation,,,,,,,OWED,NONE,,,"A published estimate of the response of fertilizer demand to a soil nitrogen stock, to constrain eps_F_N.",
+B5-OWED-FSU-ELASTICITY,B5,observation owed by the compilation,,,,,,,OWED,NONE,,,Any published own-price elasticity of fertilizer demand for the former Soviet Union or Central Asia.,
+B2-OWED-BROADBALK-NIL-2010,B2,observation owed by the compilation,,,,,,,OWED,NONE,,,"The plot-3 soil carbon value for 2010 in e-RA 02-BKSOC1843 v2, read directly.",
+B1-OWED-MPP-QUANTITY-KIND,B1,observation owed by the compilation,,,,,,,OWED,NONE,,,"A separation of the SSA estimates into true marginal products and agronomic efficiencies, so that the model derivative is compared only to derivatives.",

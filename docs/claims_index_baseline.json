@@ -1,0 +1,96 @@
+{
+  "generated_by": "code/repro/make_claim_report.py --freeze",
+  "index": {
+    "C-001": [
+      "soc_initial",
+      "soc_tha_per_pct"
+    ],
+    "C-010": [
+      "cre_regional",
+      "residue_c_to_active_fraction",
+      "residue_retention",
+      "root_shoot_c_ratio",
+      "som_decay_rates",
+      "som_humification"
+    ],
+    "C-011": [
+      "cre_regional",
+      "residue_c_to_active_fraction",
+      "residue_retention",
+      "som_decay_rates",
+      "som_humification"
+    ],
+    "C-014": [
+      "baseline_water_deficit",
+      "soc_initial",
+      "soc_tha_per_pct",
+      "water_stress_coeff",
+      "whc_sensitivity"
+    ],
+    "C-021": [
+      "whc_sensitivity"
+    ],
+    "C-030": [
+      "crop_price_usd_t",
+      "fert_cost_frac",
+      "n_price_usd_kg",
+      "n_price_wedge",
+      "synth_n_current"
+    ],
+    "C-031": [
+      "crop_price_usd_t",
+      "fert_cost_frac",
+      "n_price_usd_kg",
+      "n_price_wedge",
+      "synth_n_current"
+    ],
+    "C-032": [
+      "crop_price_usd_t",
+      "fert_cost_frac",
+      "n_price_usd_kg",
+      "n_price_wedge"
+    ],
+    "C-033": [
+      "n_price_usd_kg_farmer_paid"
+    ],
+    "C-040": [
+      "eps_F_N",
+      "eps_F_PF"
+    ],
+    "C-041": [
+      "eps_F_PF"
+    ],
+    "C-042": [
+      "eta"
+    ],
+    "C-050": [
+      "eps_F_N",
+      "fert_reduction_target"
+    ],
+    "C-060": [
+      "cropland_mha",
+      "global_aggregation_weights"
+    ],
+    "C-061": [
+      "eps_F_PF",
+      "som_decay_rates"
+    ],
+    "C-070": [
+      "atm_n_deposition",
+      "faostat_yield_target",
+      "synth_n_current",
+      "yield_max_regional"
+    ],
+    "C-071": [
+      "bnf_potential",
+      "bnf_ramp_years"
+    ],
+    "C-072": [
+      "yield_min_regional"
+    ]
+  },
+  "rule": "The reverse index of affects_claims in params.yaml. Frozen so that a documentation edit which changes which published sentences a parameter is known to touch cannot land unremarked.",
+  "spec": [
+    "F-012"
+  ]
+}

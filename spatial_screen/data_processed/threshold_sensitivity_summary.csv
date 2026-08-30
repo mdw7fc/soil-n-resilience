@@ -1,0 +1,8 @@
+rule,low_buffer_high_exposure,high_buffer_high_exposure,low_buffer_low_exposure,high_buffer_low_exposure,intermediate,data_missing
+combined index ≥ 0.50,15.1,4.6,7.8,26.8,44.7,1.0
+combined index ≥ 0.66 (original),0.0,0.1,8.0,27.4,63.4,1.0
+exposure terciles,6.3,4.1,30.0,27.9,30.7,1.0
+modified max-rule (stake=10),19.2,4.7,5.2,11.9,57.9,1.0
+modified max-rule (stake=25) *LOCKED*,17.4,3.9,5.2,11.9,60.5,1.0
+modified max-rule (stake=50),14.0,3.2,5.2,11.9,64.5,1.0
+raw max-rule (no stake floor),26.7,4.7,5.2,11.9,50.4,1.0

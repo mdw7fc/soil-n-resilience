@@ -1,0 +1,7 @@
+running 2 node(s), about 4 min:
+  parameter_extremes zero_shock_invariance
+
+--> parameter_extremes           code/repro/test_parameter_extremes_sol.py
+    ok   22.7s
+--> zero_shock_invariance        code/repro/test_zero_shock_invariance.py
+    ok   8.0s

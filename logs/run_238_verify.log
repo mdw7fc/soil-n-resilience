@@ -1,0 +1,41 @@
+code/tests/test_seam_contracts.py                         ok
+code/tests/test_calibration_fingerprint.py                ok
+code/tests/test_claims.py                                 ok
+code/repro/test_parameter_boundaries_sol.py               ok
+code/repro/test_dimensional_consistency_sol.py            ok
+code/repro/test_zero_shock_invariance.py                  ok
+code/repro/test_full_zero_shock_sol.py                    ok
+code/tests/test_claims.py                                 ok
+code/repro/test_parameter_boundaries_sol.py               ok
+code/repro/test_cap_market_clearing.py                    ok
+code/repro/test_dimensional_consistency_sol.py            ok
+code/repro/test_zero_shock_invariance.py                  ok
+code/repro/test_mc_robustness_sol.py                      ok
+code/tests/test_benchmark_baseline.py                     ok
+code/repro/test_full_zero_shock_sol.py                    ok
+code/tests/test_spinup_partition_independence.py          ok
+code/repro/test_cap_market_clearing.py                    ok
+code/repro/test_mc_robustness_sol.py                      ok
+code/tests/test_benchmark_baseline.py                     ok
+code/tests/test_spinup_partition_independence.py          ok
+code/tests/test_wp1_registry_wiring.py                    ok
+code/tests/test_soc_trajectories.py                       ok
+code/tests/test_supply_state.py                           ok
+code/repro/test_parameter_extremes_sol.py                 ok
+code/tests/test_wp1_registry_wiring.py                    ok
+code/tests/test_soc_trajectories.py                       ok
+code/tests/test_supply_state.py                           ok
+code/repro/test_parameter_extremes_sol.py                 ok
+
+BLOCKED  mc_ensemble: the deposited ensemble is the only surviving v15 one and is what F-013's claim strength reproduces against (P3 0.998); rerunning costs ~90 min and overwrites it. It is a year-1 ensemble, so the eps_F_N question does not reach it -- year 1 is identical at 0 and at -0.5 to five decimals. What it IS owed is a rerun as a CHECK, because WP2's recalibration moved year 1 by 0.01 pp and F-014's bit-for-bit reproduction predates that. Snapshot it first. See results/build_reconciliation.md sec 6.; underlying status: UNSTAMPED_BASELINE -- never regenerated under this graph
+build graph: 31 nodes -- BLOCKED 1, OK 30
+  0 orphan(s) and 1 unsourced input(s) allowed by name on the command line
+
+verify: 15 suites and the build graph, exit 0
+ok
+
+BLOCKED  mc_ensemble: the deposited ensemble is the only surviving v15 one and is what F-013's claim strength reproduces against (P3 0.998); rerunning costs ~90 min and overwrites it. It is a year-1 ensemble, so the eps_F_N question does not reach it -- year 1 is identical at 0 and at -0.5 to five decimals. What it IS owed is a rerun as a CHECK, because WP2's recalibration moved year 1 by 0.01 pp and F-014's bit-for-bit reproduction predates that. Snapshot it first. See results/build_reconciliation.md sec 6.; underlying status: UNSTAMPED_BASELINE -- never regenerated under this graph
+build graph: 31 nodes -- BLOCKED 1, OK 30
+  0 orphan(s) and 1 unsourced input(s) allowed by name on the command line
+
+verify: 15 suites and the build graph, exit 0

@@ -1,0 +1,9 @@
+fourpool comparison: ratio 0.90-2.16, median 1.65; below parity: sub_saharan_africa
+  north_america        ratio 2.06  CUE% 8.6     resp share 80%
+  europe               ratio 1.57  CUE% 12.9    resp share 80%
+  east_asia            ratio 2.16  CUE% 42.0    resp share 81%
+  south_asia           ratio 1.24  CUE% 59.1    resp share 83%
+  southeast_asia       ratio 1.89  CUE% 15.5    resp share 82%
+  latin_america        ratio 1.73  CUE% 6.4     resp share 80%
+  sub_saharan_africa   ratio 0.90  CUE% excl    resp share 87%
+  fsu_central_asia     ratio 1.42  CUE% 5.8     resp share 81%

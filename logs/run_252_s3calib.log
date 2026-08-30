@@ -1,0 +1,9 @@
+wrote ../../results/s3_shock_calibration.csv  shock 103.9%
+  north_america        s1_yr1 0.133  s3_mean 0.123
+  europe               s1_yr1 0.163  s3_mean 0.145
+  east_asia            s1_yr1 0.192  s3_mean 0.187
+  south_asia           s1_yr1 0.248  s3_mean 0.229
+  southeast_asia       s1_yr1 0.248  s3_mean 0.233
+  latin_america        s1_yr1 0.192  s3_mean 0.182
+  sub_saharan_africa   s1_yr1 0.300  s3_mean 0.286
+  fsu_central_asia     s1_yr1 0.192  s3_mean 0.169

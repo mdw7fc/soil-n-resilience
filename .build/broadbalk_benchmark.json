@@ -1,0 +1,24 @@
+{
+  "generator": "code/repro/make_broadbalk_benchmark.py",
+  "generator_sha": "daf97404b8eb1047d6822eccafbe705d82783451e2be2bdde2128ce39b653036",
+  "inputs": {
+    "code/model/coupled_econ_biophysical.py": "f60020c4b556d77b267dd508fdb1e097415fdc3e89c979a568719a05d27d6ba4",
+    "code/model/coupled_monthly.py": "d69c8ba2e75dad66c184935b27218a3dce194df61851db259911263606c090b9",
+    "code/model/data/benchmark_broadbalk/soc_trajectories_broadbalk.csv": "7f375cb70bcce31946ad1f4b7a0330d295336550bc2a4c8c6b594c807e25f26f",
+    "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
+    "code/model/parameter_registry.py": "dcb0e6aec9d1ab6383ffe695ef8ea19cda698a2caae3becfb4314c4771de2f5b",
+    "code/model/prices.py": "9685f40ece2f5659bae91f9ec980ea9a76a8595e85f6cc823759cd8db7f78250",
+    "code/model/registry.py": "0ad6974d63de654822aa0b456a1b92a57052bf0092efc1ab3863b4f1dd45546f",
+    "code/model/seams.py": "5203d7d1a0f8a88ce5b94b5394e1ecc6aea8dee9d95a2df76b023572a4ad85e2",
+    "code/model/soil_n_model.py": "ea7ffb4e0db8a4ce2dbc921006819db711dad382f759f5da22399ac28d003aa8"
+  },
+  "node": "broadbalk_benchmark",
+  "outputs": {
+    "data/benchmarks/broadbalk_yield_benchmark_sol.csv": "d1b72e0f749ca837247ff7f5fa34b8341d455818e13d96ba5d060e0df596eaa3",
+    "figures/Figure_S2_broadbalk_benchmark.pdf": "3d4547407b68d882df96e8c9b12517229a32b59b1842e115fa312d44cac0caee",
+    "figures/Figure_S2_broadbalk_benchmark.png": "58c5b98182951c1b7282b400a90e1e6222dd63031d5c5f011aee38debf21bf75"
+  },
+  "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
+  "stamped_at": "2026-08-29T20:13:22Z",
+  "stamped_at_commit": "dcb8517"
+}

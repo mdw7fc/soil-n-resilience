@@ -1,0 +1,39 @@
+CALIBRATION_SCHEME = production_path_v2
+YM_REGION_FIELDS   = 13 fields
+
+region                  ym_legacy    ym_prod    d_ym_%     y_prod     target     err_%
+north_america              6.2766     6.1980    -1.251     5.5000      5.500  +0.00000
+europe                     6.1191     6.0219    -1.589     5.0000      5.000  -0.00000
+east_asia                  6.0947     6.2200    +2.057     6.0000      6.000  +0.00000
+south_asia                 3.6361     3.7734    +3.777     3.2000      3.200  +0.00000
+southeast_asia             4.8707     4.8739    +0.065     4.2000      4.200  +0.00000
+latin_america              5.6022     5.4142    -3.356     4.5000      4.500  +0.00000
+sub_saharan_africa         3.8764     3.9673    +2.343     1.5000      1.500  -0.00000
+fsu_central_asia           4.2929     4.3175    +0.574     2.8000      2.800  -0.00000
+
+worst |error| = 1.924e-13 percent   (sub_saharan_africa)
+ACCEPTANCE (<= 8e-3 percent): PASS
+elapsed 6.8s
+
+fingerprint[0] = production_path_v2
+wrote /root/v15/code/repro/../../results/calibration_production_path.csv
+legacy path missed FAOSTAT by up to 4.185 percent
+production path residual worst case 1.924e-13 percent
+YM_REGION_FIELDS: 13
+F-002 ACCEPTANCE (<= 8e-3 percent): PASS
+
+C1  production path reproduces FAOSTAT     C2  legacy gap still present
+  [PASS] FAOSTAT reproduced to 0.001 relative                     worst 1.924e-15 relative (1.924e-13 percent)
+  [FAIL] legacy objective still misses by >= 1.0%                 smallest legacy gap 0.074 percent
+
+C3  every field that moves yield_max is fingerprinted
+  [PASS] no unregistered field moves yield_max                    unregistered movers: none
+  [PASS] declared-but-inert fields (informational, not a failure) whc_sensitivity, yield_max_regional, yield_min_regional
+  [PASS] fields observed to reach the calibration                 atm_n_deposition, baseline_water_deficit, cn_bulk, cre_regional, mitscherlich_c_regional, residue_retention, root_shoot_c_ratio, soc_initial, synth_n_current, water_stress_coeff
+
+C4  the fingerprint leads with the scheme
+  [PASS] fingerprint[0] is CALIBRATION_SCHEME                     'production_path_v2'
+  [PASS] YM_REGION_FIELDS has 13 entries                          13
+  [PASS] perturbing a registered field changes the fingerprint    
+
+CALIBRATION FINGERPRINT: FAIL  (8 checks)

@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/root/v15/code/repro/test_parameter_consistency_sol.py", line 80, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/root/v15/code/repro/test_parameter_consistency_sol.py", line 53, in main
+    assert abs(got - expected) < 1e-3, (region, got, expected)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('sub_saharan_africa', np.float64(0.035777792297855944), 0.037)

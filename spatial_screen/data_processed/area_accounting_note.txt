@@ -1,0 +1,10 @@
+Area-accounting note (Phase 2)
+==============================
+
+Two distinct cropland datasets are used in this figure, and they answer different questions:
+
+  (1) FAOSTAT cropland area (Item: Cropland; Element: Area; Inputs/Land Use bulk CSV) is the country-level area used as the denominator for nitrogen application intensity (N_use_t × 1000 / cropland_ha) and as the bar height in panel d (cropland Mha × panel-c class × region). FAOSTAT cropland follows the World Census of Agriculture conventions and is reported as a single annual area per country, averaged here over 2018–2020.
+
+  (2) MIRCA2000 maximum total annual cropped area (Portmann et al. 2010, Zenodo 7422506) is a 5-arcmin spatial grid of cropped area in hectares per cell. It is used ONLY as the spatial weight for aggregating the SoilGrids 2.0 soil organic N-stock proxy from 5 km pixel-level to country-level (cropland-weighted mean). MIRCA's global total (~1158 Mha) is not meant to match FAOSTAT's national cropland totals exactly, because MIRCA counts double-cropped cells twice and uses circa-2000 satellite-derived cropland extent.
+
+Implication: panel a is country-level cropland-weighted mean of soil organic N stock 0–30 cm, weighted by MIRCA. Panel b uses FAOSTAT cropland in the denominator of N intensity. Panels c and d use the panel-c classification (which depends on both the MIRCA-weighted buffer tercile and the FAOSTAT-derived intensity / reliance) and the FAOSTAT cropland area (panel d bar heights). The two datasets serve non-overlapping roles, so the slight mismatch in global cropland total (FAOSTAT ≈ 1567 Mha vs MIRCA cropped ≈ 1158 Mha) is methodologically correct, not an inconsistency.

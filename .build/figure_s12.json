@@ -1,0 +1,14 @@
+{
+  "generator": "code/repro/make_figure_s12.py",
+  "generator_sha": "80add27276bc14ab262b8a397ab0866b9aac28dbb2da80ce5afa1aee220120f4",
+  "inputs": {
+    "data/figS12_curves.json": "516548da025fdef1425d79ac06e2509833c5a2eaa286a6518a9e2ea30cb3e45d"
+  },
+  "node": "figure_s12",
+  "outputs": {
+    "figures/Figure_S12_crop_response_calibration.png": "8099d413e0875a2838d01660cd7bbd093411ff1284f3ce93ac612322a2cdf8ab"
+  },
+  "params_fingerprint": null,
+  "stamped_at": "2026-08-29T20:01:48Z",
+  "stamped_at_commit": "dcb8517"
+}

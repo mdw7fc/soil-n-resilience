@@ -1,0 +1,9 @@
+region,faostat_target_t_ha,calibrated_y_max_t_ha,simulated_year2_no_synth_n_t_ha,empirical_floor_t_ha
+north_america,5.5,6.19802,3.70695,1.1
+europe,5.0,6.02189,2.28531,1.0
+east_asia,6.0,6.22004,3.131,0.9
+south_asia,3.2,3.77342,1.82791,0.5
+southeast_asia,4.2,4.87388,3.0277,1.2
+latin_america,4.5,5.41424,3.43228,0.9
+sub_saharan_africa,1.5,3.96728,1.28889,0.4
+fsu_central_asia,2.8,4.31755,1.6906,0.9

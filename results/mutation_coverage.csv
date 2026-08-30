@@ -1,0 +1,56 @@
+leaf,verdict,state_fields_moved,published_fields_moved,worst_field,worst_delta,caught_by,not_probed,note
+alpha,COVERED,8,24,regions[7].loss_yr30,0.0009491097551439509,test_wp1_registry_wiring.py,False,
+atm_n_deposition,COVERED,8,511,regions[6].buffer_ratio_pct,0.5,test_spinup_partition_independence.py;test_wp1_registry_wiring.py,False,
+baseline_water_deficit,COVERED,8,184,regions[6].water_deficit,1.5,test_spinup_partition_independence.py;test_wp1_registry_wiring.py,False,
+cm2_per_ha,COVERED,1,168,margin.south_asia.margin_chg@10,0.006772102723884288,test_wp1_registry_wiring.py;test_dimensional_consistency_sol.py,False,
+cn_bulk,COVERED,8,511,regions[4].buffer_ratio_pct,2.3999999999999986,test_spinup_partition_independence.py;test_wp1_registry_wiring.py,False,
+cre_regional,COVERED,8,512,regions[6].buffer_ratio_pct,2.4000000000000057,test_spinup_partition_independence.py;test_wp1_registry_wiring.py,False,
+cropland_mha,COVERED,8,8,regions[6].cropland_mha,23.00000000000003,test_wp1_registry_wiring.py,False,
+eps_F_PF,COVERED,8,476,margin.sub_saharan_africa.fert_red@10,2.4016684525636656,test_seam_contracts.py;test_wp1_registry_wiring.py,False,
+eps_F_PY,COVERED,8,495,margin.south_asia.fert_red@10,0.04633939066831516,test_wp1_registry_wiring.py,False,
+eps_LD_PL,COVERED,8,24,regions[7].loss_yr30,0.00034448541830212065,test_wp1_registry_wiring.py,False,
+eps_LD_PY,COVERED,8,24,regions[7].loss_yr30,0.0009491097551439509,test_wp1_registry_wiring.py,False,
+eps_LS_PL,COVERED,8,24,regions[7].loss_yr30,0.00033564382401252146,test_wp1_registry_wiring.py,False,
+eta,COVERED,8,502,margin.south_asia.margin_chg@10,0.663700248474818,test_wp1_registry_wiring.py,False,
+faostat_yield_target,COVERED,8,523,regions[6].buffer_ratio_pct,2.4000000000000057,test_wp1_registry_wiring.py,False,
+g_per_t,COVERED,1,168,margin.south_asia.margin_chg@10,0.007464282606039596,test_wp1_registry_wiring.py;test_dimensional_consistency_sol.py,False,
+laub_tropical_ratios.k_passive_ratio,COVERED,1,367,margin.south_asia.margin_chg@10,0.0035285205855828394,test_wp1_registry_wiring.py,False,
+laub_tropical_ratios.k_slow_ratio,COVERED,1,367,regions[6].loss_yr30,0.02627110132298327,test_wp1_registry_wiring.py,False,
+pct_to_fraction,COVERED,1,168,margin.south_asia.margin_chg@10,0.006772102723884288,test_wp1_registry_wiring.py;test_dimensional_consistency_sol.py,False,
+physical_feedback_strength,COVERED,1,168,margin.south_asia.margin_chg@10,0.007464282606039596,test_wp1_registry_wiring.py,False,
+residue_c_to_active_fraction,COVERED,0,514,regions[5].buffer_ratio_pct,0.7000000000000028,test_spinup_partition_independence.py;test_wp1_registry_wiring.py,False,
+residue_retention,COVERED,8,512,regions[0].buffer_ratio_pct,1.3000000000000043,test_spinup_partition_independence.py;test_wp1_registry_wiring.py,False,
+root_shoot_c_ratio,COVERED,8,512,regions[6].buffer_ratio_pct,1.5,test_spinup_partition_independence.py;test_wp1_registry_wiring.py,False,
+soc_bulk_density,COVERED,1,168,margin.south_asia.margin_chg@10,0.006772102723884288,test_wp1_registry_wiring.py;test_dimensional_consistency_sol.py,False,
+soc_initial,COVERED,8,513,regions[0].soc,5.000000000000007,test_spinup_partition_independence.py;test_wp1_registry_wiring.py,False,
+som_decay_rates.k_active,COVERED,2,501,regions[6].loss_yr10,0.02699091161413314,test_spinup_partition_independence.py;test_wp1_registry_wiring.py,False,
+som_decay_rates.k_passive,COVERED,2,501,margin.south_asia.margin_chg@10,0.0035285205855828394,test_spinup_partition_independence.py;test_wp1_registry_wiring.py,False,
+som_decay_rates.k_slow,COVERED,2,502,regions[6].loss_yr30,0.02627110132298327,test_spinup_partition_independence.py;test_wp1_registry_wiring.py,False,
+som_humification.h_active_to_slow,COVERED,2,512,regions[5].buffer_ratio_pct,0.7000000000000028,test_spinup_partition_independence.py;test_wp1_registry_wiring.py,False,
+som_humification.h_slow_to_passive,COVERED,2,503,regions[5].buffer_ratio_pct,0.10000000000000142,test_spinup_partition_independence.py;test_wp1_registry_wiring.py,False,
+synth_n_current,COVERED,8,523,regions[2].synth_n,25.0,test_spinup_partition_independence.py;test_wp1_registry_wiring.py,False,
+water_stress_coeff,COVERED,8,176,regions[6].y_max,0.032780405448459504,test_spinup_partition_independence.py;test_wp1_registry_wiring.py,False,
+whc_sensitivity,COVERED,8,168,margin.south_asia.margin_chg@10,0.007464282606039596,test_wp1_registry_wiring.py,False,
+crop_price_usd_t,UNTESTED,4,164,price.sub_saharan_africa.crop_usd_per_t,30.0,,False,
+n_benchmark_usd_kg,UNTESTED,8,164,margin.south_asia.margin_chg@10,1.0422634192953186,,False,
+n_price_wedge,UNTESTED,12,164,margin.south_asia.margin_chg@10,1.0422634192953186,,False,
+eps_F_N,DECLARED_NOT_WIRED,0,0,,0.0,,False,registry declares it; nothing the probe reads depends on it
+fert_reduction_target,DECLARED_NOT_WIRED,0,0,,0.0,,False,registry declares it; nothing the probe reads depends on it
+cre_allocation.cre_to_active,GUARDED_AT_LOAD,0,0,,0.0,,False,registry refused the value at load
+cre_allocation.cre_to_slow,GUARDED_AT_LOAD,0,0,,0.0,,False,registry refused the value at load
+soc_profile_depth_cm,GUARDED_AT_LOAD,0,0,,0.0,,False,registry refused the value at load
+som_pool_fractions.f_active,GUARDED_AT_LOAD,0,0,,0.0,,False,registry refused the value at load
+som_pool_fractions.f_passive,GUARDED_AT_LOAD,0,0,,0.0,,False,registry refused the value at load
+som_pool_fractions.f_slow,GUARDED_AT_LOAD,0,0,,0.0,,False,registry refused the value at load
+bnf_potential,INERT,8,0,,0.0,,False,"wired, but no published number depends on it"
+bnf_ramp_years,INERT,8,0,,0.0,,False,"wired, but no published number depends on it"
+n_price_usd_kg_farmer_paid,INERT,1,0,,0.0,,False,"wired, but no published number depends on it"
+pop_supported,INERT,8,0,,0.0,,False,"wired, but no published number depends on it"
+price_benchmark_max_factor,INERT,1,0,,0.0,,False,"wired, but no published number depends on it"
+som_pool_cn.cn_active,INERT,2,0,,0.0,,False,"wired, but no published number depends on it"
+som_pool_cn.cn_passive,INERT,2,0,,0.0,,False,"wired, but no published number depends on it"
+som_pool_cn.cn_slow,INERT,2,0,,0.0,,False,"wired, but no published number depends on it"
+texture_class,INERT,8,0,,0.0,,False,"wired, but no published number depends on it"
+urea_n_fraction,INERT,1,0,,0.0,,False,"wired, but no published number depends on it"
+yield_max_regional,INERT,8,0,,0.0,,False,"wired, but no published number depends on it"
+yield_min_regional,INERT,8,0,,0.0,,False,"wired, but no published number depends on it"

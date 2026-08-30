@@ -1,0 +1,2 @@
+max_abs_year10_shift_pp	0.62
+spearman_rho_year10_ranking	0.98

@@ -1,0 +1,40 @@
+========================================================================
+CHECK 1 -- canonical diff against a freshly regenerated artifact
+  123 fields compared, 50 moved, 50 pinned as expected
+========================================================================
+CHECK 2 -- field-by-field equality over every regional field
+  RegionParams: 152 fields over 8 regions, 0 moved
+  SOMPoolParams            12 fields, 0 moved
+  SOMPoolParams_tropical   12 fields, 0 moved
+  deleted FeedbackParams          cre_base                 F-011 scored it INERT and v15 deleted the fallback it guarded; soil_n_model.region_cre() now raises instead of substituting 0.11. Verified to move no number: logs/run_203_canon.log diffs to zero against the pre-deletion canonical over all 125 fields.
+  FeedbackParams           8 fields, 0 moved
+  FAOSTAT_TARGETS: 8 fields, 0 moved
+  REGIONAL_ECON_PARAMS: 64 fields, 0 moved
+========================================================================
+CHECK 3 -- global S3 production-weighted yield loss
+  year 1  2.32 %
+  year 10 3.02 %
+  year 30 3.07 %
+  NOTE: the reconstruction base (git 20defb2, pre-F-002) produces
+        2.31 / 3.18 / 3.29. WP2's F-002 recalibration moved this to
+        2.32 / 3.20 / 3.31, and F-025's realized-yield clearing
+        (2026-08-29) to 2.32 / 3.18 / 3.30: clearing the market on the
+        biophysical response instead of its linearization shifts the
+        equilibrium fertilizer path slightly. The 3.03 year-10 figure
+        in HANDOFF section 5 matches none of these and is owed a
+        restatement -- see results/mutation_coverage_reconciliation.md.
+        F-026 (2026-08-29) restored the eps_F_N central to -0.50,
+        moving the family to 2.32 / 3.02 / 3.07.
+========================================================================
+CHECK 4 -- registry load-time contract
+  entries 53, mutable leaves 55
+  mc status: [('declared_fixed', 16), ('drawn', 8), ('exempt', 25), ('not_applicable', 4)]
+  som_pool_fractions.f_active        refused at load
+  som_pool_fractions.f_slow          refused at load
+  som_pool_fractions.f_passive       refused at load
+  cre_allocation.cre_to_active       refused at load
+  cre_allocation.cre_to_slow         refused at load
+  soc_profile_depth_cm               refused at load
+========================================================================
+WP1 PASSED -- the registry drives the model; the canonical artifact moves
+              only the 50 fields WP2 pinned, by the pinned amounts.

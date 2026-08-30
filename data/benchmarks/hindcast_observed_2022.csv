@@ -1,0 +1,9 @@
+manuscript_region,faostat_region,n_use_2020_t,n_use_2021_t,n_use_2022_t,change_2021_2022_pct,change_2020_2022_pct,flag_2021,flag_2022,notes
+North America,Northern America,14972032,14552877,14170176,-2.6,-5.4,A,A,Official data. Manuscript previously stated 3% decline; FAOSTAT shows -2.6%.
+Europe,Europe,15434008,15235322,13769003,-9.6,-10.8,A,A,Official data. Largest decline among regions with official stats. Consistent with FAO highlights (14% N decline in Europe).
+South Asia,Southern Asia,26618839,25917238,26511846,2.3,-0.4,E,E,"FAO estimate. South Asia N use actually INCREASED 2021-2022, contrary to manuscript assumption of 8% decline. India subsidies buffered price shock."
+Sub-Saharan Africa,Africa minus Northern Africa (computed),3063827,2759054,2311394,-16.2,-24.6,E,E,FAO estimate. Computed as Africa total minus Northern Africa. SSA decline of 16% exceeds the 14% cited in manuscript (which was for all-Africa NPK from IFA). Using 2020 base: -24.6%.
+East Asia,Eastern Asia,26542292,25849966,25200641,-2.5,-5.1,E,E,FAO estimate. Moderate decline driven by ongoing Chinese fertilizer-use-reduction policy.
+Southeast Asia,South-eastern Asia,8267865,8308942,8024080,-3.4,-2.9,E,E,FAO estimate.
+Latin America,South America,9118884,10218979,10061776,-1.5,10.3,E,E,FAO estimate. Minimal 2021-2022 decline; large 2020-2021 increase masks the shock.
+World,World,114784586,113271073,109445980,-3.4,-4.7,E,E,FAO estimate. Global N use declined 3.4% (2021-2022).

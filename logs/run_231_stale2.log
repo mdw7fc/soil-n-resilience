@@ -1,0 +1,12 @@
+python3 code/build.py run --stale --log-dir logs/build
+running 4 node(s), about 2 min:
+  table_s3 figure_s6 price_shock figure_s8
+
+--> table_s3                     code/repro/make_table_s3.py
+    ok   1.0s
+--> figure_s6                    code/repro/make_figure_s6.py
+    ok   1.7s
+--> price_shock                  code/repro/run_price_shock_analysis.py
+    ok   100.0s
+--> figure_s8                    code/repro/make_figure_s8.py
+    ok   0.9s

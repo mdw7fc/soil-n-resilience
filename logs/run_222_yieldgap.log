@@ -1,0 +1,8 @@
+rows 720 over 3 scenarios x 8 regions x 30 years
+solver residual (demand vs log-linear supply)  max 9.48e-01 pp
+realized minus econ-implied production         max 1.5379 pp   mean 0.2383 pp
+  worst S3                 south_asia         yr1   realized  -2.142%  econ-implied  -3.680%  gap +1.5379 pp
+  worst SC1_20pct          south_asia         yr1   realized  -2.142%  econ-implied  -3.680%  gap +1.5379 pp
+  worst SC2_20pct_recovery south_asia         yr1   realized  -2.039%  econ-implied  -3.499%  gap +1.4604 pp
+cap-binding steps 237 of 720; max clearing_residual 0.00e+00
+wrote results/econ_biophysical_yield_gap.csv

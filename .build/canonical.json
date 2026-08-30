@@ -1,0 +1,24 @@
+{
+  "generator": "code/repro/run_canonical.py",
+  "generator_sha": "f58a4f69b207476115ce09bb1834277b966d436ae206c6f4fc6c84ebc0ec45bc",
+  "inputs": {
+    "code/model/coupled_econ_biophysical.py": "f60020c4b556d77b267dd508fdb1e097415fdc3e89c979a568719a05d27d6ba4",
+    "code/model/coupled_monthly.py": "d69c8ba2e75dad66c184935b27218a3dce194df61851db259911263606c090b9",
+    "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
+    "code/model/parameter_registry.py": "dcb0e6aec9d1ab6383ffe695ef8ea19cda698a2caae3becfb4314c4771de2f5b",
+    "code/model/prices.py": "9685f40ece2f5659bae91f9ec980ea9a76a8595e85f6cc823759cd8db7f78250",
+    "code/model/registry.py": "0ad6974d63de654822aa0b456a1b92a57052bf0092efc1ab3863b4f1dd45546f",
+    "code/model/seams.py": "5203d7d1a0f8a88ce5b94b5394e1ecc6aea8dee9d95a2df76b023572a4ad85e2",
+    "code/model/soil_n_model.py": "ea7ffb4e0db8a4ce2dbc921006819db711dad382f759f5da22399ac28d003aa8",
+    "data/era5_regional_climates.json": "d2caf2eade29e2b6d32ea42d9bfcf0385f63fd2f530c3692f801df64040c43f5"
+  },
+  "node": "canonical",
+  "outputs": {
+    "data/canonical_ERA5_y30.csv": "7e82d86a2a900b1c47a1c7d27e1be65625fbe474ecdcb957b1d3659911b89e15",
+    "data/canonical_ERA5_y30.json": "06f3e755c20021ffea7abfa81ba25ba8fe107eb16454ec7415940ca89d87b052",
+    "outputs/global_S3_losses.txt": "1bcca226c1f6459c10cd819b976baa7b790dc1fbf5f751700024b2ed471fc97a"
+  },
+  "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
+  "stamped_at": "2026-08-29T20:35:04Z",
+  "stamped_at_commit": "dcb8517"
+}

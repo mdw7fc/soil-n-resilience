@@ -1,0 +1,40 @@
+code/tests/test_seam_contracts.py                         ok
+code/tests/test_calibration_fingerprint.py                ok
+code/tests/test_claims.py                                 ok
+code/repro/test_parameter_boundaries_sol.py               ok
+code/repro/test_dimensional_consistency_sol.py            ok
+code/repro/test_zero_shock_invariance.py                  ok
+code/repro/test_full_zero_shock_sol.py                    ok
+code/repro/test_cap_market_clearing.py                    ok
+code/repro/test_mc_robustness_sol.py                      ok
+code/tests/test_benchmark_baseline.py                     ok
+code/tests/test_spinup_partition_independence.py          ok
+code/tests/test_wp1_registry_wiring.py                    ok
+code/repro/test_parameter_extremes_sol.py                 ok
+
+BLOCKED  mc_ensemble: the deposited ensemble is the only surviving v15 one and is what F-013's claim strength reproduces against (P3 0.998); rerunning costs ~90 min and overwrites it. It is a year-1 ensemble, so the eps_F_N question does not reach it -- year 1 is identical at 0 and at -0.5 to five decimals. What it IS owed is a rerun as a CHECK, because WP2's recalibration moved year 1 by 0.01 pp and F-014's bit-for-bit reproduction predates that. Snapshot it first. See results/build_reconciliation.md sec 6.; underlying status: UNSTAMPED_BASELINE -- never regenerated under this graph
+FAIL  STALE canonical: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE soc_trajectories: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE sc_trajectories: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE climate_swap: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE price_shock: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE figure_2: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE figS8_curves: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE figure_s7: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE table_s4: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE figure_s10: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE figure_s11: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE food_price_table: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE broadbalk_benchmark: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE hindcast_benchmark: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE benchmarks: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE zero_shock_invariance: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE structural_sensitivity: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE parameter_extremes: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE calibration_production_path: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE parameter_ledger: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+FAIL  STALE claims_report: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py; input changed: data/scenario_trajectories.csv; output changed since stamp: outputs/claims_status.csv; output changed since stamp: results/claims_report.md
+FAIL  STALE claim_strength: input changed: code/model/coupled_econ_biophysical.py; input changed: code/model/coupled_monthly.py
+
+build graph: 22 defects
+make: *** [Makefile:120: verify] Error 1

@@ -1,0 +1,25 @@
+{
+  "generator": "code/repro/make_figure_2.py",
+  "generator_sha": "cabf94212ae43755488d1d3a8d09e5bdf698ab8b0f828484e3432d967fdf51f5",
+  "inputs": {
+    "code/model/coupled_econ_biophysical.py": "f60020c4b556d77b267dd508fdb1e097415fdc3e89c979a568719a05d27d6ba4",
+    "code/model/coupled_monthly.py": "d69c8ba2e75dad66c184935b27218a3dce194df61851db259911263606c090b9",
+    "code/model/monthly_model_v3.py": "4b320840f5f1462ff9e6424a294b167101bf220dd6bf2aa6504a923e03a387f9",
+    "code/model/parameter_registry.py": "dcb0e6aec9d1ab6383ffe695ef8ea19cda698a2caae3becfb4314c4771de2f5b",
+    "code/model/prices.py": "9685f40ece2f5659bae91f9ec980ea9a76a8595e85f6cc823759cd8db7f78250",
+    "code/model/registry.py": "0ad6974d63de654822aa0b456a1b92a57052bf0092efc1ab3863b4f1dd45546f",
+    "code/model/seams.py": "5203d7d1a0f8a88ce5b94b5394e1ecc6aea8dee9d95a2df76b023572a4ad85e2",
+    "code/model/soil_n_model.py": "ea7ffb4e0db8a4ce2dbc921006819db711dad382f759f5da22399ac28d003aa8",
+    "data/canonical_ERA5_y30.json": "06f3e755c20021ffea7abfa81ba25ba8fe107eb16454ec7415940ca89d87b052",
+    "data/figure2_soc_gradient.json": "d76c70cf809e071f7284e35ea45cb2540bae4809a4bc571274980cc1a98fa4db"
+  },
+  "node": "figure_2",
+  "outputs": {
+    "data/figure2_panels.json": "fbcaf536da346c68f549516e877f2606c2ad9f1af4eb6ee1e04b96b078225e5e",
+    "figures/Figure_2_regional_vulnerability.pdf": "9ddc08b8e15054164d57b13edb89f53094882cebbfef4a00efe26033ff74d999",
+    "figures/Figure_2_regional_vulnerability.png": "52d2400285a1abd38df713d7a266de8f5a3b35804eb5f2d4a08ff43ca4da6154"
+  },
+  "params_fingerprint": "31bbe05af024805b5e382fe1b2a5f97b35739c5b3d664a1088ec49b8992f40ec",
+  "stamped_at": "2026-08-29T19:57:05Z",
+  "stamped_at_commit": "dcb8517"
+}

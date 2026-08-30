@@ -1,0 +1,9 @@
+region,scheme,ym_legacy,ym_production,ym_change_pct,y_prod_legacy,y_prod_new,faostat_target,gap_legacy_pct,gap_new_pct
+north_america,production_path_v2,6.27656,6.19802,-1.2514,5.57725,5.5,5.5,1.4045,0.0
+europe,production_path_v2,6.1191,6.02189,-1.5885,5.08895,5.0,5.0,1.7789,-7.105e-14
+east_asia,production_path_v2,6.09469,6.22004,2.0566,5.87791,6.0,6.0,-2.0348,0.0
+south_asia,production_path_v2,3.63607,3.77342,3.7774,3.07623,3.2,3.2,-3.8679,0.0
+southeast_asia,production_path_v2,4.87072,4.87388,0.0648,4.19689,4.2,4.2,-0.074,0.0
+latin_america,production_path_v2,5.60224,5.41424,-3.3557,4.68834,4.5,4.5,4.1852,3.947e-14
+sub_saharan_africa,production_path_v2,3.87644,3.96728,2.3435,1.45045,1.5,1.5,-3.3031,-1.924e-13
+fsu_central_asia,production_path_v2,4.2929,4.31755,0.5741,2.78002,2.8,2.8,-0.7137,-3.172e-14

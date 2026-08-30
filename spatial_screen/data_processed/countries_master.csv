@@ -1,0 +1,244 @@
+iso3,fao_area_code,m49_code,fao_name,region,historical,unmapped
+KAZ,108,398,Kazakhstan,Central Asia,False,False
+KGZ,113,417,Kyrgyzstan,Central Asia,False,False
+TJK,208,762,Tajikistan,Central Asia,False,False
+TKM,213,795,Turkmenistan,Central Asia,False,False
+UZB,235,860,Uzbekistan,Central Asia,False,False
+BRN,26,096,Brunei Darussalam,East & Southeast Asia,False,False
+KHM,115,116,Cambodia,East & Southeast Asia,False,False
+HKG,96,344,China; Hong Kong SAR,East & Southeast Asia,False,False
+MAC,128,446,China; Macao SAR,East & Southeast Asia,False,False
+TWN,214,158,China; Taiwan Province of,East & Southeast Asia,False,False
+CHN,41,156,China; mainland,East & Southeast Asia,False,False
+PRK,116,408,Democratic People's Republic of Korea,East & Southeast Asia,False,False
+IDN,101,360,Indonesia,East & Southeast Asia,False,False
+JPN,110,392,Japan,East & Southeast Asia,False,False
+LAO,120,418,Lao People's Democratic Republic,East & Southeast Asia,False,False
+MYS,131,458,Malaysia,East & Southeast Asia,False,False
+MNG,141,496,Mongolia,East & Southeast Asia,False,False
+MMR,28,104,Myanmar,East & Southeast Asia,False,False
+PHL,171,608,Philippines,East & Southeast Asia,False,False
+KOR,117,410,Republic of Korea,East & Southeast Asia,False,False
+SGP,200,702,Singapore,East & Southeast Asia,False,False
+THA,216,764,Thailand,East & Southeast Asia,False,False
+TLS,176,626,Timor-Leste,East & Southeast Asia,False,False
+VNM,237,704,Viet Nam,East & Southeast Asia,False,False
+ALB,3,008,Albania,Europe,False,False
+AND,6,020,Andorra,Europe,False,False
+AUT,11,040,Austria,Europe,False,False
+BLR,57,112,Belarus,Europe,False,False
+BEL,255,056,Belgium,Europe,False,False
+BIH,80,070,Bosnia and Herzegovina,Europe,False,False
+BGR,27,100,Bulgaria,Europe,False,False
+HRV,98,191,Croatia,Europe,False,False
+CZE,167,203,Czechia,Europe,False,False
+DNK,54,208,Denmark,Europe,False,False
+EST,63,233,Estonia,Europe,False,False
+FRO,64,234,Faroe Islands,Europe,False,False
+FIN,67,246,Finland,Europe,False,False
+FRA,68,250,France,Europe,False,False
+DEU,79,276,Germany,Europe,False,False
+GIB,82,292,Gibraltar,Europe,False,False
+GRC,84,300,Greece,Europe,False,False
+VAT,94,336,Holy See,Europe,False,False
+HUN,97,348,Hungary,Europe,False,False
+ISL,99,352,Iceland,Europe,False,False
+IRL,104,372,Ireland,Europe,False,False
+ITA,106,380,Italy,Europe,False,False
+LVA,119,428,Latvia,Europe,False,False
+LIE,125,438,Liechtenstein,Europe,False,False
+LTU,126,440,Lithuania,Europe,False,False
+LUX,256,442,Luxembourg,Europe,False,False
+MLT,134,470,Malta,Europe,False,False
+MCO,140,492,Monaco,Europe,False,False
+MNE,273,499,Montenegro,Europe,False,False
+NLD,150,528,Netherlands (Kingdom of the),Europe,False,False
+MKD,154,807,North Macedonia,Europe,False,False
+NOR,162,578,Norway,Europe,False,False
+POL,173,616,Poland,Europe,False,False
+PRT,174,620,Portugal,Europe,False,False
+MDA,146,498,Republic of Moldova,Europe,False,False
+ROU,183,642,Romania,Europe,False,False
+RUS,185,643,Russian Federation,Europe,False,False
+SMR,192,674,San Marino,Europe,False,False
+SRB,272,688,Serbia,Europe,False,False
+SVK,199,703,Slovakia,Europe,False,False
+SVN,198,705,Slovenia,Europe,False,False
+ESP,203,724,Spain,Europe,False,False
+SJM,260,744,Svalbard and Jan Mayen Islands,Europe,False,False
+SWE,210,752,Sweden,Europe,False,False
+CHE,211,756,Switzerland,Europe,False,False
+UKR,230,804,Ukraine,Europe,False,False
+GBR,229,826,United Kingdom of Great Britain and Northern Ireland,Europe,False,False
+AIA,258,660,Anguilla,Latin America & Caribbean,False,False
+ATG,8,028,Antigua and Barbuda,Latin America & Caribbean,False,False
+ARG,9,032,Argentina,Latin America & Caribbean,False,False
+ABW,22,533,Aruba,Latin America & Caribbean,False,False
+BHS,12,044,Bahamas,Latin America & Caribbean,False,False
+BRB,14,052,Barbados,Latin America & Caribbean,False,False
+BLZ,23,084,Belize,Latin America & Caribbean,False,False
+BOL,19,068,Bolivia (Plurinational State of),Latin America & Caribbean,False,False
+BRA,21,076,Brazil,Latin America & Caribbean,False,False
+VGB,239,092,British Virgin Islands,Latin America & Caribbean,False,False
+CYM,36,136,Cayman Islands,Latin America & Caribbean,False,False
+CHL,40,152,Chile,Latin America & Caribbean,False,False
+COL,44,170,Colombia,Latin America & Caribbean,False,False
+CRI,48,188,Costa Rica,Latin America & Caribbean,False,False
+CUB,49,192,Cuba,Latin America & Caribbean,False,False
+DMA,55,212,Dominica,Latin America & Caribbean,False,False
+DOM,56,214,Dominican Republic,Latin America & Caribbean,False,False
+ECU,58,218,Ecuador,Latin America & Caribbean,False,False
+SLV,60,222,El Salvador,Latin America & Caribbean,False,False
+FLK,65,238,Falkland Islands (Malvinas),Latin America & Caribbean,False,False
+GUF,69,254,French Guiana,Latin America & Caribbean,False,False
+GRD,86,308,Grenada,Latin America & Caribbean,False,False
+GLP,87,312,Guadeloupe,Latin America & Caribbean,False,False
+GTM,89,320,Guatemala,Latin America & Caribbean,False,False
+GUY,91,328,Guyana,Latin America & Caribbean,False,False
+HTI,93,332,Haiti,Latin America & Caribbean,False,False
+HND,95,340,Honduras,Latin America & Caribbean,False,False
+JAM,109,388,Jamaica,Latin America & Caribbean,False,False
+MTQ,135,474,Martinique,Latin America & Caribbean,False,False
+MEX,138,484,Mexico,Latin America & Caribbean,False,False
+MSR,142,500,Montserrat,Latin America & Caribbean,False,False
+NIC,157,558,Nicaragua,Latin America & Caribbean,False,False
+PAN,166,591,Panama,Latin America & Caribbean,False,False
+PRY,169,600,Paraguay,Latin America & Caribbean,False,False
+PER,170,604,Peru,Latin America & Caribbean,False,False
+PRI,177,630,Puerto Rico,Latin America & Caribbean,False,False
+KNA,188,659,Saint Kitts and Nevis,Latin America & Caribbean,False,False
+LCA,189,662,Saint Lucia,Latin America & Caribbean,False,False
+VCT,191,670,Saint Vincent and the Grenadines,Latin America & Caribbean,False,False
+SUR,207,740,Suriname,Latin America & Caribbean,False,False
+TTO,220,780,Trinidad and Tobago,Latin America & Caribbean,False,False
+TCA,224,796,Turks and Caicos Islands,Latin America & Caribbean,False,False
+VIR,240,850,United States Virgin Islands,Latin America & Caribbean,False,False
+URY,234,858,Uruguay,Latin America & Caribbean,False,False
+VEN,236,862,Venezuela (Bolivarian Republic of),Latin America & Caribbean,False,False
+DZA,4,012,Algeria,North Africa & West Asia,False,False
+ARM,1,051,Armenia,North Africa & West Asia,False,False
+AZE,52,031,Azerbaijan,North Africa & West Asia,False,False
+BHR,13,048,Bahrain,North Africa & West Asia,False,False
+CYP,50,196,Cyprus,North Africa & West Asia,False,False
+EGY,59,818,Egypt,North Africa & West Asia,False,False
+GEO,73,268,Georgia,North Africa & West Asia,False,False
+IRN,102,364,Iran (Islamic Republic of),North Africa & West Asia,False,False
+IRQ,103,368,Iraq,North Africa & West Asia,False,False
+ISR,105,376,Israel,North Africa & West Asia,False,False
+JOR,112,400,Jordan,North Africa & West Asia,False,False
+KWT,118,414,Kuwait,North Africa & West Asia,False,False
+LBN,121,422,Lebanon,North Africa & West Asia,False,False
+LBY,124,434,Libya,North Africa & West Asia,False,False
+MAR,143,504,Morocco,North Africa & West Asia,False,False
+OMN,221,512,Oman,North Africa & West Asia,False,False
+PSE,299,275,Palestine,North Africa & West Asia,False,False
+QAT,179,634,Qatar,North Africa & West Asia,False,False
+SAU,194,682,Saudi Arabia,North Africa & West Asia,False,False
+SYR,212,760,Syrian Arab Republic,North Africa & West Asia,False,False
+TUN,222,788,Tunisia,North Africa & West Asia,False,False
+TUR,223,792,TÃ¼rkiye,North Africa & West Asia,False,False
+ARE,225,784,United Arab Emirates,North Africa & West Asia,False,False
+ESH,205,732,Western Sahara,North Africa & West Asia,False,False
+YEM,249,887,Yemen,North Africa & West Asia,False,False
+BMU,17,060,Bermuda,Northern America,False,False
+CAN,33,124,Canada,Northern America,False,False
+GRL,85,304,Greenland,Northern America,False,False
+SPM,190,666,Saint Pierre and Miquelon,Northern America,False,False
+USA,231,840,United States of America,Northern America,False,False
+ASM,5,016,American Samoa,Oceania,False,False
+AUS,10,036,Australia,Oceania,False,False
+COK,47,184,Cook Islands,Oceania,False,False
+FJI,66,242,Fiji,Oceania,False,False
+PYF,70,258,French Polynesia,Oceania,False,False
+GUM,88,316,Guam,Oceania,False,False
+KIR,83,296,Kiribati,Oceania,False,False
+MHL,127,584,Marshall Islands,Oceania,False,False
+FSM,145,583,Micronesia (Federated States of),Oceania,False,False
+NRU,148,520,Nauru,Oceania,False,False
+NCL,153,540,New Caledonia,Oceania,False,False
+NZL,156,554,New Zealand,Oceania,False,False
+NIU,160,570,Niue,Oceania,False,False
+NFK,161,574,Norfolk Island,Oceania,False,False
+MNP,163,580,Northern Mariana Islands,Oceania,False,False
+PLW,180,585,Palau,Oceania,False,False
+PNG,168,598,Papua New Guinea,Oceania,False,False
+PCN,172,612,Pitcairn,Oceania,False,False
+WSM,244,882,Samoa,Oceania,False,False
+SLB,25,090,Solomon Islands,Oceania,False,False
+TKL,218,772,Tokelau,Oceania,False,False
+TON,219,776,Tonga,Oceania,False,False
+TUV,227,798,Tuvalu,Oceania,False,False
+VUT,155,548,Vanuatu,Oceania,False,False
+WLF,243,876,Wallis and Futuna Islands,Oceania,False,False
+AFG,2,004,Afghanistan,South Asia,False,False
+BGD,16,050,Bangladesh,South Asia,False,False
+BTN,18,064,Bhutan,South Asia,False,False
+IND,100,356,India,South Asia,False,False
+MDV,132,462,Maldives,South Asia,False,False
+NPL,149,524,Nepal,South Asia,False,False
+PAK,165,586,Pakistan,South Asia,False,False
+LKA,38,144,Sri Lanka,South Asia,False,False
+AGO,7,024,Angola,Sub-Saharan Africa,False,False
+SHN,187,654,Ascension; Saint Helena and Tristan da Cunha,Sub-Saharan Africa,False,False
+BEN,53,204,Benin,Sub-Saharan Africa,False,False
+BWA,20,072,Botswana,Sub-Saharan Africa,False,False
+BFA,233,854,Burkina Faso,Sub-Saharan Africa,False,False
+BDI,29,108,Burundi,Sub-Saharan Africa,False,False
+CPV,35,132,Cabo Verde,Sub-Saharan Africa,False,False
+CMR,32,120,Cameroon,Sub-Saharan Africa,False,False
+CAF,37,140,Central African Republic,Sub-Saharan Africa,False,False
+TCD,39,148,Chad,Sub-Saharan Africa,False,False
+COM,45,174,Comoros,Sub-Saharan Africa,False,False
+COG,46,178,Congo,Sub-Saharan Africa,False,False
+CIV,107,384,CÃ´te d'Ivoire,Sub-Saharan Africa,False,False
+COD,250,180,Democratic Republic of the Congo,Sub-Saharan Africa,False,False
+DJI,72,262,Djibouti,Sub-Saharan Africa,False,False
+GNQ,61,226,Equatorial Guinea,Sub-Saharan Africa,False,False
+ERI,178,232,Eritrea,Sub-Saharan Africa,False,False
+SWZ,209,748,Eswatini,Sub-Saharan Africa,False,False
+ETH,238,231,Ethiopia,Sub-Saharan Africa,False,False
+GAB,74,266,Gabon,Sub-Saharan Africa,False,False
+GMB,75,270,Gambia,Sub-Saharan Africa,False,False
+GHA,81,288,Ghana,Sub-Saharan Africa,False,False
+GIN,90,324,Guinea,Sub-Saharan Africa,False,False
+GNB,175,624,Guinea-Bissau,Sub-Saharan Africa,False,False
+KEN,114,404,Kenya,Sub-Saharan Africa,False,False
+LSO,122,426,Lesotho,Sub-Saharan Africa,False,False
+LBR,123,430,Liberia,Sub-Saharan Africa,False,False
+MDG,129,450,Madagascar,Sub-Saharan Africa,False,False
+MWI,130,454,Malawi,Sub-Saharan Africa,False,False
+MLI,133,466,Mali,Sub-Saharan Africa,False,False
+MRT,136,478,Mauritania,Sub-Saharan Africa,False,False
+MUS,137,480,Mauritius,Sub-Saharan Africa,False,False
+MYT,270,175,Mayotte,Sub-Saharan Africa,False,False
+MOZ,144,508,Mozambique,Sub-Saharan Africa,False,False
+NAM,147,516,Namibia,Sub-Saharan Africa,False,False
+NER,158,562,Niger,Sub-Saharan Africa,False,False
+NGA,159,566,Nigeria,Sub-Saharan Africa,False,False
+RWA,184,646,Rwanda,Sub-Saharan Africa,False,False
+REU,182,638,RÃ©union,Sub-Saharan Africa,False,False
+STP,193,678,Sao Tome and Principe,Sub-Saharan Africa,False,False
+SEN,195,686,Senegal,Sub-Saharan Africa,False,False
+SYC,196,690,Seychelles,Sub-Saharan Africa,False,False
+SLE,197,694,Sierra Leone,Sub-Saharan Africa,False,False
+SOM,201,706,Somalia,Sub-Saharan Africa,False,False
+ZAF,202,710,South Africa,Sub-Saharan Africa,False,False
+SSD,277,728,South Sudan,Sub-Saharan Africa,False,False
+SDN,276,729,Sudan,Sub-Saharan Africa,False,False
+SDN,206,736,Sudan (former),Sub-Saharan Africa,True,False
+TGO,217,768,Togo,Sub-Saharan Africa,False,False
+UGA,226,800,Uganda,Sub-Saharan Africa,False,False
+TZA,215,834,United Republic of Tanzania,Sub-Saharan Africa,False,False
+ZMB,251,894,Zambia,Sub-Saharan Africa,False,False
+ZWE,181,716,Zimbabwe,Sub-Saharan Africa,False,False
+,15,058,Belgium-Luxembourg,Unassigned,True,True
+,259,830,Channel Islands,Unassigned,False,True
+,351,159,China,Unassigned,False,True
+,51,200,Czechoslovakia,Unassigned,True,True
+,62,230,Ethiopia PDR,Unassigned,True,True
+,264,833,Isle of Man,Unassigned,False,True
+,151,530,Netherlands Antilles (former),Unassigned,True,True
+,164,582,Pacific Islands Trust Territory,Unassigned,True,True
+,186,891,Serbia and Montenegro,Unassigned,True,True
+,228,810,USSR,Unassigned,True,True
+,248,890,Yugoslav SFR,Unassigned,True,True

@@ -1,0 +1,10 @@
+descriptor,rho_yr1,rho_yr10
+SOC stock,-0.61,-0.61
+Soil N buffer ratio,0.4,0.19
+Baseline water deficit,0.69,0.7
+Calibrated yield ceiling y_max,-0.81,-0.9
+BNF potential,-0.3,-0.28
+Synthetic N rate,-0.55,-0.38
+|Fertilizer-demand elasticity|,0.58,0.54
+|Food-demand elasticity|,0.51,0.51
+Land-response coefficient lambda_L,0.53,0.47
